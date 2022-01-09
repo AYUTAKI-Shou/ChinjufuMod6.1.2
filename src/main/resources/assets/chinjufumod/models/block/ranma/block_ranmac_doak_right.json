@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_ranmac_right",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_bigoak",
+		"ji": "minecraft:block/glass",
+		"ranma": "chinjufumod:blocks/muku_bigoak",
+		"waku": "chinjufumod:blocks/muku_bigoak"
+	}
+}

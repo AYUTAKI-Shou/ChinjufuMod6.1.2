@@ -1,0 +1,13 @@
+{
+	"parent": "chinjufumod:block/base/base_fusuma_left_top_open",
+	"textures": {
+		"particle": "chinjufumod:blocks/fusuma_green",
+		"ji_top_nor": "chinjufumod:blocks/fusuma_green",
+		"ji_top_sou": "chinjufumod:blocks/fusuma_green",
+		"ji_bot_nor": "chinjufumod:blocks/fusuma_green",
+		"ji_bot_sou": "chinjufumod:blocks/fusuma_green",
+		"waku": "chinjufumod:blocks/fusuma_waku",
+		"tegake": "chinjufumod:blocks/fusuma_tegake",
+		"rail": "chinjufumod:blocks/muku_spruce"
+	}
+}

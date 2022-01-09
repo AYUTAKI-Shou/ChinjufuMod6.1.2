@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"cra=false,type=bottom": { "model": "chinjufumod:block/namako/block_nsh_purple_bottom" },
+		"cra=false,type=top": { "model": "chinjufumod:block/namako/block_nsh_purple_top" },
+		"cra=true,type=bottom": { "model": "chinjufumod:block/namako/block_nsh_cr_purple_bottom" },
+		"cra=true,type=top": { "model": "chinjufumod:block/namako/block_nsh_cr_purple_top" },
+		"cra=false,type=double": { "model": "chinjufumod:block/namako/block_namako_purple" },
+		"cra=true,type=double": { "model": "chinjufumod:block/namako/block_namako_cr_purple" }
+	}
+}

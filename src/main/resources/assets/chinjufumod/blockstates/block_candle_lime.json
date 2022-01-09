@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"down=false,lit=false": { "model": "chinjufumod:block/candle/block_candle_lime" },
+		"down=true,lit=false": { "model": "chinjufumod:block/candle/block_candled_lime" },
+
+		"down=false,lit=true": { "model": "chinjufumod:block/candle/lit_candle_lime" },
+		"down=true,lit=true": { "model": "chinjufumod:block/candle/lit_candled_lime" }
+	}
+}

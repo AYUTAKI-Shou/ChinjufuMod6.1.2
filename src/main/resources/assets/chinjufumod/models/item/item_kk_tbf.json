@@ -1,0 +1,30 @@
+{
+	"parent": "chinjufumod:block/item_kk_tbf",
+	"display": {
+		"gui": {
+			"rotation": [ 30, 60, 0 ],
+			"translation": [ -0.5, 0.5, 0 ],
+			"scale": [ 0.5, 0.5, 0.5 ]
+		},
+		"thirdperson_righthand": {
+			"rotation": [ 90, 0, 0 ],
+			"translation": [ 0, 8.5, 4 ],
+			"scale": [ 0.5, 0.5, 0.5 ]
+		},
+		"firstperson_righthand": {
+			"rotation": [ 0, 0, 0 ],
+			"translation": [ 0, 5, 0 ],
+			"scale": [ 0.5, 0.5, 0.5 ]
+		},
+		"fixed": {
+			"rotation": [ 270, 225, 0 ],
+			"translation": [ 0.5, 1, -2.01 ],
+			"scale": [ 0.5, 0.5, 0.5 ]
+		},
+		"ground": {
+			"rotation": [ 0, 0, 0 ],
+			"translation": [ 0, 4, 0 ],
+			"scale": [ 0.3, 0.3, 0.3 ]
+		}
+	}
+}

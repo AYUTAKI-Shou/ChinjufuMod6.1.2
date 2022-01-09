@@ -1,0 +1,6 @@
+{
+	"parent": "chinjufumod:block/base/base_wall_post",
+	"textures": {
+		"wall": "chinjufumod:blocks/namakowall_b_lightg"
+	}
+}

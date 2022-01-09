@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_other",
+
+	"pattern": [
+		"X"
+	],
+
+	"key": {
+		"X": { "item": "chinjufumod:item_squid_raw" }
+	},
+
+	"result": { "item": "minecraft:ink_sac", "count": 2 }
+}

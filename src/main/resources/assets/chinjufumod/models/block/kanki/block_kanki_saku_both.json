@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_kanki_both",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_sakura",
+		"ranma": "chinjufumod:blocks/muku_sakura",
+		"waku": "chinjufumod:blocks/muku_sakura"
+	}
+}

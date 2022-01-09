@@ -1,0 +1,11 @@
+{
+	"parent": "chinjufumod:block/base/base_windowtalltop_3",
+	"textures": {
+		"particle": "chinjufumod:blocks/window_top_kaede",
+		"front_top": "chinjufumod:blocks/window_top_kaede",
+		"front_bot": "chinjufumod:blocks/window_bot_kaede",
+		"totte": "chinjufumod:blocks/window_top_oak",
+		"side": "chinjufumod:blocks/muku_kaede",
+		"glass": "minecraft:block/glass"
+	}
+}

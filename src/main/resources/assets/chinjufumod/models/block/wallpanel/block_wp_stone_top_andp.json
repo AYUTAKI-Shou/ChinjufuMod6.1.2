@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_wallpanel_wide",
+	"textures": {
+		"particle": "chinjufumod:blocks/stonepillar_top_and",
+		"front": "chinjufumod:blocks/stonepillar_top_and",
+		"back": "chinjufumod:blocks/stonepillar_top_and",
+		"side": "chinjufumod:blocks/stonepillar_and"
+	}
+}

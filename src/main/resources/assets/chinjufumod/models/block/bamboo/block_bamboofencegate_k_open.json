@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_bamboofencegate_open",
+	"textures": {
+		"particle": "chinjufumod:blocks/bamboo_k_side",
+		"side": "chinjufumod:blocks/bamboo_k_side",
+		"inside": "chinjufumod:blocks/bamboo_k_inside"
+	}
+}

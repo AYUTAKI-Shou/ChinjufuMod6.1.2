@@ -1,0 +1,11 @@
+{
+	"parent": "chinjufumod:block/base/base_andon",
+	"textures": {
+		"particle": "chinjufumod:blocks/andon_green",
+		"waku": "chinjufumod:blocks/muku_bigoak",
+		"kami": "chinjufumod:blocks/andon_green",
+		"sara": "chinjufumod:blocks/dish_usuki",
+		"abura": "chinjufumod:blocks/soyoil_still",
+		"akari": "chinjufumod:blocks/andon_shin"
+	 }
+}

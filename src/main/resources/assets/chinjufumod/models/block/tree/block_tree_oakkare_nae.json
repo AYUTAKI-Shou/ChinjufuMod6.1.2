@@ -1,0 +1,6 @@
+{
+	"parent": "block/cross",
+	"textures": {
+		"cross": "chinjufumod:blocks/nae_oak_kare"
+	}
+}

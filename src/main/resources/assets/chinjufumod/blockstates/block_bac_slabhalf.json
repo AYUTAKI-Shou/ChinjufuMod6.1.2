@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"type=bottom": { "model": "chinjufumod:block/block_bac_slabhalf_bottom" },
+		"type=top": { "model": "chinjufumod:block/block_bac_slabhalf_top" },
+
+		"type=double": { "model": "chinjufumod:block/block_brick_and_c" }
+	}
+}

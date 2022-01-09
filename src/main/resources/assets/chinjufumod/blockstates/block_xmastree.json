@@ -1,0 +1,13 @@
+{
+ "variants": {
+		"facing=north,half=upper": { "model": "chinjufumod:block/season/block_xmastree_top", "y": 0 },
+		"facing=south,half=upper": { "model": "chinjufumod:block/season/block_xmastree_top", "y": 180 },
+		"facing=west,half=upper": { "model": "chinjufumod:block/season/block_xmastree_top", "y": 270 },
+		"facing=east,half=upper": { "model": "chinjufumod:block/season/block_xmastree_top", "y": 90 },
+
+		"facing=north,half=lower": { "model": "chinjufumod:block/season/block_xmastree_bot", "y": 0 },
+		"facing=south,half=lower": { "model": "chinjufumod:block/season/block_xmastree_bot", "y": 180 },
+		"facing=west,half=lower": { "model": "chinjufumod:block/season/block_xmastree_bot", "y": 270 },
+		"facing=east,half=lower": { "model": "chinjufumod:block/season/block_xmastree_bot", "y": 90 }
+ }
+}

@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_bottle",
+	"textures": {
+		"particle": "chinjufumod:blocks/bottle_mead_2",
+		"side": "chinjufumod:blocks/bottle_mead_2",
+		"top": "chinjufumod:blocks/bottle_mead_top",
+		"label": "chinjufumod:blocks/bottle_label_mead"
+	}
+}

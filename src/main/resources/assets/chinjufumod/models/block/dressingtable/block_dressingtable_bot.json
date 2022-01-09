@@ -1,0 +1,11 @@
+{
+	"parent": "chinjufumod:block/base/base_dressingtable_bot",
+	"textures": {
+		"particle":"chinjufumod:blocks/dtable_bott_o",
+		"top": "chinjufumod:blocks/dtable_top_o",
+		"bottom": "chinjufumod:blocks/dtable_bott_o",
+		"up": "minecraft:block/oak_planks",
+		"item": "chinjufumod:blocks/dtable_item",
+		"leg": "chinjufumod:blocks/muku_oak"
+	}
+}

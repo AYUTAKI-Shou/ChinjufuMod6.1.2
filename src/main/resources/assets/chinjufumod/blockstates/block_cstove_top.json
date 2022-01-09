@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"facing=north,lit=false": { "model": "chinjufumod:block/school/block_cstove_top", "y": 0 },
+		"facing=south,lit=false": { "model": "chinjufumod:block/school/block_cstove_top", "y": 180 },
+		"facing=west,lit=false": { "model": "chinjufumod:block/school/block_cstove_top", "y": 270 },
+		"facing=east,lit=false": { "model": "chinjufumod:block/school/block_cstove_top", "y": 90 },
+
+		"facing=north,lit=true": { "model": "chinjufumod:block/school/lit_block_cstove_top", "y": 0 },
+		"facing=south,lit=true": { "model": "chinjufumod:block/school/lit_block_cstove_top", "y": 180 },
+		"facing=west,lit=true": { "model": "chinjufumod:block/school/lit_block_cstove_top", "y": 270 },
+		"facing=east,lit=true": { "model": "chinjufumod:block/school/lit_block_cstove_top", "y": 90 }
+	}
+}

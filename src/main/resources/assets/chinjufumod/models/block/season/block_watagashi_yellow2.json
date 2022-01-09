@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_watagashi2",
+	"textures": {
+		"particle": "chinjufumod:blocks/watagashi_yellow",
+		"bou": "chinjufumod:blocks/muku_oak",
+		"watagashi": "chinjufumod:blocks/watagashi_yellow",
+		"fukuro": "chinjufumod:blocks/watagashi_fukuro_y",
+		"fukuro_s": "chinjufumod:blocks/watagashi_fukuro_side_y"
+	}
+}

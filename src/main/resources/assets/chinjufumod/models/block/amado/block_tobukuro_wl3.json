@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_tobukuro_wl3",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_bigoak",
+		"fuchi": "minecraft:block/dark_oak_planks",
+		"amado": "chinjufumod:blocks/muku_bigoak"
+	}
+}

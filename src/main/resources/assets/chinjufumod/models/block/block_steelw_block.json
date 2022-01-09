@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_aluminumw_block",
+	"textures": {
+		"particle": "chinjufumod:blocks/iron_side",
+		"up": "chinjufumod:blocks/iron_up",
+		"down": "chinjufumod:blocks/iron_down",
+		"side": "chinjufumod:blocks/iron_side"
+	 }
+}

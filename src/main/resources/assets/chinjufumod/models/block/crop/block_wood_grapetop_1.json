@@ -1,0 +1,49 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "chinjufumod:blocks/log_grape",
+		"leaves": "chinjufumod:blocks/leaves_grape",
+		"log_top": "chinjufumod:blocks/log_grape_top",
+		"log": "chinjufumod:blocks/log_grape",
+		"stem": "chinjufumod:blocks/muku_bigoak"
+	},
+	"elements": [
+		{
+			"name": "stem_ue1___________________________________",
+			"from": [ 3, 0, 6.5 ],
+			"to": [ 4, 7, 7.5 ],
+			"faces": {
+				"up" : { "texture": "#stem" },
+				"north": { "texture": "#stem" },
+				"south": { "texture": "#stem" },
+				"east" : { "texture": "#stem" },
+				"west" : { "texture": "#stem" }
+			}
+		},
+		{
+			"name": "stem_ue2",
+			"from": [ 11, 0, 6.5 ],
+			"to": [ 12, 7, 7.5 ],
+			"faces": {
+				"up" : { "texture": "#stem" },
+				"north": { "texture": "#stem" },
+				"south": { "texture": "#stem" },
+				"east" : { "texture": "#stem" },
+				"west" : { "texture": "#stem" }
+			}
+		},
+		{
+			"name": "stem_yoko1",
+			"from": [ 0, 4, 6.99 ],
+			"to": [ 16, 5, 7.99 ],
+			"faces": {
+				"up" : { "texture": "#stem" },
+				"down" : { "texture": "#stem" },
+				"north": { "texture": "#stem" },
+				"south": { "texture": "#stem" },
+				"east" : { "texture": "#stem" },
+				"west" : { "texture": "#stem" }
+			}
+		}
+	]
+}

@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_kotatsu1_cor_ne",
+	"textures": {
+		"particle": "minecraft:block/spruce_planks",
+		"ten": "minecraft:block/spruce_planks",
+		"futon": "chinjufumod:blocks/kotatsufuton_spru",
+		"leg": "chinjufumod:blocks/muku_spruce"
+	}
+}

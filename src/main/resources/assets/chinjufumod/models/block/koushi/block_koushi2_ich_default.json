@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_koushi2_default",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_ichoh",
+		"ranma": "chinjufumod:blocks/muku_ichoh",
+		"waku": "chinjufumod:blocks/muku_ichoh"
+	}
+}

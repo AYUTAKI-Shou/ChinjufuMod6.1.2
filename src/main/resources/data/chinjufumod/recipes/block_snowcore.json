@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "cm_snow",
+
+	"ingredients": [
+		{ "item": "minecraft:snowball" },
+		{ "item": "minecraft:stick" }
+	],
+
+	"result": { "item": "chinjufumod:block_snowcore", "count" : 1 }
+}

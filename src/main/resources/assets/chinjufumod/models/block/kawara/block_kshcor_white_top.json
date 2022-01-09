@@ -1,0 +1,12 @@
+{
+	"parent": "chinjufumod:block/base/base_kawara_top",
+	"textures": {
+		"particle": "chinjufumod:blocks/kawara_white_cor",
+		"kawara": "chinjufumod:blocks/kawara_white_cor",
+		"kawara_down": "chinjufumod:blocks/kawara_white_cor",
+		"kawara_north": "chinjufumod:blocks/kawara_white_north",
+		"kawara_south": "chinjufumod:blocks/kawara_white_south",
+		"kawara_east": "chinjufumod:blocks/kawara_white_north",
+		"kawara_west": "chinjufumod:blocks/kawara_white_south"
+	}
+}

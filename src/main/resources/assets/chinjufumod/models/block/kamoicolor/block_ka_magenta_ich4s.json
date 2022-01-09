@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_kamoislab_4south",
+	"textures": {
+		"particle": "chinjufumod:blocks/plaster_magenta",
+		"shikkui": "chinjufumod:blocks/plaster_magenta",
+		"ki": "chinjufumod:blocks/pillar_ichoh_side",
+		"ki_top": "chinjufumod:blocks/pillar_ichoh_top",
+		"ki_inside": "chinjufumod:blocks/pillar_ichoh_inside"
+	}
+}

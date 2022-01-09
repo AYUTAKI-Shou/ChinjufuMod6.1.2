@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_chabudai1_none",
+	"textures": {
+		"particle": "minecraft:block/birch_planks",
+		"ten": "minecraft:block/birch_planks",
+		"leg": "chinjufumod:blocks/muku_birch"
+	}
+}

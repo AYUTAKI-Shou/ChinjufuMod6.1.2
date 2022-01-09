@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_logchair",
+	"textures": {
+		"particle": "chinjufumod:blocks/log_ichoh",
+		"side": "chinjufumod:blocks/log_ichoh",
+		"top": "chinjufumod:blocks/log_ichoh_top"
+	}
+}

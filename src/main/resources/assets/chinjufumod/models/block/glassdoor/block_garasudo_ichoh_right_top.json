@@ -1,0 +1,11 @@
+{
+	"parent": "chinjufumod:block/base/base_garasudo_right_top",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_ichoh",
+		"ji": "minecraft:block/glass",
+		"ita": "chinjufumod:blocks/planks_ichoh",
+		"waku": "chinjufumod:blocks/muku_ichoh",
+		"totte": "chinjufumod:blocks/muku_bigoak",
+		"rail": "chinjufumod:blocks/muku_ichoh"
+	}
+}

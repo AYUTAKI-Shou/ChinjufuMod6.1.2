@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"type=bottom": { "model": "chinjufumod:block/wooden/block_slabhalf_sakura_bottom" },
+		"type=top": { "model": "chinjufumod:block/wooden/block_slabhalf_sakura_top" },
+
+		"type=double": { "model": "chinjufumod:block/wooden/block_planks_sakura" }
+	}
+}

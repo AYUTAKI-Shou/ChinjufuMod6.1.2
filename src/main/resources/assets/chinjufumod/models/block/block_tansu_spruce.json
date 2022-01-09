@@ -1,0 +1,170 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "chinjufumod:blocks/tansu_spruce_front",
+		"front": "chinjufumod:blocks/tansu_spruce_front",
+		"side": "chinjufumod:blocks/tansu_spruce_side"
+	},
+	"elements": [
+		{
+			"name": "sokoita",
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 1, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side", "cullface": "down" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "kita",
+			"from": [ 0, 1, 0 ],
+			"to": [ 16, 15, 1 ],
+			"faces": {
+				"north": { "texture": "#side" },
+				"south": { "texture": "#side" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "nishi",
+			"from": [ 0, 1, 1 ],
+			"to": [ 1, 15, 16 ],
+			"faces": {
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "higashi",
+			"from": [ 15, 1, 1 ],
+			"to": [ 16, 15, 16 ],
+			"faces": {
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "tennita",
+			"from": [ 0, 15, 0 ],
+			"to": [ 16, 16, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "nakaita",
+			"from": [ 1, 10.05, 1 ],
+			"to": [ 15, 11, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"south": { "texture": "#front" }
+			}
+		},
+
+		{
+			"name": "hikidashi_a",
+			"from": [ 1.05, 11.03, 15 ],
+			"to": [ 7.98, 13, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "hikidashi_a",
+			"from": [ 1.05, 13.03, 15 ],
+			"to": [ 7.98, 14.95, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "hikidashi_b",
+			"from": [ 8.02, 11.03, 15 ],
+			"to": [ 14.95, 13, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "hikidashi_b",
+			"from": [ 8.02, 13.03, 15 ],
+			"to": [ 14.95, 14.95, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+
+		{
+			"name": "hikidashi1",
+			"from": [ 1.05, 7.05, 1.01 ],
+			"to": [ 14.95, 10, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "hikidashi2",
+			"from": [ 1.05, 4.05, 1.01 ],
+			"to": [ 14.95, 7, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		},
+		{
+			"name": "hikidashi3",
+			"from": [ 1.05, 1.05, 1.01 ],
+			"to": [ 14.95, 4, 16 ],
+			"faces": {
+				"up": { "texture": "#side" },
+				"down": { "texture": "#side" },
+				"north": { "texture": "#side" },
+				"south": { "texture": "#front" },
+				"east" : { "texture": "#side" },
+				"west" : { "texture": "#side" }
+			}
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"": [
+			{ "model": "chinjufumod:block/wooden/block_carpet_sakura" },
+			{ "model": "chinjufumod:block/wooden/block_carpet_sakura", "y": 90 },
+			{ "model": "chinjufumod:block/wooden/block_carpet_sakura", "y": 180 },
+			{ "model": "chinjufumod:block/wooden/block_carpet_sakura", "y": 270 }
+		]
+	}
+}

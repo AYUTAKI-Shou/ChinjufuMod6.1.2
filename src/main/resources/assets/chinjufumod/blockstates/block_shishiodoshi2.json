@@ -1,0 +1,83 @@
+{
+	"variants": {
+		"facing=north,half=lower,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_1", "y": 180 },
+		"facing=south,half=lower,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_1" },
+		"facing=west,half=lower,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_1", "y": 90 },
+		"facing=east,half=lower,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_1", "y": 270 },
+
+		"facing=north,half=lower,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_2", "y": 180 },
+		"facing=south,half=lower,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_2" },
+		"facing=west,half=lower,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_2", "y": 90 },
+		"facing=east,half=lower,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_2", "y": 270 },
+
+		"facing=north,half=lower,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_3", "y": 180 },
+		"facing=south,half=lower,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_3" },
+		"facing=west,half=lower,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_3", "y": 90 },
+		"facing=east,half=lower,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_3", "y": 270 },
+
+		"facing=north,half=lower,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_4", "y": 180 },
+		"facing=south,half=lower,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_4" },
+		"facing=west,half=lower,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_4", "y": 90 },
+		"facing=east,half=lower,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshi2_4", "y": 270 },
+
+		"facing=north,half=upper,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_1", "y": 180 },
+		"facing=south,half=upper,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_1" },
+		"facing=west,half=upper,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_1", "y": 90 },
+		"facing=east,half=upper,stage=1,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_1", "y": 270 },
+
+		"facing=north,half=upper,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_2", "y": 180 },
+		"facing=south,half=upper,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_2" },
+		"facing=west,half=upper,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_2", "y": 90 },
+		"facing=east,half=upper,stage=2,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_2", "y": 270 },
+
+		"facing=north,half=upper,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_3", "y": 180 },
+		"facing=south,half=upper,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_3" },
+		"facing=west,half=upper,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_3", "y": 90 },
+		"facing=east,half=upper,stage=3,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_3", "y": 270 },
+
+		"facing=north,half=upper,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_4", "y": 180 },
+		"facing=south,half=upper,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_4" },
+		"facing=west,half=upper,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_4", "y": 90 },
+		"facing=east,half=upper,stage=4,which=false": { "model": "chinjufumod:block/shishiodoshi/block_shishitop2_4", "y": 270 },
+
+			"facing=north,half=lower,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_1" },
+			"facing=south,half=lower,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_1", "y": 180 },
+			"facing=west,half=lower,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_1", "y": 270 },
+			"facing=east,half=lower,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_1", "y": 90 },
+
+			"facing=north,half=lower,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_2" },
+			"facing=south,half=lower,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_2", "y": 180 },
+			"facing=west,half=lower,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_2", "y": 270 },
+			"facing=east,half=lower,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_2", "y": 90 },
+
+			"facing=north,half=lower,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_3" },
+			"facing=south,half=lower,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_3", "y": 180 },
+			"facing=west,half=lower,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_3", "y": 270 },
+			"facing=east,half=lower,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_3", "y": 90 },
+
+			"facing=north,half=lower,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_4" },
+			"facing=south,half=lower,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_4", "y": 180 },
+			"facing=west,half=lower,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_4", "y": 270 },
+			"facing=east,half=lower,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishiodoshib2_4", "y": 90 },
+
+			"facing=north,half=upper,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_1" },
+			"facing=south,half=upper,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_1", "y": 180 },
+			"facing=west,half=upper,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_1", "y": 270 },
+			"facing=east,half=upper,stage=1,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_1", "y": 90 },
+
+			"facing=north,half=upper,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_2" },
+			"facing=south,half=upper,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_2", "y": 180 },
+			"facing=west,half=upper,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_2", "y": 270 },
+			"facing=east,half=upper,stage=2,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_2", "y": 90 },
+
+			"facing=north,half=upper,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_3" },
+			"facing=south,half=upper,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_3", "y": 180 },
+			"facing=west,half=upper,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_3", "y": 270 },
+			"facing=east,half=upper,stage=3,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_3", "y": 90 },
+
+			"facing=north,half=upper,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_4" },
+			"facing=south,half=upper,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_4", "y": 180 },
+			"facing=west,half=upper,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_4", "y": 270 },
+			"facing=east,half=upper,stage=4,which=true": { "model": "chinjufumod:block/shishiodoshi/block_shishitopb2_4", "y": 90 }
+	}
+}

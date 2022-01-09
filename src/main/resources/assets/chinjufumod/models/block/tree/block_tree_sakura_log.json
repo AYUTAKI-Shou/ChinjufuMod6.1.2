@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_stone_pillar",
+	"textures": {
+		"particle": "chinjufumod:blocks/log_sakura",
+		"top": "chinjufumod:blocks/log_sakura_top",
+		"side": "chinjufumod:blocks/log_sakura"
+	}
+}

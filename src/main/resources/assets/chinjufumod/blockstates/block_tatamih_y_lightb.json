@@ -1,0 +1,18 @@
+{
+	"variants": {
+		"facing=north,type=bottom": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_bot", "y": 0 },
+		"facing=south,type=bottom": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_bot", "y": 0 },
+		"facing=west,type=bottom": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_bot", "y": 90 },
+		"facing=east,type=bottom": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_bot", "y": 90 },
+
+		"facing=north,type=top": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_top", "y": 0 },
+		"facing=south,type=top": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_top", "y": 0 },
+		"facing=west,type=top": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_top", "y": 90 },
+		"facing=east,type=top": { "model": "chinjufumod:block/tatami/block_tatamih_y_lightb_top", "y": 90 },
+
+		"facing=north,type=double": { "model": "chinjufumod:block/tatami/block_tatamid_y_lightb", "y": 0 },
+		"facing=south,type=double": { "model": "chinjufumod:block/tatami/block_tatamid_y_lightb", "y": 0 },
+		"facing=west,type=double": { "model": "chinjufumod:block/tatami/block_tatamid_y_lightb", "y": 90 },
+		"facing=east,type=double": { "model": "chinjufumod:block/tatami/block_tatamid_y_lightb", "y": 90 }
+	}
+}

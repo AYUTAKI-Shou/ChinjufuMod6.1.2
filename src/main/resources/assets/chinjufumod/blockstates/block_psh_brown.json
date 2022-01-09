@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"cra=false,type=bottom": { "model": "chinjufumod:block/plaster/block_psh_brown_bottom" },
+		"cra=false,type=top": { "model": "chinjufumod:block/plaster/block_psh_brown_top" },
+		"cra=true,type=bottom": { "model": "chinjufumod:block/plaster/block_psh_cr_brown_bottom" },
+		"cra=true,type=top": { "model": "chinjufumod:block/plaster/block_psh_cr_brown_top" },
+		"cra=false,type=double": { "model": "chinjufumod:block/plaster/block_plaster_brown" },
+		"cra=true,type=double": { "model": "chinjufumod:block/plaster/block_plaster_cr_brown" }
+	}
+}

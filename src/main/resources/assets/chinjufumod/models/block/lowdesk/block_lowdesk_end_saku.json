@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_lowdesk_end",
+	"textures": {
+		"particle": "chinjufumod:blocks/planks_sakura",
+		"leg": "chinjufumod:blocks/muku_sakura",
+		"top": "chinjufumod:blocks/planks_sakura"
+	}
+}

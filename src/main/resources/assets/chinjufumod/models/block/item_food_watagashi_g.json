@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_food_watagashi",
+	"textures": {
+		"particle": "chinjufumod:blocks/watagashi_green",
+		"bou": "chinjufumod:blocks/muku_oak",
+		"watagashi": "chinjufumod:blocks/watagashi_green"
+	}
+}

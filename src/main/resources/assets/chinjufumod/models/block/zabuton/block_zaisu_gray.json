@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_zaisu_3",
+	"textures": {
+		"particle": "chinjufumod:blocks/zabuton_gray_top",
+		"top": "chinjufumod:blocks/zabuton_gray_top",
+		"bot": "chinjufumod:blocks/zabuton_gray_bot",
+		"side": "chinjufumod:blocks/zabuton_gray_side",
+		"wood": "minecraft:block/oak_planks"
+	}
+}

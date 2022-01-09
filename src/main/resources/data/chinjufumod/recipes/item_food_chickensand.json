@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "cm_tea",
+
+	"ingredients": [
+		{ "item": "minecraft:cooked_chicken" },
+		{ "tag": "forge:crops/cabbage" },
+		{ "item": "chinjufumod:item_food_bun" },
+		{ "item": "chinjufumod:item_food_bun" }
+	],
+
+	"result": { "item": "chinjufumod:item_food_chickensand", "count" : 4 }
+}

@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_window_closeright",
+	"textures": {
+		"particle": "chinjufumod:blocks/window_bigoak",
+		"front": "chinjufumod:blocks/window_bigoak",
+		"side": "chinjufumod:blocks/muku_bigoak",
+		"totte": "chinjufumod:blocks/window_oak",
+		"glass": "minecraft:block/glass"
+	}
+}

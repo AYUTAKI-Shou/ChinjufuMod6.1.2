@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_kotatsu1_none_e",
+	"textures": {
+		"particle": "minecraft:block/jungle_planks",
+		"ten": "minecraft:block/jungle_planks",
+		"futon": "chinjufumod:blocks/kotatsufuton_jun",
+		"leg": "chinjufumod:blocks/muku_jungle"
+	}
+}

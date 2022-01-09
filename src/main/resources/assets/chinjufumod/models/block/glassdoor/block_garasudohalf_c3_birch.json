@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_garasudohalf_close3",
+	"textures": {
+		"particle": "minecraft:block/glass",
+		"ji": "minecraft:block/glass",
+		"waku": "chinjufumod:blocks/muku_birch",
+		"totte": "chinjufumod:blocks/muku_bigoak",
+		"rail": "chinjufumod:blocks/muku_birch"
+	}
+}

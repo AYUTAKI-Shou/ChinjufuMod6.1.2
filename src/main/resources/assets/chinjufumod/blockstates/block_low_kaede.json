@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"" : [ { "model" : "chinjufumod:block/garden/block_low_kaede", "y": 0 },
+			{ "model" : "chinjufumod:block/garden/block_low_kaede", "y": 90 },
+			{ "model" : "chinjufumod:block/garden/block_low_kaede", "y": 180 },
+			{ "model" : "chinjufumod:block/garden/block_low_kaede", "y": 270 } ]
+	}
+}

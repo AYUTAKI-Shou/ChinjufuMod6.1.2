@@ -1,0 +1,11 @@
+﻿{
+	"parent": "chinjufumod:block/base/base_box_sack_top",
+	"textures": {
+		"particle": "chinjufumod:blocks/sack_soy_top",
+		"bottom": "chinjufumod:blocks/sack_soy_bottom",
+		"side": "chinjufumod:blocks/sack_soy_side",
+		"top": "chinjufumod:blocks/sack_soy_top",
+		"bottom2": "chinjufumod:blocks/box_a_bottom",
+		"side2": "chinjufumod:blocks/box_a_side"
+	}
+}

@@ -1,0 +1,46 @@
+
+modLoader="javafml" #mandatory
+
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+
+license="AYUTAKI Shou"
+
+#issueTrackerURL="" #optional
+
+[[mods]] #mandatory
+
+modId="chinjufumod" #mandatory
+version="[1.16.5]6.1.2.1" #mandatory
+displayName="Chinjufu Mod" #mandatory
+
+logoFile="chinjufumod.png" #optional
+
+credits="Thank you to those who are publishing MOD source code and those who upload maiking MOD videos.
+  I used SE on these sites. 効果音ラボ, On-Jin and niconi commons." #optional
+
+authors="AYUTAKI Shou" #optional
+
+description='''
+This is 'KantaiCollection' Fan Mod. KantaiCollection(DMM GAMES)
+http://www.dmm.com/netgame/feature/kancolle.html
+'''
+
+[[dependencies.chinjufumod]] #optional
+    # the modid of the dependency
+    modId="forge" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[36,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+# Here's another dependency
+[[dependencies.chinjufumod]]
+    modId="minecraft"
+    mandatory=true
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"

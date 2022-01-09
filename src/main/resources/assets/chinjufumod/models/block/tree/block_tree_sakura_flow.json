@@ -1,0 +1,22 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "chinjufumod:blocks/flower_sakura",
+		"hana": "chinjufumod:blocks/flower_sakura"
+	},
+	"elements": [
+		{
+			"name": "miki",
+			"from": [ 0.01, 0.01, 0.01 ],
+			"to": [ 15.99, 15.99, 15.99],
+			"faces": {
+				"up": { "texture": "#hana" },
+				"down" : { "texture": "#hana" },
+				"north": { "texture": "#hana" },
+				"south": { "texture": "#hana" },
+				"west" : { "texture": "#hana" },
+				"east" : { "texture": "#hana" }
+			}
+		}
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"replace": false,
+	"values": [
+		"#forge:crops/cabbage",
+		"#forge:crops/cherry",
+		"#forge:crops/chinesecabbage",
+		"#forge:crops/citrus",
+		"#forge:crops/corn",
+		"#forge:crops/grape",
+		"#forge:crops/onion",
+		"#forge:crops/orange",
+		"#forge:crops/rice",
+		"#forge:crops/soy",
+		"#forge:crops/spinach",
+		"#forge:crops/tea",
+		"#forge:crops/tomato",
+		"#forge:crops/beetroot",
+		"#forge:crops/carrot",
+		"#forge:crops/nether_wart",
+		"#forge:crops/potato",
+		"#forge:crops/wheat"
+	]
+}

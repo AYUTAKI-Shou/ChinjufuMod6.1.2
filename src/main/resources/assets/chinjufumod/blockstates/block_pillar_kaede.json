@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"axis=y": { "model": "chinjufumod:block/block_pillar_kaede" },
+		"axis=z": { "model": "chinjufumod:block/block_pillar_kaede", "x": 90 },
+		"axis=x": { "model": "chinjufumod:block/block_pillar_kaede", "x": 90, "y": 90 }
+	}
+}

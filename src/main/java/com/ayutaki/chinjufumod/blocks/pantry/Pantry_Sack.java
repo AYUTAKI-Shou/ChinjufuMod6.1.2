@@ -1,0 +1,119 @@
+package com.ayutaki.chinjufumod.blocks.pantry;
+
+import java.util.Random;
+
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlab_Water;
+import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.registry.Items_Teatime;
+import com.ayutaki.chinjufumod.registry.Pantry_Blocks;
+
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.SlabType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+
+public class Pantry_Sack extends BaseFacingSlab_Water {
+
+	/* Collision */
+	protected static final VoxelShape SACK_BOTTOM = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+	protected static final VoxelShape SACK_TOP = VoxelShapes.or(Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.box(0.5D, 7.5D, 0.5D, 15.5D, 8.0D, 15.5D),
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 0.5D),
+			Block.box(0.0D, 0.0D, 15.5D, 16.0D, 8.0D, 16.0D),
+			Block.box(0.0D, 0.0D, 0.0D, 0.5D, 8.0D, 16.0D),
+			Block.box(15.5D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
+
+	public Pantry_Sack(AbstractBlock.Properties properties) {
+		super(properties);
+	}
+
+	/* Distinguish LOST from WATERLOGGED. */
+	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		if (state.getValue(WATERLOGGED)) { return true; }
+		return false;
+	}
+	
+	/* Update BlockState. */
+	@Override
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+		}
+
+		if (inWater(stateIn, worldIn, pos)) {
+			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
+
+		return super.updateShape(stateIn, facing, facingState, worldIn, pos, facingPos);
+	}
+
+	@Override
+	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+	}
+
+	@Override
+	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+
+		SlabType slabtype = state.getValue(TYPE);
+		
+		if (inWater(state, worldIn, pos)) {
+			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			CMEvents.soundSnowBreak(worldIn, pos);
+
+			if (slabtype != SlabType.DOUBLE) { this.dropRottenfood(worldIn, pos); }
+			if (slabtype == SlabType.DOUBLE) { this.dropRottenfood2(worldIn, pos); }
+
+			worldIn.setBlock(pos, Pantry_Blocks.BOX_H_EMPTY3.defaultBlockState()
+					.setValue(BaseFacingSlab_Water.H_FACING, state.getValue(H_FACING))
+					.setValue(BaseFacingSlab_Water.TYPE, state.getValue(TYPE))
+					.setValue(BaseFacingSlab_Water.WATERLOGGED, state.getValue(WATERLOGGED)), 3); }
+
+		else { }
+	}
+
+	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
+		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
+		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+	}
+
+	protected void dropRottenfood2(ServerWorld worldIn, BlockPos pos) {
+		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD, 2);
+		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+	}
+	
+	/* Collisions for each property. */
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		SlabType slabtype = state.getValue(TYPE);
+		switch (slabtype) {
+		case DOUBLE:
+			return VoxelShapes.block();
+		case TOP:
+			return SACK_TOP;
+		default:
+			return SACK_BOTTOM;
+		}
+	}
+
+	/* Flammable Block */
+	@Override
+	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return true; }
+
+	@Override
+	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 5; }
+
+	@Override
+	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 20; }
+
+}

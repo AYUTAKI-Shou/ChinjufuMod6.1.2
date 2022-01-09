@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_candle_lit",
+	"textures": {
+		"particle": "chinjufumod:blocks/candle_red",
+		"sara": "chinjufumod:blocks/candle_red",
+		"abura": "chinjufumod:blocks/soyoil_still",
+		"akari": "chinjufumod:blocks/andon_shin",
+		"honou": "chinjufumod:blocks/honou_layer_0"
+	 }
+}

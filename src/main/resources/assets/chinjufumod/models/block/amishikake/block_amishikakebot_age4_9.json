@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_amishikakebot_9",
+	"textures": {
+		"particle": "chinjufumod:blocks/ami_a4",
+		"side_c": "chinjufumod:blocks/ami_c4",
+		"bot": "chinjufumod:blocks/ami_bot9"
+	}
+}

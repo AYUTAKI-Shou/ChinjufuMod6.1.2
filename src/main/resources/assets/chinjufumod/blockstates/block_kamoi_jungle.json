@@ -1,0 +1,23 @@
+{
+	"variants": {
+	"facing=north,stage=1": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_1n" },
+	"facing=south,stage=1": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_1s" },
+	"facing=west,stage=1": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_1w" },
+	"facing=east,stage=1": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_1e" },
+
+		"facing=north,stage=2": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_2n" },
+		"facing=south,stage=2": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_2s" },
+		"facing=west,stage=2": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_2w" },
+		"facing=east,stage=2": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_2e" },
+
+	"facing=north,stage=3": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_3n" },
+	"facing=south,stage=3": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_3s" },
+	"facing=west,stage=3": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_3w" },
+	"facing=east,stage=3": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_3e" },
+
+		"facing=north,stage=4": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_4n" },
+		"facing=south,stage=4": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_4s" },
+		"facing=west,stage=4": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_4w" },
+		"facing=east,stage=4": { "model": "chinjufumod:block/kamoi/block_kamoi_jun_4e" }
+	}
+}

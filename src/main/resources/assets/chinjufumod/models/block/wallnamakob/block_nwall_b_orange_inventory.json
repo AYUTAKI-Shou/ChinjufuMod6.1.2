@@ -1,0 +1,6 @@
+{
+	"parent": "chinjufumod:block/base/base_wall_inventory",
+	"textures": {
+		"wall": "chinjufumod:blocks/namakowall_b_orange"
+	}
+}

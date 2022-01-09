@@ -1,0 +1,33 @@
+{
+	"variants": {
+		"facing=north,stage=1,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr1", "y": 180 },
+		"facing=south,stage=1,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr1" },
+		"facing=west,stage=1,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr1", "y": 90 },
+		"facing=east,stage=1,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr1", "y": 270 },
+
+		"facing=north,stage=2,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr2", "y": 180 },
+		"facing=south,stage=2,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr2" },
+		"facing=west,stage=2,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr2", "y": 90 },
+		"facing=east,stage=2,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr2", "y": 270 },
+
+		"facing=north,stage=3,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr3", "y": 180 },
+		"facing=south,stage=3,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr3" },
+		"facing=west,stage=3,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr3", "y": 90 },
+		"facing=east,stage=3,which=false": { "model": "chinjufumod:block/amado/block_tobukuros_wr3", "y": 270 },
+
+			"facing=north,stage=1,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl1", "y": 180 },
+			"facing=south,stage=1,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl1" },
+			"facing=west,stage=1,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl1", "y": 90 },
+			"facing=east,stage=1,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl1", "y": 270 },
+
+			"facing=north,stage=2,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl2", "y": 180 },
+			"facing=south,stage=2,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl2" },
+			"facing=west,stage=2,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl2", "y": 90 },
+			"facing=east,stage=2,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl2", "y": 270 },
+
+			"facing=north,stage=3,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl3", "y": 180 },
+			"facing=south,stage=3,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl3" },
+			"facing=west,stage=3,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl3", "y": 90 },
+			"facing=east,stage=3,which=true": { "model": "chinjufumod:block/amado/block_tobukuros_wl3", "y": 270 }
+	}
+}

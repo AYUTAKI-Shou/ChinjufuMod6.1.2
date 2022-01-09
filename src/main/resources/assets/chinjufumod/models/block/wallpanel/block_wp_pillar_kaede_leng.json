@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_wallpanel_leng",
+	"textures": {
+		"particle": "chinjufumod:blocks/pillar_kaede_side",
+		"front": "chinjufumod:blocks/pillar_kaede_side",
+		"back": "chinjufumod:blocks/pillar_kaede_side",
+		"side": "chinjufumod:blocks/pillar_kaede_side"
+	}
+}

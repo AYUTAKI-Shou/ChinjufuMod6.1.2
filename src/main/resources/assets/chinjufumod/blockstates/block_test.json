@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"layers=1": { "model": "chinjufumod:block/food/block_food_sushioke_kara1" },
+		"layers=2": { "model": "chinjufumod:block/food/block_food_sushioke_kara2" },
+		"layers=3": { "model": "chinjufumod:block/food/block_food_sushioke_kara3" },
+		"layers=4": { "model": "chinjufumod:block/food/block_food_sushioke_kara4" },
+		"layers=5": { "model": "chinjufumod:block/food/block_food_sushioke_kara5" },
+		"layers=6": { "model": "chinjufumod:block/food/block_food_sushioke_kara6" }
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"variants": {
+	"facing=north,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun1n" },
+	"facing=south,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun1s" },
+	"facing=west,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun1w" },
+	"facing=east,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun1e" },
+
+		"facing=north,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun2n" },
+		"facing=south,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun2s" },
+		"facing=west,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun2w" },
+		"facing=east,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun2e" },
+
+	"facing=north,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun3n" },
+	"facing=south,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun3s" },
+	"facing=west,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun3w" },
+	"facing=east,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun3e" },
+
+		"facing=north,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun4n" },
+		"facing=south,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun4s" },
+		"facing=west,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun4w" },
+		"facing=east,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_bir_jun4e" }
+	}
+}

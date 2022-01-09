@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_cafechair",
+	"textures": {
+		"particle": "chinjufumod:blocks/cc_lightb",
+		"leg": "chinjufumod:blocks/muku_birch",
+		"bottom": "chinjufumod:blocks/muku_birch",
+		"top": "chinjufumod:blocks/cc_lightb",
+		"side": "chinjufumod:blocks/cc_side_lightb"
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"parent": "chinjufumod:block/base/base_wall_side",
+	"textures": {
+		"wall": "chinjufumod:blocks/dirtwall_cr"
+	}
+}

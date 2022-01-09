@@ -1,0 +1,7 @@
+{
+	"parent": "chinjufumod:block/base/base_kawarawall_long",
+	"textures": {
+		"particle": "chinjufumod:blocks/kawara_pink",
+		"wall": "chinjufumod:blocks/kawara_pink"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_sofa_cloth_right",
+	"textures": {
+		"particle": "chinjufumod:blocks/sofa_purple",
+		"leg": "chinjufumod:blocks/muku_spruce",
+		"side": "chinjufumod:blocks/sofa_purple",
+		"top": "chinjufumod:blocks/sofa_purple",
+		"back": "chinjufumod:blocks/sofa_purple"
+	}
+}

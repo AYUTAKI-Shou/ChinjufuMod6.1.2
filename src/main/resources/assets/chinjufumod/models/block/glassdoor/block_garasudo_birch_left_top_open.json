@@ -1,0 +1,11 @@
+{
+	"parent": "chinjufumod:block/base/base_garasudo_left_top_open",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_birch",
+		"ji": "minecraft:block/glass",
+		"ita": "minecraft:block/birch_planks",
+		"waku": "chinjufumod:blocks/muku_birch",
+		"totte": "chinjufumod:blocks/muku_bigoak",
+		"rail": "chinjufumod:blocks/muku_birch"
+	}
+}

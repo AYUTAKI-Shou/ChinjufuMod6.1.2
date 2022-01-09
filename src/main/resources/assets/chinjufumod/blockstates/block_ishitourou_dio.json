@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"lit=false": { "model": "chinjufumod:block/ishitourou/block_ishitourou_dio" },
+		"lit=true": { "model": "chinjufumod:block/ishitourou/lit_ishitourou_dio" }
+	}
+}

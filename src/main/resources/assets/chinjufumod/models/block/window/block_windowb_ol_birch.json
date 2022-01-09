@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_windowb_openleft",
+	"textures": {
+		"particle": "chinjufumod:blocks/windowb_birch",
+		"front": "chinjufumod:blocks/windowb_birch",
+		"side": "chinjufumod:blocks/muku_birch",
+		"totte": "chinjufumod:blocks/windowb_oak",
+		"glass": "minecraft:block/glass"
+	}
+}

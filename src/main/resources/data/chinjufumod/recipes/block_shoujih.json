@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_shoujih",
+
+	"pattern": [
+		"XX"
+	],
+
+	"key": {
+		"X": { "item": "chinjufumod:block_shouji" }
+	},
+
+	"result": { "item": "chinjufumod:block_shoujih", "count": 4 }
+}

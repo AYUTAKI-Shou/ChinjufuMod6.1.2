@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_uchiwa",
+	"textures": {
+		"particle": "chinjufumod:blocks/uchiwa_orange",
+		"uchiwa": "chinjufumod:blocks/uchiwa_orange",
+		"uchiwa_re": "chinjufumod:blocks/uchiwa_re"
+	}
+}

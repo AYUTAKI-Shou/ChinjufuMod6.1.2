@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_kit2_winejuku4",
+	"textures": {
+		"particle": "chinjufumod:blocks/muku_oak",
+		"tana": "chinjufumod:blocks/muku_oak",
+		"side": "chinjufumod:blocks/bottle_meadjuku_1",
+		"top": "chinjufumod:blocks/bottle_mead_top",
+		"label": "chinjufumod:blocks/bottle_label_mead"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_wallpanel_wide",
+	"textures": {
+		"particle": "chinjufumod:blocks/dirtwall_cr",
+		"front": "chinjufumod:blocks/dirtwall_cr",
+		"back": "chinjufumod:blocks/dirtwall_cr",
+		"side": "chinjufumod:blocks/dirtwall_cr"
+	}
+}

@@ -1,0 +1,8 @@
+{
+	"parent": "block/slab_top",
+	"textures": {
+		"bottom": "chinjufumod:blocks/plaster_cr_cyan",
+		"top": "chinjufumod:blocks/plaster_cr_cyan",
+		"side": "chinjufumod:blocks/plaster_cr_cyan"
+	}
+}

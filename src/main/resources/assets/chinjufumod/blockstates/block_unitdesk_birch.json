@@ -1,0 +1,37 @@
+{
+"variants": {
+	"east=true,north=true,south=false,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b", "y": 270,"uvlock": true},
+	"east=false,north=true,south=false,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b", "y": 180,"uvlock": true},
+	"east=true,north=false,south=true,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b","uvlock": true},
+	"east=false,north=false,south=true,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b", "y": 90,"uvlock": true },
+	"east=false,north=true,south=false,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b", "y": 270,"uvlock": true },
+	"east=true,north=false,south=false,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b","uvlock": true },
+	"east=false,north=false,south=false,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b", "y": 180,"uvlock": true },
+	"east=false,north=false,south=true,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b", "y": 90,"uvlock": true },
+	"east=false,north=false,south=false,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cen_b","uvlock": true },
+	"east=false,north=true,south=true,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "y": 90,"uvlock": true },
+	"east=true,north=false,south=false,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b","uvlock": true },
+	"east=false,north=true,south=true,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "y": 90,"uvlock": true },
+	"east=true,north=true,south=true,west=false,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "y": 90,"uvlock": true },
+	"east=true,north=true,south=false,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b","uvlock": true },
+	"east=true,north=false,south=true,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "uvlock": true },
+	"east=true,north=true,south=true,west=true,which=false": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non2_b","uvlock": true },
+
+	"east=true,north=true,south=false,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b", "y": 270,"uvlock": true},
+	"east=false,north=true,south=false,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b", "y": 180,"uvlock": true},
+	"east=true,north=false,south=true,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b","uvlock": true},
+	"east=false,north=false,south=true,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cor_b", "y": 90,"uvlock": true },
+	"east=false,north=true,south=false,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b", "y": 270,"uvlock": true },
+	"east=true,north=false,south=false,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b","uvlock": true },
+	"east=false,north=false,south=false,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b", "y": 180,"uvlock": true },
+	"east=false,north=false,south=true,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_end_b", "y": 90,"uvlock": true },
+	"east=false,north=false,south=false,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_cen_b","uvlock": true },
+	"east=false,north=true,south=true,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "y": 90,"uvlock": true },
+	"east=true,north=false,south=false,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b","uvlock": true },
+	"east=false,north=true,south=true,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "y": 90,"uvlock": true },
+	"east=true,north=true,south=true,west=false,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "y": 90,"uvlock": true },
+	"east=true,north=true,south=false,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b","uvlock": true },
+	"east=true,north=false,south=true,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non_b", "uvlock": true },
+	"east=true,north=true,south=true,west=true,which=true": { "model": "chinjufumod:block/unitdesk/block_unitdesk_non2_b","uvlock": true }
+	}
+}

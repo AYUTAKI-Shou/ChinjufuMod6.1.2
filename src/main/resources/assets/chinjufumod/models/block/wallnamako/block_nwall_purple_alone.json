@@ -1,0 +1,7 @@
+{
+	"parent": "chinjufumod:block/base/base_namakowall_alone",
+	"textures": {
+		"wall": "chinjufumod:blocks/namakowall_purple",
+		"kado": "chinjufumod:blocks/namakokado_purple"
+	}
+}

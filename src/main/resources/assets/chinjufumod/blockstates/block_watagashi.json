@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"facing=up": { "model": "chinjufumod:block/season/block_watagashi" },
+		"facing=down": { "model": "chinjufumod:block/season/block_watagashi2" },
+		"facing=north": { "model": "chinjufumod:block/season/block_watagashi3", "y": 180 },
+		"facing=south": { "model": "chinjufumod:block/season/block_watagashi3" },
+		"facing=west": { "model": "chinjufumod:block/season/block_watagashi3", "y": 90 },
+		"facing=east": { "model": "chinjufumod:block/season/block_watagashi3", "y": 270 }
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"age=0": { "model": "chinjufumod:block/crop/block_vege_riced_0" },
+		"age=1": { "model": "chinjufumod:block/crop/block_vege_riced_1" },
+		"age=2": { "model": "chinjufumod:block/crop/block_vege_riced_2" },
+		"age=3": { "model": "chinjufumod:block/crop/block_vege_riced_3" },
+		"age=4": { "model": "chinjufumod:block/crop/block_vege_riced_4" },
+		"age=5": { "model": "chinjufumod:block/crop/block_vege_riced_5" },
+		"age=6": { "model": "chinjufumod:block/crop/block_vege_riced_6" },
+		"age=7": { "model": "chinjufumod:block/crop/block_vege_riced_7" },
+		"age=8": { "model": "chinjufumod:block/crop/block_vege_riced_8" }
+	}
+}

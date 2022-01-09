@@ -1,0 +1,8 @@
+{
+	"parent": "chinjufumod:block/base/base_unitdesk_none",
+	"textures": {
+		"particle":"chinjufumod:blocks/planks_ichoh",
+		"leg": "chinjufumod:blocks/planks_ichoh",
+		"top": "chinjufumod:blocks/planks_ichoh"
+	}
+}

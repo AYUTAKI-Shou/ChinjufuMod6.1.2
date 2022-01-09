@@ -1,0 +1,10 @@
+{
+	"parent": "chinjufumod:block/base/base_windowtall_right_top_open",
+	"textures": {
+		"particle": "chinjufumod:blocks/window_top_sakura",
+		"front": "chinjufumod:blocks/window_top_sakura",
+		"side": "chinjufumod:blocks/muku_sakura",
+		"totte": "chinjufumod:blocks/window_top_oak",
+		"glass": "minecraft:block/glass"
+	}
+}

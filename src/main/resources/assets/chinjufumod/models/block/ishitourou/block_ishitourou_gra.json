@@ -1,0 +1,7 @@
+{
+	"parent": "chinjufumod:block/base/base_ishitourou",
+	"textures": {
+ 		"particle": "minecraft:block/polished_granite",
+ 		"ishi": "minecraft:block/polished_granite"
+	}
+}

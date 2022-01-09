@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_taru_eu",
+	"textures": {
+		"particle": "chinjufumod:blocks/barrel_side_choco_1",
+		"front" : "chinjufumod:blocks/barrel_front_choco_1",
+		"side": "chinjufumod:blocks/barrel_side_choco_1",
+		"inside": "chinjufumod:blocks/barrel_inside_choco_1"
+	}
+}

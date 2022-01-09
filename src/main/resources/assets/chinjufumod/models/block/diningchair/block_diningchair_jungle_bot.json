@@ -1,0 +1,9 @@
+{
+	"parent": "chinjufumod:block/base/base_diningchair_bot",
+	"textures": {
+		"particle": "minecraft:block/jungle_planks",
+		"leg": "chinjufumod:blocks/muku_jungle",
+		"side": "minecraft:block/jungle_planks",
+		"top": "minecraft:block/jungle_planks"
+		}
+}
