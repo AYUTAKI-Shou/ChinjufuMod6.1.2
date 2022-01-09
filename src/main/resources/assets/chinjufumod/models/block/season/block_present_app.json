@@ -4,6 +4,6 @@
 		"particle": "chinjufumod:blocks/wrapping_white",
 		"hako": "chinjufumod:blocks/wrapping_white",
 		"ribbon": "chinjufumod:blocks/ribbon_red",
-		"nakami": "minecraft:item/apple"
+		"nakami": "minecraft:items/apple"
 	}
 }

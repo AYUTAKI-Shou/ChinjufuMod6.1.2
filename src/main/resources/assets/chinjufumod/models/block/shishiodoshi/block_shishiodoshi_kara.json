@@ -4,7 +4,7 @@
 		"particle": "chinjufumod:blocks/shishiodoshi",
 		"take": "chinjufumod:blocks/shishiodoshi",
 		"ki": "chinjufumod:blocks/muku_oak",
-		"ishi": "minecraft:block/stone"
+		"ishi": "minecraft:blocks/stone"
 	},
 	"elements": [
 		{

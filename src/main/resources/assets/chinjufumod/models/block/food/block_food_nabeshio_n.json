@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_usuki",
-		"mizu": "minecraft:block/water_still",
+		"mizu": "chinjufumod:blocks/water_still",
 		"nabe": "chinjufumod:blocks/dish_usuki"
 	},
 	"elements": [
@@ -11,7 +11,7 @@
 			"from": [ 4, 2.5, 4 ],
 			"to": [ 12, 3.3, 12 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1 }
+				"up" : { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
 

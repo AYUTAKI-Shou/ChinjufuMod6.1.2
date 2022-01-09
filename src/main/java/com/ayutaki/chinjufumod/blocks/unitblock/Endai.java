@@ -1,133 +1,183 @@
 package com.ayutaki.chinjufumod.blocks.unitblock;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.registry.Items_Teatime;
+import com.ayutaki.chinjufumod.registry.Items_Wadeco;
+import com.ayutaki.chinjufumod.registry.Unit_Blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Endai extends BaseUnitBlock {
+public class Endai extends Block {
 
-	/* Collision */
-	protected static final VoxelShape TTTT = Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	public static final String ID = "block_mendai";
 
-	protected static final VoxelShape FFFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 1.0D, 15.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
+	/* Property */
+	public static final PropertyBool BACK = PropertyBool.create("back");
+	public static final PropertyBool FORWARD = PropertyBool.create("forward");
+	public static final PropertyBool LEFT = PropertyBool.create("left");
+	public static final PropertyBool RIGHT = PropertyBool.create("right");
 
-	protected static final VoxelShape TTFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 0.0D, 16.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
-	protected static final VoxelShape FTFT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 15.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
-	protected static final VoxelShape TFTF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 1.0D, 16.0D, 15.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
-	protected static final VoxelShape FFTT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 13.0D, 1.0D, 15.0D, 15.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
+	/** 0=縁台、1=縁台(赤)、2=ティーテーブル **/
+	public static final PropertyInteger STAGE_0_2 = PropertyInteger.create("stage", 0, 2);
 
-	protected static final VoxelShape FTFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 0.0D, 15.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
-	protected static final VoxelShape FFTF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 1.0D, 15.0D, 15.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D));
-	protected static final VoxelShape TFFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 1.0D, 16.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 3.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 13.0D, 3.0D, 13.0D, 15.0D));
-	protected static final VoxelShape FFFT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 13.0D, 1.0D, 15.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 1.0D, 15.0D, 13.0D, 3.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 15.0D, 13.0D, 15.0D));
+	public Endai() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	protected static final VoxelShape FTTF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(1.0D, 13.0D, 0.0D, 15.0D, 15.0D, 16.0D));
-	protected static final VoxelShape TFFT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 13.0D, 1.0D, 16.0D, 15.0D, 15.0D));
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 
-	public Endai(Properties properties) {
-		super(properties);
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(BACK, false)
+				.withProperty(FORWARD, false)
+				.withProperty(LEFT, false)
+				.withProperty(RIGHT, false)
+				.withProperty(STAGE_0_2, Integer.valueOf(0)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-		
-		/** Hand is empty. **/
+		int i = ((Integer)state.getValue(STAGE_0_2)).intValue();
+
 		if (itemstack.isEmpty()) {
 			if (playerIn.isSneaking()) {
 				CMEvents.soundWoodPlace(worldIn, pos);
-				worldIn.setBlockState(pos, state.cycle(WHICH));
-				return ActionResultType.SUCCESS; }
-			
-			if (!playerIn.isSneaking()) {
-				CMEvents.textNotSneak(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
-		}
-		
-		return ActionResultType.PASS;
-	}
 	
-	/* Collisions for each property. */
+				if (i == 0) { worldIn.setBlockState(pos, Unit_Blocks.ENDAI_sub.getDefaultState()
+						.withProperty(Endai_sub.STAGE_0_2, Integer.valueOf(0))); }
+				if (i == 1) { worldIn.setBlockState(pos, Unit_Blocks.ENDAI_sub.getDefaultState()
+						.withProperty(Endai_sub.STAGE_0_2, Integer.valueOf(1))); }
+				if (i == 2) { worldIn.setBlockState(pos, Unit_Blocks.ENDAI_sub.getDefaultState()
+						.withProperty(Endai_sub.STAGE_0_2, Integer.valueOf(2))); } }
+			
+			if (!playerIn.isSneaking()) { CMEvents.textNotSneak(worldIn, pos, playerIn); }
+			
+			return true;
+		}
+		return false;
+	}
+
+	/* Data value */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STAGE_0_2, Integer.valueOf(meta));
+	}
 
-		boolean east = state.get(EAST).booleanValue();
-		boolean north = state.get(NORTH).booleanValue();
-		boolean south = state.get(SOUTH).booleanValue();
-		boolean west = state.get(WEST).booleanValue();
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer)state.getValue(STAGE_0_2)).intValue();
+	}
 
-		if (east == true && north == true && south == false && west == false) { return TTFF; }
-		if (east == false && north == true && south == false && west == true) { return FTFT; }
-		if (east == true && north == false && south == true && west == false) { return TFTF; }
-		if (east == false && north == false && south == true && west == true) { return FFTT; }
+	@Override
+	public boolean isSideSolid(IBlockState baseState, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		if (side == EnumFacing.UP) { return true; }
+		return false;
+	}
 
-		if (east == false && north == true && south == false && west == false) { return FTFF; }
-		if (east == true && north == false && south == false && west == false) { return TFFF; }
-		if (east == false && north == false && south == false && west == true) { return FFFT; }
-		if (east == false && north == false && south == true && west == false) { return FFTF; }
-		if (east == false && north == true && south == true && west == false) { return FTTF; }
-		if (east == true && north == false && south == false && west == true) { return TFFT; }
+	/* 隣接ブロック */
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 
-		if (east == false && north == true && south == true && west == true) { return FTTF; }
-		if (east == true && north == true && south == true && west == false) { return FTTF; }
-		if (east == true && north == true && south == false && west == true) { return TFFT; }
-		if (east == true && north == false && south == true && west == true) { return TFFT; }
-		if (east == true && north == true && south == true && west == true) { return TTTT; }
+		boolean back = worldIn.getBlockState(pos.south()).getBlock() == this;
+		boolean forward = worldIn.getBlockState(pos.north()).getBlock() == this;
+		boolean left = worldIn.getBlockState(pos.west()).getBlock() == this;
+		boolean right = worldIn.getBlockState(pos.east()).getBlock() == this;
+		return state.withProperty(BACK, back)
+				.withProperty(FORWARD, forward)
+				.withProperty(LEFT, left)
+				.withProperty(RIGHT, right);
+	}
 
-		return FFFF;
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { BACK, FORWARD, LEFT, RIGHT, STAGE_0_2 });
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return true;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		/** 0=縁台、1=縁台(赤)、2=ティーテーブル **/
+		int i = ((Integer)state.getValue(STAGE_0_2)).intValue();
+
+		if (i == 0) { stack.add(new ItemStack(Items_Wadeco.ENDAI, 1, 0)); }
+		if (i == 1) { stack.add(new ItemStack(Items_Wadeco.ENDAI, 1, 1)); }
+		if (i == 2) { stack.add(new ItemStack(Items_Teatime.TEATABLE, 1, 0)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		/** 0=縁台、1=縁台(赤)、2=ティーテーブル **/
+		int i = ((Integer)state.getValue(STAGE_0_2)).intValue();
+
+		if (i == 1) { return new ItemStack(Items_Wadeco.ENDAI, 1, 1); }
+		if (i == 2) { return new ItemStack(Items_Teatime.TEATABLE); }
+		return new ItemStack(Items_Wadeco.ENDAI, 1, 0);
 	}
 
 }

@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_stamp",
+
+	"pattern": [
+		"X"
+	],
+
+	"key": {
+		"X": [ { "item": "chinjufumod:item_admiralstamp", "data": 32767 },
+					{ "item": "chinjufumod:item_admiralstamp_b", "data": 32767 } ]
+	},
+
+	"result": { "item": "chinjufumod:block_stamp_block", "data": 0, "count": 1 }
+}

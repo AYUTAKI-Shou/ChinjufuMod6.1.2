@@ -1,6 +1,6 @@
 {
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "minecraft:item/wooden_sword"
+		"layer0": "minecraft:items/wood_sword"
 	}
 }

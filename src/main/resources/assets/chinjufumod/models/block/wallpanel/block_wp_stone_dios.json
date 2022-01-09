@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/polished_diorite",
-		"front": "minecraft:block/polished_diorite",
-		"back": "minecraft:block/polished_diorite",
-		"side": "minecraft:block/polished_diorite"
+		"particle": "blocks/stone_diorite_smooth",
+		"front": "blocks/stone_diorite_smooth",
+		"back": "blocks/stone_diorite_smooth",
+		"side": "blocks/stone_diorite_smooth"
 	}
 }

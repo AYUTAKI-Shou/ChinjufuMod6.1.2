@@ -3,6 +3,6 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/pillar_birch_side",
 		"top": "chinjufumod:blocks/pillar_birch_top",
-		"side": "minecraft:block/birch_planks"
+		"side": "minecraft:blocks/planks_birch"
 	}
 }

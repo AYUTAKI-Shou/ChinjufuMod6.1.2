@@ -1,6 +1,6 @@
 {
 	"variants": {
-		"powered=false": { "model": "chinjufumod:block/wooden/block_plate_ichoh" },
-		"powered=true": { "model": "chinjufumod:block/wooden/block_plate_ichoh_down" }
+		"powered=false": { "model": "chinjufumod:wooden/block_plate_ichoh" },
+		"powered=true": { "model": "chinjufumod:wooden/block_plate_ichoh_down" }
 	}
 }

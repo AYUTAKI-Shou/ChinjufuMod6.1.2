@@ -1,21 +1,12 @@
 {
 	"variants": {
-		"age=0,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_0", "y": 270 },
-		"age=1,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_1", "y": 270 },
-		"age=2,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_2", "y": 270 },
-		"age=3,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_3", "y": 270 },
-		"age=4,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_4", "y": 270 },
-		"age=5,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_5", "y": 270 },
-		"age=6,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_6", "y": 270 },
-		"age=7,half=lower": { "model": "chinjufumod:block/crop/block_vege_corn_7", "y": 270 },
-
-		"age=0,half=upper": { "model": "minecraft:block/air" },
-		"age=1,half=upper": { "model": "minecraft:block/air" },
-		"age=2,half=upper": { "model": "minecraft:block/air" },
-		"age=3,half=upper": { "model": "minecraft:block/air" },
-		"age=4,half=upper": { "model": "chinjufumod:block/crop/block_vege_corntop_4", "y": 270 },
-		"age=5,half=upper": { "model": "chinjufumod:block/crop/block_vege_corntop_5", "y": 270 },
-		"age=6,half=upper": { "model": "chinjufumod:block/crop/block_vege_corntop_6", "y": 270 },
-		"age=7,half=upper": { "model": "chinjufumod:block/crop/block_vege_corntop_7", "y": 270 }
+		"age=0": { "model": "chinjufumod:crop/block_vege_corn_0", "y": 270 },
+		"age=1": { "model": "chinjufumod:crop/block_vege_corn_1", "y": 270 },
+		"age=2": { "model": "chinjufumod:crop/block_vege_corn_2", "y": 270 },
+		"age=3": { "model": "chinjufumod:crop/block_vege_corn_3", "y": 270 },
+		"age=4": { "model": "chinjufumod:crop/block_vege_corn_4", "y": 270 },
+		"age=5": { "model": "chinjufumod:crop/block_vege_corn_5", "y": 270 },
+		"age=6": { "model": "chinjufumod:crop/block_vege_corn_6", "y": 270 },
+		"age=7": { "model": "chinjufumod:crop/block_vege_corn_7", "y": 270 }
 	}
 }

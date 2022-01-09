@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/obsidian",
-		"front": "minecraft:block/obsidian",
-		"back": "minecraft:block/obsidian",
-		"side": "minecraft:block/obsidian"
+		"particle": "blocks/obsidian",
+		"front": "blocks/obsidian",
+		"back": "blocks/obsidian",
+		"side": "blocks/obsidian"
 	}
 }

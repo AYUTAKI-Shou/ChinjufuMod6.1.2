@@ -1,158 +1,228 @@
 package com.ayutaki.chinjufumod;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ayutaki.chinjufumod.handler.AddBiomes_CM;
-import com.ayutaki.chinjufumod.handler.AnimalSpawnRules_CM;
+import com.ayutaki.chinjufumod.config.CMConfig_Core;
+import com.ayutaki.chinjufumod.entity.EntitySittableBlock;
+import com.ayutaki.chinjufumod.entity.Entity_AmmoKC;
+import com.ayutaki.chinjufumod.entity.Entity_AmmoMedium;
+import com.ayutaki.chinjufumod.entity.Entity_AmmoSmall;
+import com.ayutaki.chinjufumod.entity.ToamiEntity;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Gyorai61cm;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Gyorai61cm2;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Gyorai61cm3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Gyorai61cm4;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ju87;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ju87_2;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ju87_3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ju87_4;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ryusei;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ryusei2;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ryusei3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Ryusei4;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Swordfish;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Swordfish3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Swordfish4;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_TBF;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_TBF2;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_TBF3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_TBF4;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Tenzan;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Tenzan2;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Tenzan3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Tenzan4;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Type97;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Type97_2;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Type97_3;
+import com.ayutaki.chinjufumod.entity.kansaiki.Entity_Type97_4;
 import com.ayutaki.chinjufumod.handler.Biomes_CM;
-import com.ayutaki.chinjufumod.handler.CompostableItems_CM;
-import com.ayutaki.chinjufumod.handler.EntityRender_CM;
-import com.ayutaki.chinjufumod.handler.EntityTypes_CM;
 import com.ayutaki.chinjufumod.handler.FlammableBlocks_CM;
-import com.ayutaki.chinjufumod.handler.ParticleTypes_CM;
-import com.ayutaki.chinjufumod.handler.RenderTypes_CM;
+import com.ayutaki.chinjufumod.handler.OreDictionary_CM;
+import com.ayutaki.chinjufumod.handler.SmeltingRecipe_CM;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
-import com.ayutaki.chinjufumod.handler.TileEntity_CM;
-import com.ayutaki.chinjufumod.handler.TintColors_CM;
-import com.ayutaki.chinjufumod.proxy.ClientProxy;
 import com.ayutaki.chinjufumod.proxy.CommonProxy;
-import com.ayutaki.chinjufumod.registry.Chair_Blocks;
-import com.ayutaki.chinjufumod.registry.ChinjufuModBlocks;
-import com.ayutaki.chinjufumod.registry.Crop_Blocks;
-import com.ayutaki.chinjufumod.registry.Dish_Blocks;
-import com.ayutaki.chinjufumod.registry.Furniture_Blocks;
-import com.ayutaki.chinjufumod.registry.Garden_Blocks;
-import com.ayutaki.chinjufumod.registry.Gate_Blocks;
-import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
-import com.ayutaki.chinjufumod.registry.Harbor_Blocks;
-import com.ayutaki.chinjufumod.registry.Items_Armor;
-import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
-import com.ayutaki.chinjufumod.registry.Items_Seasonal;
-import com.ayutaki.chinjufumod.registry.Items_Teatime;
-import com.ayutaki.chinjufumod.registry.Items_Wablock;
-import com.ayutaki.chinjufumod.registry.Items_Wadeco;
-import com.ayutaki.chinjufumod.registry.Items_WallPane;
-import com.ayutaki.chinjufumod.registry.Items_Weapon;
-import com.ayutaki.chinjufumod.registry.JPChair_Blocks;
-import com.ayutaki.chinjufumod.registry.JP_Blocks;
-import com.ayutaki.chinjufumod.registry.JPdeco_Blocks;
-import com.ayutaki.chinjufumod.registry.KamoiPlanks_Blocks;
-import com.ayutaki.chinjufumod.registry.KamoiPlaster_Blocks;
-import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
-import com.ayutaki.chinjufumod.registry.Pantry_Blocks;
-import com.ayutaki.chinjufumod.registry.Ranma_Blocks;
-import com.ayutaki.chinjufumod.registry.School_Blocks;
-import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
-import com.ayutaki.chinjufumod.registry.Slidedoor_Blocks;
-import com.ayutaki.chinjufumod.registry.Unit_Blocks;
-import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
-import com.ayutaki.chinjufumod.registry.Window_Blocks;
-import com.ayutaki.chinjufumod.registry.Wood_Blocks;
+import com.ayutaki.chinjufumod.registry.doors.Door_Blocks;
+import com.ayutaki.chinjufumod.registry.doors.Fusuma_Blocks;
+import com.ayutaki.chinjufumod.registry.doors.Garasudo_Blocks;
+import com.ayutaki.chinjufumod.registry.doors.Gate_Blocks;
+import com.ayutaki.chinjufumod.registry.doors.Shouji_Blocks;
+import com.ayutaki.chinjufumod.tileentity.TileEntityCStove;
+import com.ayutaki.chinjufumod.tileentity.TileEntityKitOven;
+import com.ayutaki.chinjufumod.tileentity.TileEntityKitOven_B;
+import com.ayutaki.chinjufumod.tileentity.TileEntityTansu;
 import com.ayutaki.chinjufumod.world.generate.CM_OreGen;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-/* The value here should match an entry in the META-INF/mods.toml file */
-@Mod(ChinjufuMod.MOD_ID)
+@Mod(modid = ChinjufuMod.MOD_ID, name = ChinjufuMod.MOD_NAME,
+		version = ChinjufuMod.MOD_VERSION, guiFactory = ChinjufuMod.GUI_FACTORY)
 public class ChinjufuMod {
 
+	/* 参照する値をここで管理 Manage referenced values here. */
 	public static final String MOD_ID = "chinjufumod";
+	public static final String MOD_NAME = "ChinjufuMod";
+	public static final String MOD_VERSION = "[1.12.2]6.1.2";
+	public static final String GUI_FACTORY = "com.ayutaki.chinjufumod.config.CMGuiFactory";
 
-	/* Directly reference a log4j logger. */
-	public static final Logger LOGGER = LogManager.getLogger();
-	@SuppressWarnings("deprecation")
-	public static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+	public static final String CLIENT_PROXY_CLASS = "com.ayutaki.chinjufumod.proxy.ClientProxy";
+	public static final String COMMON_PROXY_CLASS = "com.ayutaki.chinjufumod.proxy.CommonProxy";
 
-	public ChinjufuMod() {
 
-		/** Config **/
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config_CM.SPEC, MOD_ID + ".toml");
+	/* クラス(設計書)をインスタンス(製品)にする Change Class to Instance. */
+	@Instance
+	public static ChinjufuMod instance;
 
-		/** Register the method for modloading **/
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	/* プロキシの登録 Register Proxy. */
+	@SidedProxy(clientSide = ChinjufuMod.CLIENT_PROXY_CLASS, serverSide = ChinjufuMod.COMMON_PROXY_CLASS)
+	public static CommonProxy proxy;
 
-		EntityTypes_CM.ENTITY_TYPES.register(eventBus);
-		TileEntity_CM.TILE_ENTITIES.register(eventBus);
-		ParticleTypes_CM.PARTICLE_TYPES.register(eventBus);
-		SoundEvents_CM.SOUNDS.register(eventBus);
+	/* エラーログの出力 Output Error log. */
+	private static Logger logger;
 
-		/** register Blocks **/
-		Chair_Blocks.BLOCKS.register(eventBus);
-		ChinjufuModBlocks.BLOCKS.register(eventBus);
-		Crop_Blocks.BLOCKS.register(eventBus);
-		Dish_Blocks.BLOCKS.register(eventBus);
-		Furniture_Blocks.BLOCKS.register(eventBus);
-		Garden_Blocks.BLOCKS.register(eventBus);
-		Gate_Blocks.BLOCKS.register(eventBus);
-		Hakkou_Blocks.BLOCKS.register(eventBus);
-		Harbor_Blocks.BLOCKS.register(eventBus);
-		JPChair_Blocks.BLOCKS.register(eventBus);
-		JPdeco_Blocks.BLOCKS.register(eventBus);
-		JP_Blocks.BLOCKS.register(eventBus);
-		KamoiPlanks_Blocks.BLOCKS.register(eventBus);
-		KamoiPlaster_Blocks.BLOCKS.register(eventBus);
-		Kitchen_Blocks.BLOCKS.register(eventBus);
-		Pantry_Blocks.BLOCKS.register(eventBus);
-		Ranma_Blocks.BLOCKS.register(eventBus);
-		School_Blocks.BLOCKS.register(eventBus);
-		Seasonal_Blocks.BLOCKS.register(eventBus);
-		Slidedoor_Blocks.BLOCKS.register(eventBus);
-		Unit_Blocks.BLOCKS.register(eventBus);
-		WallPane_Blocks.BLOCKS.register(eventBus);
-		Window_Blocks.BLOCKS.register(eventBus);
-		Wood_Blocks.BLOCKS.register(eventBus);
 
-		/** register Items **/
-		Items_Chinjufu.ITEMS.register(eventBus);
-		Items_Teatime.ITEMS.register(eventBus);
-		Items_Seasonal.ITEMS.register(eventBus);
-		Items_Armor.ITEMS.register(eventBus);
-		Items_Weapon.ITEMS.register(eventBus);
-		Items_Wadeco.ITEMS.register(eventBus);
-		Items_Wablock.ITEMS.register(eventBus);
-		Items_WallPane.ITEMS.register(eventBus);
+	/* エンティティの登録、コンフィグ読込など Register Entity and Config. */
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
+		logger = event.getModLog();
 
-		/** register Biome **/
-		Biomes_CM.BIOMES.register(eventBus);
+		MinecraftForge.EVENT_BUS.register(new CMConfig_Core());
+		CMConfig_Core.init(event.getSuggestedConfigurationFile());
 
-		eventBus.addListener(this::setup);
-		eventBus.addListener(this::clientSetup);
+		proxy.preInit();
+		proxy.registerEntityRender();
 
-		MinecraftForge.EVENT_BUS.register(this);
+		/* EntityRegistry.registerModEntity(registryName,
+		 * 		entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates); */
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:mountable_block"),
+				EntitySittableBlock.class, "MountableBlock", 0, this, 80, 1, false);
+
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:ammunition_kc"),
+				Entity_AmmoKC.class, "ammunition_kc", 1, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:ammunition_medium"),
+				Entity_AmmoMedium.class, "ammunition_medium", 2, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:ammunition_small"),
+				Entity_AmmoSmall.class, "ammunition_small", 3, this, 64, 1, true);
+
+		/* 艦載機 */
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_type97kk"),
+				Entity_Type97.class, "type97kk", 4, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tenzan"),
+				Entity_Tenzan.class, "tenzan", 5, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ryusei"),
+				Entity_Ryusei.class, "ryusei", 6, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ju87"),
+				Entity_Ju87.class, "ju87", 7, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tbf"),
+				Entity_TBF.class, "tbf", 8, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_swordfish"),
+				Entity_Swordfish.class, "swordfish", 9, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_gyorai"),
+				Entity_Gyorai61cm.class, "gyorai", 14, this, 64, 1, true);
+		
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_type97kk"),
+				Entity_Type97_2.class, "type97kk2", 15, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tenzan"),
+				Entity_Tenzan2.class, "tenzan2", 16, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ryusei"),
+				Entity_Ryusei2.class, "ryusei2", 17, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ju87"),
+				Entity_Ju87_2.class, "ju87_2", 18, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tbf"),
+				Entity_TBF2.class, "tbf2", 19, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_swordfish"),
+				Entity_Swordfish.class, "swordfish2", 20, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_gyorai"),
+				Entity_Gyorai61cm2.class, "gyorai2", 21, this, 64, 1, true);
+		
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_type97kk"),
+				Entity_Type97_3.class, "type97kk3", 22, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tenzan"),
+				Entity_Tenzan3.class, "tenzan3", 23, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ryusei"),
+				Entity_Ryusei3.class, "ryusei3", 24, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ju87"),
+				Entity_Ju87_3.class, "ju87_3", 25, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tbf"),
+				Entity_TBF3.class, "tbf3", 26, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_swordfish"),
+				Entity_Swordfish3.class, "swordfish3", 27, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_gyorai"),
+				Entity_Gyorai61cm3.class, "gyorai3", 28, this, 64, 1, true);
+		
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_type97kk"),
+				Entity_Type97_4.class, "type97kk4", 29, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tenzan"),
+				Entity_Tenzan4.class, "tenzan4", 30, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ryusei"),
+				Entity_Ryusei4.class, "ryuse4i", 31, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_ju87"),
+				Entity_Ju87_4.class, "ju87_4", 32, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_tbf"),
+				Entity_TBF4.class, "tbf4", 33, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_kk_swordfish"),
+				Entity_Swordfish4.class, "swordfish4", 34, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_gyorai"),
+				Entity_Gyorai61cm4.class, "gyorai4", 35, this, 64, 1, true);
+		
+		EntityRegistry.registerModEntity(new ResourceLocation("chinjufumod:item_toami"),
+				ToamiEntity.class, "toami", 36, this, 64, 1, true);
+
+		/* 落葉 → パーティクルに変更 */
+
+		/* registerTileEntity(Class<? extends TileEntity> tileEntityClass, ResourceLocation key) */
+		GameRegistry.registerTileEntity(TileEntityCStove.class, new ResourceLocation("chinjufumod:cstove"));
+		GameRegistry.registerTileEntity(TileEntityKitOven.class, new ResourceLocation("chinjufumod:kitoven"));
+		GameRegistry.registerTileEntity(TileEntityKitOven_B.class, new ResourceLocation("chinjufumod:kitoven_b"));
+		GameRegistry.registerTileEntity(TileEntityTansu.class, new ResourceLocation("chinjufumod:tansu"));
+
+		/* 赤石が影響するブロック */
+		Door_Blocks.load(event);
+		Garasudo_Blocks.load(event);
+		Shouji_Blocks.load(event);
+		Fusuma_Blocks.load(event);
+		Gate_Blocks.load(event);
+
+		proxy.registerModels();
+
 	}
 
-	private void setup(final FMLCommonSetupEvent event) {
+	/* レシピ・鉱石などの追加 Register Recipe and Ore. */
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
-		/** add Biome **/
-		CM_OreGen.addOres();
-		AnimalSpawnRules_CM.replaceAnimalSpawnRegistrys();
-		AddBiomes_CM.addBiomes();
+		proxy.init();
 
-		/** etc **/
-		CompostableItems_CM.setup();
-		FlammableBlocks_CM.setup();
+		GameRegistry.registerWorldGenerator(new CM_OreGen(), 0);
+		OreDictionary_CM.registerOreDictionary();
+		SmeltingRecipe_CM.registerSmeltingRecipes();
+		SoundEvents_CM.registerSounds();
+		FlammableBlocks_CM.init();
 
-		/** ConfigScreen**/
-		PROXY.setup(event);
+		for (Biomes_CM.ModBiomeEntry biomeEntry : Biomes_CM.biomeEntryList) {
+			if (biomeEntry.getWeight() > 0) {
+				BiomeManager.addBiome(biomeEntry.getType(), biomeEntry.getEntry());
+				BiomeManager.addStrongholdBiome(biomeEntry.getBiome());
+			}
+		}
 	}
 
-	public void clientSetup(final FMLClientSetupEvent event) {
-
-		/** EntityRender **/
-		EntityRender_CM.register();
-		/** BlockRenderType, Tint **/
-		RenderTypes_CM.register();
-		TintColors_CM.registerBlockColors();
-		TintColors_CM.registerItemColors();
+	/* 他Modとの連携 Cooperation with other Mod. */
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		proxy.postInit();
 	}
 
 }

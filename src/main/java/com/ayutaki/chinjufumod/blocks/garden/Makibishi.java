@@ -1,168 +1,160 @@
 package com.ayutaki.chinjufumod.blocks.garden;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Wadeco;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.IWaterLoggable;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.GolemEntity;
-import net.minecraft.entity.passive.OcelotEntity;
-import net.minecraft.entity.passive.ParrotEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityGolem;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityParrot;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Makibishi extends FallingBlock implements IWaterLoggable {
+public class Makibishi extends BlockFalling {
 
-	/* Property */
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final String ID = "block_makibishi";
+	
+	public Makibishi() {
+		super(Material.WOOD);
+		setCreativeTab(ChinjufuModTabs.WADECO);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
-
-	public Makibishi(Block.Properties properties) {
-		super(properties);
-
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, Boolean.valueOf(false)));
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(1.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		CMEvents.soundTouchBlock(worldIn, pos);
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 	
-	/* Collisions for each property. */
+	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
 	}
 
-	/* Gives a value when placed. */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-		
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
-
-	/* Create Blockstate */
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(WATERLOGGED);
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
-	/* 採取適正ツール */
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
 
-	/* 上を歩くとダメージを受ける */
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+	/* 燃焼中に上を歩くとダメージを受ける */
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+
 		Random rand = new Random();
 		
-		if (entityIn instanceof LivingEntity) {
+		if (entityIn instanceof EntityLivingBase) {
 			/** ネコ、ヤマネコ、ニワトリ、オウム、ゴーレムを除外 **/
-			if (entityIn instanceof CatEntity || entityIn instanceof OcelotEntity || entityIn instanceof ParrotEntity ||
-					entityIn instanceof GolemEntity) { }
+			if (entityIn instanceof EntityOcelot || entityIn instanceof EntityParrot || entityIn instanceof EntityGolem) { }
 			
-			if (entityIn instanceof ChickenEntity && rand.nextInt(60) == 0) {
+			if (entityIn instanceof EntityChicken && rand.nextInt(60) == 0) { 
 				entityIn.attackEntityFrom(DamageSource.GENERIC, 0.5F); }
 			
-			if (!(entityIn instanceof CatEntity) && !(entityIn instanceof OcelotEntity) && !(entityIn instanceof ParrotEntity) &&
-					!(entityIn instanceof GolemEntity) && !(entityIn instanceof ChickenEntity)) {
+			if (!(entityIn instanceof EntityOcelot) && !(entityIn instanceof EntityParrot) && 
+					!(entityIn instanceof EntityGolem) && !(entityIn instanceof EntityChicken)) { 
 				entityIn.attackEntityFrom(DamageSource.GENERIC, 0.5F); } }
 		
-		if (!(entityIn instanceof LivingEntity)) { }
-	}
-	
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Wadeco.MAKIBISHI);
-	}
-	
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_makibishi")).applyTextStyle(TextFormatting.GRAY));
+		if (!(entityIn instanceof EntityLivingBase)) { }
+		
+		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
 	}
 
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Items_Wadeco.MAKIBISHI, 1, 0));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Wadeco.MAKIBISHI, 1, 0);
+	}
+
+	/* ToolTip*/
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_makibishi", meta));
+	}
+	
 }

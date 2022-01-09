@@ -1,167 +1,215 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.furnace.CStove_Top;
-import com.ayutaki.chinjufumod.blocks.furnace.Irori;
-import com.ayutaki.chinjufumod.blocks.furnace.Kitchen_Oven;
-import com.ayutaki.chinjufumod.blocks.furnace.Kitchen_Oven_B;
-import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cooktop;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage2_Face;
+import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
+import com.ayutaki.chinjufumod.registry.Furniture_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
-import com.ayutaki.chinjufumod.registry.School_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FurnaceBlock;
 import net.minecraft.block.SoundType;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Kettle_full extends BaseFood_Stage3Water {
+public class Kettle_full extends BaseStage2_Face {
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D);
+	/** 1=水、2=沸騰 **/
+	public static final String ID = "block_kettle_full";
 
-	protected static final VoxelShape AABB_3_BOX = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-	protected static final VoxelShape AABB_3_DOWN = Block.makeCuboidShape(5.0D, -8.0D, 5.0D, 11.0D, 8.0D, 11.0D);
+	public Kettle_full() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	public Kettle_full(Block.Properties properties) {
-		super(properties);
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
 	/* RightClick Action */
-
-	/* Collisions for each property. */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
-		int i = state.get(STAGE_1_3);
-
-		if (i == 3) { return flag? AABB_3_BOX : AABB_3_DOWN; }
-		return AABB_BOX;
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+		if (i == 1) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
-
-	/* TickRandom and Conditions for TickRandom. */
+	
+	/*湯気のエフェクト*/
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (isCooking(worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * worldIn.getRandom().nextInt(5)));
+	public void randomDisplayTick(IBlockState state, World worldIn, BlockPos pos, Random rand) {
+
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		World par1World = worldIn;
+		int par2 = x;
+		int par3 = y;
+		int par4 = z;
+		Random par5Random = rand;
+
+		/** 1=水、2=沸騰 **/
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (i == 2) {
+			if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.LIT_FURNACE || worldIn
+					.getBlockState(pos.down()).getBlock() == Furniture_Blocks.LIT_CSTOVE_top || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITSTOVE || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN_B || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_IRORI) {
+
+				for (int la = 0; la < 1; ++la) {
+					double d0 = (double) ((float) par2 + 0.5F) + (double) (par5Random.nextFloat() - 0.5F) * 0.01D;
+					double d1 = ((double) ((float) par3 + 0.5F) + (double) (par5Random.nextFloat() - 0.5F) * 0.01D) + 0.5D;
+					double d2 = (double) ((float) par4 + 0.5F) + (double) (par5Random.nextFloat() - 0.5F) * 0.01D;
+					double d3 = 0.12D;
+					double d4 = 0.17D;
+					par1World.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, d0 - d4 + 0.25, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+				}
+			}
+
+			if (rand.nextDouble() < 0.1D) {
+
+				if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.LIT_FURNACE || worldIn
+						.getBlockState(pos.down()).getBlock() == Furniture_Blocks.LIT_CSTOVE_top || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITSTOVE || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN_B || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_IRORI) {
+
+					worldIn.playSound(x, y, z, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 1.0F, false);
+				}
+			}
 		}
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
 
-	private boolean isCooking(IBlockReader worldIn, BlockPos pos) {
-		BlockState downstate = worldIn.getBlockState(pos.down());
-		Block downblock = downstate.getBlock();
-		return (downblock == Blocks.FURNACE && downstate.get(FurnaceBlock.LIT) == true) ||
-				(downblock == Kitchen_Blocks.KIT_OVEN && downstate.get(Kitchen_Oven.LIT) == true) ||
-				(downblock == Kitchen_Blocks.KIT_OVEN_B && downstate.get(Kitchen_Oven_B.LIT) == true) ||
-				(downblock == Kitchen_Blocks.IRORI && downstate.get(Irori.LIT) == true) ||
-				(downblock == Kitchen_Blocks.KIT_COOKTOP && downstate.get(Kit_Cooktop.STAGE_1_3) == 2) ||
-				(downblock == School_Blocks.CSTOVE_top && downstate.get(CStove_Top.LIT) == true);
+		if (i != 2) {
+			if (rand.nextDouble() < 0.1D) {
+
+				if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.LIT_FURNACE || worldIn
+						.getBlockState(pos.down()).getBlock() == Furniture_Blocks.LIT_CSTOVE_top || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITSTOVE || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN_B || worldIn
+						.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_IRORI) {
+
+					worldIn.playSound(x, y, z, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 1.0F, false);
+				}
+			}
+		}
 	}
 
 	@Override
-	public int tickRate(IWorldReader world) {
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		/** 1=水、2=沸騰 **/
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (i == 1) {
+			if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.LIT_FURNACE || worldIn
+					.getBlockState(pos.down()).getBlock() == Furniture_Blocks.LIT_CSTOVE_top || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITSTOVE || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_KITOVEN_B || worldIn
+					.getBlockState(pos.down()).getBlock() == Kitchen_Blocks.LIT_IRORI) {
+
+			worldIn.setBlockState(pos, this.getDefaultState()
+					.withProperty(H_FACING, state.getValue(H_FACING))
+					.withProperty(BaseStage2_Face.STAGE_1_2, Integer.valueOf(2)));
+			}
+		}
+
+		if (i != 1) { }
+
+		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		/** 1000tick = Minecraft内 1h = リアル時間 50秒 **/
 		return 1000;
 	}
 
+	/* Collision */
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * worldIn.rand.nextInt(5)));
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.4375D, 0.75D);
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int i = state.get(STAGE_1_3);
-
-		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
-
-		if (i == 1 && isCooking(worldIn, pos) && !state.get(WATERLOGGED)) {
-
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * rand.nextInt(5)));
-			worldIn.setBlockState(pos, state.with(STAGE_1_3, Integer.valueOf(2)));
-
-			/** Get EXP. **/
-			worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
-		}
-
-		else { }
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 
-	/* 効果音・パーティクル */
-	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
-
-		int i = state.get(STAGE_1_3);
-
-		double d0 = (double)pos.getX() + 0.5D;
-		double d1 = (double)pos.getY() + 0.8D;
-		double d2 = (double)pos.getZ() + 0.5D;
-		double d4 = rand.nextDouble() * 0.6D - 0.3D;
-		double d6 = rand.nextDouble() * 6.0D / 16.0D;
-
-		if (isCooking(worldIn, pos)) {
-
-			if (rand.nextDouble() < 0.1D) {
-				if (i ==1) {
-					worldIn.playSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
-
-				if (i ==2) {
-					worldIn.playSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.3F, 0.7F, false); }
-			}
-
-			if (i ==2 && rand.nextDouble() < 0.25D) {
-				/** 種類, 座標x, y, z, 速度x, y, z **/
-				worldIn.addParticle(ParticleTypes.POOF, d0 + d4, d1 + d6, d2 + d4, 0.0D, 0.0D, 0.0D);
-			}
-		}
-	}
-
-		/* Play Sound */
 	@Override
-	public SoundType getSoundType(BlockState state) {
-		int i = state.get(STAGE_1_3);
-		if (i == 3) { return SoundType.STONE; }
-		 return this.soundType;
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 
-
-	/* Clone Item in Creative. */
+	/*Drop Item and Clone Item.*/
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.get(STAGE_1_3);
-		return (i != 3)? new ItemStack(Items_Teatime.KETTLE_full) : new ItemStack(Items_Teatime.SAKEBOTTLE);
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (i == 1) { stack.add(new ItemStack(Items_Teatime.KETTLE_full, 1, 0)); }
+		if (i != 1) { stack.add(new ItemStack(Items_Teatime.Item_YAKAN_boil, 1, 0)); }
+		return stack;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kettle")).applyTextStyle(TextFormatting.GRAY));
+	/* 経験値ドロップ */
+	@Override
+	public int getExpDrop(IBlockState state, net.minecraft.world.IBlockAccess worldIn, BlockPos pos, int fortune) {
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+		if (i != 1) { return 1; }
+		return 0;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.KETTLE_full, 1, 0);
+	}
+
+	/* フェンスとの接続拒否 */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 }

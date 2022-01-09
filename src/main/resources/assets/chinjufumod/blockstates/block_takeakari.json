@@ -1,13 +1,8 @@
 {
 	"variants": {
-		"facing=north,lit=false": { "model": "chinjufumod:block/lamp/block_takeakari", "y": 180 },
-		"facing=south,lit=false": { "model": "chinjufumod:block/lamp/block_takeakari", "y": 0 },
-		"facing=west,lit=false": { "model": "chinjufumod:block/lamp/block_takeakari", "y": 90 },
-		"facing=east,lit=false": { "model": "chinjufumod:block/lamp/block_takeakari", "y": 270 },
-
-		"facing=north,lit=true": { "model": "chinjufumod:block/lamp/lit_takeakari", "y": 180 },
-		"facing=south,lit=true": { "model": "chinjufumod:block/lamp/lit_takeakari", "y": 0 },
-		"facing=west,lit=true": { "model": "chinjufumod:block/lamp/lit_takeakari", "y": 90 },
-		"facing=east,lit=true": { "model": "chinjufumod:block/lamp/lit_takeakari", "y": 270 }
+		"facing=north": { "model": "chinjufumod:lamp/block_takeakari", "y": 180 },
+		"facing=south": { "model": "chinjufumod:lamp/block_takeakari", "y": 0 },
+		"facing=west": { "model": "chinjufumod:lamp/block_takeakari", "y": 90 },
+		"facing=east": { "model": "chinjufumod:lamp/block_takeakari", "y": 270 }
 	}
 }

@@ -1,76 +1,154 @@
 package com.ayutaki.chinjufumod.blocks.kamoislab;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage4_Face;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
+import com.ayutaki.chinjufumod.registry.Items_Wablock;
 import com.ayutaki.chinjufumod.registry.Items_WallPane;
-import com.ayutaki.chinjufumod.registry.KamoiPlaster_Blocks;
+import com.ayutaki.chinjufumod.registry.KamoiShikkui_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 
-public class Kamoi_DirtWall extends BaseStage4_FaceWater {
+public class Kamoi_DirtWall extends BaseStage4_Face {
 
-	public Kamoi_DirtWall(Block.Properties properties) {
-		super(properties);
+	public static final PropertyDirection H_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyInteger STAGE_1_4 = PropertyInteger.create("stage", 1, 4);
+
+	public Kamoi_DirtWall(Material material, String unlocalizedName) {
+		super(material);
+		setUnlocalizedName(unlocalizedName);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, unlocalizedName));
+
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(10.0F);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		
 		if (itemstack.isEmpty()) {
 			if (playerIn.isSneaking()) {
 				CMEvents.soundStonePlace(worldIn, pos);
-				worldIn.setBlockState(pos, state.cycle(STAGE_1_4));
-				return ActionResultType.SUCCESS; }
+				worldIn.setBlockState(pos, state.cycleProperty(STAGE_1_4), 2); }
 			
 			if (!playerIn.isSneaking()) {
-				CMEvents.textNotSneak(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
+				CMEvents.textNotSneak(worldIn, pos, playerIn); }
+			return true;
 		}
-		
-		return ActionResultType.PASS;
+		return false;
 	}
 
-	/* 採取適正ツール */
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
 
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
 
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_spru) { return new ItemStack(Items_WallPane.PILLARSLAB_spru); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_bir) { return new ItemStack(Items_WallPane.PILLARSLAB_bir); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_jun) { return new ItemStack(Items_WallPane.PILLARSLAB_jun); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_aca) { return new ItemStack(Items_WallPane.PILLARSLAB_aca); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_doak) { return new ItemStack(Items_WallPane.PILLARSLAB_doak); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_sakura) { return new ItemStack(Items_Seasonal.PILLARSLAB_saku); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_kaede) { return new ItemStack(Items_Seasonal.PILLARSLAB_kae); }
-		if (this == KamoiPlaster_Blocks.KAMOI_dirt_ichoh) { return new ItemStack(Items_Seasonal.PILLARSLAB_ich); }
-		return new ItemStack(Items_WallPane.PILLARSLAB_oak);
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_oak) {
+			stack.add(new ItemStack(Items_WallPane.PILLARSLAB_oak, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_spru) {
+			stack.add(new ItemStack(Items_WallPane.PILLARSLAB_spru, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_bir) {
+			stack.add(new ItemStack(Items_WallPane.PILLARSLAB_bir, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_jun) {
+			stack.add(new ItemStack(Items_WallPane.PILLARSLAB_jun, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_aca) {
+			stack.add(new ItemStack(Items_WallPane.PILLARSLAB_aca, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_doak) {
+			stack.add(new ItemStack(Items_WallPane.PILLARSLAB_doak, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_saku) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_saku, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_ich) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_ich, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.DIRTWALL_SH, 1, 0)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_spru) {
+			return new ItemStack(Items_WallPane.PILLARSLAB_spru, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_bir) {
+			return new ItemStack(Items_WallPane.PILLARSLAB_bir, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_jun) {
+			return new ItemStack(Items_WallPane.PILLARSLAB_jun, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_aca) {
+			return new ItemStack(Items_WallPane.PILLARSLAB_aca, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_doak) {
+			return new ItemStack(Items_WallPane.PILLARSLAB_doak, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_saku) {
+			return new ItemStack(Items_Seasonal.PILLARSLAB_saku, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_kae) {
+			return new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_dirt_ich) {
+			return new ItemStack(Items_Seasonal.PILLARSLAB_ich, 1, 0); }
+
+		return new ItemStack(Items_WallPane.PILLARSLAB_oak, 1, 0);
 	}
 
 }

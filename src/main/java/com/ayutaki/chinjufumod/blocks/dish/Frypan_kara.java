@@ -1,32 +1,81 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
+import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.registry.Items_Teatime;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class Frypan_kara extends BaseFacingWater {
+public class Frypan_kara extends BaseFacingSapo {
+
+	public static final String ID = "block_food_frypan";
+
+	public Frypan_kara() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		/*寸胴・フライパン*/
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+	}
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
-
-	public Frypan_kara(Block.Properties properties) {
-		super(properties);
-	}
-
-	/* 影対策 */
-	public int getLightValue(BlockState state) {
-		return 1;
-	}
-
-	/* Collisions for each property. */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.125D, 0.75D);
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Items_Teatime.FRYPAN_kara, 1, 0));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.FRYPAN_kara, 1, 0);
 	}
 
 }

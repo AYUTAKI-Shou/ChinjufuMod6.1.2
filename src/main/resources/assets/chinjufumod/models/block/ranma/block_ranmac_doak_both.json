@@ -2,7 +2,7 @@
 	"parent": "chinjufumod:block/base/base_ranmac_both",
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_bigoak",
-		"ji": "minecraft:block/glass",
+		"ji": "minecraft:blocks/glass",
 		"ranma": "chinjufumod:blocks/muku_bigoak",
 		"waku": "chinjufumod:blocks/muku_bigoak"
 	}

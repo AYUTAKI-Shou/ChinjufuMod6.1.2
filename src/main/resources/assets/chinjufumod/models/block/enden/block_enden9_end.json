@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/enden_3",
 		"top": "chinjufumod:blocks/enden_3",
-		"top_b": "minecraft:block/sand",
+		"top_b": "minecraft:blocks/sand",
 		"side": "chinjufumod:blocks/enden_3",
 		"down": "chinjufumod:blocks/enden_3",
 		"shio": "chinjufumod:blocks/enden_shio"

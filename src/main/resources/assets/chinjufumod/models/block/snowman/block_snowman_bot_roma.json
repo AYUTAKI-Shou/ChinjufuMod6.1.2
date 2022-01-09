@@ -1,11 +1,11 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/snow",
-		"snow": "minecraft:block/snow",
-		"red": "minecraft:block/red_wool",
-		"white": "minecraft:block/white_wool",
-		"orange": "minecraft:block/orange_wool",
+		"particle": "chinjufumod:blocks/snow_cm",
+		"snow": "chinjufumod:blocks/snow_cm",
+		"red": "minecraft:blocks/wool_colored_red",
+		"white": "minecraft:blocks/wool_colored_white",
+		"orange": "minecraft:blocks/wool_colored_orange",
 		"hand": "chinjufumod:blocks/muku_oak",
 		"glasses": "chinjufumod:blocks/roma_glasses"
 	},

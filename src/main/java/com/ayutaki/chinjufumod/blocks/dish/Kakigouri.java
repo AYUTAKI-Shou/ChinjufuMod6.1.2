@@ -1,132 +1,108 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import javax.annotation.Nullable;
-
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
-import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Kakigouri extends BaseFood_Stage4Water {
+public class Kakigouri extends BaseStage4_FaceDown {
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(6.4D, 0.0D, 6.4D, 9.6D, 5.0D, 9.6D);
-	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(6.4D, -8.0D, 6.4D, 9.6D, 0.1D, 9.6D);
+	public static final String ID = "block_kakigouri_block1";
 
-	public Kakigouri(Block.Properties properties) {
-		super(properties);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.4D, 0.0D, 0.4D, 0.6D, 0.3125D, 0.6D);
+	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.4D, -0.5D, 0.4D, 0.6D, 0.01D, 0.6D);
+
+	public Kakigouri() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		/*瓶・グラス*/
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(1.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-		int i = state.get(STAGE_1_4);
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
 		if (i != 4) {
-			/** Hand is empty. **/
+			/** Hand is Empty. **/
 			if (itemstack.isEmpty()) {
 				CMEvents.soundEat(worldIn, pos);
-	
+
 				if (i == 1) {
-					if (this == Seasonal_Blocks.KAKIGOURI_block) { playerIn.addPotionEffect(new EffectInstance(Effects.SPEED, 400, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_pink) { playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 600, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_red) { playerIn.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_yellow) { playerIn.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 600, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_green) { playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 600, 0));} }
+					/** 1秒＝20 かき氷は ×30=600 **/
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SPEED, 400, 0)); }
 	
 				if (i == 2) {
-					if (this == Seasonal_Blocks.KAKIGOURI_block) { playerIn.addPotionEffect(new EffectInstance(Effects.SPEED, 500, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_pink) { playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 780, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_red) { playerIn.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 780, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_yellow) { playerIn.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 780, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_green) { playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 780, 0)); } }
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SPEED, 500, 0)); }
 	
 				if (i == 3) {
-					if (this == Seasonal_Blocks.KAKIGOURI_block) { playerIn.addPotionEffect(new EffectInstance(Effects.SPEED, 600, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_pink) { playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 900, 0));}
-					if (this == Seasonal_Blocks.KAKIGOURI_red) { playerIn.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 900, 0)); }
-					if (this == Seasonal_Blocks.KAKIGOURI_yellow) { playerIn.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 900, 0));}
-					if (this == Seasonal_Blocks.KAKIGOURI_green) { playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 900, 0)); } }
-	
-				worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SPEED, 600, 0)); }
+				
+				worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
 		
 		if (i == 4) { CMEvents.textIsEmpty(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* Collisions for each property. */
+	/*Collision*/
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
-		return flag? AABB_BOX : AABB_DOWN;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		state = state.getActualState(source, pos);
+		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+
+		/** !down= true : false **/
+		return flag? AABB : AABB_DOWN;
 	}
 
-	/* Clone Item in Creative. */
+	/*Drop Item and Clone Item.*/
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.get(STAGE_1_4);
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
 
-		if (this == Seasonal_Blocks.KAKIGOURI_block && i == 1) { return new ItemStack(Items_Seasonal.KAKIGOURI_block); }
-		if (this == Seasonal_Blocks.KAKIGOURI_pink && i == 1) { return new ItemStack(Items_Seasonal.KAKIGOURI_pink); }
-		if (this == Seasonal_Blocks.KAKIGOURI_red && i == 1) { return new ItemStack(Items_Seasonal.KAKIGOURI_red); }
-		if (this == Seasonal_Blocks.KAKIGOURI_yellow && i == 1) { return new ItemStack(Items_Seasonal.KAKIGOURI_yellow); }
-		if (this == Seasonal_Blocks.KAKIGOURI_green && i == 1) { return new ItemStack(Items_Seasonal.KAKIGOURI_green); }
-		return new ItemStack(Items_Teatime.DRINKGLASS);
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+		if (i == 1) { stack.add(new ItemStack(Items_Seasonal.KAKIGOURI_block, 1, 0)); }
+		if (i != 1) { stack.add(new ItemStack(Items_Teatime.Item_DISH, 1, 7)); }
+		return stack;
 	}
 
-	/* TickRandom */
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		if (state.get(STAGE_1_4) != 4) {
-			if (inWater(state, worldIn, pos)) {
-				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-				CMEvents.soundSnowBreak(worldIn, pos);
-				worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(4))); }
-			
-			else { }
-		}
-		
-		if (state.get(STAGE_1_4) == 4) { }
-	}
-
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kakigouri")).applyTextStyle(TextFormatting.GRAY));
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Seasonal.KAKIGOURI_block, 1, 0);
 	}
 
 }

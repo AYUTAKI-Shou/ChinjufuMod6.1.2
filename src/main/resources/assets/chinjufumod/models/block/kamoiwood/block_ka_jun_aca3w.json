@@ -1,8 +1,8 @@
 {
 	"parent": "chinjufumod:block/base/base_kamoislab_3west",
 	"textures": {
-		"particle": "minecraft:block/jungle_planks",
-		"shikkui": "minecraft:block/jungle_planks",
+		"particle": "minecraft:blocks/planks_jungle",
+		"shikkui": "minecraft:blocks/planks_jungle",
 		"ki": "chinjufumod:blocks/pillar_acacia_side",
 		"ki_top": "chinjufumod:blocks/pillar_acacia_top",
 		"ki_inside": "chinjufumod:blocks/pillar_acacia_inside"

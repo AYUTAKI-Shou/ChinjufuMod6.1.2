@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_brown",
 		"hachi": "chinjufumod:blocks/dish_brown",
-		"tsuchi": "minecraft:block/farmland_moist",
+		"tsuchi": "minecraft:blocks/farmland_wet",
 		"miki": "chinjufumod:blocks/log_sakura",
 		"ha": "chinjufumod:blocks/flower_sakura"
 	},

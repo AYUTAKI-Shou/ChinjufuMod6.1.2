@@ -1,6 +1,0 @@
-{
-	"variants": {
-		"cra=false": { "model": "chinjufumod:block/namako/block_namako_b_pink" },
-		"cra=true": { "model": "chinjufumod:block/namako/block_namako_bcr_pink" }
-	}
-}

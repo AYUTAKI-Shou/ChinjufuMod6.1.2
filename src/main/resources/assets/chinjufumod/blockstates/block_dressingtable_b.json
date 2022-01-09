@@ -1,13 +1,8 @@
 {
- "variants": {
-	"facing=north,half=lower": { "model": "chinjufumod:block/dressingtable/block_dressingtable_bot_b", "y": 180 },
-	"facing=south,half=lower": { "model": "chinjufumod:block/dressingtable/block_dressingtable_bot_b" },
-	"facing=west,half=lower": { "model": "chinjufumod:block/dressingtable/block_dressingtable_bot_b", "y": 90 },
-	"facing=east,half=lower": { "model": "chinjufumod:block/dressingtable/block_dressingtable_bot_b", "y": 270 },
-
-	"facing=north,half=upper": { "model": "chinjufumod:block/dressingtable/block_dressingtable_top_b", "y": 180 },
-	"facing=south,half=upper": { "model": "chinjufumod:block/dressingtable/block_dressingtable_top_b", "y": 0 },
-	"facing=west,half=upper": { "model": "chinjufumod:block/dressingtable/block_dressingtable_top_b", "y": 90 },
-	"facing=east,half=upper": { "model": "chinjufumod:block/dressingtable/block_dressingtable_top_b", "y": 270 }
- }
+  "variants": {
+	"facing=north": { "model": "chinjufumod:dressingtable/block_dressingtable_bot_b", "y": 180 },
+	"facing=south": { "model": "chinjufumod:dressingtable/block_dressingtable_bot_b" },
+	"facing=west":  { "model": "chinjufumod:dressingtable/block_dressingtable_bot_b", "y": 90 },
+	"facing=east":  { "model": "chinjufumod:dressingtable/block_dressingtable_bot_b", "y": 270 }
+  }
 }

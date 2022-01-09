@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_lightg",
-		"mizu": "minecraft:block/water_flow",
+		"mizu": "chinjufumod:blocks/water_flow",
 		"udon": "chinjufumod:blocks/udon_boil",
 		"nabe": "chinjufumod:blocks/dish_lightg",
 		"otama": "chinjufumod:blocks/dish_gray",
@@ -162,7 +162,7 @@
 			"from": [ 4.5, 0.5, 4.5 ],
 			"to": [ 8.0, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1, "rotation": 270 }
+				"up" : { "texture": "#mizu", "tintindex": 20, "rotation": 270 }
 			}
 		},
 		{
@@ -170,7 +170,7 @@
 			"from": [ 8.0, 0.5, 4.5 ],
 			"to": [ 11.5, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1, "rotation": 90 }
+				"up" : { "texture": "#mizu", "tintindex": 20, "rotation": 90 }
 			}
 		}
 	]

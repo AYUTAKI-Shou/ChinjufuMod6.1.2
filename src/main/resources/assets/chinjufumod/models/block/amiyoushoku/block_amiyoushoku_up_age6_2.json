@@ -1,9 +1,0 @@
-{
-	"parent": "chinjufumod:block/base/base_amiyoushoku_up_2",
-	"textures": {
-		"particle": "chinjufumod:blocks/ami_b6",
-		"side_b": "chinjufumod:blocks/ami_b6",
-		"side": "chinjufumod:blocks/bamboo_y6_side",
-		"inside": "chinjufumod:blocks/bamboo_y6_inside"
-	}
-}

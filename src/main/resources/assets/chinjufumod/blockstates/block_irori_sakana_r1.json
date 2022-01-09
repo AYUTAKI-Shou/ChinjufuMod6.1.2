@@ -1,20 +1,20 @@
 {
 	"variants": {
-		"stage=0": { "model": "chinjufumod:block/irori/block_irori_sakana_rece" },
-		"stage=1": { "model": "chinjufumod:block/irori/block_irori_sakana_recr" },
-		"stage=2": { "model": "chinjufumod:block/irori/block_irori_sakana_recc" },
-		"stage=3": { "model": "chinjufumod:block/irori/block_irori_sakana_rree" },
-		"stage=4": { "model": "chinjufumod:block/irori/block_irori_sakana_rrer" },
-		"stage=5": { "model": "chinjufumod:block/irori/block_irori_sakana_rrec" },
-		"stage=6": { "model": "chinjufumod:block/irori/block_irori_sakana_rrre" },
-		"stage=7": { "model": "chinjufumod:block/irori/block_irori_sakana_rrrr" },
-		"stage=8": { "model": "chinjufumod:block/irori/block_irori_sakana_rrrc" },
-		"stage=9": { "model": "chinjufumod:block/irori/block_irori_sakana_rrce" },
-		"stage=10": { "model": "chinjufumod:block/irori/block_irori_sakana_rrcr" },
-		"stage=11": { "model": "chinjufumod:block/irori/block_irori_sakana_rrcc" },
-		"stage=12": { "model": "chinjufumod:block/irori/block_irori_sakana_rcee" },
-		"stage=13": { "model": "chinjufumod:block/irori/block_irori_sakana_rcer" },
-		"stage=14": { "model": "chinjufumod:block/irori/block_irori_sakana_rcec" },
-		"stage=15": { "model": "chinjufumod:block/irori/block_irori_sakana_rcre" }
+		"stage=0": { "model": "chinjufumod:irori/block_irori_sakana_rece" },
+		"stage=1": { "model": "chinjufumod:irori/block_irori_sakana_recr" },
+		"stage=2": { "model": "chinjufumod:irori/block_irori_sakana_recc" },
+		"stage=3": { "model": "chinjufumod:irori/block_irori_sakana_rree" },
+		"stage=4": { "model": "chinjufumod:irori/block_irori_sakana_rrer" },
+		"stage=5": { "model": "chinjufumod:irori/block_irori_sakana_rrec" },
+		"stage=6": { "model": "chinjufumod:irori/block_irori_sakana_rrre" },
+		"stage=7": { "model": "chinjufumod:irori/block_irori_sakana_rrrr" },
+		"stage=8": { "model": "chinjufumod:irori/block_irori_sakana_rrrc" },
+		"stage=9": { "model": "chinjufumod:irori/block_irori_sakana_rrce" },
+		"stage=10": { "model": "chinjufumod:irori/block_irori_sakana_rrcr" },
+		"stage=11": { "model": "chinjufumod:irori/block_irori_sakana_rrcc" },
+		"stage=12": { "model": "chinjufumod:irori/block_irori_sakana_rcee" },
+		"stage=13": { "model": "chinjufumod:irori/block_irori_sakana_rcer" },
+		"stage=14": { "model": "chinjufumod:irori/block_irori_sakana_rcec" },
+		"stage=15": { "model": "chinjufumod:irori/block_irori_sakana_rcre" }
 	}
 }

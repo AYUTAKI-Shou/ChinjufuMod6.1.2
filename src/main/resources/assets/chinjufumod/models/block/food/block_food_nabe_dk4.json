@@ -89,7 +89,7 @@
 			"from": [ 2, -6.9, 4 ],
 			"to": [ 10, -6.3, 12 ],
 			"faces": {
-				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#miso", "tintindex": 2 }
+				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#miso", "tintindex": 32 }
 			}
 		},
 

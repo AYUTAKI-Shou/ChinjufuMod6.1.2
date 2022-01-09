@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_white",
 		"cup": "chinjufumod:blocks/dish_white",
-		"water": "minecraft:block/water_still",
+		"water": "chinjufumod:blocks/water_still",
 		"currysara": "chinjufumod:blocks/dish_white",
 		"kome": "chinjufumod:blocks/food_gohan",
 		"rou": "chinjufumod:blocks/food_curryrou",
@@ -77,7 +77,7 @@
 			"from": [ 4, 0.3, 2 ],
 			"to": [ 6, 2.3, 4 ],
 			"faces": {
-				"up" : { "texture": "#water", "tintindex": 1 }
+				"up" : { "texture": "#water", "tintindex": 20 }
 			}
 		},
 

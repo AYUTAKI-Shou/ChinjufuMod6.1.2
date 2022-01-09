@@ -6,6 +6,6 @@
 		"front_bot": "chinjufumod:blocks/window_bot_sakura",
 		"totte": "chinjufumod:blocks/window_bot_oak",
 		"side": "chinjufumod:blocks/muku_sakura",
-		"glass": "minecraft:block/glass"
+		"glass": "minecraft:blocks/glass"
 	}
 }

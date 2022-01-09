@@ -1,33 +1,23 @@
 {
 	"variants": {
-		"cor=false,facing=north,type=bottom": { "model": "chinjufumod:block/block_tabawara_rf_bot", "y": 90 },
-		"cor=false,facing=south,type=bottom": { "model": "chinjufumod:block/block_tabawara_rf_bot", "y": 270 },
-		"cor=false,facing=west,type=bottom": { "model": "chinjufumod:block/block_tabawara_rf_bot", "y": 0 },
-		"cor=false,facing=east,type=bottom": { "model": "chinjufumod:block/block_tabawara_rf_bot", "y": 180 },
+		"cor=false,facing=north,half=bottom": { "model": "chinjufumod:block_tabawara_rf_bot", "y": 90 },
+		"cor=false,facing=south,half=bottom": { "model": "chinjufumod:block_tabawara_rf_bot", "y": 270 },
+		"cor=false,facing=west,half=bottom": { "model": "chinjufumod:block_tabawara_rf_bot", "y": 0 },
+		"cor=false,facing=east,half=bottom": { "model": "chinjufumod:block_tabawara_rf_bot", "y": 180 },
 
-		"cor=false,facing=north,type=top": { "model": "chinjufumod:block/block_tabawara_rf_top", "y": 90 },
-		"cor=false,facing=south,type=top": { "model": "chinjufumod:block/block_tabawara_rf_top", "y": 270 },
-		"cor=false,facing=west,type=top": { "model": "chinjufumod:block/block_tabawara_rf_top", "y": 0 },
-		"cor=false,facing=east,type=top": { "model": "chinjufumod:block/block_tabawara_rf_top", "y": 180 },
+		"cor=false,facing=north,half=top": { "model": "chinjufumod:block_tabawara_rf_top", "y": 90 },
+		"cor=false,facing=south,half=top": { "model": "chinjufumod:block_tabawara_rf_top", "y": 270 },
+		"cor=false,facing=west,half=top": { "model": "chinjufumod:block_tabawara_rf_top", "y": 0 },
+		"cor=false,facing=east,half=top": { "model": "chinjufumod:block_tabawara_rf_top", "y": 180 },
 
-		"cor=false,facing=north,type=double": { "model": "chinjufumod:block/block_tabawara", "y": 90 },
-		"cor=false,facing=south,type=double": { "model": "chinjufumod:block/block_tabawara", "y": 270 },
-		"cor=false,facing=west,type=double": { "model": "chinjufumod:block/block_tabawara", "y": 0 },
-		"cor=false,facing=east,type=double": { "model": "chinjufumod:block/block_tabawara", "y": 180 },
+		"cor=true,facing=north,half=bottom": { "model": "chinjufumod:block_tabawara_rfcor_bot", "y": 180 },
+		"cor=true,facing=south,half=bottom": { "model": "chinjufumod:block_tabawara_rfcor_bot", "y": 0 },
+		"cor=true,facing=west,half=bottom": { "model": "chinjufumod:block_tabawara_rfcor_bot", "y": 90 },
+		"cor=true,facing=east,half=bottom": { "model": "chinjufumod:block_tabawara_rfcor_bot", "y": 270 },
 
-		"cor=true,facing=north,type=bottom": { "model": "chinjufumod:block/block_tabawara_rfcor_bot", "y": 180 },
-		"cor=true,facing=south,type=bottom": { "model": "chinjufumod:block/block_tabawara_rfcor_bot", "y": 0 },
-		"cor=true,facing=west,type=bottom": { "model": "chinjufumod:block/block_tabawara_rfcor_bot", "y": 90 },
-		"cor=true,facing=east,type=bottom": { "model": "chinjufumod:block/block_tabawara_rfcor_bot", "y": 270 },
-
-		"cor=true,facing=north,type=top": { "model": "chinjufumod:block/block_tabawara_rfcor_top", "y": 180 },
-		"cor=true,facing=south,type=top": { "model": "chinjufumod:block/block_tabawara_rfcor_top", "y": 0 },
-		"cor=true,facing=west,type=top": { "model": "chinjufumod:block/block_tabawara_rfcor_top", "y": 90 },
-		"cor=true,facing=east,type=top": { "model": "chinjufumod:block/block_tabawara_rfcor_top", "y": 270 },
-
-		"cor=true,facing=north,type=double": { "model": "chinjufumod:block/block_tabawara_cor", "y": 180 },
-		"cor=true,facing=south,type=double": { "model": "chinjufumod:block/block_tabawara_cor", "y": 0 },
-		"cor=true,facing=west,type=double": { "model": "chinjufumod:block/block_tabawara_cor", "y": 90 },
-		"cor=true,facing=east,type=double": { "model": "chinjufumod:block/block_tabawara_cor", "y": 270 }
+		"cor=true,facing=north,half=top": { "model": "chinjufumod:block_tabawara_rfcor_top", "y": 180 },
+		"cor=true,facing=south,half=top": { "model": "chinjufumod:block_tabawara_rfcor_top", "y": 0 },
+		"cor=true,facing=west,half=top": { "model": "chinjufumod:block_tabawara_rfcor_top", "y": 90 },
+		"cor=true,facing=east,half=top": { "model": "chinjufumod:block_tabawara_rfcor_top", "y": 270 }
 	}
 }

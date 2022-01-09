@@ -1,20 +1,20 @@
 {
 	"variants": {
-		"stage=0": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_0" },
-		"stage=1": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_1" },
-		"stage=2": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_2" },
-		"stage=3": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_3" },
-		"stage=4": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_4" },
-		"stage=5": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_5" },
-		"stage=6": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_6" },
-		"stage=7": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_7" },
-		"stage=8": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_8" },
-		"stage=9": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_9" },
-		"stage=10": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_a" },
-		"stage=11": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_b" },
-		"stage=12": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_c" },
-		"stage=13": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_d" },
-		"stage=14": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_e" },
-		"stage=15": { "model": "chinjufumod:block/niwaishi/block_niwaishi_and_f" }
+		"stage=0": { "model": "chinjufumod:niwaishi/block_niwaishi_and_0" },
+		"stage=1": { "model": "chinjufumod:niwaishi/block_niwaishi_and_1" },
+		"stage=2": { "model": "chinjufumod:niwaishi/block_niwaishi_and_2" },
+		"stage=3": { "model": "chinjufumod:niwaishi/block_niwaishi_and_3" },
+		"stage=4": { "model": "chinjufumod:niwaishi/block_niwaishi_and_4" },
+		"stage=5": { "model": "chinjufumod:niwaishi/block_niwaishi_and_5" },
+		"stage=6": { "model": "chinjufumod:niwaishi/block_niwaishi_and_6" },
+		"stage=7": { "model": "chinjufumod:niwaishi/block_niwaishi_and_7" },
+		"stage=8": { "model": "chinjufumod:niwaishi/block_niwaishi_and_8" },
+		"stage=9": { "model": "chinjufumod:niwaishi/block_niwaishi_and_9" },
+		"stage=10": { "model": "chinjufumod:niwaishi/block_niwaishi_and_a" },
+		"stage=11": { "model": "chinjufumod:niwaishi/block_niwaishi_and_b" },
+		"stage=12": { "model": "chinjufumod:niwaishi/block_niwaishi_and_c" },
+		"stage=13": { "model": "chinjufumod:niwaishi/block_niwaishi_and_d" },
+		"stage=14": { "model": "chinjufumod:niwaishi/block_niwaishi_and_e" },
+		"stage=15": { "model": "chinjufumod:niwaishi/block_niwaishi_and_f" }
 	}
 }

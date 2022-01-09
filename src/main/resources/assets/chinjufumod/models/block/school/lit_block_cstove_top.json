@@ -8,10 +8,10 @@
 		"bottom": "chinjufumod:blocks/cstove_b",
 		"bottomf": "chinjufumod:blocks/cstove_bf",
 		"mid": "chinjufumod:blocks/cstove_mid",
-		"inner": "minecraft:block/fire_0",
-		"inner2": "minecraft:block/fire_0",
-		"maki_top": "minecraft:block/oak_log_top",
-		"maki": "minecraft:block/oak_log",
+		"inner": "minecraft:blocks/fire_layer_0",
+		"inner2": "minecraft:blocks/fire_layer_0",
+		"maki_top": "minecraft:blocks/log_oak_top",
+		"maki": "minecraft:blocks/log_oak",
 		"particle": "chinjufumod:blocks/cstove_bf"
 	},
 	"elements": [

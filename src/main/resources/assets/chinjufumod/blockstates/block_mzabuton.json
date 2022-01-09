@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"stage=0": { "model": "chinjufumod:zabuton/block_mzabuton_white" },
+		"stage=1": { "model": "chinjufumod:zabuton/block_mzabuton_orange" },
+		"stage=2": { "model": "chinjufumod:zabuton/block_mzabuton_magenta" },
+		"stage=3": { "model": "chinjufumod:zabuton/block_mzabuton_lightb" },
+		"stage=4": { "model": "chinjufumod:zabuton/block_mzabuton_yellow" },
+		"stage=5": { "model": "chinjufumod:zabuton/block_mzabuton_lime" },
+		"stage=6": { "model": "chinjufumod:zabuton/block_mzabuton_pink" },
+		"stage=7": { "model": "chinjufumod:zabuton/block_mzabuton_gray" },
+		"stage=8": { "model": "chinjufumod:zabuton/block_mzabuton_lightg" },
+		"stage=9": { "model": "chinjufumod:zabuton/block_mzabuton_cyan" },
+		"stage=10": { "model": "chinjufumod:zabuton/block_mzabuton_purple" },
+		"stage=11": { "model": "chinjufumod:zabuton/block_mzabuton_blue" },
+		"stage=12": { "model": "chinjufumod:zabuton/block_mzabuton_brown" },
+		"stage=13": { "model": "chinjufumod:zabuton/block_mzabuton_green" },
+		"stage=14": { "model": "chinjufumod:zabuton/block_mzabuton_red" },
+		"stage=15": { "model": "chinjufumod:zabuton/block_mzabuton_black" }
+	}
+}

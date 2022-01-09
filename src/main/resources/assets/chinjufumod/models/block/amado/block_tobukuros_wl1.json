@@ -2,7 +2,7 @@
 	"parent": "chinjufumod:block/base/base_tobukuro_wl1",
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_spruce",
-		"fuchi": "minecraft:block/spruce_planks",
+		"fuchi": "minecraft:blocks/planks_spruce",
 		"amado": "chinjufumod:blocks/muku_spruce"
 	}
 }

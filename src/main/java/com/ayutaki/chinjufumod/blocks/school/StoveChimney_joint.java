@@ -2,57 +2,69 @@ package com.ayutaki.chinjufumod.blocks.school;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.IBlockAccess;
 
-public class StoveChimney_joint extends BaseFacingWater {
+public class StoveChimney_joint extends BaseFacingSapo {
 
-	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.makeCuboidShape(5.9D, 9.9D, 0.0D, 10.1D, 14.1D, 10.1D),
-			Block.makeCuboidShape(5.9D, 14.0D, 5.9D, 10.1D, 16.0D, 10.1D));
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(Block.makeCuboidShape(5.9D, 9.9D, 5.9D, 16.0D, 14.1D, 10.1D),
-			Block.makeCuboidShape(5.9D, 14.0D, 5.9D, 10.1D, 16.0D, 10.1D));
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.makeCuboidShape(5.9D, 9.9D, 5.9D, 10.1D, 14.1D, 16.0D),
-			Block.makeCuboidShape(5.9D, 14.0D, 5.9D, 10.1D, 16.0D, 10.1D));
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 9.9D, 5.9D, 10.1D, 14.1D, 10.1D),
-			Block.makeCuboidShape(5.9D, 14.0D, 5.9D, 10.1D, 16.0D, 10.1D));
+	public static final String ID = "block_stovechimney_joint";
 
-	public StoveChimney_joint(Block.Properties properties) {
-		super(properties);
+	public StoveChimney_joint() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setCreativeTab(ChinjufuModTabs.CHINJUFU);
+
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(10.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
-	/* Collisions for each property. */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
-
-		switch (direction) {
-		case NORTH :
-		default : return AABB_NORTH;
-		case SOUTH : return AABB_SOUTH;
-		case EAST : return AABB_EAST;
-		case WEST : return AABB_WEST;
-		} // switch
+	public boolean isTopSolid(IBlockState state) {
+		return false;
 	}
 
-	/* 採取適正ツール */
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
 

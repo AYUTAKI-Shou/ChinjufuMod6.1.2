@@ -1,116 +1,182 @@
 package com.ayutaki.chinjufumod.blocks.gate;
 
-import javax.annotation.Nullable;
+import java.util.Random;
 
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
+import com.ayutaki.chinjufumod.registry.Items_Wadeco;
+import com.ayutaki.chinjufumod.state.BlockStateHalf;
+import com.ayutaki.chinjufumod.state.BlockStateHinge;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.properties.DoorHingeSide;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Gate_irongrill extends BaseGate {
 
-	/* Collision */
-	protected static final VoxelShape CLOSEL_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 7.5D, 32.0D, 32.0D, 8.5D);
-	protected static final VoxelShape CLOSEL_WEST = Block.makeCuboidShape(7.5D, 0.0D, 0.0D, 8.5D, 32.0D, 32.0D);
-	protected static final VoxelShape CLOSEL_NORTH = Block.makeCuboidShape(-16.0D, 0.0D, 7.5D, 16.0D, 32.0D, 8.5D);
-	protected static final VoxelShape CLOSEL_EAST = Block.makeCuboidShape(7.5D, 0.0D, -16.0D, 8.5D, 32.0D, 16.0D);
+	public static final String ID = "block_gate_irongrill";
 
-	protected static final VoxelShape OPENL_SOUTH = Block.makeCuboidShape(15.9D, 0.0D, 8.0D, 32.0D, 32.0D, 36.0D);
-	protected static final VoxelShape OPENL_WEST = Block.makeCuboidShape(-20.0D, 0.0D, 15.9D, 8.0D, 32.0D, 32.0D);
-	protected static final VoxelShape OPENL_NORTH = Block.makeCuboidShape(-16.0D, 0.0D, -20.0D, 0.1D, 32.0D, 8.0D);
-	protected static final VoxelShape OPENL_EAST = Block.makeCuboidShape(8.0D, 0.0D, -16.0D, 36.0D, 32.0D, 0.1D);
+	/* Collisionの数値 */
+	private static final AxisAlignedBB SOUTH_AABB_LEFT_CLOSE = new AxisAlignedBB( 0.0D, 0.0D, 0.46875D, 2.0D, 2.0D, 0.53125D);
+	private static final AxisAlignedBB SOUTH_AABB_LEFT_OPEN = new AxisAlignedBB( 1.25D, 0.0D, 0.5D, 2.0D, 2.0D, 2.0D);
+	private static final AxisAlignedBB SOUTH_AABB_RIGHT_CLOSE = new AxisAlignedBB( -1.0D, 0.0D, 0.46875D, 1.0D, 2.0D, 0.53125D);
+	private static final AxisAlignedBB SOUTH_AABB_RIGHT_OPEN = new AxisAlignedBB( -1.0D, 0.0D, 0.5D, -0.25D, 2.0D, 2.0D);
 
-	protected static final VoxelShape CLOSER_SOUTH = Block.makeCuboidShape(-16.0D, 0.0D, 7.5D, 16.0D, 32.0D, 8.5D);
-	protected static final VoxelShape CLOSER_WEST = Block.makeCuboidShape(7.5D, 0.0D, -16.0D, 8.5D, 32.0D, 16.0D);
-	protected static final VoxelShape CLOSER_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 7.5D, 32.0D, 32.0D, 8.5D);
-	protected static final VoxelShape CLOSER_EAST = Block.makeCuboidShape(7.5D, 0.0D, 0.0D, 8.5D, 32.0D, 32.0D);
+	private static final AxisAlignedBB EAST_AABB_LEFT_CLOSE = new AxisAlignedBB( 0.46875D, 0.0D, -1.0D, 0.53125D, 2.0D, 1.0D);
+	private static final AxisAlignedBB EAST_AABB_LEFT_OPEN = new AxisAlignedBB( 0.5D, 0.0D, -1.0D, 2.0D, 2.0D, -0.25D);
+	private static final AxisAlignedBB EAST_AABB_RIGHT_CLOSE = new AxisAlignedBB( 0.46875D, 0.0D, 0.0D, 0.53125D, 2.0D, 2.0D);
+	private static final AxisAlignedBB EAST_AABB_RIGHT_OPEN = new AxisAlignedBB( 0.5D, 0.0D, 1.25D, 2.0D, 2.0D, 2.0D);
 
-	protected static final VoxelShape OPENR_SOUTH = Block.makeCuboidShape(-16.0D, 0.0D, 8.0D, 0.1D, 32.0D, 36.0D);
-	protected static final VoxelShape OPENR_WEST = Block.makeCuboidShape(-20.0D, 0.0D, -16.0D, 8.0D, 32.0D, 0.1D);
-	protected static final VoxelShape OPENR_NORTH = Block.makeCuboidShape(15.9D, 0.0D, -20.0D, 32.0D, 32.0D, 8.0D);
-	protected static final VoxelShape OPENR_EAST = Block.makeCuboidShape(8.0D, 0.0D, 15.9D, 36.0D, 32.0D, 32.0D);
+	private static final AxisAlignedBB WEST_AABB_LEFT_CLOSE = new AxisAlignedBB( 0.46875D, 0.0D, 0.0D, 0.53125D, 2.0D, 2.0D);
+	private static final AxisAlignedBB WEST_AABB_LEFT_OPEN = new AxisAlignedBB( -1.0D, 0.0D, 1.25D, 0.5D, 2.0D, 2.0D);
+	private static final AxisAlignedBB WEST_AABB_RIGHT_CLOSE= new AxisAlignedBB( 0.46875D, 0.0D, -1.0D, 0.53125D, 2.0D, 1.0D);
+	private static final AxisAlignedBB WEST_AABB_RIGHT_OPEN = new AxisAlignedBB( -1.0D, 0.0D, -1.0D, 0.5D, 2.0D, -0.25D);
 
-	public Gate_irongrill(Block.Properties properties) {
-		super(properties);
+	private static final AxisAlignedBB NORTH_AABB_LEFT_CLOSE = new AxisAlignedBB( -1.0D, 0.0D, 0.46875D, 1.0D, 2.0D, 0.53125D);
+	private static final AxisAlignedBB NORTH_AABB_LEFT_OPEN = new AxisAlignedBB( -1.0D, 0.0D, -1.0D, -0.25D, 2.0D, 0.5D);
+	private static final AxisAlignedBB NORTH_AABB_RIGHT_CLOSE = new AxisAlignedBB( 0.0D, 0.0D, 0.46875D, 2.0D, 2.0D, 0.53125D);
+	private static final AxisAlignedBB NORTH_AABB_RIGHT_OPEN = new AxisAlignedBB( 1.25D, 0.0D, -1.0D, 2.0D, 2.0D, 0.5D);
+
+
+	public Gate_irongrill() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+		setHardness(1.0F);
+		setResistance(20.0F);
+		setSoundType(SoundType.METAL);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+
+		/** Registry **/
+		ForgeRegistries.BLOCKS.register(this);
 	}
 
-
-	/* Collisions for each property. */
+	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
-		boolean flagopen = !state.get(OPEN);
-		boolean flagright = state.get(HINGE) == DoorHingeSide.RIGHT;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-		switch(direction) {
+		state = state.getActualState(source, pos);
+		EnumFacing direction = (EnumFacing)state.getValue(H_FACING);
+		boolean flagopen = (state.getValue(OPEN) == true);
+		boolean flagright = (state.getValue(HINGE) == BlockStateHinge.RIGHT);
+
+		switch (direction) {
 		case SOUTH:
-			return flagopen? (flagright? CLOSER_SOUTH : CLOSEL_SOUTH) : (flagright? OPENR_SOUTH : OPENL_SOUTH);
+			return flagopen? (flagright? SOUTH_AABB_RIGHT_OPEN : SOUTH_AABB_LEFT_OPEN) : (flagright? SOUTH_AABB_RIGHT_CLOSE : SOUTH_AABB_LEFT_CLOSE);
+
+		case EAST:
+			return flagopen? (flagright? EAST_AABB_RIGHT_OPEN : EAST_AABB_LEFT_OPEN) : (flagright? EAST_AABB_RIGHT_CLOSE : EAST_AABB_LEFT_CLOSE);
+
 		case WEST:
-			return flagopen? (flagright? CLOSER_WEST : CLOSEL_WEST) :(flagright? OPENR_WEST : OPENL_WEST);
+			return flagopen? (flagright? WEST_AABB_RIGHT_OPEN : WEST_AABB_LEFT_OPEN) : (flagright? WEST_AABB_RIGHT_CLOSE : WEST_AABB_LEFT_CLOSE);
+
 		case NORTH:
 		default:
-			return flagopen? (flagright? CLOSER_NORTH : CLOSEL_NORTH) :(flagright? OPENR_NORTH : OPENL_NORTH);
-		case EAST:
-			return flagopen? (flagright? CLOSER_EAST : CLOSEL_EAST) :(flagright? OPENR_EAST : OPENL_EAST);
+			return flagopen? (flagright? NORTH_AABB_RIGHT_OPEN : NORTH_AABB_LEFT_OPEN) : (flagright? NORTH_AABB_RIGHT_CLOSE : NORTH_AABB_LEFT_CLOSE);
 		}
 	}
 
-	/* RightClick Action */
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-		return ActionResultType.FAIL;
+	/* int → SoundEvent */
+	private SoundEvent getCloseSound() {
+		return SoundEvents_CM.GATE_IRON_OPEN;
 	}
 
-	public void toggleDoor(BlockState state, World worldIn, BlockPos pos, boolean open) {
-		BlockState blockstate = worldIn.getBlockState(pos);
-		if (blockstate.getBlock() == this && blockstate.get(OPEN) != open) {
-			worldIn.setBlockState(pos, blockstate.with(OPEN, Boolean.valueOf(open)), 10);
-			this.moveSound(worldIn, pos, open);
-		}
+	private SoundEvent getOpenSound() {
+		return SoundEvents_CM.GATE_IRON_OPEN;
 	}
 
-	/* 隣接ブロックの変化 */
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
-
-		if (block != this && flag != state.get(POWERED)) {
-			if (flag != state.get(OPEN)) { this.moveSound(worldIn, pos, flag); }
-			worldIn.setBlockState(pos, state.with(POWERED, Boolean.valueOf(flag)).with(OPEN, Boolean.valueOf(flag)), 2);
-		}
-	}
-
-	/* Play Sound */
-	private void moveSound(World worldIn, BlockPos pos, boolean isOpening) {
-		if (isOpening == true) {
-			worldIn.playSound(null, pos, SoundEvents_CM.GATE_IRON_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F); }
-
-		if (isOpening == false) {
-			worldIn.playSound(null, pos, SoundEvents_CM.GATE_IRON_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F); }
-	}
-
-	/* 採取適正ツール */
-	@Nullable
+	/* 右クリックでは開閉させない */
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		return false;
+	}
+
+	/* 隣接ブロックへの反応 */
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+
+		/** ドア上部が壊れたら、下部も壊れる **/
+		if (state.getValue(HALF) == BlockStateHalf.UPPER) {
+			BlockPos blockpos = pos.down();
+			IBlockState iblockstate = worldIn.getBlockState(blockpos);
+
+			if (iblockstate.getBlock() != this) {
+				worldIn.setBlockToAir(pos);
+			}
+			else if (blockIn != this) {
+				iblockstate.neighborChanged(worldIn, blockpos, blockIn, fromPos);
+			}
+		}
+
+		else {
+			boolean flag1 = false;
+			BlockPos blockpos1 = pos.up();
+			IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+
+			/** 隣接ブロックが壊れたときの反応 **/
+			if (iblockstate1.getBlock() != this) {
+				worldIn.setBlockToAir(pos);
+				flag1 = true;
+			}
+
+			if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) {
+
+				worldIn.setBlockToAir(pos);
+				flag1 = true;
+
+				if (iblockstate1.getBlock() == this) {
+					worldIn.setBlockToAir(blockpos1);
+				}
+			}
+
+			if (flag1) {
+				if (!worldIn.isRemote) {
+					this.dropBlockAsItem(worldIn, pos, state, 0);
+				}
+			}
+
+			/** レッドストーンで開閉 **/
+			else {
+				boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos1);
+
+				if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != ((Boolean)iblockstate1.getValue(POWERED)).booleanValue()) {
+					worldIn.setBlockState(blockpos1, iblockstate1.withProperty(POWERED, Boolean.valueOf(flag)), 2);
+
+					if (flag != ((Boolean)state.getValue(OPEN)).booleanValue()) {
+						worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
+						worldIn.markBlockRangeForRenderUpdate(pos, pos);
+						worldIn.playSound(null, pos, flag ? this.getOpenSound() : this.getCloseSound(), SoundCategory.BLOCKS, 1.0F, 0.9F);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
-		return 0;
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return state.getValue(HALF) == BlockStateHalf.UPPER ? Items.AIR : Items_Wadeco.GATE_IRONGRILL;
+	}
+
+	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(Items_Wadeco.GATE_IRONGRILL);
 	}
 
 }

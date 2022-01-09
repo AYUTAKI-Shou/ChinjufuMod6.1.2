@@ -1,77 +1,88 @@
 package com.ayutaki.chinjufumod.blocks.hakkou;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Bottle_WineJuku extends Base_Bottle {
+public class Bottle_WineJuku extends BaseBlock_SakeBottle {
 
-	public Bottle_WineJuku(Block.Properties properties) {
-		super(properties);
+	public static final String ID = "block_bot_winejuku_1";
+
+	public Bottle_WineJuku() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.get(STAGE_1_5);
+		int k;
+		k = itemstack.getMetadata();
 
-		if (i != 5) {
-			if (item == Items_Teatime.DRINKGLASS) {
-				/** Collect with an Item **/
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundSakeGlassFill(worldIn, pos);
+		if (item == Items_Teatime.Item_DISH && k == 7) {
+			/** Collect with an Item **/
+			CMEvents.Consume_1Item(playerIn, hand);
+			CMEvents.soundSakeGlassFill(worldIn, pos);
 
-				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.JUKUWINEGLASS)); }
-				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.JUKUWINEGLASS))) {
-					playerIn.dropItem(new ItemStack(Items_Teatime.JUKUWINEGLASS), false); }
-	
-				worldIn.setBlockState(pos, state.with(Base_Bottle.STAGE_1_5, Integer.valueOf(i + 1))); }
-			
-			if (item != Items_Teatime.DRINKGLASS) { CMEvents.textNotHave(worldIn, pos, playerIn); }
-		}
+			/** インベントリが満杯でドロップさせるには if (itemstack.isEmpty()) を使う **/
+			if (itemstack.isEmpty()) {
+				playerIn.inventory
+						.addItemStackToInventory(new ItemStack(Items_Teatime.WINEGLASS, 1, 2)); }
+			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.WINEGLASS, 1, 2))) {
+				playerIn.dropItem(new ItemStack(Items_Teatime.WINEGLASS, 1, 2), false); }
+
+			if (i != 4) { worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			if (i == 4) {
+				worldIn.setBlockState(pos, Hakkou_Blocks.KARABOT.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(BaseBlock_SakeBottle.STAGE_1_4, Integer.valueOf(2))
+						.withProperty(BaseBlock_SakeBottle.DOWN, state.getValue(DOWN))); } }
 		
-		if (i == 5) { CMEvents.textIsEmpty(worldIn, pos, playerIn); }
+		if (item != Items_Teatime.Item_DISH || k != 7) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* Clone Item in Creative. */
+
+	/*Drop Item and Clone Item.*/
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.get(STAGE_1_5);
-		return (i == 1)? new ItemStack(Items_Teatime.JUKUWINEBOT) : new ItemStack(Items_Teatime.SAKEBOTTLE);
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+		if (i == 1) { stack.add(new ItemStack(Items_Teatime.JUKUWINEBOT, 1, 0)); }
+		if (i != 1) { stack.add(new ItemStack(Items_Teatime.Item_DISH, 1, 8)); }
+		return stack;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_bot_sake")).applyTextStyle(TextFormatting.GRAY));
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.JUKUWINEBOT, 1, 0);
 	}
 
 }

@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"stage=0": { "model": "chinjufumod:kawara/block_kawara_cr_white" },
+		"stage=1": { "model": "chinjufumod:kawara/block_kawara_cr_orange" },
+		"stage=2": { "model": "chinjufumod:kawara/block_kawara_cr_magenta" },
+		"stage=3": { "model": "chinjufumod:kawara/block_kawara_cr_lightb" },
+		"stage=4": { "model": "chinjufumod:kawara/block_kawara_cr_yellow" },
+		"stage=5": { "model": "chinjufumod:kawara/block_kawara_cr_lime" },
+		"stage=6": { "model": "chinjufumod:kawara/block_kawara_cr_pink" },
+		"stage=7": { "model": "chinjufumod:kawara/block_kawara_cr_gray" },
+		"stage=8": { "model": "chinjufumod:kawara/block_kawara_cr_lightg" },
+		"stage=9": { "model": "chinjufumod:kawara/block_kawara_cr_cyan" },
+		"stage=10": { "model": "chinjufumod:kawara/block_kawara_cr_purple" },
+		"stage=11": { "model": "chinjufumod:kawara/block_kawara_cr_blue" },
+		"stage=12": { "model": "chinjufumod:kawara/block_kawara_cr_brown" },
+		"stage=13": { "model": "chinjufumod:kawara/block_kawara_cr_green" },
+		"stage=14": { "model": "chinjufumod:kawara/block_kawara_cr_red" },
+		"stage=15": { "model": "chinjufumod:kawara/block_kawara_cr_black" }
+	}
+}

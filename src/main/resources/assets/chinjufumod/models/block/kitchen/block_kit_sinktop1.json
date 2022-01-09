@@ -6,7 +6,7 @@
 		"front": "chinjufumod:blocks/kitchen_front",
 		"side": "chinjufumod:blocks/kitchen_side",
 		"sink": "chinjufumod:blocks/kitchen_sink",
-		"water": "minecraft:block/water_still"
+		"water": "chinjufumod:blocks/water_still"
 	},
 	"elements": [
 

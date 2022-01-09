@@ -7,7 +7,7 @@
 		"inside": "chinjufumod:blocks/bucket_inside_hakusai_full",
 		"end" : "chinjufumod:blocks/bucket_end_hakusai_full",
 		"naka" : "chinjufumod:blocks/hakusaiduke_f",
-		"ishi" : "minecraft:block/stone"
+		"ishi" : "minecraft:blocks/stone"
 	},
 	"elements": [
 		{

@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/end_stone",
-		"front": "minecraft:block/end_stone",
-		"back": "minecraft:block/end_stone",
-		"side": "minecraft:block/end_stone"
+		"particle": "blocks/end_stone",
+		"front": "blocks/end_stone",
+		"back": "blocks/end_stone",
+		"side": "blocks/end_stone"
 	}
 }

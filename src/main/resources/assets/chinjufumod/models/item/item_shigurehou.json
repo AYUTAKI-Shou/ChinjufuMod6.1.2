@@ -4,7 +4,7 @@
 		"layer0": "chinjufumod:items/shigurehou"
 	},
 	"display": {
-		"gui": {
+		 "gui": {
 			"rotation": [ 0, 0, 0 ],
 			"translation": [ 0, 0, 0 ],
 			"scale": [ 0.8, 0.8, 0.8 ]

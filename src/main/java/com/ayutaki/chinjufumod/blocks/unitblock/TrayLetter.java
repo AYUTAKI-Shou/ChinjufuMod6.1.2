@@ -1,260 +1,253 @@
 package com.ayutaki.chinjufumod.blocks.unitblock;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlab_Water;
-import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.config.CMConfig_Core;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
 import com.ayutaki.chinjufumod.registry.Unit_Blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
-public class TrayLetter extends Block implements IWaterLoggable {
+public class TrayLetter extends Block {
+
+	public static final String ID = "block_lettertray_c";
 
 	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
-	public static final BooleanProperty LOST = BooleanProperty.create("lost");
-	
+	public static final PropertyInteger STAGE_1_2 = PropertyInteger.create("stage", 1, 2);
+	public static final PropertyDirection H_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool DOWN = PropertyBool.create("down");
+
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
-	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(0.0D, -8.0D, 0.0D, 16.0D, 0.1D, 16.0D);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.03125D, 1.0D);
+	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0D, -0.5D, 0.0D, 1.0D, 0.01D, 1.0D);
 
-	public TrayLetter(Block.Properties properties) {
-		super(properties);
+	public TrayLetter() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(DOWN, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false))
-				.with(LOST, Boolean.valueOf(false)));
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(H_FACING, EnumFacing.NORTH)
+				.withProperty(STAGE_1_2, Integer.valueOf(1))
+				.withProperty(DOWN, Boolean.valueOf(false)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-
-		Direction direction = state.get(H_FACING);
+		EnumFacing direction = state.getValue(H_FACING);
 		
-		if (state.get(LOST) != true) {
-			
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+		
+		if (playerIn.experienceTotal >= 100) {
 			/* Battle report */
 			if (item == Items_Chinjufu.SHOUHOU_empty) {
+				CMEvents.Consume_1Item(playerIn, hand);	
+				CMEvents.soundWrite(worldIn, pos);
+				//playerIn.addExperience(-100);
 				
-				if (playerIn.experienceTotal >= 100) {
-					CMEvents.Consume_1Item(playerIn, hand);					
-					CMEvents.soundWrite(worldIn, pos);
-					
-					playerIn.giveExperiencePoints(-100);
-					
-					if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.SHOUHOU)); }
-					else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.SHOUHOU))) {
-						playerIn.dropItem(new ItemStack(Items_Chinjufu.SHOUHOU), false); }
-				}
-
-				/** Not enough EXP **/
-				if (playerIn.experienceTotal < 100) { CMEvents.textNotEnough_EXP(worldIn, pos, playerIn); }
+				if (itemstack.isEmpty()) { 
+					playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.SHOUHOU)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.SHOUHOU))) {
+					playerIn.dropItem(new ItemStack(Items_Chinjufu.SHOUHOU), false); }
 			} // item == Items_Chinjufu.SHOUHOU_empty
 			
 			
-			/* Enchantbook 5 times */
+			/* Enchantbook */
 			if (item == Items.BOOK) {
 				
-				if (playerIn.experienceTotal >= 50) {
-					
-					BlockState northstate = worldIn.getBlockState(pos.north());
-					BlockState southstate = worldIn.getBlockState(pos.south());
-					BlockState eaststate = worldIn.getBlockState(pos.east());
-					BlockState weststate = worldIn.getBlockState(pos.west());
-					Block northblock = northstate.getBlock();
-					Block southblock = southstate.getBlock();
-					Block eastblock = eaststate.getBlock();
-					Block westblock = weststate.getBlock();
+				IBlockState northstate = worldIn.getBlockState(pos.north());
+				IBlockState southstate = worldIn.getBlockState(pos.south());
+				IBlockState eaststate = worldIn.getBlockState(pos.east());
+				IBlockState weststate = worldIn.getBlockState(pos.west());
+				Block northblock = northstate.getBlock();
+				Block southblock = southstate.getBlock();
+				Block eastblock = eaststate.getBlock();
+				Block westblock = weststate.getBlock();
+				
+				switch (i) {
+				case 1 :
+				default :
 					
 					switch (direction) {
 					case NORTH :
-					default :
+					default:
 						/** left **/
 						if (eaststate.getMaterial().isReplaceable()) {
 							this.writebook(worldIn, pos, playerIn, hand);
 							worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-									.with(WrittenBook.H_FACING, Direction.NORTH)
-									.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-									.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+									.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+									.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 						
 						if (!(eaststate.getMaterial().isReplaceable())) {
-							if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.get(WrittenBook.STAGE_1_4) != 4) {
+							if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
 								this.writebook(worldIn, pos, playerIn, hand);
-								worldIn.setBlockState(pos.east(), eaststate.with(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+								worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 							
 							/** front **/
 							if (eastblock != Unit_Blocks.WRITTEN_BOOK ||
-									(eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.get(WrittenBook.STAGE_1_4) == 4)) {
+									(eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 								if (southstate.getMaterial().isReplaceable()) {
 									this.writebook(worldIn, pos, playerIn, hand);
 									worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-											.with(WrittenBook.H_FACING, Direction.NORTH)
-											.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-											.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+											.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 								
 								if (!(southstate.getMaterial().isReplaceable())) {
-									if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.get(WrittenBook.STAGE_1_4) != 4) {
+									if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
 										this.writebook(worldIn, pos, playerIn, hand);
-										worldIn.setBlockState(pos.south(), southstate.with(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+										worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 									
 									/** right **/
 									if (southblock != Unit_Blocks.WRITTEN_BOOK ||
-											(southblock == Unit_Blocks.WRITTEN_BOOK && southstate.get(WrittenBook.STAGE_1_4) == 4)) {
+											(southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 										if (weststate.getMaterial().isReplaceable()) {
 											this.writebook(worldIn, pos, playerIn, hand);
 											worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-													.with(WrittenBook.H_FACING, Direction.NORTH)
-													.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-													.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+													.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 										
 										if (!(weststate.getMaterial().isReplaceable())) {
-											if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.get(WrittenBook.STAGE_1_4) != 4) {
+											if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
 												this.writebook(worldIn, pos, playerIn, hand);
-												worldIn.setBlockState(pos.west(), weststate.with(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+												worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 											
-											else { CMEvents.textNoPlace(worldIn, pos, playerIn); }
-										}
+											else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
 									}
 								}
 							}
 						}
 						break;
-
+					
 					case SOUTH :
 						/** left **/
 						if (weststate.getMaterial().isReplaceable()) {
 							this.writebook(worldIn, pos, playerIn, hand);
 							worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-									.with(WrittenBook.H_FACING, Direction.SOUTH)
-									.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-									.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+									.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+									.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 						
 						if (!(weststate.getMaterial().isReplaceable())) {
-							if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.get(WrittenBook.STAGE_1_4) != 4) {
+							if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
 								this.writebook(worldIn, pos, playerIn, hand);
-								worldIn.setBlockState(pos.west(), weststate.with(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+								worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 							
 							/** front **/
 							if (westblock != Unit_Blocks.WRITTEN_BOOK ||
-									(westblock == Unit_Blocks.WRITTEN_BOOK && weststate.get(WrittenBook.STAGE_1_4) == 4)) {
+									(westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 								if (northstate.getMaterial().isReplaceable()) {
 									this.writebook(worldIn, pos, playerIn, hand);
 									worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-											.with(WrittenBook.H_FACING, Direction.SOUTH)
-											.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-											.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+											.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 								
 								if (!(northstate.getMaterial().isReplaceable())) {
-									if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.get(WrittenBook.STAGE_1_4) != 4) {
+									if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
 										this.writebook(worldIn, pos, playerIn, hand);
-										worldIn.setBlockState(pos.north(), northstate.with(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+										worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 									
 									/** right **/
 									if (northblock != Unit_Blocks.WRITTEN_BOOK ||
-											(northblock == Unit_Blocks.WRITTEN_BOOK && northstate.get(WrittenBook.STAGE_1_4) == 4)) {
+											(northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 										if (eaststate.getMaterial().isReplaceable()) {
 											this.writebook(worldIn, pos, playerIn, hand);
 											worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-													.with(WrittenBook.H_FACING, Direction.SOUTH)
-													.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-													.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+													.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 										
 										if (!(eaststate.getMaterial().isReplaceable())) {
-											if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.get(WrittenBook.STAGE_1_4) != 4) {
+											if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
 												this.writebook(worldIn, pos, playerIn, hand);
-												worldIn.setBlockState(pos.east(), eaststate.with(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+												worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 											
-											else { CMEvents.textNoPlace(worldIn, pos, playerIn); }
-										}
-									}
+											else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+									} /** right **/
 								}
-							}
-						}
+							} /** front **/
+						} /** left **/
 						break;
-
+					
 					case EAST :
 						/** left **/
 						if (southstate.getMaterial().isReplaceable()) {
 							this.writebook(worldIn, pos, playerIn, hand);
 							worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-									.with(WrittenBook.H_FACING, Direction.EAST)
-									.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-									.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+									.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+									.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 						
 						if (!(southstate.getMaterial().isReplaceable())) {
-							if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.get(WrittenBook.STAGE_1_4) != 4) {
+							if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
 								this.writebook(worldIn, pos, playerIn, hand);
-								worldIn.setBlockState(pos.south(), southstate.with(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+								worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 							
 							/** front **/
 							if (southblock != Unit_Blocks.WRITTEN_BOOK ||
-									(southblock == Unit_Blocks.WRITTEN_BOOK && southstate.get(WrittenBook.STAGE_1_4) == 4)) {
+									(southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 								if (weststate.getMaterial().isReplaceable()) {
 									this.writebook(worldIn, pos, playerIn, hand);
 									worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-											.with(WrittenBook.H_FACING, Direction.EAST)
-											.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-											.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+											.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 								
 								if (!(weststate.getMaterial().isReplaceable())) {
-									if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.get(WrittenBook.STAGE_1_4) != 4) {
+									if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
 										this.writebook(worldIn, pos, playerIn, hand);
-										worldIn.setBlockState(pos.west(), weststate.with(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+										worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 									
 									/** right **/
 									if (westblock != Unit_Blocks.WRITTEN_BOOK ||
-											(westblock == Unit_Blocks.WRITTEN_BOOK && weststate.get(WrittenBook.STAGE_1_4) == 4)) {
+											(westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 										if (northstate.getMaterial().isReplaceable()) {
 											this.writebook(worldIn, pos, playerIn, hand);
 											worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-													.with(WrittenBook.H_FACING, Direction.EAST)
-													.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-													.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+													.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 										
 										if (!(northstate.getMaterial().isReplaceable())) {
-											if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.get(WrittenBook.STAGE_1_4) != 4) {
+											if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
 												this.writebook(worldIn, pos, playerIn, hand);
-												worldIn.setBlockState(pos.north(), northstate.with(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+												worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 											
-											else { CMEvents.textNoPlace(worldIn, pos, playerIn); }
-										}
+											else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
 									}
 								}
 							}
@@ -266,199 +259,645 @@ public class TrayLetter extends Block implements IWaterLoggable {
 						if (northstate.getMaterial().isReplaceable()) {
 							this.writebook(worldIn, pos, playerIn, hand);
 							worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-									.with(WrittenBook.H_FACING, Direction.WEST)
-									.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-									.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+									.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+									.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 						
 						if (!(northstate.getMaterial().isReplaceable())) {
-							if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.get(WrittenBook.STAGE_1_4) != 4) {
+							if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
 								this.writebook(worldIn, pos, playerIn, hand);
-								worldIn.setBlockState(pos.north(), northstate.with(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+								worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 							
 							/** front **/
 							if (northblock != Unit_Blocks.WRITTEN_BOOK ||
-									(northblock == Unit_Blocks.WRITTEN_BOOK && northstate.get(WrittenBook.STAGE_1_4) == 4)) {
+									(northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 								if (eaststate.getMaterial().isReplaceable()) {
 									this.writebook(worldIn, pos, playerIn, hand);
 									worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-											.with(WrittenBook.H_FACING, Direction.WEST)
-											.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-											.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+											.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 								
 								if (!(eaststate.getMaterial().isReplaceable())) {
-									if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.get(WrittenBook.STAGE_1_4) != 4) {
+									if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
 										this.writebook(worldIn, pos, playerIn, hand);
-										worldIn.setBlockState(pos.east(), eaststate.with(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+										worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 									
 									/** right **/
 									if (eastblock != Unit_Blocks.WRITTEN_BOOK ||
-											(eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.get(WrittenBook.STAGE_1_4) == 4)) {
+											(eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
 										if (southstate.getMaterial().isReplaceable()) {
 											this.writebook(worldIn, pos, playerIn, hand);
 											worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
-													.with(WrittenBook.H_FACING, Direction.WEST)
-													.with(WrittenBook.DOWN, state.get(WrittenBook.DOWN))
-													.with(WrittenBook.WATERLOGGED, state.get(WrittenBook.WATERLOGGED)), 3); }
+													.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
 										
 										if (!(southstate.getMaterial().isReplaceable())) {
-											if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.get(WrittenBook.STAGE_1_4) != 4) {
+											if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
 												this.writebook(worldIn, pos, playerIn, hand);
-												worldIn.setBlockState(pos.south(), southstate.with(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.get(WrittenBook.STAGE_1_4) + 1)), 3); }
+												worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
 											
-											else { CMEvents.textNoPlace(worldIn, pos, playerIn); }
-										}
+											else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
 									}
 								}
 							}
 						}
 						break;
-					} // switch direction
-				} // totalExperience >= 50
+					} // direction
+					
+					break;
+
+				///// Fude Tray ////////////////////////////////////////////////////////////////////////////////////////////////////
+				case 2 :
+					if (!CMConfig_Core.useMAKIMONO) {
+						switch (direction) {
+						case NORTH :
+						default:
+							/** left **/
+							if (eaststate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(eaststate.getMaterial().isReplaceable())) {
+								if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								/** front **/
+								if (eastblock != Unit_Blocks.WRITTEN_BOOK ||
+										(eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+									if (southstate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(southstate.getMaterial().isReplaceable())) {
+										if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										/** right **/
+										if (southblock != Unit_Blocks.WRITTEN_BOOK ||
+												(southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+											if (weststate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(weststate.getMaterial().isReplaceable())) {
+												if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										}
+									}
+								}
+							}
+							break;
+						
+						case SOUTH :
+							/** left **/
+							if (weststate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(weststate.getMaterial().isReplaceable())) {
+								if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								/** front **/
+								if (westblock != Unit_Blocks.WRITTEN_BOOK ||
+										(westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+									if (northstate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(northstate.getMaterial().isReplaceable())) {
+										if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										/** right **/
+										if (northblock != Unit_Blocks.WRITTEN_BOOK ||
+												(northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+											if (eaststate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(eaststate.getMaterial().isReplaceable())) {
+												if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										} /** right **/
+									}
+								} /** front **/
+							} /** left **/
+							break;
+						
+						case EAST :
+							/** left **/
+							if (southstate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(southstate.getMaterial().isReplaceable())) {
+								if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								/** front **/
+								if (southblock != Unit_Blocks.WRITTEN_BOOK ||
+										(southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+									if (weststate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(weststate.getMaterial().isReplaceable())) {
+										if (westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										/** right **/
+										if (westblock != Unit_Blocks.WRITTEN_BOOK ||
+												(westblock == Unit_Blocks.WRITTEN_BOOK && weststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+											if (northstate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(northstate.getMaterial().isReplaceable())) {
+												if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										}
+									}
+								}
+							}
+							break;
+							
+						case WEST :
+							/** left **/
+							if (northstate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(northstate.getMaterial().isReplaceable())) {
+								if (northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								/** front **/
+								if (northblock != Unit_Blocks.WRITTEN_BOOK ||
+										(northblock == Unit_Blocks.WRITTEN_BOOK && northstate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+									if (eaststate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(eaststate.getMaterial().isReplaceable())) {
+										if (eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										/** right **/
+										if (eastblock != Unit_Blocks.WRITTEN_BOOK ||
+												(eastblock == Unit_Blocks.WRITTEN_BOOK && eaststate.getValue(WrittenBook.STAGE_1_4) == 4)) {
+											if (southstate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_BOOK.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(southstate.getMaterial().isReplaceable())) {
+												if (southblock == Unit_Blocks.WRITTEN_BOOK && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												else { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										}
+									}
+								}
+							}
+							break;
+						} // direction
+					} // useMAKIMONO == false
+					
+					///// use MAKIMONO ////////////////////////////////////////////////////////////////////////////////////////////////////
+					if (CMConfig_Core.useMAKIMONO) {
+						switch (direction) {
+						case NORTH :
+						default:
+							/** left **/
+							if (eaststate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(eaststate.getMaterial().isReplaceable())) {
+								if (eastblock == Unit_Blocks.WRITTEN_MAKIMONO && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								if (eastblock == Unit_Blocks.WRITTEN_MAKIMONO && eaststate.getValue(WrittenBook.STAGE_1_4) == 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+											.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+								
+								/** front **/
+								if (eastblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+									if (southstate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(southstate.getMaterial().isReplaceable())) {
+										if (southblock == Unit_Blocks.WRITTEN_MAKIMONO && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										if (southblock == Unit_Blocks.WRITTEN_MAKIMONO && southstate.getValue(WrittenBook.STAGE_1_4) == 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+													.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+										
+										/** right **/
+										if (southblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+											if (weststate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(weststate.getMaterial().isReplaceable())) {
+												if (westblock == Unit_Blocks.WRITTEN_MAKIMONO && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												if (westblock == Unit_Blocks.WRITTEN_MAKIMONO && weststate.getValue(WrittenBook.STAGE_1_4) == 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+															.withProperty(WrittenBook.H_FACING, EnumFacing.NORTH)
+															.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+												
+												if (westblock != Unit_Blocks.WRITTEN_MAKIMONO) { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										}
+									}
+								}
+							}
+							break;
+						
+						case SOUTH :
+							/** left **/
+							if (weststate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(weststate.getMaterial().isReplaceable())) {
+								if (westblock == Unit_Blocks.WRITTEN_MAKIMONO && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								if (westblock == Unit_Blocks.WRITTEN_MAKIMONO && weststate.getValue(WrittenBook.STAGE_1_4) == 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+											.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+								
+								/** front **/
+								if (westblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+									if (northstate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(northstate.getMaterial().isReplaceable())) {
+										if (northblock == Unit_Blocks.WRITTEN_MAKIMONO && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										if (northblock == Unit_Blocks.WRITTEN_MAKIMONO && northstate.getValue(WrittenBook.STAGE_1_4) == 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+													.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+										
+										/** right **/
+										if (northblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+											if (eaststate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(eaststate.getMaterial().isReplaceable())) {
+												if (eastblock == Unit_Blocks.WRITTEN_MAKIMONO && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												if (eastblock == Unit_Blocks.WRITTEN_MAKIMONO && eaststate.getValue(WrittenBook.STAGE_1_4) == 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+															.withProperty(WrittenBook.H_FACING, EnumFacing.SOUTH)
+															.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+												
+												if (eastblock != Unit_Blocks.WRITTEN_MAKIMONO) { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										} /** right **/
+									}
+								} /** front **/
+							} /** left **/
+							break;
+						
+						case EAST :
+							/** left **/
+							if (southstate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(southstate.getMaterial().isReplaceable())) {
+								if (southblock == Unit_Blocks.WRITTEN_MAKIMONO && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								if (southblock == Unit_Blocks.WRITTEN_MAKIMONO && southstate.getValue(WrittenBook.STAGE_1_4) == 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+											.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+								
+								/** front **/
+								if (southblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+									if (weststate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(weststate.getMaterial().isReplaceable())) {
+										if (westblock == Unit_Blocks.WRITTEN_MAKIMONO && weststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.west(), weststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(weststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										if (westblock == Unit_Blocks.WRITTEN_MAKIMONO && weststate.getValue(WrittenBook.STAGE_1_4) == 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.west(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+													.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+										
+										/** right **/
+										if (westblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+											if (northstate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(northstate.getMaterial().isReplaceable())) {
+												if (northblock == Unit_Blocks.WRITTEN_MAKIMONO && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												if (northblock == Unit_Blocks.WRITTEN_MAKIMONO && northstate.getValue(WrittenBook.STAGE_1_4) == 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+															.withProperty(WrittenBook.H_FACING, EnumFacing.EAST)
+															.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+												
+												if (northblock != Unit_Blocks.WRITTEN_MAKIMONO) { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										}
+									}
+								}
+							}
+							break;
+							
+						case WEST :
+							/** left **/
+							if (northstate.getMaterial().isReplaceable()) {
+								this.writebook(worldIn, pos, playerIn, hand);
+								worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+										.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+										.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+							
+							if (!(northstate.getMaterial().isReplaceable())) {
+								if (northblock == Unit_Blocks.WRITTEN_MAKIMONO && northstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.north(), northstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(northstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+								
+								if (northblock == Unit_Blocks.WRITTEN_MAKIMONO && northstate.getValue(WrittenBook.STAGE_1_4) == 4) {
+									this.writebook(worldIn, pos, playerIn, hand);
+									worldIn.setBlockState(pos.north(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+											.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+											.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+								
+								/** front **/
+								if (northblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+									if (eaststate.getMaterial().isReplaceable()) {
+										this.writebook(worldIn, pos, playerIn, hand);
+										worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+												.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+												.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+									
+									if (!(eaststate.getMaterial().isReplaceable())) {
+										if (eastblock == Unit_Blocks.WRITTEN_MAKIMONO && eaststate.getValue(WrittenBook.STAGE_1_4) != 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.east(), eaststate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(eaststate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+										
+										if (eastblock == Unit_Blocks.WRITTEN_MAKIMONO && eaststate.getValue(WrittenBook.STAGE_1_4) == 4) {
+											this.writebook(worldIn, pos, playerIn, hand);
+											worldIn.setBlockState(pos.east(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+													.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+													.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+										
+										/** right **/
+										if (eastblock != Unit_Blocks.WRITTEN_MAKIMONO) {
+											if (southstate.getMaterial().isReplaceable()) {
+												this.writebook(worldIn, pos, playerIn, hand);
+												worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_MAKIMONO.getDefaultState()
+														.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+														.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+											
+											if (!(southstate.getMaterial().isReplaceable())) {
+												if (southblock == Unit_Blocks.WRITTEN_MAKIMONO && southstate.getValue(WrittenBook.STAGE_1_4) != 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.south(), southstate.withProperty(WrittenBook.STAGE_1_4, Integer.valueOf(southstate.getValue(WrittenBook.STAGE_1_4) + 1)), 3); }
+												
+												if (southblock == Unit_Blocks.WRITTEN_MAKIMONO && southstate.getValue(WrittenBook.STAGE_1_4) == 4) {
+													this.writebook(worldIn, pos, playerIn, hand);
+													worldIn.setBlockState(pos.south(), Unit_Blocks.WRITTEN_MAKIMONO5.getDefaultState()
+															.withProperty(WrittenBook.H_FACING, EnumFacing.WEST)
+															.withProperty(WrittenBook.DOWN, state.getValue(WrittenBook.DOWN)), 3); }
+												
+												if (southblock != Unit_Blocks.WRITTEN_MAKIMONO) { CMEvents.textNoPlace(worldIn, pos, playerIn); } }
+										}
+									}
+								}
+							}
+							break;
+						} // direction
+					} // useMAKIMONO == true
+					
+					break;
+				} // STAGE_1_2
 				
-				/** Not enough EXP **/
-				if (playerIn.experienceTotal < 50) { CMEvents.textNotEnough_EXP(worldIn, pos, playerIn); }
+
 			} // item == Items.BOOK
 			
 			if (item != Items_Chinjufu.SHOUHOU_empty && item != Items.BOOK) { CMEvents.textNotHave(worldIn, pos, playerIn); }
-			
-		} //get(LOST) != true
+		}
 		
-		/** Waterlogged **/
-		if (state.get(LOST) == true) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); }
+		/** Not enough EXP **/
+		if (playerIn.experienceTotal < 100) { CMEvents.textNotEnough_EXP(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		return true;
 	}
 	
 	/* Write Book */
-	private void writebook(World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand) {
-		CMEvents.Consume_1Item(playerIn, hand);
+	private void writebook(World worldIn, BlockPos pos, EntityPlayer playerIn, EnumHand hand) {
+		CMEvents.Consume_1Item(playerIn, hand);	
 		CMEvents.soundWrite(worldIn, pos);
-		playerIn.giveExperiencePoints(-10); //戦闘詳報1冊=10連
-	}
-
-	/* Gives a value when placed. +180 .getOpposite() */
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader worldIn = context.getWorld();
-		BlockPos pos = context.getPos();
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
-				.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(DOWN, this.connectHalf(worldIn, pos, Direction.DOWN));
-	}
-
-	/* Connect the blocks. */
-	protected boolean connectHalf(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
-		Block block = state.getBlock();
-
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				block instanceof LowDesk || block instanceof Chabudai || block instanceof Kotatsu);
-	}
-
-	protected boolean connectWater(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
-		Block block = state.getBlock();
-
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof LowDesk && state.get(LowDesk.WATERLOGGED)) ||
-				(block instanceof Chabudai && state.get(Chabudai.WATERLOGGED)) ||
-				(block instanceof Kotatsu && state.get(Kotatsu.WATERLOGGED)));
+		playerIn.addExperience(-10); //戦闘詳報1冊=10連
 	}
 	
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-	
-	/* Distinguish LOST from WATERLOGGED. */
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.get(WATERLOGGED) || connectWater(worldIn, pos, Direction.DOWN)) { return true; }
-		return false;
-	}
-	
-	/* Update BlockState. */
+	/* getOppositeでプレイヤーの向きを取得 */
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		if (connectWater(worldIn, pos, Direction.DOWN)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, Fluids.WATER.getTickRate(worldIn)); }
-		
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 300); }
-		
-		boolean down = connectHalf(worldIn, pos, Direction.DOWN);
-		return state.with(DOWN, down);
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
+			float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(H_FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
+	/* IBlockStateからItemStackのmetadataを生成。ドロップ時とテクスチャ・モデル参照時に呼ばれる */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i = i | ((EnumFacing)state.getValue(H_FACING)).getHorizontalIndex();
+		i = i | ((Integer)state.getValue(STAGE_1_2)).intValue() - 1 << 2;
+		return i;
+	}
+
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(H_FACING, rot.rotate((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	/* ItemStackのmetadataからIBlockStateを生成。設置時に呼ばれる */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(H_FACING, EnumFacing.getHorizontal(meta))
+				.withProperty(STAGE_1_2, Integer.valueOf(1 + (meta >> 2)));
+	}
+
+	/*Collision*/
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		state = state.getActualState(source, pos);
+		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+
+		/** !down = true : false **/
+		return flag? AABB : AABB_DOWN;
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** ぶつからないブロックになる **/
+		return NULL_AABB;
+	}
+
+	/* 直下ブロックに対する返し */
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getBlock() instanceof LowDesk || worldIn
+				.getBlockState(pos).getBlock() instanceof LowDesk_sub;
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, 300);
-	}
-	
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-	
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 300);
-			worldIn.setBlockState(pos, state.with(LOST, Boolean.valueOf(true)), 3); }
-		
-		if (!inWater(state, worldIn, pos)) { }
-	}
-	
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, this.canConnectTo(worldIn, pos.down()));
 	}
 
+	/*初期BlockStateContainerの生成 */
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { H_FACING, DOWN, STAGE_1_2 });
 	}
 
-	/* Create Blockstate */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(DOWN, H_FACING, WATERLOGGED, LOST);
-	}
-
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
-
-		/** !down= true : false **/
-		return flag? AABB_BOX : AABB_DOWN;
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* 描画の設定 */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (i == 1) { stack.add(new ItemStack(Items_Chinjufu.LETTERTRAY, 1, 1)); }
+		if (i == 2) { stack.add(new ItemStack(Items_Chinjufu.LETTERTRAY, 1, 2)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (i == 2) { return new ItemStack(Items_Chinjufu.LETTERTRAY, 1, 2); }
+		return new ItemStack(Items_Chinjufu.LETTERTRAY, 1, 1);
 	}
 
 }

@@ -13,7 +13,7 @@
 			"from": [ 4, 0.5, 4 ],
 			"to": [ 12, 3.0, 12 ],
 			"faces": {
-				"up" : { "texture": "#soup", "tintindex": 2 }
+				"up" : { "texture": "#soup", "tintindex": 35 }
 			}
 		},
 

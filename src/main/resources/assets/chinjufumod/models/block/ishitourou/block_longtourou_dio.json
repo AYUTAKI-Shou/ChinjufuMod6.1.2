@@ -1,7 +1,7 @@
 {
 	"parent": "chinjufumod:block/base/base_longtourou_hand",
 	"textures": {
- 		"particle": "minecraft:block/polished_diorite",
- 		"ishi": "minecraft:block/polished_diorite"
+ 		"particle": "minecraft:blocks/stone_diorite_smooth",
+ 		"ishi": "minecraft:blocks/stone_diorite_smooth"
 	}
 }

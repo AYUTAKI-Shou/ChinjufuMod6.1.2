@@ -1,185 +1,193 @@
 package com.ayutaki.chinjufumod.blocks.crop;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import com.ayutaki.chinjufumod.handler.CMEvents;
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
-public class Base_HodaGi_Top extends Block implements IWaterLoggable {
+public class Base_HodaGi_Top extends Block {
 
 	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final IntegerProperty STAGE_1_4 = IntegerProperty.create("stage", 1, 4);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final PropertyInteger STAGE_1_4 = PropertyInteger.create("stage", 1, 4);
+	public static final PropertyDirection H_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	
+	/* Collisionの数値 */
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, -0.25, 0.3125, 0.65, 0.5, 0.6875);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, -0.25, 0.3125, 0.65, 0.5, 0.6875);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, -0.25, 0.3125, 0.65, 0.5, 0.6875);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, -0.25, 0.3125, 0.65, 0.5, 0.6875);
+	private static final AxisAlignedBB[] AABB = { AABB_SOUTH, AABB_WEST, AABB_NORTH, AABB_EAST };
+
+	public Base_HodaGi_Top() {
+		super(Material.WOOD);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(H_FACING, EnumFacing.NORTH)
+				.withProperty(STAGE_1_4, Integer.valueOf(1)));
+		
+		setHardness(1.0F);
+		setResistance(5.0F);
+		setSoundType(SoundType.WOOD);
+
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
+
+		setTickRandomly(true);
+	}
+
+	/* getOppositeでプレイヤーの向きを取得 */
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
+			float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(H_FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
+	/* IBlockStateからItemStackのmetadataを生成。ドロップ時とテクスチャ・モデル参照時に呼ばれる */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i = i | ((EnumFacing)state.getValue(H_FACING)).getHorizontalIndex();
+		i = i | ((Integer)state.getValue(STAGE_1_4)).intValue() - 1 << 2;
+		return i;
+	}
+
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(H_FACING, rot.rotate((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	/* ItemStackのmetadataからIBlockStateを生成。設置時に呼ばれる */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(H_FACING, EnumFacing.getHorizontal(meta))
+				.withProperty(STAGE_1_4, Integer.valueOf(1 + (meta >> 2)));
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (4 - ((Integer)blockState.getValue(STAGE_1_4)).intValue()) * 2;
+	}
+
+	/* 初期BlockStateContainerの生成 */
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { H_FACING, STAGE_1_4 });
+	}
+	
+	/* 成長 */
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+		if (!worldIn.isAreaLoaded(pos, 1)) return;
+
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+
+		if (i != 4 && worldIn.getLightFromNeighbors(pos.up()) <= 11 && rand.nextInt(8) == 0) {
+				worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)));
+		}
+
+		if (i == 4) { }
+	}
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.0D, -4.0D, 0.0D, 11.0D, 8.0D, 10.0D);
-	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(6.0D, -4.0D, 5.0D, 16.0D, 8.0D, 11.0D);
-	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.0D, -4.0D, 6.0D, 11.0D, 8.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, -4.0D, 5.0D, 10.0D, 8.0D, 11.0D);
-
-	public Base_HodaGi_Top(Block.Properties properties) {
-		super(properties);
-		
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(STAGE_1_4, Integer.valueOf(1))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
-	}
-
-	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(H_FACING);
+		/** H_FACING のData valueに対応 **/
+		return AABB[facing.getHorizontalIndex()];
 	}
 
-	/* HORIZONTAL Property */
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	@SuppressWarnings("deprecation")
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
-
-	/* Create Blockstate */
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(H_FACING, STAGE_1_4, WATERLOGGED);
-	}
-
-	/* TickRandom */
-	private boolean inShade(ServerWorld worldIn, BlockPos pos) {
-		return ((worldIn.canSeeSky(pos) && !worldIn.isDaytime()) || (!worldIn.canSeeSky(pos) && worldIn.getLightSubtracted(pos, 0) <= 11));
-	}
-
-	@Override
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		int i = state.get(STAGE_1_4);
-
-		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
-
-		if (!state.get(WATERLOGGED)) {
-			if (i != 4) {
-				if (inShade(worldIn, pos) && rand.nextInt(8) == 0) {
-					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); } }
-			
-			if (i == 4) { }
-		}
-		
-
-		if (state.get(WATERLOGGED)) {
-			if (i != 1) {
-				if (rand.nextInt(2) == 0) {
-					CMEvents.soundSnowBreak(worldIn, pos);
-					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(1)));
-					this.dropRottenfood(worldIn, pos); } }
-			
-			if (i == 1) { }
-		}
-	}
-
-	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
-		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
-	}
-
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
-		switch(direction) {
-		case SOUTH:
-			return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
-		case NORTH:
-		default:
-			return AABB_NORTH;
-		case EAST:
-			return AABB_EAST;
-		}
-	}
-
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Teatime.HODAGI);
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* Destroy at the same time. & Drop item. */
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-		BlockState blockstate = worldIn.getBlockState(pos.down());
+	/* 同時破壊とドロップの指定 */
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
+		Block downblock = worldIn.getBlockState(pos.down()).getBlock();
+		
 		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
-		if (blockstate.getBlock() instanceof Base_HodaGi_Bot) {
-			worldIn.destroyBlock(pos.down(), false); }
-		
-		super.onBlockHarvested(worldIn, pos, state, playerIn);
+		if (downblock instanceof Base_HodaGi_Bot) {
+				worldIn.destroyBlock(pos.down(), false);
+		}
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Items_Teatime.HODAGI_BOT, 1, 0));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.HODAGI_BOT, 1, 0);
 	}
 
 }

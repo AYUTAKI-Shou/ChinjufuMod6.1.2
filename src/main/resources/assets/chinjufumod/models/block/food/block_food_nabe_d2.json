@@ -366,7 +366,7 @@
 			"from": [ 4, 2.5, 4 ],
 			"to": [ 12, 2.6, 12 ],
 			"faces": {
-				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#miso", "tintindex": 2 }
+				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#miso", "tintindex": 32 }
 			}
 		},
 

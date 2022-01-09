@@ -1,0 +1,18 @@
+{
+	"variants": {
+	"facing=north,stage=1": { "model": "chinjufumod:dressingtable/block_dressingtable_top_j", "y": 180 },
+	"facing=south,stage=1": { "model": "chinjufumod:dressingtable/block_dressingtable_top_j" },
+	"facing=west,stage=1":  { "model": "chinjufumod:dressingtable/block_dressingtable_top_j", "y": 90 },
+	"facing=east,stage=1":  { "model": "chinjufumod:dressingtable/block_dressingtable_top_j", "y": 270 },
+
+	"facing=north,stage=2": { "model": "chinjufumod:dressingtable/block_dressingtable_top_a", "y": 180 },
+	"facing=south,stage=2": { "model": "chinjufumod:dressingtable/block_dressingtable_top_a" },
+	"facing=west,stage=2":  { "model": "chinjufumod:dressingtable/block_dressingtable_top_a", "y": 90 },
+	"facing=east,stage=2":  { "model": "chinjufumod:dressingtable/block_dressingtable_top_a", "y": 270 },
+
+	"facing=north,stage=3": { "model": "chinjufumod:dressingtable/block_dressingtable_top_d", "y": 180 },
+	"facing=south,stage=3": { "model": "chinjufumod:dressingtable/block_dressingtable_top_d" },
+	"facing=west,stage=3":  { "model": "chinjufumod:dressingtable/block_dressingtable_top_d", "y": 90 },
+	"facing=east,stage=3":  { "model": "chinjufumod:dressingtable/block_dressingtable_top_d", "y": 270 }
+	}
+}

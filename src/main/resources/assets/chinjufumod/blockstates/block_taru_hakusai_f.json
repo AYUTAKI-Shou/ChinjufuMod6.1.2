@@ -1,10 +1,14 @@
 {
 	"variants": {
-		"stage=0": { "model": "chinjufumod:block/taru/block_taru_hakusai_f" },
-		"stage=1": { "model": "chinjufumod:block/taru/block_taru_hakusai_f" },
-		"stage=2": { "model": "chinjufumod:block/taru/block_taru_hakusai_f" },
-		"stage=3": { "model": "chinjufumod:block/taru/block_taru_hakusai_f" },
-		"stage=4": { "model": "chinjufumod:block/taru/block_taru_hakusai_f" },
-		"stage=5": { "model": "chinjufumod:block/taru/block_taru_hakusai_1" }
+		"stage=0": { "model": "chinjufumod:taru/block_taru_hakusai_f" },
+		"stage=1": { "model": "chinjufumod:taru/block_taru_hakusai_1" },
+		"stage=2": { "model": "chinjufumod:taru/block_taru_hakusai_f2" },
+		"stage=3": { "model": "chinjufumod:taru/block_taru_hakusai_2" },
+		"stage=4": { "model": "chinjufumod:taru/block_taru_hakusai_3" },
+		"stage=5": { "model": "chinjufumod:taru/block_taru_hakusai_3" },
+		"stage=6": { "model": "chinjufumod:taru/block_taru_hakusai_3" },
+		"stage=7": { "model": "chinjufumod:taru/block_taru_hakusai_3" },
+		"stage=8": { "model": "chinjufumod:taru/block_taru_hakusai_kara" },
+		"stage=9": { "model": "chinjufumod:taru/block_taru_hakusai_1k" }
 	}
 }

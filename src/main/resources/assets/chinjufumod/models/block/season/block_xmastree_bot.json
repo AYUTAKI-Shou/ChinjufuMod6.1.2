@@ -5,7 +5,7 @@
 		"miki": "chinjufumod:blocks/xmas_log",
 		"miki_top": "chinjufumod:blocks/xmas_log_top",
 		"ha": "chinjufumod:blocks/xmas_leaves",
-		"tuchi": "minecraft:block/dirt",
+		"tuchi": "minecraft:blocks/dirt",
 		"hoshi": "chinjufumod:blocks/xmas_star",
 		"aka": "chinjufumod:blocks/xmas_ribbon_red",
 		"shiro": "chinjufumod:blocks/xmas_ribbon_white",

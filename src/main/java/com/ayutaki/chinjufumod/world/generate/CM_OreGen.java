@@ -1,36 +1,63 @@
 package com.ayutaki.chinjufumod.world.generate;
 
-import com.ayutaki.chinjufumod.Config_CM;
-import com.ayutaki.chinjufumod.registry.ChinjufuModBlocks;
+import java.util.Random;
 
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.placement.CountRangeConfig;
-import net.minecraft.world.gen.placement.Placement;
-import net.minecraftforge.registries.ForgeRegistries;
+import com.ayutaki.chinjufumod.config.CMConfig_Core;
+import com.ayutaki.chinjufumod.registry.Chinjufu_Blocks;
 
-public class CM_OreGen {
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
-	public static void addOres() {
+public class CM_OreGen implements IWorldGenerator {
 
-		if (Config_CM.getInstance().bauxiteGene() == true) {
-			for (Biome biome : ForgeRegistries.BIOMES) {
-				biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE
-						.withConfiguration(new OreFeatureConfig(OreFeatureConfig
-								.FillerBlockType.NATURAL_STONE, ChinjufuModBlocks.BAUXITE_ORE.getDefaultState(), 8))
-						.withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(Config_CM.getInstance().bauxiteChance(), 10, 0, 70))));
+	private WorldGenerator bauxite_cm;
+
+	public CM_OreGen() {
+		bauxite_cm = new WorldGenMinable(Chinjufu_Blocks.BAUXITE_ORE.getDefaultState(), 8);
+	}
+
+	private void runGenerator(WorldGenerator gen, World worldIn, Random rand,
+			int chunkX, int chunkZ, int chance, int minHeight, int maxHeight) {
+
+		if (minHeight > maxHeight || minHeight < 0 || maxHeight > 256)
+			throw new IllegalArgumentException("Ore generated out of bounds");
+		int heightDiff = maxHeight - minHeight + 1;
+
+		for(int i = 0; i < chance; i++) {
+			int x = chunkX * 16 + rand.nextInt(16);
+			int y = minHeight + rand.nextInt(heightDiff);
+			int z = chunkZ * 16 + rand.nextInt(16);
+
+			gen.generate(worldIn, rand, new BlockPos(x, y, z));
+		}
+	}
+
+	@Override
+	public void generate(Random rand, int chunkX, int chunkZ,
+			World worldIn, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+
+		/*ifを追加*/
+		if (CMConfig_Core.isGeneratorEnabled && worldIn.provider instanceof WorldProviderSurface) {
+
+			switch (worldIn.provider.getDimension()) {
+
+			case 0: //オーバーワールド Coal=142,Iron=77,RedStone=25,Gold=8,Lapiz=3.4
+				this.runGenerator(bauxite_cm, worldIn, rand, chunkX, chunkZ, CMConfig_Core.isGeneratorChance, 10, 70);
+				break;
+
+			case -1: // ネザー
+				break;
+
+			case 1: // エンド
+				break;
 			}
 		}
-
-		if (Config_CM.getInstance().bauxiteGene() != true) { }
 	}
+
 }
-/* net.minecraft.world.biome.DefaultBiomeFeatures.class
-鉱石, 鉱脈サイズ))...(new CountRangeConfig(確率,最小の高さ,height base,最大の高さ))
-COAL_ORE, 17)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 128))));
-IRON_ORE, 9)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 64))));
-REDSTONE_ORE, 8)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(8, 0, 0, 16))));
-DIAMOND_ORE, 8)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(1, 0, 0, 16))));
-*/

@@ -1,8 +1,8 @@
 {
 	"variants": {
-		"facing=north": { "model": "chinjufumod:block/kitchen/block_kit2_tana", "y": 180 },
-		"facing=south": { "model": "chinjufumod:block/kitchen/block_kit2_tana", "y": 0 },
-		"facing=west": { "model": "chinjufumod:block/kitchen/block_kit2_tana", "y": 90 },
-		"facing=east": { "model": "chinjufumod:block/kitchen/block_kit2_tana", "y": 270 }
+		"facing=north": { "model": "chinjufumod:kitchen/block_kit2_tana", "y": 180 },
+		"facing=south": { "model": "chinjufumod:kitchen/block_kit2_tana", "y": 0 },
+		"facing=west":  { "model": "chinjufumod:kitchen/block_kit2_tana", "y": 90 },
+		"facing=east":  { "model": "chinjufumod:kitchen/block_kit2_tana", "y": 270 }
 	}
 }

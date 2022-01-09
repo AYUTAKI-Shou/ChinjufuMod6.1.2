@@ -4,9 +4,9 @@
 		"particle": "chinjufumod:blocks/shishiodoshi",
 		"take": "chinjufumod:blocks/shishiodoshi",
 		"ki": "chinjufumod:blocks/muku_oak",
-		"flow": "minecraft:block/water_flow",
-		"water": "minecraft:block/water_still",
-		"ishi": "minecraft:block/stone"
+		"flow": "chinjufumod:blocks/water_flow",
+		"water": "chinjufumod:blocks/water_still",
+		"ishi": "minecraft:blocks/stone"
 	},
 	"elements": [
 
@@ -108,7 +108,7 @@
 			"from": [ -3.5, 0, -1.49 ],
 			"to": [ -3, 8.1, -1 ],
 			"faces": {
-				"north": { "uv": [ 0.0, 8.0, 1.0, 0.0 ], "texture": "#flow", "tintindex": 1 }
+				"north": { "uv": [ 0.0, 8.0, 1.0, 0.0 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 
@@ -117,7 +117,7 @@
 			"from": [ -3.5, 8, -1.5 ],
 			"to": [ -3, 8.1, 8 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 1.0, 9.5 ], "texture": "#flow", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 1.0, 9.5 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 		{
@@ -125,10 +125,10 @@
 			"from": [ -3.5, 1, 7.75 ],
 			"to": [ -3, 8.1, 8 ],
 			"faces": {
-				"north": { "uv": [ 0.0, 2.0, 1.0, 9.0 ], "texture": "#flow", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 2.0, 1.0, 9.0 ], "texture": "#flow", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 2.0, 0.5, 9.0 ], "texture": "#flow", "tintindex": 1 },
-				"east": { "uv": [ 0.5, 2.0, 1.0, 9.0 ], "texture": "#flow", "tintindex": 1 }
+				"north": { "uv": [ 0.0, 2.0, 1.0, 9.0 ], "texture": "#flow", "tintindex": 20 },
+				"south": { "uv": [ 0.0, 2.0, 1.0, 9.0 ], "texture": "#flow", "tintindex": 20 },
+				"west": { "uv": [ 0.0, 2.0, 0.5, 9.0 ], "texture": "#flow", "tintindex": 20 },
+				"east": { "uv": [ 0.5, 2.0, 1.0, 9.0 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 		{
@@ -137,10 +137,10 @@
 			"to": [ 5.1, 0.1, 8.5 ],
 			"rotation": { "origin": [ 0.6, 5.25, 8 ], "axis": "z", "angle": -22.5, "rescale": false },
 			"faces": {
-				"up": { "uv": [ 5.0, 0.0, 7.0, 16.0 ], "texture": "#flow", "tintindex": 1, "rotation": 270 },
-				"north": { "uv": [ 15.5, 0.0, 16.0, 16.0 ], "texture": "#flow", "tintindex": 1, "rotation": 90 },
-				"south": { "uv": [ 13.0, 0.0, 12.5, 16.0 ], "texture": "#flow", "tintindex": 1, "rotation": 270 },
-				"west": { "uv": [ 5.0, 0.0, 7.0, 1.0 ], "texture": "#flow", "tintindex": 1 }
+				"up": { "uv": [ 5.0, 0.0, 7.0, 16.0 ], "texture": "#flow", "tintindex": 20, "rotation": 270 },
+				"north": { "uv": [ 15.5, 0.0, 16.0, 16.0 ], "texture": "#flow", "tintindex": 20, "rotation": 90 },
+				"south": { "uv": [ 13.0, 0.0, 12.5, 16.0 ], "texture": "#flow", "tintindex": 20, "rotation": 270 },
+				"west": { "uv": [ 5.0, 0.0, 7.0, 1.0 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 

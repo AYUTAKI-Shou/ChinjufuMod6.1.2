@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_brown",
-		"tea": "minecraft:block/water_still",
+		"tea": "chinjufumod:blocks/water_still",
 		"kyusu": "chinjufumod:blocks/dish_brown"
 	},
 	"elements": [
@@ -11,7 +11,7 @@
 			"from": [ 6.51, -7.8, 2.51 ],
 			"to": [ 9.49, -7.35, 5.49 ],
 			"faces": {
-				"up": {"uv": [ 6.51, 9.49, 6.51, 9.49 ], "texture": "#tea", "tintindex": 1 }
+				"up": {"uv": [ 6.51, 9.49, 6.51, 9.49 ], "texture": "#tea", "tintindex": 30 }
 			}
 		},
 

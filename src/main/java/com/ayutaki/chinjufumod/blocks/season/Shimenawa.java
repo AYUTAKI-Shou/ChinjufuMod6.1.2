@@ -4,78 +4,93 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Shimenawa extends BaseFacingWater {
+public class Shimenawa extends BaseFacingSapo {
 
-	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
-	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, 0.1875, 0.1875, 0.125, 0.8125, 0.8125);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.1875, 0.1875, 0.125, 0.8125, 0.8125);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, 0.1875, 0.1875, 0.125, 0.8125, 0.8125);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.1875, 0.1875, 0.125, 0.8125, 0.8125);
+	private static final AxisAlignedBB[] AABB = { AABB_SOUTH, AABB_WEST, AABB_NORTH, AABB_EAST };
 
-	public Shimenawa(Block.Properties properties) {
-		super(properties);
+	public Shimenawa() {
+		super(Material.WOOD);
+		setCreativeTab(ChinjufuModTabs.SEASONAL);
+
+		setSoundType(SoundType.PLANT);
+		setHardness(0.8F);
+		setResistance(1.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
-	/* 窒息 */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(H_FACING);
+		return AABB[facing.getHorizontalIndex()];
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean t_f) {
+
+		EnumFacing facing = state.getValue(H_FACING);
+		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB[facing.getHorizontalIndex()]);
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* Collisions for each property. */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-
-		Direction direction = state.get(H_FACING);
-
-		switch(direction) {
-		case SOUTH:
-			return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
-		case NORTH:
-		default:
-			return AABB_NORTH;
-		case EAST:
-			return AABB_EAST;
-		}
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_shimenawa")).applyTextStyle(TextFormatting.GRAY));
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_shimenawa", meta));
 	}
 
 }

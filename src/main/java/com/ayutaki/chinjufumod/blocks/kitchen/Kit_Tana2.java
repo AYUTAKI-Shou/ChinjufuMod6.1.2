@@ -4,167 +4,187 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Kit_Tana2 extends BaseFacingWater {
+public class Kit_Tana2 extends BaseFacingSapo {
 
-	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 12.0D);
-	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
+	public static final String ID = "block_kit2_tana";
 
-	public Kit_Tana2(Block.Properties properties) {
-		super(properties);
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, 0.0, 0.0, 0.75, 1.0, 1.0);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.0, 0.0, 0.75, 1.0, 1.0);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, 0.0, 0.0, 0.75, 1.0, 1.0);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.0, 0.0, 0.75, 1.0, 1.0);
+	private static final AxisAlignedBB[] AABB = { AABB_SOUTH, AABB_WEST, AABB_NORTH, AABB_EAST };
+
+	public Kit_Tana2() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setCreativeTab(ChinjufuModTabs.TEATIME);
+
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(10.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
-	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
-		if (item == Items_Teatime.NAMASAKEBOT) {
-			CMEvents.Consume_1Item(playerIn, hand);
-			CMEvents.soundDishPlace(worldIn, pos);
-			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKENAMA.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
-
-		if (item == Items_Teatime.SAKEBOT) {
-			CMEvents.Consume_1Item(playerIn, hand);
-			CMEvents.soundDishPlace(worldIn, pos);
-			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKE.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
-
-		if (item == Items_Teatime.JUKUSAKEBOT) {
-			CMEvents.Consume_1Item(playerIn, hand);
-			CMEvents.soundDishPlace(worldIn, pos);
-			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKEJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
-
+		/* シードル */
 		if (item == Items_Teatime.CIDERBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_CIDER.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_CIDER
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 
 		if (item == Items_Teatime.JUKUCIDERBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_CIDERJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_CIDERJUKU
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 
+		/* ワイン */
 		if (item == Items_Teatime.WINEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_WINE.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_WINE
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 
 		if (item == Items_Teatime.JUKUWINEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_WINEJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_WINEJUKU
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 
+		/* ミード */
 		if (item == Items_Teatime.MEADBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_MEAD.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_MEAD
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 
 		if (item == Items_Teatime.JUKUMEADBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_MEADJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
-					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_MEADJUKU
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
+
+		/* 酒 */
+		if (item == Items_Teatime.NAMASAKEBOT) {
+			CMEvents.Consume_1Item(playerIn, hand);
+			CMEvents.soundDishPlace(worldIn, pos);
+			
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKENAMA
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
+
+		if (item == Items_Teatime.SHINSAKEBOT) {
+			CMEvents.Consume_1Item(playerIn, hand);
+			CMEvents.soundWoodenDishPlace(worldIn, pos);
+			
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKE
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
+
+		if (item == Items_Teatime.JUKUSAKEBOT) {
+			CMEvents.Consume_1Item(playerIn, hand);
+			CMEvents.soundDishPlace(worldIn, pos);
+			
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKEJUKU
+					.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 		
-		if (item != Items_Teatime.NAMASAKEBOT && item != Items_Teatime.SAKEBOT && item != Items_Teatime.JUKUSAKEBOT &&
-				item != Items_Teatime.CIDERBOT && item != Items_Teatime.JUKUCIDERBOT &&
+		/* You don't have any usable items. */
+		if (item != Items_Teatime.CIDERBOT && item != Items_Teatime.JUKUCIDERBOT &&
 				item != Items_Teatime.WINEBOT && item != Items_Teatime.JUKUWINEBOT &&
-				item != Items_Teatime.MEADBOT && item != Items_Teatime.JUKUMEADBOT) {
+				item != Items_Teatime.MEADBOT && item != Items_Teatime.JUKUMEADBOT &&
+				item != Items_Teatime.NAMASAKEBOT && item != Items_Teatime.SHINSAKEBOT &&
+				item != Items_Teatime.JUKUSAKEBOT) {
 			CMEvents.textNotHave(worldIn, pos, playerIn); }
-
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* Collisions for each property. */
+	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-
-		Direction direction = state.get(H_FACING);
-
-		switch(direction) {
-		case SOUTH:
-			return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
-		case NORTH:
-		default:
-			return AABB_NORTH;
-		case EAST:
-			return AABB_EAST;
-		}
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(H_FACING);
+		return AABB[facing.getHorizontalIndex()];
 	}
 
-	/* 窒息 */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes,
+			@Nullable Entity entityIn, boolean t_f) {
+
+		EnumFacing facing = state.getValue(H_FACING);
+		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB[facing.getHorizontalIndex()]);
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return true;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
-	}
-
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kit2_tana")).applyTextStyle(TextFormatting.GRAY));
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_kit2_tana", meta));
 	}
 
 }

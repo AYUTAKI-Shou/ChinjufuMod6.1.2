@@ -1,23 +1,23 @@
 {
 	"variants": {
-	"facing=north,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae1n" },
-	"facing=south,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae1s" },
-	"facing=west,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae1w" },
-	"facing=east,stage=1": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae1e" },
+	"facing=north,stage=1": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae1n" },
+	"facing=south,stage=1": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae1s" },
+	"facing=west,stage=1": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae1w" },
+	"facing=east,stage=1": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae1e" },
 
-		"facing=north,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae2n" },
-		"facing=south,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae2s" },
-		"facing=west,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae2w" },
-		"facing=east,stage=2": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae2e" },
+		"facing=north,stage=2": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae2n" },
+		"facing=south,stage=2": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae2s" },
+		"facing=west,stage=2": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae2w" },
+		"facing=east,stage=2": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae2e" },
 
-	"facing=north,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae3n" },
-	"facing=south,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae3s" },
-	"facing=west,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae3w" },
-	"facing=east,stage=3": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae3e" },
+	"facing=north,stage=3": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae3n" },
+	"facing=south,stage=3": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae3s" },
+	"facing=west,stage=3": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae3w" },
+	"facing=east,stage=3": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae3e" },
 
-		"facing=north,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae4n" },
-		"facing=south,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae4s" },
-		"facing=west,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae4w" },
-		"facing=east,stage=4": { "model": "chinjufumod:block/kamoiwood/block_ka_spru_kae4e" }
+		"facing=north,stage=4": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae4n" },
+		"facing=south,stage=4": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae4s" },
+		"facing=west,stage=4": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae4w" },
+		"facing=east,stage=4": { "model": "chinjufumod:kamoiwood/block_ka_spru_kae4e" }
 	}
 }

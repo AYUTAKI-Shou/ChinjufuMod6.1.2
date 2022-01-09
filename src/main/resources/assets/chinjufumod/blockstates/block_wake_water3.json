@@ -1,5 +1,5 @@
 {
 	"variants": {
-		"": { "model": "chinjufumod:block/block_wake_water" }
+		"normal": { "model": "chinjufumod:block_wake_water" }
 	}
 }

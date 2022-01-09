@@ -2,9 +2,9 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/leaves_cha",
-		"miki": "minecraft:block/oak_log",
-		"miki_top": "minecraft:block/oak_log_top",
-		"ha": "minecraft:block/oak_leaves"
+		"miki": "minecraft:blocks/log_oak",
+		"miki_top": "minecraft:blocks/log_oak_top",
+		"ha": "minecraft:blocks/leaves_oak"
 	},
 	"elements": [
 		{

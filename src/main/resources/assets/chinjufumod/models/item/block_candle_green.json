@@ -3,7 +3,7 @@
 	"display": {
 		"gui": {
 			"rotation": [ 30, 45, 0 ],
-			"translation": [ 0, 12, 0 ],
+			"translation": [ 0, 10, 0 ],
 			"scale": [ 2.25, 2.25, 2.25 ]
 		},
 		"thirdperson_righthand": {

@@ -1,56 +1,85 @@
 package com.ayutaki.chinjufumod.blocks.school;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
+import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class SchoolDesk extends BaseFacingWater {
+public class SchoolDesk extends BaseFacingSapo {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.makeCuboidShape(-3.0D, 15.0D, 0.0D, 19.0D, 16.0D, 16.0D), 
-			Block.makeCuboidShape(-2.0D, 11.0D, 1.0D, 18.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(-2.0D, 3.0D, 1.0D, 18.0D, 5.0D, 2.0D),
-			Block.makeCuboidShape(-2.0D, 0.0D, 1.0D, 0.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(16.0D, 0.0D, 1.0D, 18.0D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, -3.0D, 16.0D, 16.0D, 19.0D), 
-			Block.makeCuboidShape(1.0D, 11.0D, -2.0D, 15.0D, 15.0D, 18.0D),
-			Block.makeCuboidShape(14.0D, 3.0D, -2.0D, 15.0D, 5.0D, 18.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, -2.0D, 15.0D, 15.0D, 0.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 16.0D, 15.0D, 15.0D, 18.0D));
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.makeCuboidShape(-3.0D, 15.0D, 0.0D, 19.0D, 16.0D, 16.0D), 
-			Block.makeCuboidShape(-2.0D, 11.0D, 1.0D, 18.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(-2.0D, 3.0D, 14.0D, 18.0D, 5.0D, 15.0D),
-			Block.makeCuboidShape(-2.0D, 0.0D, 1.0D, 0.0D, 15.0D, 15.0D),
-			Block.makeCuboidShape(16.0D, 0.0D, 1.0D, 18.0D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, -3.0D, 16.0D, 16.0D, 19.0D), 
-			Block.makeCuboidShape(1.0D, 11.0D, -2.0D, 15.0D, 15.0D, 18.0D),
-			Block.makeCuboidShape(1.0D, 3.0D, -2.0D, 2.0D, 5.0D, 18.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, -2.0D, 15.0D, 15.0D, 0.0D),
-			Block.makeCuboidShape(1.0D, 0.0D, 16.0D, 15.0D, 15.0D, 18.0D));
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, 0.0, -0.1875, 1.0, 1.0, 1.1875);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.0, -0.1875, 1.0, 1.0, 1.1875);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, 0.0, -0.1875, 1.0, 1.0, 1.1875);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.0, -0.1875, 1.0, 1.0, 1.1875);
+	private static final AxisAlignedBB[] AABB = { AABB_SOUTH, AABB_WEST, AABB_NORTH, AABB_EAST };
 
-	public SchoolDesk(Block.Properties properties) {
-		super(properties);
+	public SchoolDesk() {
+		super(Material.WOOD);
+		setCreativeTab(ChinjufuModTabs.CHINJUFU);
+
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
-	/* Collisions for each property. */
+	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(H_FACING);
+		return AABB[facing.getHorizontalIndex()];
+	}
 
-		switch (direction) {
-		case NORTH :
-		default : return AABB_NORTH;
-		case SOUTH : return AABB_SOUTH;
-		case EAST : return AABB_EAST;
-		case WEST : return AABB_WEST;
-		} // switch
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes,
+			@Nullable Entity entityIn, boolean t_f) {
+		EnumFacing facing = state.getValue(H_FACING);
+		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB[facing.getHorizontalIndex()]);
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return true;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
 	}
 
 }

@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "chinjufumod:kitchen/block_kit_stove_1", "y": 180 },
+		"facing=south": { "model": "chinjufumod:kitchen/block_kit_stove_1", "y": 0 },
+		"facing=west":  { "model": "chinjufumod:kitchen/block_kit_stove_1", "y": 90 },
+		"facing=east":  { "model": "chinjufumod:kitchen/block_kit_stove_1", "y": 270 }
+	}
+}

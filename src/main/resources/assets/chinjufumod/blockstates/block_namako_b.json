@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"stage=0": { "model": "chinjufumod:namako/block_namako_b_white" },
+		"stage=1": { "model": "chinjufumod:namako/block_namako_b_orange" },
+		"stage=2": { "model": "chinjufumod:namako/block_namako_b_magenta" },
+		"stage=3": { "model": "chinjufumod:namako/block_namako_b_lightb" },
+		"stage=4": { "model": "chinjufumod:namako/block_namako_b_yellow" },
+		"stage=5": { "model": "chinjufumod:namako/block_namako_b_lime" },
+		"stage=6": { "model": "chinjufumod:namako/block_namako_b_pink" },
+		"stage=7": { "model": "chinjufumod:namako/block_namako_b_gray" },
+		"stage=8": { "model": "chinjufumod:namako/block_namako_b_lightg" },
+		"stage=9": { "model": "chinjufumod:namako/block_namako_b_cyan" },
+		"stage=10": { "model": "chinjufumod:namako/block_namako_b_purple" },
+		"stage=11": { "model": "chinjufumod:namako/block_namako_b_blue" },
+		"stage=12": { "model": "chinjufumod:namako/block_namako_b_brown" },
+		"stage=13": { "model": "chinjufumod:namako/block_namako_b_green" },
+		"stage=14": { "model": "chinjufumod:namako/block_namako_b_red" },
+		"stage=15": { "model": "chinjufumod:namako/block_namako_b_black" }
+	}
+}

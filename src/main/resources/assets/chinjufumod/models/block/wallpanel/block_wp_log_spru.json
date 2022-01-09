@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/spruce_log",
-		"front": "minecraft:block/spruce_log",
-		"back": "minecraft:block/spruce_log",
-		"side": "minecraft:block/spruce_log"
+		"particle": "blocks/log_spruce",
+		"front": "blocks/log_spruce",
+		"back": "blocks/log_spruce",
+		"side": "blocks/log_spruce"
 	}
 }

@@ -3,6 +3,6 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/pillar_jungle_side",
 		"top": "chinjufumod:blocks/pillar_jungle_top",
-		"side": "minecraft:block/jungle_planks"
+		"side": "minecraft:blocks/planks_jungle"
 	}
 }

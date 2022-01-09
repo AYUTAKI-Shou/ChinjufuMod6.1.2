@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/granite",
-		"front": "minecraft:block/granite",
-		"back": "minecraft:block/granite",
-		"side": "minecraft:block/granite"
+		"particle": "blocks/stone_granite",
+		"front": "blocks/stone_granite",
+		"back": "blocks/stone_granite",
+		"side": "blocks/stone_granite"
 	}
 }

@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_lightg",
-		"mizu": "minecraft:block/water_flow",
+		"mizu": "chinjufumod:blocks/water_flow",
 		"niku": "chinjufumod:blocks/food_beef",
 		"ninjin": "chinjufumod:blocks/food_carot",
 		"tamanegi": "chinjufumod:blocks/food_onion",
@@ -491,7 +491,7 @@
 			}
 		},
 		{
-			"name": "tamanegi",
+			 "name": "tamanegi",
 			"from": [ 7.0, 4.45, 8.5 ],
 			"to": [ 8.0, 5.45, 9.5 ],
 			"faces": {
@@ -888,7 +888,7 @@
 			"from": [ 4.5, 0.5, 4.5 ],
 			"to": [ 8.0, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1, "rotation": 270 }
+				"up" : { "texture": "#mizu", "tintindex": 20, "rotation": 270 }
 			}
 		},
 		{
@@ -896,7 +896,7 @@
 			"from": [ 8.0, 0.5, 4.5 ],
 			"to": [ 11.5, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1, "rotation": 90 }
+				"up" : { "texture": "#mizu", "tintindex": 20, "rotation": 90 }
 			}
 		},
 

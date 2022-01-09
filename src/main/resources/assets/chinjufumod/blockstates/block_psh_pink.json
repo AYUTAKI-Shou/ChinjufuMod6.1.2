@@ -1,10 +1,13 @@
 {
 	"variants": {
-		"cra=false,type=bottom": { "model": "chinjufumod:block/plaster/block_psh_pink_bottom" },
-		"cra=false,type=top": { "model": "chinjufumod:block/plaster/block_psh_pink_top" },
-		"cra=true,type=bottom": { "model": "chinjufumod:block/plaster/block_psh_cr_pink_bottom" },
-		"cra=true,type=top": { "model": "chinjufumod:block/plaster/block_psh_cr_pink_top" },
-		"cra=false,type=double": { "model": "chinjufumod:block/plaster/block_plaster_pink" },
-		"cra=true,type=double": { "model": "chinjufumod:block/plaster/block_plaster_cr_pink" }
+		"cra=false,double=false,half=bottom": { "model": "chinjufumod:plaster/block_psh_pink_bottom" },
+		"cra=false,double=false,half=top": { "model": "chinjufumod:plaster/block_psh_pink_top" },
+		"cra=true,double=false,half=bottom": { "model": "chinjufumod:plaster/block_psh_cr_pink_bottom" },
+		"cra=true,double=false,half=top": { "model": "chinjufumod:plaster/block_psh_cr_pink_top" },
+
+		"cra=false,double=true,half=bottom": { "model": "chinjufumod:plaster/block_plaster_pink" },
+		"cra=false,double=true,half=top": { "model": "chinjufumod:plaster/block_plaster_pink" },
+		"cra=true,double=true,half=bottom": { "model": "chinjufumod:plaster/block_plaster_cr_pink" },
+		"cra=true,double=true,half=top": { "model": "chinjufumod:plaster/block_plaster_cr_pink" }
 	}
 }

@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_carpet",
+
+	"pattern": [
+		"XX"
+	],
+
+	"key": {
+		"X": { "type": "forge:ore_dict", "ore": "treeLeavesGinkgo" }
+	},
+
+	"result": { "item": "chinjufumod:block_carpet_ichoh", "data": 0, "count": 8 }
+}

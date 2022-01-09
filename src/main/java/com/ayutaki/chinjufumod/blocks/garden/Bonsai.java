@@ -4,104 +4,121 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage4_Face;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Bonsai extends BaseStage4_FaceWater {
+public class Bonsai extends BaseStage4_Face {
+
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.125, 0.0, 0.3125, 0.375, 0.5, 0.6875);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.125, 0.0, 0.3125, 0.375, 0.5, 0.6875);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.125, 0.0, 0.3125, 0.375, 0.5, 0.6875);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.125, 0.0, 0.3125, 0.375, 0.5, 0.6875);
+	private static final AxisAlignedBB[] AABB = { AABB_SOUTH, AABB_WEST, AABB_NORTH, AABB_EAST };
+
+	public Bonsai() {
+		super(Material.WOOD);
+		setCreativeTab(ChinjufuModTabs.WADECO);
+
+		/*鍋・皿*/
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+	}
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.0D, 0.0D, 2.0D, 11.0D, 8.0D, 6.0D);
-	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(10.0D, 0.0D, 5.0D, 14.0D, 8.0D, 11.0D);
-	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.0D, 0.0D, 10.0D, 11.0D, 8.0D, 14.0D);
-	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(2.0D, 0.0D, 5.0D, 6.0D, 8.0D, 11.0D);
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(H_FACING);
+		return AABB[facing.getHorizontalIndex()];
+	}
 
-	public Bonsai(Block.Properties properties) {
-		super(properties);
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		
 		if (itemstack.isEmpty()) {
 			if (playerIn.isSneaking()) {
 				CMEvents.soundWoodPlace(worldIn, pos);
-				worldIn.setBlockState(pos, state.cycle(STAGE_1_4)); }
+				worldIn.setBlockState(pos, state.cycleProperty(STAGE_1_4), 3); }
 			
-			if (!playerIn.isSneaking()) {
-				CMEvents.textNotSneak(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
+			if (!playerIn.isSneaking()) { CMEvents.textNotSneak(worldIn, pos, playerIn); }
 		}
-		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* 窒息 */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* Collisions for each property. */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-		Direction direction = state.get(H_FACING);
-
-		switch(direction) {
-		case SOUTH:
-			return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
-		case NORTH:
-		default:
-			return AABB_NORTH;
-		case EAST:
-			return AABB_EAST;
+	/*addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)が、下記へ
+	 * addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced)
+	 *
+	 *@SideOnly(Side.CLIENT)
+		public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
 		}
-	}
-
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_bonsai")).applyTextStyle(TextFormatting.GRAY));
+	*/
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_bonsai", meta));
 	}
 
 }

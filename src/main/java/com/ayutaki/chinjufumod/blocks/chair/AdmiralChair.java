@@ -1,275 +1,165 @@
 package com.ayutaki.chinjufumod.blocks.chair;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import com.ayutaki.chinjufumod.entity.SitableEntity;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage2_Face;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
+import com.ayutaki.chinjufumod.entity.EntitySittableBlock;
+import com.ayutaki.chinjufumod.entity.SittableUtil;
 import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.registry.Chinjufu_Blocks;
+import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class AdmiralChair extends Block implements IWaterLoggable {
+public class AdmiralChair extends BaseStage2_Face {
 
-	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final String ID = "block_admiralchair";
 
 	/* Collision */
-	protected static final VoxelShape BASE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.5625, 1.0);
+	private static final AxisAlignedBB AABB_BASE = new AxisAlignedBB(0.1, 0.0, 0.1, 0.9, 0.5625, 0.9);
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, 0.5625, 0.0, 0.1, 2.0, 1.0);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.5625, 0.0, 0.1, 2.0, 1.0);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, 0.5625, 0.0, 0.1, 2.0, 1.0);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.5625, 0.0, 0.1, 2.0, 1.0);
 
-	protected static final VoxelShape BOT_SOUTH = VoxelShapes.or(BASE, Block.makeCuboidShape(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 2.0D));
-	protected static final VoxelShape BOT_WEST = VoxelShapes.or(BASE, Block.makeCuboidShape(14.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D));
-	protected static final VoxelShape BOT_NORTH = VoxelShapes.or(BASE, Block.makeCuboidShape(0.0D, 9.0D, 14.0D, 16.0D, 16.0D, 16.0D));
-	protected static final VoxelShape BOT_EAST = VoxelShapes.or(BASE, Block.makeCuboidShape(0.0D, 9.0D, 0.0D, 2.0D, 16.0D, 16.0D));
+	public AdmiralChair() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	protected static final VoxelShape TOP_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 2.0D);
-	protected static final VoxelShape TOP_WEST = Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D);
-	protected static final VoxelShape TOP_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 13.0D, 16.0D);
-	protected static final VoxelShape TOP_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 13.0D, 16.0D);
-
-	public AdmiralChair(Block.Properties properties) {
-		super(properties);
-
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(HALF, DoubleBlockHalf.LOWER)
-				.with(WATERLOGGED, Boolean.valueOf(false)));
-	}
-
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
-		DoubleBlockHalf half = state.get(HALF);
-		
-		switch (half) {
-		case LOWER :
-		default :
-			
-			switch (direction) {
-			case NORTH :
-			default : return BOT_NORTH;
-			case SOUTH : return BOT_SOUTH;
-			case EAST : return BOT_EAST;
-			case WEST : return BOT_WEST;
-			} // switch
-
-		case UPPER :
-			
-			switch (direction) {
-			case NORTH :
-			default : return TOP_NORTH;
-			case SOUTH : return TOP_SOUTH;
-			case EAST : return TOP_EAST;
-			case WEST : return TOP_WEST;
-			} // switch
-		} // switch LOWER-UPPER
+		setHardness(1.0F);
+		setResistance(5.0F);
+		setSoundType(SoundType.WOOD);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+		if (SittableUtil.sitOnBlock(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, 5.5 * 0.0625)) {
+			worldIn.updateComparatorOutputLevel(pos, this);
 			CMEvents.soundSitChair(worldIn, pos);
-			return SitableEntity.create(worldIn, pos, 0.35, playerIn);
-		}
-		return ActionResultType.PASS;
+			return true; }
+		return false;
 	}
 
-	/* Gives a value when placed. */
-	@Nullable
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		BlockPos blockpos = context.getPos();
-
-		/** 直上が置き換え可能なブロックの時 **/
-		if (blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context)) {
-			return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
-					.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(HALF, DoubleBlockHalf.LOWER);
-		}
-
-		/** それ以外の時 **/
-		else { return null; }
-	}
-
-	/* Add DoubleBlockHalf.UPPER on the Block. */
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		IFluidState ifluidstateUp = worldIn.getFluidState(pos.up());
-
-		worldIn.setBlockState(pos.up(), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(H_FACING, state.get(H_FACING))
-				.with(WATERLOGGED, Boolean.valueOf(ifluidstateUp.isTagged(FluidTags.WATER))), 3);
-	}
-
-	/* 設置制限 isSolidSide → true */
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.down();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-
-		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			return true;
-		}
-		else {
-			return blockstate.getBlock() == this;
-		}
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Update BlockState. */
-	@SuppressWarnings("deprecation")
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-
-		BlockState blockstate = super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-		if (!blockstate.isAir(worldIn, pos)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-		}
-
-		DoubleBlockHalf half = state.get(HALF);
-		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP)) {
-			return facingState.getBlock() == this && facingState.get(HALF) != half ? state
-					.with(H_FACING, facingState.get(H_FACING)) : Blocks.AIR.getDefaultState();
-		}
-		else {
-			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.isValidPosition(worldIn, pos) ? Blocks.AIR
-					.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-		}
-	}
-
-	/* 同時破壊とドロップの指定 1.16.5に合わせる */
+	/* Collision */
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-		DoubleBlockHalf doubleblockhalf = state.get(HALF);
-		BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return AABB;
+	}
 
-		if (blockstate.getBlock() == this && blockstate.get(HALF) != doubleblockhalf) {
-			worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
-			worldIn.playEvent(playerIn, 2001, blockpos, Block.getStateId(blockstate));
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean t_f) {
 
-			ItemStack itemstack = playerIn.getHeldItemMainhand();
-			if (!worldIn.isRemote && !playerIn.isCreative() && playerIn.canHarvestBlock(blockstate)) {
-				Block.spawnDrops(state, worldIn, pos, (TileEntity)null, playerIn, itemstack);
-				Block.spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, playerIn, itemstack);
+		if (!(entityIn instanceof EntitySittableBlock)) {
+
+			EnumFacing direction= state.getValue(H_FACING);
+			switch(direction) {
+			case SOUTH:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_SOUTH);
+				break;
+				
+			case EAST:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_EAST);
+				break;
+				
+			case WEST:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WEST);
+				break;
+				
+			case NORTH:
+			default:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_NORTH);
+				break;
 			}
+			super.addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BASE);
 		}
-		super.onBlockHarvested(worldIn, pos, state, playerIn);
 	}
 
-	/* 同時破壊とドロップの指定
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-
-		BlockState upstate = worldIn.getBlockState(pos.up());
-		BlockState downstate = worldIn.getBlockState(pos.down());
-
-		if (downstate.getBlock() == this) {
-			if (!worldIn.isRemote && !playerIn.isCreative()) { worldIn.destroyBlock(pos.down(), false); }
-			else { worldIn.setBlockState(pos.down(), Blocks.AIR.getDefaultState(), 35); } }
-
-		if (upstate.getBlock() == this) {
-			if (!worldIn.isRemote && !playerIn.isCreative()) { worldIn.destroyBlock(pos.up(), false); }
-			else { worldIn.setBlockState(pos.up(), Blocks.AIR.getDefaultState(), 35); } }
-
-		super.onBlockHarvested(worldIn, pos, state, playerIn);
-	} */
-
+	/* 設置制限 */
 	@Override
-	public void harvestBlock(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		super.harvestBlock(worldIn, playerIn, pos, Blocks.AIR.getDefaultState(), te, stack);
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getMaterial().isReplaceable() &&
+				worldIn.getBlockState(pos.up()).getMaterial().isReplaceable();
 	}
 
-	/* @deprecated call via {@link IBlockState#getMobilityFlag()} whenever possible. Implementing/overriding is fine. */
-	public PushReaction getPushReaction(BlockState state) {
-		return PushReaction.DESTROY;
-	}
-
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(H_FACING, rot.rotate(state.get(H_FACING)));
-	}
-
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return mirrorIn == Mirror.NONE ? state : state.rotate(mirrorIn.toRotation(state.get(H_FACING)));
-	}
-
-	/* Return a random long to be passed to {@link IBakedModel#getQuads}, used for random model rotations */
-	@OnlyIn(Dist.CLIENT)
-	public long getPositionRandom(BlockState state, BlockPos pos) {
-		return MathHelper.getCoordinateRandom(pos.getX(), pos.down(state.get(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
-	}
-
-	/* 窒息 */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* Create Blockstate */
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(HALF, H_FACING, WATERLOGGED);
+	/* 同時破壊とドロップの指定 */
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
+
+		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
+		if (worldIn.getBlockState(pos.up()).getBlock() == Chinjufu_Blocks.ADMIRALCHAIR_TOP) {
+				worldIn.destroyBlock(pos.up(), false);
+		}
 	}
 
-	/* tips表示 GRAYが1.12.2でのデフォルト色 */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_isu")).applyTextStyle(TextFormatting.GRAY));
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (i == 1) { stack.add(new ItemStack(Items_Chinjufu.ADMIRALCHAIR, 1, 1)); }
+		if (i != 1) { stack.add(new ItemStack(Items_Chinjufu.ADMIRALCHAIR, 1, 2)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+		if (i != 1) { return new ItemStack(Items_Chinjufu.ADMIRALCHAIR, 1, 2); }
+		return new ItemStack(Items_Chinjufu.ADMIRALCHAIR, 1, 1);
 	}
 
 }

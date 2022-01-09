@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_lightg",
-		"mizu": "minecraft:block/water_still",
+		"mizu": "chinjufumod:blocks/water_still",
 		"nabe": "chinjufumod:blocks/dish_lightg",
 		"otama": "chinjufumod:blocks/dish_gray",
 		"sara": "chinjufumod:blocks/dish_white"
@@ -13,7 +13,7 @@
 			"from": [ 4.5, 0.5, 4.5 ],
 			"to": [ 11.5, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1 }
+				"up" : { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
 

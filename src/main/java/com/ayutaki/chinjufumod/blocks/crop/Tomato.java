@@ -1,43 +1,55 @@
 package com.ayutaki.chinjufumod.blocks.crop;
 
+import java.util.Random;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.block.BlockCrops;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
 
-/* バニラの CropsBlock を継承 */
-public class Tomato extends CropsBlock {
+public class Tomato extends BlockCrops {
 
-	/* Collision */
-	protected static final VoxelShape[] SHAPES = new VoxelShape[]{ Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 1.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 2.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 3.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 5.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 7.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 9.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 11.0D, 15.0D),
-			Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 14.0D, 15.0D) };
+	public static final String ID = "block_vege_tomato";
 
-	public Tomato(Block.Properties properties) {
-		super(properties);
+	private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.0625D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.125D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.1875D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.3125D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.4375D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.5625D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.6875D, 0.9375D),
+																				new AxisAlignedBB(0.0625D, -0.0625D, 0.0625D, 0.9375D, 0.875D, 0.9375D)};
+
+	public Tomato() {
+		super();
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 	}
 
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return SHAPES[state.get(this.getAgeProperty())];
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return CROPS_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
 	}
 
-	/* Clone Item in Creative. */
 	@Override
-	protected IItemProvider getSeedsItem() {
+	protected Item getSeed() {
 		return Items_Teatime.SEEDS_TOMATO;
+	}
+
+	@Override
+	protected Item getCrop() {
+		return Items_Teatime.FOOD_TOMATO;
+	}
+
+	/*キャベツ1, とうもろこし1. 白菜1. たまねぎ4. 米1. 大豆2. ほうれん草1. トマト4*/
+	@Override
+	public int quantityDropped(Random rand) {
+		return 4;
 	}
 
 }

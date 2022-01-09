@@ -1,101 +1,146 @@
 package com.ayutaki.chinjufumod.blocks.unitblock;
 
-import com.ayutaki.chinjufumod.handler.CMEvents;
+import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
+import com.ayutaki.chinjufumod.registry.Unit_Blocks;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class LowDesk extends BaseUnitBlock {
+public class LowDesk extends BaseUnitDesk {
 
-	/* Collision */
-	protected static final VoxelShape TTTT = Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+	/** 0=オーク、1=マツ、2=シラカバ、3=ジャングル、4=アカシア、5=ダークオーク、
+	 ** 6=サクラ、7=カエデ、8=イチョウ **/
+	public static final String ID = "block_lowdesk";
 
-	protected static final VoxelShape FFFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 6.0D, 2.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 6.0D, 16.0D),
-			Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 6.0D, 2.0D),
-			Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 6.0D, 16.0D));
+	public LowDesk() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	protected static final VoxelShape TTFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 13.0D, 3.0D, 6.0D, 16.0D));
-	protected static final VoxelShape FTFT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 16.0D, 6.0D, 16.0D));
-	protected static final VoxelShape TFTF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 3.0D, 6.0D, 3.0D));
-	protected static final VoxelShape FFTT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(13.0D, 0.0D, 0.0D, 16.0D, 6.0D, 3.0D));
-
-	protected static final VoxelShape FTFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 6.0D, 16.0D),
-			Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 6.0D, 16.0D));
-	protected static final VoxelShape FFTF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 6.0D, 2.0D),
-			Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 6.0D, 2.0D));
-	protected static final VoxelShape TFFF = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 6.0D, 2.0D),
-			Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 6.0D, 16.0D));
-	protected static final VoxelShape FFFT = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 8.0D, 16.0D),
-			Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 6.0D, 2.0D),
-			Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 6.0D, 16.0D));
-
-	public LowDesk(Properties properties) {
-		super(properties);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-		
-		/** Hand is empty. **/
+		int i = ((Integer)state.getValue(STAGE_0_8)).intValue();
+
 		if (itemstack.isEmpty()) {
 			if (playerIn.isSneaking()) {
 				CMEvents.soundWoodPlace(worldIn, pos);
-				worldIn.setBlockState(pos, state.cycle(WHICH));
-				return ActionResultType.SUCCESS; }
-			
-			if (!playerIn.isSneaking()) {
-				CMEvents.textNotSneak(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
-		}
-		
-		return ActionResultType.PASS;
-	}
 	
-	/* Collisions for each property. */
+				if (i == 0) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(0))); }
+				if (i == 1) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(1))); }
+				if (i == 2) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(2))); }
+				if (i == 3) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(3))); }
+				if (i == 4) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(4))); }
+				if (i == 5) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(5))); }
+				if (i == 6) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(6))); }
+				if (i == 7) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(7))); }
+				if (i == 8) { worldIn.setBlockState(pos, Unit_Blocks.LOWDESK_sub.getDefaultState()
+						.withProperty(LowDesk_sub.STAGE_0_8, Integer.valueOf(8))); } }
+			
+			if (!playerIn.isSneaking()) { CMEvents.textNotSneak(worldIn, pos, playerIn); }
+			
+			return true;
+		}
+		return false;
+	}
+
+	/* 隣接ブロック */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 
-		boolean east = state.get(EAST).booleanValue();
-		boolean north = state.get(NORTH).booleanValue();
-		boolean south = state.get(SOUTH).booleanValue();
-		boolean west = state.get(WEST).booleanValue();
+		boolean back = worldIn.getBlockState(pos.south()).getBlock() == this;
+		boolean forward = worldIn.getBlockState(pos.north()).getBlock() == this;
+		boolean left = worldIn.getBlockState(pos.west()).getBlock() == this;
+		boolean right = worldIn.getBlockState(pos.east()).getBlock() == this;
+		return state.withProperty(BACK, back)
+				.withProperty(FORWARD, forward)
+				.withProperty(LEFT, left)
+				.withProperty(RIGHT, right);
+	}
 
-		if (east == true && north == true && south == false && west == false) { return TTFF; }
-		if (east == false && north == true && south == false && west == true) { return FTFT; }
-		if (east == true && north == false && south == true && west == false) { return TFTF; }
-		if (east == false && north == false && south == true && west == true) { return FFTT; }
+	/* Collision */
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+	}
 
-		if (east == false && north == true && south == false && west == false) { return FTFF; }
-		if (east == true && north == false && south == false && west == false) { return TFFF; }
-		if (east == false && north == false && south == false && west == true) { return FFFT; }
-		if (east == false && north == false && south == true && west == false) { return FFTF; }
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return false;
+	}
 
-		if (east == false && north == false && south == false && west == false) { return FFFF; }
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
 
-		return TTTT;
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		/** 0=オーク、1=マツ、2=シラカバ、3=ジャングル、4=アカシア、5=ダークオーク、
+		 ** 6=サクラ、7=カエデ、8=イチョウ **/
+		int i = ((Integer)state.getValue(STAGE_0_8)).intValue();
+
+		if (i == 0) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 0)); }
+		if (i == 1) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 1)); }
+		if (i == 2) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 2)); }
+		if (i == 3) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 3)); }
+		if (i == 4) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 4)); }
+		if (i == 5) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 5)); }
+		if (i == 6) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 6)); }
+		if (i == 7) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 7)); }
+		if (i == 8) { stack.add(new ItemStack(Items_Chinjufu.LOWDESK, 1, 8)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		/** 0=オーク、1=マツ、2=シラカバ、3=ジャングル、4=アカシア、5=ダークオーク、
+		 ** 6=サクラ、7=カエデ、8=イチョウ **/
+		int i = ((Integer)state.getValue(STAGE_0_8)).intValue();
+
+		if (i == 1) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 1); }
+		if (i == 2) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 2); }
+		if (i == 3) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 3); }
+		if (i == 4) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 4); }
+		if (i == 5) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 5); }
+		if (i == 6) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 6); }
+		if (i == 7) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 7); }
+		if (i == 8) { return new ItemStack(Items_Chinjufu.LOWDESK, 1, 8); }
+		return new ItemStack(Items_Chinjufu.LOWDESK, 1, 0);
 	}
 
 }

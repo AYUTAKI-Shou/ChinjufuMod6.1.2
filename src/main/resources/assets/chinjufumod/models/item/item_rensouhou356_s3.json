@@ -4,7 +4,7 @@
 		"layer0": "chinjufumod:items/rensouhou356_s3"
 	},
 	"display": {
-		"gui": {
+		 "gui": {
 			"rotation": [ 0, 0, 0 ],
 			"translation": [ 0, 0, 0 ],
 			"scale": [ 1, 1, 1 ]

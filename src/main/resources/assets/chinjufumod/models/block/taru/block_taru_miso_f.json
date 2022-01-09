@@ -7,7 +7,7 @@
 		"inside": "chinjufumod:blocks/bucket_inside_miso_full",
 		"end" : "chinjufumod:blocks/bucket_end_miso_full",
 		"naka" : "chinjufumod:blocks/bucket_misonuno_full",
-		"ishi" : "minecraft:block/stone"
+		"ishi" : "minecraft:blocks/stone"
 	},
 	"elements": [
 		{

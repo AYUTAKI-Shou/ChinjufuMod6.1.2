@@ -1,102 +1,89 @@
 package com.ayutaki.chinjufumod.blocks.kitchen;
 
-import javax.annotation.Nullable;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Kit_Duct extends Block implements IWaterLoggable {
+public class Kit_duct extends Block {
 
-	/* Property */
-	public static final BooleanProperty UP = BooleanProperty.create("up");
-	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final BooleanProperty NORTH = BooleanProperty.create("north");
-	public static final BooleanProperty EAST = BooleanProperty.create("east");
-	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
-	public static final BooleanProperty WEST = BooleanProperty.create("west");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final String ID = "block_kit_duct";
 
-	public Kit_Duct(Block.Properties properties) {
-		super(properties);
+	public static final PropertyBool DOWN = PropertyBool.create("down");
+	public static final PropertyBool UP = PropertyBool.create("up");
+	public static final PropertyBool NORTH = PropertyBool.create("north");
+	public static final PropertyBool EAST = PropertyBool.create("east");
+	public static final PropertyBool SOUTH = PropertyBool.create("south");
+	public static final PropertyBool WEST = PropertyBool.create("west");
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
-				.with(EAST, Boolean.valueOf(false))
-				.with(SOUTH, Boolean.valueOf(false))
-				.with(WEST, Boolean.valueOf(false))
-				.with(UP, Boolean.valueOf(false))
-				.with(DOWN, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+	public Kit_duct() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setCreativeTab(ChinjufuModTabs.TEATIME);
+
+		/* 金属 */
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(10.0F);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(DOWN, Boolean.valueOf(false))
+				.withProperty(UP, Boolean.valueOf(false))
+				.withProperty(NORTH, Boolean.valueOf(false))
+				.withProperty(EAST, Boolean.valueOf(false))
+				.withProperty(SOUTH, Boolean.valueOf(false))
+				.withProperty(WEST, Boolean.valueOf(false)));
 	}
 
-	/* Gives a value when placed. */
-	@Nullable
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
-	}
-
-	/* Connect the blocks. */
-	private boolean canConnectTo(IWorld worldIn, BlockPos source, Direction direction) {
-		BlockState state = worldIn.getBlockState(source.offset(direction));
-		return state.getBlock() == this;
-	}
-
-	/* Update BlockState. */
-	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		boolean up = canConnectTo(worldIn, pos, Direction.UP);
-		boolean down = canConnectTo(worldIn, pos, Direction.DOWN);
-		boolean north = canConnectTo(worldIn, pos, Direction.NORTH);
-		boolean east = canConnectTo(worldIn, pos, Direction.EAST);
-		boolean south = canConnectTo(worldIn, pos, Direction.SOUTH);
-		boolean west = canConnectTo(worldIn, pos, Direction.WEST);
-		return stateIn.with(UP, up).with(DOWN, down).with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
 		return false;
 	}
 
-	/* 立方体 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getBlock() instanceof Kit_duct;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return true;
+	}
+
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
+
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, Boolean.valueOf(this.canConnectTo(worldIn, pos.down())))
+				.withProperty(UP, Boolean.valueOf(this.canConnectTo(worldIn, pos.up())))
+				.withProperty(NORTH, Boolean.valueOf(this.canConnectTo(worldIn, pos.north())))
+				.withProperty(EAST, Boolean.valueOf(this.canConnectTo(worldIn, pos.east())))
+				.withProperty(SOUTH, Boolean.valueOf(this.canConnectTo(worldIn, pos.south())))
+				.withProperty(WEST, Boolean.valueOf(this.canConnectTo(worldIn, pos.west())));
+	}
+
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { DOWN, UP, NORTH, EAST, SOUTH, WEST });
+	}
+
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Create Blockstate */
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
-	}
-
 }

@@ -1,8 +1,8 @@
 {
- "variants": {
-	"facing=north": { "model": "chinjufumod:block/ctruss/block_ctruss_yellow" },
-	"facing=south": { "model": "chinjufumod:block/ctruss/block_ctruss_yellow_re" },
-	"facing=west": { "model": "chinjufumod:block/ctruss/block_ctruss_yellow_re" },
-	"facing=east": { "model": "chinjufumod:block/ctruss/block_ctruss_yellow" }
- }
+  "variants": {
+	"facing=north": { "model": "chinjufumod:ctruss/block_ctruss_yellow" },
+	"facing=south": { "model": "chinjufumod:ctruss/block_ctruss_yellow_re" },
+	"facing=west":  { "model": "chinjufumod:ctruss/block_ctruss_yellow_re" },
+	"facing=east":  { "model": "chinjufumod:ctruss/block_ctruss_yellow" }
+  }
 }

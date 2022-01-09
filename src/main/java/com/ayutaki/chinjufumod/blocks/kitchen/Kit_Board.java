@@ -4,168 +4,143 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.kitchen.container.KitboardContainer;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.blocks.kitchen.inventory.ContainerKitBoard;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
+import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CraftingTableBlock;
-import net.minecraft.block.IWaterLoggable;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-/* CraftingTableBlock を継承した上で、facing のプロパティを持たせる */
-public class Kit_Board extends CraftingTableBlock implements IWaterLoggable {
+public class Kit_board extends BaseFacingSapo {
 
-	private static final ITextComponent TEXT = new TranslationTextComponent("container.crafting");
-	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final String ID = "block_kit_board";
 
-	/* Collision */
-	protected static final VoxelShape TOP = Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(TOP, Block.makeCuboidShape(0.0D, 0.0D, 1.0D, 16.0D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(TOP, Block.makeCuboidShape(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D));
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(TOP, Block.makeCuboidShape(0.0D, 0.0D, 1.0D, 16.0D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(TOP, Block.makeCuboidShape(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D));
+	public Kit_board() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	public Kit_Board(Block.Properties properties) {
-		super(properties);
+		setCreativeTab(ChinjufuModTabs.TEATIME);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(WATERLOGGED, Boolean.valueOf(false)));
-	}
-
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
-
-		switch (direction) {
-		case NORTH :
-		default : return AABB_NORTH;
-		case SOUTH : return AABB_SOUTH;
-		case EAST : return AABB_EAST;
-		case WEST : return AABB_WEST;
-		} // switch
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(10.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-		if (worldIn.isRemote) {
-			return ActionResultType.SUCCESS;
-		}
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		if (worldIn.isRemote) { return true; }
 
 		else {
-			/** UI を開く **/
-			playerIn.openContainer(state.getContainer(worldIn, pos));
-			playerIn.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+
+			/*書き換え*/
+			playerIn.displayGui(new Kit_board.InterfaceCraftingTable(worldIn, pos));
+			playerIn.addStat(StatList.CRAFTING_TABLE_INTERACTION);
 
 			worldIn.playSound(null, pos, SoundEvents_CM.KITCHEN_CUT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			return ActionResultType.SUCCESS;
+			return true;
 		}
 	}
 
-	@Override
-	public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-		return new SimpleNamedContainerProvider((id, inventory, entity) ->
-			new KitboardContainer(id, inventory, IWorldPosCallable.of(worldIn, pos), this), TEXT);
-			/** 開けさせる UI **/
+	public static class InterfaceCraftingTable implements IInteractionObject {
+
+		private final World world;
+		private final BlockPos position;
+
+		public InterfaceCraftingTable(World worldIn, BlockPos pos) {
+
+			this.world = worldIn;
+			this.position = pos;
+		}
+
+		/**
+		 * Get the name of this object. For players this returns their username
+		 */
+		public String getName() {
+			return null;
+		}
+
+		/**
+		 * Returns true if this thing is named
+		 */
+		public boolean hasCustomName() {
+			return false;
+		}
+
+		/**
+		 * Get the formatted ChatComponent that will be used for the sender's username in chat
+		 */
+		/*書き換え*/
+		public ITextComponent getDisplayName() {
+			return new TextComponentTranslation(Kitchen_Blocks.KIT_BOARD.getUnlocalizedName() + ".name", new Object[0]);
+		}
+
+		public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+			return new ContainerKitBoard(playerInventory, this.world, this.position);
+		}
+
+		public String getGuiID() {
+
+			/*書き換えずにマイクラのを引っ張ってくる*/
+			return "minecraft:crafting_table";
+		}
 	}
 
-	/* Gives a value when placed. +180 .getOpposite() */
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
-	}
-
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	@SuppressWarnings("deprecation")
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
-
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(H_FACING, WATERLOGGED);
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kit_board")).applyTextStyle(TextFormatting.GRAY));
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_kit_board", meta));
 	}
 
 }

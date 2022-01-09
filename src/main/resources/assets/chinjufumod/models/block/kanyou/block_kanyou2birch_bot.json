@@ -1,10 +1,10 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/birch_log",
-		"miki": "minecraft:block/birch_log",
-		"miki_top": "minecraft:block/birch_log_top",
-		"ha": "minecraft:block/birch_leaves"
+		"particle": "chinjufumod:blocks/leaves_cha",
+		"miki": "minecraft:blocks/log_birch",
+		"miki_top": "minecraft:blocks/log_birch_top",
+		"ha": "minecraft:blocks/leaves_birch"
 	},
 	"elements": [
 		{
@@ -12,11 +12,11 @@
 			"from": [ 2.0, 14.0, 2.0 ],
 			"to": [ 14.0, 16.0, 14.0 ],
 			"faces": {
-				"down" : { "uv": [ 2.0, 2.0, 14.0, 14.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 14.0, 12.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 15.0, 14.0, 3.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"east" : { "uv": [ 1.0, 14.0, 13.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"west" : { "uv": [ 16.0, 14.0, 4.0, 16.0 ], "texture": "#ha", "tintindex": 1 }
+				"down" : { "uv": [ 2.0, 2.0, 14.0, 14.0 ], "texture": "#ha", "tintindex": 3 },
+				"north": { "uv": [ 0.0, 14.0, 12.0, 16.0 ], "texture": "#ha", "tintindex": 3 },
+				"south": { "uv": [ 15.0, 14.0, 3.0, 16.0 ], "texture": "#ha", "tintindex": 3 },
+				"east" : { "uv": [ 1.0, 14.0, 13.0, 16.0 ], "texture": "#ha", "tintindex": 3 },
+				"west" : { "uv": [ 16.0, 14.0, 4.0, 16.0 ], "texture": "#ha", "tintindex": 3 }
 			}
 		},
 		{
@@ -25,8 +25,8 @@
 			"to": [ 14.0, 16.0, 8.01 ],
 			"rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
 			"faces": {
-				"north": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 }
+				"north": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 3 },
+				"south": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 3 }
 			}
 		},
 		{
@@ -35,8 +35,8 @@
 			"to": [ 8.01, 16.0, 14.0 ],
 			"rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
 			"faces": {
-				"east" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"west" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 }
+				"east" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 3 },
+				"west" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 3 }
 			}
 		},
 

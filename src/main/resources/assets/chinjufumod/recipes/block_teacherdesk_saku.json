@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_teacherdesk",
+
+	"pattern": [
+		"XXX",
+		"XYX",
+		"X X"
+	],
+
+	"key": {
+		"X": { "type": "forge:ore_dict", "ore": "plankWoodCherry" },
+		"Y": { "type": "forge:ore_dict", "ore": "slabWoodCherry" }
+	},
+
+	"result": { "item": "chinjufumod:block_teacherdesk_saku", "data": 0, "count": 3 }
+}

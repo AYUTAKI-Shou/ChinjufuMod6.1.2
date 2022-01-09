@@ -1,229 +1,220 @@
 package com.ayutaki.chinjufumod.blocks.jpblock;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.handler.CMEvents;
-import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
+import com.ayutaki.chinjufumod.blocks.fusuma.BaseFusuma;
+import com.ayutaki.chinjufumod.blocks.fusuma.BaseFusuma_B;
+import com.ayutaki.chinjufumod.blocks.glassdoor.Base_GlassDoor;
+import com.ayutaki.chinjufumod.blocks.glassdoor.GlassDoorHalf;
+import com.ayutaki.chinjufumod.blocks.glassdoor.GlassDoorHalf_seasonal;
+import com.ayutaki.chinjufumod.blocks.shouji.BaseShouji;
+import com.ayutaki.chinjufumod.blocks.shoujih.BaseShouji_Win;
+import com.ayutaki.chinjufumod.blocks.shoujih.ShoujiHalf;
+import com.ayutaki.chinjufumod.blocks.shoujih.ShoujiHalf_seasonal;
+import com.ayutaki.chinjufumod.blocks.window.BaseWindow;
+import com.ayutaki.chinjufumod.blocks.window.BaseWindowB;
+import com.ayutaki.chinjufumod.blocks.window.BaseWindowTall;
+import com.ayutaki.chinjufumod.blocks.window.BaseWindowTall_Bottom;
+import com.ayutaki.chinjufumod.blocks.window.BaseWindowTall_Top;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockPane;
+import net.minecraft.block.BlockWall;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 
-public class Base_Wall extends Block implements IWaterLoggable {
+public class Base_Wall extends Block {
 
 	/* Property */
-	public static final BooleanProperty NORTH = BooleanProperty.create("north");
-	public static final BooleanProperty EAST = BooleanProperty.create("east");
-	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
-	public static final BooleanProperty WEST = BooleanProperty.create("west");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
-	public static final BooleanProperty CRACK = BooleanProperty.create("cra");
-	
+	public static final PropertyBool NORTH = PropertyBool.create("north");
+	public static final PropertyBool EAST = PropertyBool.create("east");
+	public static final PropertyBool SOUTH = PropertyBool.create("south");
+	public static final PropertyBool WEST = PropertyBool.create("west");
+	public static final PropertyInteger STAGE_0_15 = PropertyInteger.create("stage", 0, 15);
+
 	/* Collision ...Based on the value of WallBlock.*/
-	private static final VoxelShape AABB_CENTER = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-	private static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.0D, 0.0D, 0.0D, 11.0D, 16.0D, 5.0D);
-	private static final VoxelShape AABB_EAST = Block.makeCuboidShape(11.0D, 0.0D, 5.0D, 16.0D, 16.0D, 11.0D);
-	private static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.0D, 0.0D, 11.0D, 11.0D, 16.0D, 16.0D);
-	private static final VoxelShape AABB_WEST = Block.makeCuboidShape(0.0D, 0.0D, 5.0D, 5.0D, 16.0D, 11.0D);
+	protected static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[] {
+			new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.3125D, 0.6875D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.3125D, 0.6875D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.0D, 0.6875D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.0D, 0.6875D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.6875D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.6875D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 1.0D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 1.0D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.3125D, 1.0D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.3125D, 1.0D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.0D, 1.0D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.3125D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.6875D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D) };
 	
-	public Base_Wall(Block.Properties properties) {
-		super(properties);
-		
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
-				.with(EAST, Boolean.valueOf(false))
-				.with(SOUTH, Boolean.valueOf(false))
-				.with(WEST, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false))
-				.with(CRACK, Boolean.valueOf(false)));
-	}
+	private static final AxisAlignedBB AABB_CENTER = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 1.0D, 0.6875D);
+	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.3125D, 0.0D, 0.0D, 0.6875D, 1.0D, 0.3125D);
+	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.6875D, 0.0D, 0.3125D, 1.0D, 1.0D, 0.6875D);
+	private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.3125D, 0.0D, 0.6875D, 0.6875D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.3125D, 0.3125D, 1.0D, 0.6875D);
 
-	/* RightClick Action */
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-
-		ItemStack itemstack = playerIn.getHeldItem(hand);
-		Item item = itemstack.getItem();
-
-		if (item instanceof Base_ItemHake) { return ActionResultType.PASS; }
-
-		else {
-			if (itemstack.isEmpty()) {
-				if (playerIn.isSneaking()) {
-					CMEvents.soundStonePlace(worldIn, pos);
-					worldIn.setBlockState(pos, state.cycle(CRACK));
-					return ActionResultType.SUCCESS; }
-			
-				if (!playerIn.isSneaking()) {
-					CMEvents.textNotSneak(worldIn, pos, playerIn);
-					return ActionResultType.SUCCESS; }
-			}
-			
-			return ActionResultType.PASS;
-		}
-	}
 	
-	/* Gives a value when placed. +180 .getOpposite() */
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		
-		IWorldReader worldIn = context.getWorld();
-		BlockPos posIn = context.getPos();
-		BlockPos northpos = posIn.north();
-		BlockPos eastpos = posIn.east();
-		BlockPos southpos = posIn.south();
-		BlockPos westpos = posIn.west();
-		BlockState northstate = worldIn.getBlockState(northpos);
-		BlockState eaststate = worldIn.getBlockState(eastpos);
-		BlockState southstate = worldIn.getBlockState(southpos);
-		BlockState weststate = worldIn.getBlockState(westpos);
+	public Base_Wall(Material material) {
+		super(material);
 
-		boolean north = this.canConnectTo(northstate, northstate.isSolidSide(worldIn, northpos, Direction.SOUTH), Direction.SOUTH);
-		boolean east = this.canConnectTo(eaststate, eaststate.isSolidSide(worldIn, eastpos, Direction.WEST), Direction.WEST);
-		boolean south = this.canConnectTo(southstate, southstate.isSolidSide(worldIn, southpos, Direction.NORTH), Direction.NORTH);
-		boolean west = this.canConnectTo(weststate, weststate.isSolidSide(worldIn, westpos, Direction.EAST), Direction.EAST);
-				
-		return this.getDefaultState().with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west)
-				.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+		setHardness(2.0F);
+		setResistance(10.0F);
+		setSoundType(SoundType.STONE);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(NORTH, false)
+				.withProperty(EAST, false)
+				.withProperty(SOUTH, false)
+				.withProperty(WEST, false)
+				.withProperty(STAGE_0_15, Integer.valueOf(0)));
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-	
-	/* Connect the blocks. GLASSDOOR, SHOUJI, FUSUMA, WINDOW, RANMA, KOUSHI, SAMA, PaneBlock, FenceGate */
-	private boolean canConnectTo(BlockState state, boolean sturdy, Direction direction) {
-		Block block = state.getBlock();
-		boolean flag = block instanceof FenceGateBlock && FenceGateBlock.isParallel(state, direction);
-		return state.isIn(BlockTags.WALLS) || !cannotAttach(block) && sturdy || block instanceof PaneBlock || flag;
-	}
-
-	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		BlockPos northpos = pos.north();
-		BlockPos eastpos = pos.east();
-		BlockPos southpos = pos.south();
-		BlockPos westpos = pos.west();
-		BlockState northstate = worldIn.getBlockState(northpos);
-		BlockState eaststate = worldIn.getBlockState(eastpos);
-		BlockState southstate = worldIn.getBlockState(southpos);
-		BlockState weststate = worldIn.getBlockState(westpos);
-
-		boolean north = canConnectTo(northstate, northstate.isSolidSide(worldIn, northpos, Direction.SOUTH), Direction.SOUTH);
-		boolean east = canConnectTo(eaststate, eaststate.isSolidSide(worldIn, eastpos, Direction.WEST), Direction.WEST);
-		boolean south = canConnectTo(southstate, southstate.isSolidSide(worldIn, southpos, Direction.NORTH), Direction.NORTH);
-		boolean west = canConnectTo(weststate, weststate.isSolidSide(worldIn, westpos, Direction.EAST), Direction.EAST);
-		
-		return stateIn.with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
-	}
-	
 	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		state = this.getActualState(state, source, pos);
+		return BOUNDING_BOXES[getBoundingBoxIdx(state)];
+	}
 
-		boolean north = state.get(NORTH).booleanValue();
-		boolean east = state.get(EAST).booleanValue();
-		boolean south = state.get(SOUTH).booleanValue();
-		boolean west = state.get(WEST).booleanValue();
-
-		VoxelShape shape = AABB_CENTER;
-
-		if (!north && !south && !east && !west) {
-			shape = VoxelShapes.or(shape); }
-
-		if (north) {
-			if (south) { shape = VoxelShapes.or(shape, AABB_NORTH); }
-			if (!east && !west && !south) { shape = VoxelShapes.or(shape, AABB_NORTH); }
-			shape = VoxelShapes.or(shape, AABB_NORTH);
-		}
-
-		if (south) {
-			if (north) { shape = VoxelShapes.or(shape, AABB_SOUTH); }
-			if (!east && !west && !north) { shape = VoxelShapes.or(shape, AABB_SOUTH); }
-			shape = VoxelShapes.or(shape, AABB_SOUTH);
-		}
-
-		if (east) {
-			if (west) { shape = VoxelShapes.or(shape, AABB_EAST); }
-			if (!north && !south && !west) { shape = VoxelShapes.or(shape, AABB_EAST); }
-			shape = VoxelShapes.or(shape, AABB_EAST);
-		}
-
-		if (west) {
-			if (east) { shape = VoxelShapes.or(shape, AABB_WEST); }
-			if (!north && !south && !east) { shape = VoxelShapes.or(shape, AABB_WEST); }
-			shape = VoxelShapes.or(shape, AABB_WEST);
-		}
-
-		return shape;
+	private static int getBoundingBoxIdx(IBlockState state) {
+		int i = 0;
+		if (((Boolean)state.getValue(NORTH)).booleanValue()) { i |= 1 << EnumFacing.NORTH.getHorizontalIndex(); }
+		if (((Boolean)state.getValue(EAST)).booleanValue()) { i |= 1 << EnumFacing.EAST.getHorizontalIndex(); }
+		if (((Boolean)state.getValue(SOUTH)).booleanValue()) { i |= 1 << EnumFacing.SOUTH.getHorizontalIndex(); }
+		if (((Boolean)state.getValue(WEST)).booleanValue()) { i |= 1 << EnumFacing.WEST.getHorizontalIndex(); }
+		
+		return i;
 	}
 	
-	/* Create Blockstate */
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED, CRACK);
-	}
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, 
+			@Nullable Entity entityIn, boolean isActualState) {
+		
+		if (!isActualState) { state = state.getActualState(worldIn, pos); }
 
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_CENTER);
 
-	/* 立方体 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
+		if (((Boolean)state.getValue(NORTH)).booleanValue()) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_NORTH); }
 
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
+		if (((Boolean)state.getValue(EAST)).booleanValue()) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_EAST); }
+
+		if (((Boolean)state.getValue(SOUTH)).booleanValue()) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_SOUTH); }
+
+		if (((Boolean)state.getValue(WEST)).booleanValue()) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WEST); }
 	}
 	
-	/* 採取適正ツール */
+	
+	/* Connect the blocks. */
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing) {
+		IBlockState iblockstate = worldIn.getBlockState(pos);
+		BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos, facing);
+		Block block = iblockstate.getBlock();
+		boolean flag = (block instanceof Base_Wall || block instanceof Wall_DirtWall || block instanceof Base_WallKawara || block instanceof Wall_Sama ||
+				block instanceof Base_GlassDoor || block instanceof GlassDoorHalf || block instanceof GlassDoorHalf_seasonal || block instanceof BlockWall ||
+				block instanceof BaseShouji || block instanceof BaseShouji_Win || block instanceof ShoujiHalf || block instanceof ShoujiHalf_seasonal ||
+				block instanceof BaseFusuma || block instanceof BaseFusuma_B || block instanceof BaseWindow || block instanceof BaseWindowB ||
+				block instanceof BaseWindowTall_Bottom || block instanceof BaseWindowTall_Top ||block instanceof BaseWindowTall ||
+				block instanceof BlockFenceGate || block instanceof BlockWall || block instanceof BlockPane);
+		return !isExcepBlockForAttachWithPiston(block) && blockfaceshape == BlockFaceShape.SOLID || flag;
+	}
+	
+	protected static boolean isExcepBlockForAttachWithPiston(Block blockIn) {
+		return Block.isExceptBlockForAttachWithPiston(blockIn) || blockIn == Blocks.BARRIER || 
+				blockIn == Blocks.MELON_BLOCK || blockIn == Blocks.PUMPKIN || blockIn == Blocks.LIT_PUMPKIN;
+	}
+	
+	@Override
+	public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		return canConnectTo(world, pos.offset(facing), facing.getOpposite());
+	}
+
+	private boolean canWallConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		BlockPos other = pos.offset(facing);
+		Block block = world.getBlockState(other).getBlock();
+		return block.canBeConnectedTo(world, other, facing.getOpposite()) || canConnectTo(world, other, facing.getOpposite());
+	}
+	
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(NORTH, canWallConnectTo(worldIn, pos, EnumFacing.NORTH))
+					.withProperty(EAST, canWallConnectTo(worldIn, pos, EnumFacing.EAST))
+					.withProperty(SOUTH, canWallConnectTo(worldIn, pos, EnumFacing.SOUTH))
+					.withProperty(WEST, canWallConnectTo(worldIn, pos, EnumFacing.WEST));
+	}
+	
+	/* Data value */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STAGE_0_15, Integer.valueOf(meta));
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer)state.getValue(STAGE_0_15)).intValue();
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockState baseState, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		if (side == EnumFacing.UP) { return true; }
+		return false;
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { NORTH, EAST, SOUTH, WEST, STAGE_0_15 });
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
-
+	
 }

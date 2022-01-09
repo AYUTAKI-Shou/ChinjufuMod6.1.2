@@ -1,13 +1,20 @@
 {
 	"variants": {
-		"stage=0,waterlogged=false": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_kara" },
-		"stage=1,waterlogged=false": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_1" },
-		"stage=2,waterlogged=false": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_2" },
-		"stage=3,waterlogged=false": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_3" },
-
-		"stage=0,waterlogged=true": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_kara" },
-		"stage=1,waterlogged=true": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_kara" },
-		"stage=2,waterlogged=true": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_kara" },
-		"stage=3,waterlogged=true": { "model": "chinjufumod:block/chouzubachi/block_chouzubachi_kara" }
+		"stage=0": { "model": "chinjufumod:chouzubachi/block_chouzubachi_kara" },
+		"stage=1": { "model": "chinjufumod:chouzubachi/block_chouzubachi_1" },
+		"stage=2": { "model": "chinjufumod:chouzubachi/block_chouzubachi_2" },
+		"stage=3": { "model": "chinjufumod:chouzubachi/block_chouzubachi_3" },
+		"stage=4": { "model": "chinjufumod:chouzubachi/block_chouzu_gra_kara" },
+		"stage=5": { "model": "chinjufumod:chouzubachi/block_chouzu_gra_1" },
+		"stage=6": { "model": "chinjufumod:chouzubachi/block_chouzu_gra_2" },
+		"stage=7": { "model": "chinjufumod:chouzubachi/block_chouzu_gra_3" },
+		"stage=8": { "model": "chinjufumod:chouzubachi/block_chouzu_dio_kara" },
+		"stage=9": { "model": "chinjufumod:chouzubachi/block_chouzu_dio_1" },
+		"stage=10": { "model": "chinjufumod:chouzubachi/block_chouzu_dio_2" },
+		"stage=11": { "model": "chinjufumod:chouzubachi/block_chouzu_dio_3" },
+		"stage=12": { "model": "chinjufumod:chouzubachi/block_chouzu_and_kara" },
+		"stage=13": { "model": "chinjufumod:chouzubachi/block_chouzu_and_1" },
+		"stage=14": { "model": "chinjufumod:chouzubachi/block_chouzu_and_2" },
+		"stage=15": { "model": "chinjufumod:chouzubachi/block_chouzu_and_3" }
 	}
 }

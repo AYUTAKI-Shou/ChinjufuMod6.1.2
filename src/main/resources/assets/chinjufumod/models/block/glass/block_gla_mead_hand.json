@@ -68,7 +68,7 @@
 			"from": [ 7, 0.5, 7 ],
 			"to": [ 9, 2.4, 9 ],
 			"faces": {
-				"up" : { "uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#sake", "tintindex": 1 }
+				"up" : { "uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#sake", "tintindex": 28 }
 			}
 		}
 	]

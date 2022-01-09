@@ -1,100 +1,189 @@
 package com.ayutaki.chinjufumod.registry;
 
-import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.blocks.window.Window;
-import com.ayutaki.chinjufumod.blocks.window.WindowB;
-import com.ayutaki.chinjufumod.blocks.window.WindowTall;
-import com.ayutaki.chinjufumod.blocks.window.WindowTall_Bot;
-import com.ayutaki.chinjufumod.blocks.window.WindowTall_Top;
+import com.ayutaki.chinjufumod.RegisterHandler_CM;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_acacia;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_birch;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_darkoak;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_ichoh;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_jungle;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_kaede;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_oak;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_sakura;
+import com.ayutaki.chinjufumod.blocks.window.WindowB_spruce;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_acacia;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_birch;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_darkoak;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_ichoh;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_jungle;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_kaede;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_oak;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_sakura;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallBot_spruce;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_acacia;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_birch;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_darkoak;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_ichoh;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_jungle;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_kaede;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_oak;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_sakura;
+import com.ayutaki.chinjufumod.blocks.window.WindowTallTop_spruce;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_acacia;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_birch;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_darkoak;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_ichoh;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_jungle;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_kaede;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_oak;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_sakura;
+import com.ayutaki.chinjufumod.blocks.window.WindowTall_spruce;
+import com.ayutaki.chinjufumod.blocks.window.Window_acacia;
+import com.ayutaki.chinjufumod.blocks.window.Window_birch;
+import com.ayutaki.chinjufumod.blocks.window.Window_darkoak;
+import com.ayutaki.chinjufumod.blocks.window.Window_ichoh;
+import com.ayutaki.chinjufumod.blocks.window.Window_jungle;
+import com.ayutaki.chinjufumod.blocks.window.Window_kaede;
+import com.ayutaki.chinjufumod.blocks.window.Window_oak;
+import com.ayutaki.chinjufumod.blocks.window.Window_sakura;
+import com.ayutaki.chinjufumod.blocks.window.Window_spruce;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Window_Blocks {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	public static Block WINDOW_oak, WINDOW_acacia, WINDOW_birch,
+								WINDOW_darkoak, WINDOW_jungle, WINDOW_spruce,
+								WINDOW_sakura, WINDOW_kaede, WINDOW_ichoh;
 
-	public static Block WINDOW_oak = register("block_window", window());
-	public static Block WINDOW_spruce = register("block_window_spruce", window());
-	public static Block WINDOW_birch = register("block_window_birch", window());
-	public static Block WINDOW_jungle = register("block_window_jungle", window());
-	public static Block WINDOW_acacia = register("block_window_acacia", window());
-	public static Block WINDOW_darkoak = register("block_window_darkoak", window());
-	public static Block WINDOW_sakura = register("block_window_sakura", window());
-	public static Block WINDOW_kaede = register("block_window_kaede", window());
-	public static Block WINDOW_ichoh = register("block_window_ichoh", window());
+	public static Block WINDOWB_oak, WINDOWB_acacia, WINDOWB_birch,
+								WINDOWB_darkoak, WINDOWB_jungle, WINDOWB_spruce,
+								WINDOWB_sakura, WINDOWB_kaede, WINDOWB_ichoh;
 
-	public static Block WINDOWB_oak = register("block_windowb", windowBtype());
-	public static Block WINDOWB_spruce = register("block_windowb_spruce", windowBtype());
-	public static Block WINDOWB_birch = register("block_windowb_birch", windowBtype());
-	public static Block WINDOWB_jungle = register("block_windowb_jungle", windowBtype());
-	public static Block WINDOWB_acacia = register("block_windowb_acacia", windowBtype());
-	public static Block WINDOWB_darkoak = register("block_windowb_darkoak", windowBtype());
-	public static Block WINDOWB_sakura = register("block_windowb_sakura", windowBtype());
-	public static Block WINDOWB_kaede = register("block_windowb_kaede", windowBtype());
-	public static Block WINDOWB_ichoh = register("block_windowb_ichoh", windowBtype());
+	public static Block WINDOWTALL_oak, WINDOWTALL_acacia, WINDOWTALL_birch,
+								WINDOWTALL_darkoak, WINDOWTALL_jungle, WINDOWTALL_spruce,
+								WINDOWTALL_sakura, WINDOWTALL_kaede, WINDOWTALL_ichoh;
 
-	public static Block WINDOWTALLBOT_oak = register("block_windowtallbot", windowTallBot());
-	public static Block WINDOWTALLBOT_spruce = register("block_windowtallbot_spruce", windowTallBot());
-	public static Block WINDOWTALLBOT_birch = register("block_windowtallbot_birch", windowTallBot());
-	public static Block WINDOWTALLBOT_jungle = register("block_windowtallbot_jungle", windowTallBot());
-	public static Block WINDOWTALLBOT_acacia = register("block_windowtallbot_acacia", windowTallBot());
-	public static Block WINDOWTALLBOT_darkoak = register("block_windowtallbot_darkoak", windowTallBot());
-	public static Block WINDOWTALLBOT_sakura = register("block_windowtallbot_sakura", windowTallBot());
-	public static Block WINDOWTALLBOT_kaede = register("block_windowtallbot_kaede", windowTallBot());
-	public static Block WINDOWTALLBOT_ichoh = register("block_windowtallbot_ichoh", windowTallBot());
+	public static Block WINDOWTALLBOT_oak, WINDOWTALLBOT_acacia, WINDOWTALLBOT_birch,
+								WINDOWTALLBOT_darkoak, WINDOWTALLBOT_jungle, WINDOWTALLBOT_spruce,
+								WINDOWTALLBOT_sakura, WINDOWTALLBOT_kaede, WINDOWTALLBOT_ichoh;
 
-	public static Block WINDOWTALLTOP_oak = register("block_windowtalltop", windowTallTop());
-	public static Block WINDOWTALLTOP_spruce = register("block_windowtalltop_spruce", windowTallTop());
-	public static Block WINDOWTALLTOP_birch = register("block_windowtalltop_birch", windowTallTop());
-	public static Block WINDOWTALLTOP_jungle = register("block_windowtalltop_jungle", windowTallTop());
-	public static Block WINDOWTALLTOP_acacia = register("block_windowtalltop_acacia", windowTallTop());
-	public static Block WINDOWTALLTOP_darkoak = register("block_windowtalltop_darkoak", windowTallTop());
-	public static Block WINDOWTALLTOP_sakura = register("block_windowtalltop_sakura", windowTallTop());
-	public static Block WINDOWTALLTOP_kaede = register("block_windowtalltop_kaede", windowTallTop());
-	public static Block WINDOWTALLTOP_ichoh = register("block_windowtalltop_ichoh", windowTallTop());
+	public static Block WINDOWTALLTOP_oak, WINDOWTALLTOP_acacia, WINDOWTALLTOP_birch,
+								WINDOWTALLTOP_darkoak, WINDOWTALLTOP_jungle, WINDOWTALLTOP_spruce,
+								WINDOWTALLTOP_sakura, WINDOWTALLTOP_kaede, WINDOWTALLTOP_ichoh;
 
-	public static Block WINDOWTALL_oak = register("block_windowtall", windowTall());
-	public static Block WINDOWTALL_spruce = register("block_windowtall_spruce", windowTall());
-	public static Block WINDOWTALL_birch = register("block_windowtall_birch", windowTall());
-	public static Block WINDOWTALL_jungle = register("block_windowtall_jungle", windowTall());
-	public static Block WINDOWTALL_acacia = register("block_windowtall_acacia", windowTall());
-	public static Block WINDOWTALL_darkoak = register("block_windowtall_darkoak", windowTall());
-	public static Block WINDOWTALL_sakura = register("block_windowtall_sakura", windowTall());
-	public static Block WINDOWTALL_kaede = register("block_windowtall_kaede", windowTall());
-	public static Block WINDOWTALL_ichoh = register("block_windowtall_ichoh", windowTall());
 
-	/* Share variables */
-	private static Window window() {
-		return new Window(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
+	public static void init() {
+
+		WINDOW_oak = new Window_oak();
+		WINDOW_acacia = new Window_acacia();
+		WINDOW_birch = new Window_birch();
+		WINDOW_darkoak = new Window_darkoak();
+		WINDOW_jungle = new Window_jungle();
+		WINDOW_spruce = new Window_spruce();
+		WINDOW_sakura = new Window_sakura();
+		WINDOW_kaede = new Window_kaede();
+		WINDOW_ichoh = new Window_ichoh();
+
+		WINDOWB_oak = new WindowB_oak();
+		WINDOWB_acacia = new WindowB_acacia();
+		WINDOWB_birch = new WindowB_birch();
+		WINDOWB_darkoak = new WindowB_darkoak();
+		WINDOWB_jungle = new WindowB_jungle();
+		WINDOWB_spruce = new WindowB_spruce();
+		WINDOWB_sakura = new WindowB_sakura();
+		WINDOWB_kaede = new WindowB_kaede();
+		WINDOWB_ichoh = new WindowB_ichoh();
+
+		WINDOWTALL_oak = new WindowTall_oak();
+		WINDOWTALL_acacia = new WindowTall_acacia();
+		WINDOWTALL_birch = new WindowTall_birch();
+		WINDOWTALL_darkoak = new WindowTall_darkoak();
+		WINDOWTALL_jungle = new WindowTall_jungle();
+		WINDOWTALL_spruce = new WindowTall_spruce();
+		WINDOWTALL_sakura = new WindowTall_sakura();
+		WINDOWTALL_kaede = new WindowTall_kaede();
+		WINDOWTALL_ichoh = new WindowTall_ichoh();
+
+		WINDOWTALLBOT_oak = new WindowTallBot_oak();
+		WINDOWTALLTOP_oak = new WindowTallTop_oak();
+		WINDOWTALLBOT_acacia = new WindowTallBot_acacia();
+		WINDOWTALLTOP_acacia = new WindowTallTop_acacia();
+		WINDOWTALLBOT_birch = new WindowTallBot_birch();
+		WINDOWTALLTOP_birch = new WindowTallTop_birch();
+		WINDOWTALLBOT_darkoak = new WindowTallBot_darkoak();
+		WINDOWTALLTOP_darkoak = new WindowTallTop_darkoak();
+		WINDOWTALLBOT_jungle = new WindowTallBot_jungle();
+		WINDOWTALLTOP_jungle = new WindowTallTop_jungle();
+		WINDOWTALLBOT_spruce = new WindowTallBot_spruce();
+		WINDOWTALLTOP_spruce = new WindowTallTop_spruce();
+		WINDOWTALLBOT_sakura = new WindowTallBot_sakura();
+		WINDOWTALLTOP_sakura = new WindowTallTop_sakura();
+		WINDOWTALLBOT_kaede = new WindowTallBot_kaede();
+		WINDOWTALLTOP_kaede = new WindowTallTop_kaede();
+		WINDOWTALLBOT_ichoh = new WindowTallBot_ichoh();
+		WINDOWTALLTOP_ichoh = new WindowTallTop_ichoh();
+
+
 	}
 
-	private static WindowB windowBtype() {
-		return new WindowB(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
+
+	public static void register() {
+
+		registerBlock(WINDOW_oak);
+		registerBlock(WINDOW_acacia);
+		registerBlock(WINDOW_birch);
+		registerBlock(WINDOW_darkoak);
+		registerBlock(WINDOW_jungle);
+		registerBlock(WINDOW_spruce);
+		registerBlock(WINDOW_sakura);
+		registerBlock(WINDOW_kaede);
+		registerBlock(WINDOW_ichoh);
+
+		registerBlock(WINDOWB_oak);
+		registerBlock(WINDOWB_acacia);
+		registerBlock(WINDOWB_birch);
+		registerBlock(WINDOWB_darkoak);
+		registerBlock(WINDOWB_jungle);
+		registerBlock(WINDOWB_spruce);
+		registerBlock(WINDOWB_sakura);
+		registerBlock(WINDOWB_kaede);
+		registerBlock(WINDOWB_ichoh);
+
+		registerBlock(WINDOWTALL_oak);
+		registerBlock(WINDOWTALL_acacia);
+		registerBlock(WINDOWTALL_birch);
+		registerBlock(WINDOWTALL_darkoak);
+		registerBlock(WINDOWTALL_jungle);
+		registerBlock(WINDOWTALL_spruce);
+		registerBlock(WINDOWTALL_sakura);
+		registerBlock(WINDOWTALL_kaede);
+		registerBlock(WINDOWTALL_ichoh);
+
+		registerBlock(WINDOWTALLBOT_oak);
+		registerBlock(WINDOWTALLBOT_acacia);
+		registerBlock(WINDOWTALLBOT_birch);
+		registerBlock(WINDOWTALLBOT_darkoak);
+		registerBlock(WINDOWTALLBOT_jungle);
+		registerBlock(WINDOWTALLBOT_spruce);
+		registerBlock(WINDOWTALLBOT_sakura);
+		registerBlock(WINDOWTALLBOT_kaede);
+		registerBlock(WINDOWTALLBOT_ichoh);
+
+		registerBlock(WINDOWTALLTOP_oak);
+		registerBlock(WINDOWTALLTOP_acacia);
+		registerBlock(WINDOWTALLTOP_birch);
+		registerBlock(WINDOWTALLTOP_darkoak);
+		registerBlock(WINDOWTALLTOP_jungle);
+		registerBlock(WINDOWTALLTOP_spruce);
+		registerBlock(WINDOWTALLTOP_sakura);
+		registerBlock(WINDOWTALLTOP_kaede);
+		registerBlock(WINDOWTALLTOP_ichoh);
+
+
 	}
 
-	private static WindowTall_Bot windowTallBot() {
-		return new WindowTall_Bot(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
-	}
-
-	private static WindowTall_Top windowTallTop() {
-		return new WindowTall_Top(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
-	}
-
-	private static WindowTall windowTall() {
-		return new WindowTall(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
-	}
-
-	///* Register *///
-	private static Block register(String name, Block block) {
-		BLOCKS.register(name, () -> block);
-		return block;
+	public static void registerBlock(Block block) {
+		RegisterHandler_CM.Blocks.BLOCKS.add(block);
 	}
 
 }

@@ -1,22 +1,31 @@
 package com.ayutaki.chinjufumod.blocks.season;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PressurePlateBlock;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
 
-public class PressurePlate_CM extends PressurePlateBlock {
+import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 
-	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+public class PressurePlate_CM extends BlockPressurePlate {
 
-	public PressurePlate_CM(PressurePlateBlock.Sensitivity sensitivity, Block.Properties properties) {
-		super(sensitivity, properties);
+	public static final PropertyBool POWERED = PropertyBool.create("powered");
+
+	public PressurePlate_CM() {
+		super(Material.WOOD, PressurePlate_CM.Sensitivity.EVERYTHING);
+		setCreativeTab(ChinjufuModTabs.SEASONAL);
+
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
 	}
 
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(POWERED);
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { POWERED });
 	}
 
 }

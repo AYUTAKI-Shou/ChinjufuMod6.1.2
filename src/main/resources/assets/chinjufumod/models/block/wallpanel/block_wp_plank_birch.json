@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/birch_planks",
-		"front": "minecraft:block/birch_planks",
-		"back": "minecraft:block/birch_planks",
-		"side": "minecraft:block/birch_planks"
+		"particle": "blocks/planks_birch",
+		"front": "blocks/planks_birch",
+		"back": "blocks/planks_birch",
+		"side": "blocks/planks_birch"
 	}
 }

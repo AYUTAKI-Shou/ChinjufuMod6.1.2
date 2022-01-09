@@ -4,7 +4,7 @@
 		"layer0": "chinjufumod:items/rensouhou203e"
 	},
 	"display": {
-		"gui": {
+		 "gui": {
 			"rotation": [ 0, 0, 0 ],
 			"translation": [ 0, 0, 0 ],
 			"scale": [ 0.9, 0.9, 0.9 ]

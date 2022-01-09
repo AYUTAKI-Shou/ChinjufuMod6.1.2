@@ -1,77 +1,266 @@
 package com.ayutaki.chinjufumod.blocks.hakkou;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabWType2;
+import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai;
+import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai_sub;
+import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu;
+import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu_sub;
+import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk;
+import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk_sub;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.BlockHalfStoneSlab;
+import net.minecraft.block.BlockHalfStoneSlabNew;
+import net.minecraft.block.BlockHalfWoodSlab;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Glass_Sake extends Base_Glass {
+public class Glass_Sake extends Block {
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(6.8D, 0.0D, 6.8D, 9.2D, 3.2D, 9.2D);
-	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(6.8D, -8.0D, 6.8D, 9.2D, 0.1D, 9.2D);
+	public static final String ID = "block_glass_sake";
 
-	public Glass_Sake(Block.Properties properties) {
-		super(properties);
+	/* Property */
+	/** 1=生酒 2 3、4=日本酒 5 6、7=熟成酒 8 9、10=ミード 11 12、13=熟成ミード 14 15 **/
+	public static final PropertyInteger STAGE_1_15 = PropertyInteger.create("stage", 1, 15);
+	public static final PropertyBool DOWN = PropertyBool.create("down");
+
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.425D, 0.0D, 0.425D, 0.575D, 0.2D, 0.575D);
+	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.425D, -0.5D, 0.425D, 0.575D, 0.01D, 0.575D);
+
+	public Glass_Sake() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		/*瓶・グラス*/
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(1.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(STAGE_1_15, Integer.valueOf(1))
+				.withProperty(DOWN, Boolean.valueOf(false)));
 	}
 
-	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-		int i = state.get(STAGE_0_2);
 
-		if (i != 2) {
-			/** Hand is empty. **/
-			if (itemstack.isEmpty()) {
+		/** 1=生酒 2 3、4=日本酒 5 6、7=熟成酒 8 9、10=ミード 11 12、13=熟成ミード 14 15 **/
+		int i = ((Integer)state.getValue(STAGE_1_15)).intValue();
+
+		/** Hand is Empty. **/
+		if (itemstack.isEmpty()) {
+
+			if (i != 3 && i != 6 && i != 9 && i != 12 && i != 15) {
 				CMEvents.soundDrink(worldIn, pos);
-	
-				if (i == 0) {
-					playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 1));
-					playerIn.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 1400, 0)); }
+				worldIn.setBlockState(pos, state.withProperty(STAGE_1_15, Integer.valueOf(i + 1)), 3);
+
+				/* 生酒 */
 				if (i == 1) {
-					playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1500, 1));
-					playerIn.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 1720, 0)); }
-	
-				worldIn.setBlockState(pos, state.with(Base_Glass.STAGE_0_2, Integer.valueOf(i + 1))); }
+					/** 1秒＝20 酒は ×60=1200 **/
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 0));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1400, 0)); }
+
+				if (i == 2) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1500, 0));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1720, 0)); }
+
+				/* 新酒 */
+				if (i == 4) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1400, 0)); }
+
+				if (i == 5) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1500, 1));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1720, 0)); }
+
+				/* 熟成酒 */
+				if (i == 7) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 2));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1200, 0)); }
+
+				if (i == 8) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1500, 2));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1500, 0)); }
+
+
+				/* ミード */
+				if (i == 10) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 0));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1400, 0)); }
+
+				if (i == 11) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1500, 0));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1720, 0)); }
+
+				/* 熟成ミード */
+				if (i == 13) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1200, 0)); }
+
+				if (i == 14) {
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1500, 1));
+					((EntityLivingBase) playerIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1500, 0)); }
+			}
 			
-			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
+			if (i == 3 || i == 6 || i == 9 || i == 12 || i == 15) { CMEvents.textIsEmpty(worldIn, pos, playerIn); }
 		}
 		
-		if (i == 2) { CMEvents.textIsEmpty(worldIn, pos, playerIn); }
+		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* Clone Item in Creative. */
+	/* Data value */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.get(STAGE_0_2);
-		return (i == 0)? new ItemStack(Items_Teatime.SAKEGLASS) : new ItemStack(Items_Teatime.DRINKGLASS);
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer)state.getValue(STAGE_1_15)).intValue();
 	}
 
-	/* Collisions for each property. */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STAGE_1_15, Integer.valueOf(meta));
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (9 - ((Integer)blockState.getValue(STAGE_1_15)).intValue()) * 2;
+	}
+
+	/*Collision*/
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		state = state.getActualState(source, pos);
+		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
 
 		/** !down= true : false **/
-		return flag? AABB_BOX : AABB_DOWN;
+		return flag? AABB : AABB_DOWN;
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* 直下ブロックに対する返し */
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos);
+		Block block = state.getBlock();
+
+		return block instanceof Chabudai || block instanceof LowDesk || block instanceof Kotatsu ||
+					block instanceof Chabudai_sub || block instanceof LowDesk_sub || block instanceof Kotatsu_sub ||
+					(block instanceof BaseFacingSlabW && state.getValue(BaseFacingSlabW.HALF) == BaseFacingSlabW.SlabHalf.BOTTOM && state.getValue(BaseFacingSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabW && state.getValue(BaseSlabW.HALF) == BaseSlabW.SlabHalf.BOTTOM && state.getValue(BaseSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabWType2 && state.getValue(BaseSlabWType2.HALF) == BaseSlabWType2.SlabHalf.BOTTOM && state.getValue(BaseSlabWType2.DOUBLE) == false) ||
+					(block instanceof BlockHalfWoodSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlabNew && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM);
+	}
+
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, this.canConnectTo(worldIn, pos.down()));
+	}
+
+	/*初期BlockStateContainerの生成 */
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { DOWN, STAGE_1_15 });
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return false;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* Drop Item and Clone Item. */
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		/** 1=生酒 2 3、4=日本酒 5 6、7=熟成酒 8 9、10=ミード 11 12、13=熟成ミード 14 15 **/
+		int i = ((Integer)state.getValue(STAGE_1_15)).intValue();
+
+		if (i == 1) { stack.add(new ItemStack(Items_Teatime.SAKEGLASS, 1, 1)); }
+		if (i == 4) { stack.add(new ItemStack(Items_Teatime.SAKEGLASS, 1, 2)); }
+		if (i == 7) { stack.add(new ItemStack(Items_Teatime.SAKEGLASS, 1, 3)); }
+		if (i == 10) { stack.add(new ItemStack(Items_Teatime.WINEGLASS, 1, 5)); }
+		if (i == 13) { stack.add(new ItemStack(Items_Teatime.WINEGLASS, 1, 6)); }
+		if (i != 1 && i != 4 && i != 7 && i != 10 && i != 13) { stack.add(new ItemStack(Items_Teatime.Item_DISH, 1, 7)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		/** 1=生酒 2 3、4=日本酒 5 6、7=熟成酒 8 9、10=ミード 11 12、13=熟成ミード 14 15 **/
+		int i = ((Integer)state.getValue(STAGE_1_15)).intValue();
+
+		if (i == 1 || i == 2) { return new ItemStack(Items_Teatime.SAKEGLASS, 1, 1); }
+		if (i == 4 || i == 5) { return new ItemStack(Items_Teatime.SAKEGLASS, 1, 2); }
+		if (i == 7 || i == 8) { return new ItemStack(Items_Teatime.SAKEGLASS, 1, 3); }
+		if (i == 10 || i == 11) { return new ItemStack(Items_Teatime.WINEGLASS, 1, 5); }
+		if (i == 13 || i == 14) { return new ItemStack(Items_Teatime.WINEGLASS, 1, 6); }
+		return new ItemStack(Items_Teatime.Item_DISH, 1, 7);
 	}
 
 }

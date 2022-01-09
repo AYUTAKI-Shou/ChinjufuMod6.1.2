@@ -6,7 +6,7 @@
 		"front": "chinjufumod:blocks/kitchen_front",
 		"side": "chinjufumod:blocks/kitchen_side",
 		"sink": "chinjufumod:blocks/kitchen_sink",
-		"water": "minecraft:block/water_still"
+		"water": "chinjufumod:blocks/water_still"
 	},
 	"elements": [
 		{
@@ -525,12 +525,12 @@
 			"from": [ 7.2, 5.8, 7.2 ],
 			"to": [ 8.8, 8.0, 8.8 ],
 			"faces": {
-				"up" : { "texture": "#water", "tintindex": 1 },
-	 			"down" : { "texture": "#water", "tintindex": 1 },
-				"north": { "texture": "#water", "tintindex": 1 },
-				"south": { "texture": "#water", "tintindex": 1 },
-	 			"west" : { "texture": "#water", "tintindex": 1 },
-				"east" : { "texture": "#water", "tintindex": 1 }
+				"up" : { "texture": "#water", "tintindex": 20 },
+	 			"down" : { "texture": "#water", "tintindex": 20 },
+				"north": { "texture": "#water", "tintindex": 20 },
+				"south": { "texture": "#water", "tintindex": 20 },
+	 			"west" : { "texture": "#water", "tintindex": 20 },
+				"east" : { "texture": "#water", "tintindex": 20 }
 			}
 		},
 		{
@@ -538,12 +538,12 @@
 			"from": [ 4.2, 4.2, 7.2 ],
 			"to": [ 8.8, 5.8, 8.8 ],
 			"faces": {
-				"up" : { "texture": "#water", "tintindex": 1 },
-	 			"down" : { "texture": "#water", "tintindex": 1 },
-				"north": { "texture": "#water", "tintindex": 1 },
-				"south": { "texture": "#water", "tintindex": 1 },
-	 			"west" : { "texture": "#water", "tintindex": 1 },
-				"east" : { "texture": "#water", "tintindex": 1 }
+				"up" : { "texture": "#water", "tintindex": 20 },
+	 			"down" : { "texture": "#water", "tintindex": 20 },
+				"north": { "texture": "#water", "tintindex": 20 },
+				"south": { "texture": "#water", "tintindex": 20 },
+	 			"west" : { "texture": "#water", "tintindex": 20 },
+				"east" : { "texture": "#water", "tintindex": 20 }
 			}
 		},
 		{
@@ -551,12 +551,12 @@
 			"from": [ 4.2, 5.8, 7.2 ],
 			"to": [ 5.8, 8.0, 8.8 ],
 			"faces": {
-				"up" : { "texture": "#water", "tintindex": 1 },
-	 			"down" : { "texture": "#water", "tintindex": 1 },
-				"north": { "texture": "#water", "tintindex": 1 },
-				"south": { "texture": "#water", "tintindex": 1 },
-	 			"west" : { "texture": "#water", "tintindex": 1 },
-				"east" : { "texture": "#water", "tintindex": 1 }
+				"up" : { "texture": "#water", "tintindex": 20 },
+	 			"down" : { "texture": "#water", "tintindex": 20 },
+				"north": { "texture": "#water", "tintindex": 20 },
+				"south": { "texture": "#water", "tintindex": 20 },
+	 			"west" : { "texture": "#water", "tintindex": 20 },
+				"east" : { "texture": "#water", "tintindex": 20 }
 			}
 		},
 

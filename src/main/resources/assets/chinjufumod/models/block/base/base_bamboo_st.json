@@ -1,6 +1,6 @@
 {
 	"parent": "block/block",
-	"display": {
+	 "display": {
 		"gui": {
 				"rotation": [ 30, -45, 0 ],
 				"translation": [ 0, 0, 0],
@@ -17,10 +17,10 @@
 				"scale": [ 0.375, 0.375, 0.375 ]
 		}
 	 },
-	"textures": {
+	 "textures": {
 		"particle": "#side"
 	 },
-	"elements": [
+	 "elements": [
 		{
 			"name": "1_kita_ue____________________________________",
 			"from": [ 0, 15, 0 ],

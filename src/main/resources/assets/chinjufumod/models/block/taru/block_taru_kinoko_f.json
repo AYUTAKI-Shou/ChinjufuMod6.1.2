@@ -5,7 +5,7 @@
 		"front": "chinjufumod:blocks/trays_front_kara",
 		"end": "chinjufumod:blocks/trays_end_kara",
 		"side": "chinjufumod:blocks/trays_side_kara",
-		"kinoko": "minecraft:block/brown_mushroom"
+		"kinoko": "minecraft:blocks/mushroom_brown"
 	},
 	"elements": [
 		{
@@ -13,8 +13,8 @@
 			"from": [ 2.5, 2.6, 2.5 ],
 			"to": [ 7.5, 2.6, 7.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko" },
-				"down" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko" }
+				"up" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko" },
+				"down" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko" }
 			}
 		},
 		{
@@ -22,8 +22,8 @@
 			"from": [ 8.5, 2.6, 8.5 ],
 			"to": [ 13.5, 2.6, 13.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
-				"down" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko", "rotation": 270 }
+				"up" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
+				"down" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko", "rotation": 270 }
 			}
 		},
 		{
@@ -31,8 +31,8 @@
 			"from": [ 2.5, 6.6, 2.5 ],
 			"to": [ 7.5, 6.6, 7.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko" },
-				"down" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko" }
+				"up" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko" },
+				"down" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko" }
 			}
 		},
 		{
@@ -40,8 +40,8 @@
 			"from": [ 8.5, 6.6, 8.5 ],
 			"to": [ 13.5, 6.6, 13.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
-				"down" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko", "rotation": 270 }
+				"up" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
+				"down" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko", "rotation": 270 }
 			}
 		},
 		{
@@ -49,8 +49,8 @@
 			"from": [ 2.5, 10.6, 2.5 ],
 			"to": [ 7.5, 10.6, 7.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko" },
-				"down" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko" }
+				"up" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko" },
+				"down" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko" }
 			}
 		},
 		{
@@ -58,8 +58,8 @@
 			"from": [ 8.5, 10.6, 8.5 ],
 			"to": [ 13.5, 10.6, 13.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
-				"down" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko", "rotation": 270 }
+				"up" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
+				"down" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko", "rotation": 270 }
 			}
 		},
 
@@ -68,8 +68,8 @@
 			"from": [ 2.5, 14.6, 2.5 ],
 			"to": [ 7.5, 14.6, 7.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko" },
-				"down" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko" }
+				"up" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko" },
+				"down" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko" }
 			}
 		},
 		{
@@ -77,8 +77,8 @@
 			"from": [ 8.5, 14.6, 8.5 ],
 			"to": [ 13.5, 14.6, 13.5 ],
 			"faces": {
-				"up" : { "uv": [ 12.0, 8.0, 4.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
-				"down" : { "uv": [ 12.0, 16.0, 4.0, 8.0 ], "texture":"#kinoko", "rotation": 270 }
+				"up" : { "uv": [ 11.0, 10.0, 5.0, 16.0 ], "texture":"#kinoko", "rotation": 90 },
+				"down" : { "uv": [ 11.0, 16.0, 5.0, 10.0 ], "texture":"#kinoko", "rotation": 270 }
 			}
 		},
 

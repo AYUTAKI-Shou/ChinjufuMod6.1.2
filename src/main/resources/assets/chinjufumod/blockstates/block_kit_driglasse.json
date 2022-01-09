@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "chinjufumod:kitchen/block_kit_driglasse", "y": 180 },
+		"facing=south": { "model": "chinjufumod:kitchen/block_kit_driglasse", "y": 0 },
+		"facing=west":  { "model": "chinjufumod:kitchen/block_kit_driglasse", "y": 90 },
+		"facing=east":  { "model": "chinjufumod:kitchen/block_kit_driglasse", "y": 270 }
+	}
+}

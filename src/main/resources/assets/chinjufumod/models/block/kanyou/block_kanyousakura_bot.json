@@ -6,6 +6,6 @@
 		"miki_top": "chinjufumod:blocks/log_sakura_top",
 		"ha": "chinjufumod:blocks/flower_sakura",
 		"hachi": "chinjufumod:blocks/dish_brown",
-		"tuchi": "minecraft:block/farmland_moist"
+		"tuchi": "minecraft:blocks/farmland_wet"
 	}
 }

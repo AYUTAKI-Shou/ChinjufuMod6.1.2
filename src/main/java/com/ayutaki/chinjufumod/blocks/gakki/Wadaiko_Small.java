@@ -1,92 +1,117 @@
 package com.ayutaki.chinjufumod.blocks.gakki;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseStage2_FaceWater;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage2_Face;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
+import com.ayutaki.chinjufumod.registry.Items_Wadeco;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Wadaiko_Small extends BaseStage2_FaceWater {
+public class Wadaiko_Small extends BaseStage2_Face {
 
-	/* Collision */
-	protected static final VoxelShape BOT_SOUTH = Block.makeCuboidShape(4.0D, 1.0D, 4.0D, 12.0D, 6.5D, 13.0D);
-	protected static final VoxelShape BOT_WEST = Block.makeCuboidShape(3.0D, 1.0D, 4.0D, 12.0D, 6.5D, 12.0D);
-	protected static final VoxelShape BOT_NORTH = Block.makeCuboidShape(4.0D, 1.0D, 3.0D, 12.0D, 6.5D, 12.0D);
-	protected static final VoxelShape BOT_EAST = Block.makeCuboidShape(4.0D, 1.0D, 4.0D, 13.0D, 6.5D, 12.0D);
+	public static final String ID = "block_wadaiko_small";
 
-	protected static final VoxelShape BOT2_SOUTH = Block.makeCuboidShape(4.0D, 11.0D, 4.0D, 12.0D, 16.0D, 13.0D);
-	protected static final VoxelShape BOT2_WEST = Block.makeCuboidShape(3.0D, 11.0D, 4.0D, 12.0D, 16.0D, 12.0D);
-	protected static final VoxelShape BOT2_NORTH = Block.makeCuboidShape(4.0D, 11.0D, 3.0D, 12.0D, 16.0D, 12.0D);
-	protected static final VoxelShape BOT2_EAST = Block.makeCuboidShape(4.0D, 11.0D, 4.0D, 13.0D, 16.0D, 12.0D);
+	private static final AxisAlignedBB BOT1_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, 0.0625, 0.25, 0.8125, 0.40625, 0.75);
+	private static final AxisAlignedBB BOT1_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, 0.0625, 0.25, 0.8125, 0.40625, 0.75);
+	private static final AxisAlignedBB BOT1_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, 0.0625, 0.25, 0.8125, 0.40625, 0.75);
+	private static final AxisAlignedBB BOT1_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, 0.0625, 0.25, 0.8125, 0.40625, 0.75);
+	private static final AxisAlignedBB[] BOT1 = { BOT1_SOUTH, BOT1_WEST, BOT1_NORTH, BOT1_EAST };
 
+	private static final AxisAlignedBB BOT2_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, 0.6875, 0.25, 0.8125, 1.0, 0.75);
+	private static final AxisAlignedBB BOT2_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, 0.6875, 0.25, 0.8125, 1.0, 0.75);
+	private static final AxisAlignedBB BOT2_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, 0.6875, 0.25, 0.8125, 1.0, 0.75);
+	private static final AxisAlignedBB BOT2_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, 0.6875, 0.25, 0.8125, 1.0, 0.75);
+	private static final AxisAlignedBB[] BOT2 = { BOT2_SOUTH, BOT2_WEST, BOT2_NORTH, BOT2_EAST };
 
-	public Wadaiko_Small(Block.Properties properties) {
-		super(properties);
+	public Wadaiko_Small() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+		setCreativeTab(ChinjufuModTabs.WADECO);
+
+		/*木製*/
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(10.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
+
+		if (playerIn.isSneaking() && itemstack.isEmpty()) {
+			CMEvents.soundWoodPlace(worldIn, pos);
+			worldIn.setBlockState(pos, state.cycleProperty(STAGE_1_2)); }
 
 		if (!playerIn.isSneaking()) {
+			switch (i) {
+			case 1 :
+			default :
+				if (hitY >= 0.40625D) {
+					if (item == Items.STICK) { this.playSound(worldIn, pos); }
+					if (item != Items.STICK) { this.playHand(worldIn, pos); } }
 
-			if (hit.getFace() == Direction.UP) {
-				if (item == Items.STICK) { this.topSound(worldIn, pos); }
-				if (item != Items.STICK) { this.topHand(worldIn, pos); } }
+				if (hitY < 0.40625D) {
+					if (item == Items.STICK) { this.sideSound(worldIn, pos); }
+					if (item != Items.STICK) { this.sideHand(worldIn, pos); } }
+				break;
 
-			if (hit.getFace() != Direction.UP) {
-				if (item == Items.STICK) { this.sideSound(worldIn, pos); }
-				if (item != Items.STICK) { this.sideHand(worldIn, pos); } }
+			case 2 :
+				if (hitY >= 1.0D) {
+					if (item == Items.STICK) { this.playSound(worldIn, pos); }
+					if (item != Items.STICK) { this.playHand(worldIn, pos); } }
+
+				if (hitY < 1.0D) {
+					if (item == Items.STICK) { this.sideSound(worldIn, pos); }
+					if (item != Items.STICK) { this.sideHand(worldIn, pos); } }
+				break;
+			} // switch
 		}
-
-		if (playerIn.isSneaking()) {
-			if (itemstack.isEmpty()) {
-				CMEvents.soundWoodPlace(worldIn, pos);
-				worldIn.setBlockState(pos, state.cycle(STAGE_1_2)); }
-		}
-		
-		return ActionResultType.SUCCESS;
+		return true;
 	}
 
-	/* Play Sound */
-	private void topSound(World worldIn, BlockPos pos) {
+	/* Sound */
+	private void playSound(World worldIn, BlockPos pos) {
 		worldIn.playSound(null, pos, SoundEvents_CM.WADAIKO_TOP, SoundCategory.BLOCKS, 0.8F, 1.4F);
 	}
 
-	private void topHand(World worldIn, BlockPos pos) {
+	private void playHand(World worldIn, BlockPos pos) {
 		worldIn.playSound(null, pos, SoundEvents_CM.WADAIKO_TOP, SoundCategory.BLOCKS, 0.2F, 1.4F);
 	}
 
@@ -98,70 +123,67 @@ public class Wadaiko_Small extends BaseStage2_FaceWater {
 		worldIn.playSound(null, pos, SoundEvents_CM.WADAIKO_SIDE, SoundCategory.BLOCKS, 0.2F, 1.3F);
 	}
 
-	/* Gives a value when placed. */
-	@Nullable
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		PlayerEntity playerIn = context.getPlayer();
+	/* Collision */
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-		if (playerIn.isSneaking()) {
-			return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
-					.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-					.with(STAGE_1_2, Integer.valueOf(2));
-		}
+		state = state.getActualState(source, pos);
+		EnumFacing facing = state.getValue(H_FACING);
+		int i = ((Integer)state.getValue(STAGE_1_2)).intValue();
 
-		else { return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
-				.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(STAGE_1_2, Integer.valueOf(1)); }
+		return (i == 1)? BOT1[facing.getHorizontalIndex()] : BOT2[facing.getHorizontalIndex()];
 	}
 
-	/* Collisions for each property. */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.get(H_FACING);
-		int i = state.get(STAGE_1_2);
-
-		switch(direction) {
-		case SOUTH:
-			return (i == 1)? BOT_SOUTH : BOT2_SOUTH;
-		case WEST:
-			return (i == 1)? BOT_WEST : BOT2_WEST;
-		case NORTH:
-		default:
-			return (i == 1)? BOT_NORTH : BOT2_NORTH;
-		case EAST:
-			return (i == 1)? BOT_EAST : BOT2_EAST;
-		}
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.MODEL;
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/*Rendering */
+	@Override
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* tips表示 GRAYが1.12.2でのデフォルト色 */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_wadaiko")).applyTextStyle(TextFormatting.GRAY));
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Items_Wadeco.WADAIKO_small, 1, 0));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Wadeco.WADAIKO_small, 1, 0);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_wadaiko", meta));
 	}
 
 }

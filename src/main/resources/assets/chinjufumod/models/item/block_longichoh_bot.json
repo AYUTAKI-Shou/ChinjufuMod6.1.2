@@ -1,5 +1,5 @@
 {
-	"parent": "chinjufumod:block/garden/block_long_ichoh",
+	"parent": "chinjufumod:block/ikegaki/block_long_ichoh",
 	"display": {
 		"gui": {
 			"rotation": [ 5, 45, 0 ],

@@ -2,11 +2,20 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/suiden_2",
+		"mizu": "chinjufumod:blocks/suiden_water_b",
 		"top": "chinjufumod:blocks/suiden_2",
 		"side": "chinjufumod:blocks/suiden_2_side",
-		"down": "minecraft:block/dirt"
+		"down": "minecraft:blocks/dirt"
 	},
 	"elements": [
+		{
+			"name": "mizu",
+			"from": [ 0, 13, 0 ],
+			"to": [ 16, 14.2, 16 ],
+			"faces": {
+				"up": { "texture": "#mizu" }
+			}
+		},
 
 		{
 			"name": "north",

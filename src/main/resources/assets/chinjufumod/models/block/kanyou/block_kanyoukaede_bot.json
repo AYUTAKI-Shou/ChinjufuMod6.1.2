@@ -6,6 +6,6 @@
 		"miki_top": "chinjufumod:blocks/log_kaede_top",
 		"ha": "chinjufumod:blocks/leaf_kaede_gray",
 		"hachi": "chinjufumod:blocks/dish_brown",
-		"tuchi": "minecraft:block/farmland_moist"
+		"tuchi": "minecraft:blocks/farmland_wet"
 	}
 }

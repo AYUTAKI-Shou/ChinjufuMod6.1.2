@@ -3,6 +3,6 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/pillar_spruce_side",
 		"top": "chinjufumod:blocks/pillar_spruce_top",
-		"side": "minecraft:block/spruce_planks"
+		"side": "minecraft:blocks/planks_spruce"
 	}
 }

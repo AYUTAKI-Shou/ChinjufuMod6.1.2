@@ -456,7 +456,7 @@
 			"from": [ 2, 3, 4 ],
 			"to": [ 10, 3.8, 12 ],
 			"faces": {
-				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#miso", "tintindex": 2 }
+				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#miso", "tintindex": 32 }
 			}
 		},
 

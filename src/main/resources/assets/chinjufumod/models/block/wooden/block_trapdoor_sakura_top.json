@@ -1,5 +1,5 @@
 {
-	"parent": "block/template_orientable_trapdoor_top",
+	"parent": "block/trapdoor_top",
 	"textures": {
 		"texture": "chinjufumod:blocks/trapdoor_sakura"
 	}

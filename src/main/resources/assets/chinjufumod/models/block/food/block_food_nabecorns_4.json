@@ -14,7 +14,7 @@
 			"from": [ 2, 0.8, 4 ],
 			"to": [ 10, 1.49, 12 ],
 			"faces": {
-				"up" : {"uv": [ 7.0, 4.0, 15.0, 12.0 ], "texture": "#soup", "tintindex": 2 }
+				"up" : {"uv": [ 7.0, 4.0, 15.0, 12.0 ], "texture": "#soup", "tintindex": 35 }
 			}
 		},
 

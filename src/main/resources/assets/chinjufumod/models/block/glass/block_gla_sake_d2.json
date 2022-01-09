@@ -69,7 +69,7 @@
 			"from": [ 7, -7.5, 7 ],
 			"to": [ 9, -6.7, 9 ],
 			"faces": {
-				"up" : { "uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#sake", "tintindex": 1 }
+				"up" : { "uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#sake", "tintindex": 22 }
 			}
 		}
 	]

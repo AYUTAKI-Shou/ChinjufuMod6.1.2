@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"double=false,half=bottom": { "model": "chinjufumod:block_rand_slabhalf_bottom" },
+		"double=false,half=top": { "model": "chinjufumod:block_rand_slabhalf_top" },
+
+		"double=true,half=top": { "model": "minecraft:andesite" },
+		"double=true,half=bottom": { "model": "minecraft:andesite" }
+	}
+}

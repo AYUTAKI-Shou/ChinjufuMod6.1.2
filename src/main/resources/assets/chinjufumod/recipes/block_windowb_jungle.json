@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_windowb",
+
+	"pattern": [
+		"XX"
+	],
+
+	"key": {
+		"X": { "item": "chinjufumod:block_window_jungle", "data": 0 }
+	},
+
+	"result": { "item": "chinjufumod:block_windowb_jungle", "data": 0, "count": 2 }
+}

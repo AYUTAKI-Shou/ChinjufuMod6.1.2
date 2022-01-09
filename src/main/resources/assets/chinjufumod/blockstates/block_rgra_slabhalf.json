@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"double=false,half=bottom": { "model": "chinjufumod:block_rgra_slabhalf_bottom" },
+		"double=false,half=top": { "model": "chinjufumod:block_rgra_slabhalf_top" },
+
+		"double=true,half=top": { "model": "minecraft:granite" },
+		"double=true,half=bottom": { "model": "minecraft:granite" }
+	}
+}

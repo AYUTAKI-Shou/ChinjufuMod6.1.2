@@ -3,6 +3,6 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/pillar_acacia_side",
 		"top": "chinjufumod:blocks/pillar_acacia_top",
-		"side": "minecraft:block/acacia_planks"
+		"side": "minecraft:blocks/planks_acacia"
 	}
 }

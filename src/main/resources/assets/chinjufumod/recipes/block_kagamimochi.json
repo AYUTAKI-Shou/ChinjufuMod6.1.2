@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_kagamimochi",
+
+	"pattern": [
+		"XZX",
+		"YYY",
+		"BAB"
+	],
+
+	"key": {
+		"Y": { "item": "minecraft:paper", "data": 0 },
+		"Z": { "type": "forge:ore_dict", "ore": "cropOrange" },
+		"A": { "type": "forge:ore_dict", "ore": "plankWoodBirch" },
+		"B": { "item": "minecraft:tallgrass", "data": 2 },
+		"X": [ { "type": "forge:ore_dict", "ore": "cropWheat" }, { "item": "chinjufumod:item_kome", "data": 0 } ]
+	},
+
+	"result": { "item": "chinjufumod:block_kadomatsu", "data": 2, "count": 1 }
+}

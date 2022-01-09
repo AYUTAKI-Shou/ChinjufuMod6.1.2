@@ -1,7 +1,7 @@
 {
 	"parent": "chinjufumod:block/base/base_longtourou_top",
 	"textures": {
-		"particle": "minecraft:block/stone",
-		"ishi": "minecraft:block/stone"
+		"particle": "minecraft:blocks/stone",
+		"ishi": "minecraft:blocks/stone"
 	}
 }

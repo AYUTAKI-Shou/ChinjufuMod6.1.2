@@ -1,32 +1,89 @@
 package com.ayutaki.chinjufumod.blocks.cmblock;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseWaterLoggable;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class EmptyBox extends BaseWaterLoggable {
+/* 空き箱は、Minecraftのブロックを拡張したクラス
+* BlockEmptyBox is a class that extends Block of Minecraft. */
+public class EmptyBox extends Block {
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.makeCuboidShape(0.01D, 0.0D, 0.01D, 15.99D, 1.0D, 15.99D),
-			Block.makeCuboidShape(0.01D, 0.0D, 0.01D, 15.99D, 16.0D, 1.0D),
-			Block.makeCuboidShape(0.01D, 0.0D, 15.0D, 15.99D, 16.0D, 15.99D),
-			Block.makeCuboidShape(0.01D, 0.0D, 0.01D, 1.0D, 16.0D, 15.99D),
-			Block.makeCuboidShape(15.0D, 0.0D, 0.01D, 15.99D, 16.0D, 15.99D));
+	public static final String ID = "block_empty_box";
 
-	public EmptyBox(Block.Properties properties) {
-		super(properties);
+	/*ブロックな基本的な性質 Blocked basic characteristics */
+	public EmptyBox() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+		setCreativeTab(ChinjufuModTabs.CHINJUFU);
+
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
 	}
 
-	/* Collisions for each property. */
+	/* Collision ここから Collision determination. From here. ↓
+	* １÷１６＝０.０６２５ */
+	private static final AxisAlignedBB AABB_BASE = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
+	private static final AxisAlignedBB AABB_WALL_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.9375D, 1.0D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_WALL_EAST = new AxisAlignedBB(0.9375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_WALL_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0625D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_WALL_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0625D);
+
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, 
+			List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean t_f) {
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BASE);
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_SOUTH);
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_EAST);
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_WEST);
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_NORTH);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return FULL_BLOCK_AABB;
+	}
+	/*ここまで So far↑ */
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return false;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/*立方体かどうか Cube or not? */
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/*透明かどうか Opaque or not? */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 
 }

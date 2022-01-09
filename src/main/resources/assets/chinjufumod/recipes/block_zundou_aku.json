@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "cm_zundou_aku",
+
+	"ingredients": [
+		{ "type": "forge:ore_dict", "ore": "bucketWater" },
+		{ "item": "chinjufumod:item_warahai" },
+		{ "item": "chinjufumod:block_food_zundou", "data": 1 }
+	],
+
+	"result": { "item": "chinjufumod:block_zundou_aku", "data": 0, "count": 1 }
+}

@@ -1,25 +1,25 @@
 {
 	"variants": {
-		"east=false,north=false,south=false,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_alone", "y": 0, "uvlock": false },
+		"east=false,north=false,south=false,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_alone", "y": 0, "uvlock": false },
 
-			"east=false,north=true,south=true,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_long", "y": 90, "uvlock": false },
-			"east=true,north=false,south=false,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_long", "y": 0, "uvlock": false },
+			"east=false,north=true,south=true,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_long", "y": 90, "uvlock": false },
+			"east=true,north=false,south=false,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_long", "y": 0, "uvlock": false },
 
-			"east=true,north=false,south=false,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_east", "y": 0, "uvlock": false },
-			"east=false,north=false,south=false,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_west", "y": 0, "uvlock": false },
-			"east=false,north=false,south=true,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_east", "y": 90, "uvlock": false },
-			"east=false,north=true,south=false,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_west", "y": 90, "uvlock": false },
+			"east=true,north=false,south=false,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_east", "y": 0, "uvlock": false },
+			"east=false,north=false,south=false,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_west", "y": 0, "uvlock": false },
+			"east=false,north=false,south=true,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_east", "y": 90, "uvlock": false },
+			"east=false,north=true,south=false,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_west", "y": 90, "uvlock": false },
 
-			"east=true,north=true,south=false,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_ne", "y": 0, "uvlock": false },
-			"east=true,north=false,south=true,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_se", "y": 0, "uvlock": false },
-			"east=false,north=true,south=false,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_nw", "y": 0, "uvlock": false },
-			"east=false,north=false,south=true,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_sw", "y": 0, "uvlock": false },
+			"east=true,north=true,south=false,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_ne", "y": 0, "uvlock": false },
+			"east=true,north=false,south=true,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_se", "y": 0, "uvlock": false },
+			"east=false,north=true,south=false,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_nw", "y": 0, "uvlock": false },
+			"east=false,north=false,south=true,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_sw", "y": 0, "uvlock": false },
 
-			"east=true,north=true,south=true,west=false": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_3ens", "y": 0, "uvlock": false },
-			"east=true,north=true,south=false,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_3enw", "y": 0, "uvlock": false },
-			"east=true,north=false,south=true,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_3esw", "y": 0, "uvlock": false },
-			"east=false,north=true,south=true,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_3nsw", "y": 0, "uvlock": false },
+			"east=true,north=true,south=true,west=false": { "model": "chinjufumod:bamboo/block_bamboofence_k_3ens", "y": 0, "uvlock": false },
+			"east=true,north=true,south=false,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_3enw", "y": 0, "uvlock": false },
+			"east=true,north=false,south=true,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_3esw", "y": 0, "uvlock": false },
+			"east=false,north=true,south=true,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_3nsw", "y": 0, "uvlock": false },
 
-		"east=true,north=true,south=true,west=true": { "model": "chinjufumod:block/bamboo/block_bamboofence_k_10ji", "y": 0, "uvlock": false }
+		"east=true,north=true,south=true,west=true": { "model": "chinjufumod:bamboo/block_bamboofence_k_10ji", "y": 0, "uvlock": false }
 	}
 }

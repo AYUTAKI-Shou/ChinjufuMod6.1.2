@@ -1,144 +1,162 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage3_Face;
 import com.ayutaki.chinjufumod.handler.CMEvents;
-import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Niboshi extends BaseStage4_FaceWater {
+public class Niboshi extends BaseStage3_Face {
 
-	/* Property 1=生、2=生、3=生、4=乾燥*/
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D);
+	public static final String ID = "block_niboshi";
 
-	public Niboshi(Block.Properties properties) {
-		super(properties);
+	public Niboshi() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		/*鍋・皿*/
+		setSoundType(SoundType.SNOW);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+	}
+
+	/* TickRandomで変化 */
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+		int i = ((Integer)state.getValue(STAGE_1_3)).intValue();
+
+		if (i != 2) {
+			worldIn.setBlockState(pos, this.getDefaultState()
+					.withProperty(H_FACING, state.getValue(H_FACING))
+					.withProperty(BaseStage3_Face.STAGE_1_3, Integer.valueOf(2)));
+		}
+
+		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		/** 1000tick = Minecraft内 1h = リアル時間 50秒 **/
+		return 3000;
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.get(STAGE_1_4);
+		int i = ((Integer)state.getValue(STAGE_1_3)).intValue();
 
-		if (i == 4) {
+		if (i == 1) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
+		
+		if (i == 2) {
 			if (item == Items.GLASS_BOTTLE) {
 				/** Collect with an Item **/
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundTake(worldIn, pos);
-
-			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DASHI_bot_1)); }
-			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DASHI_bot_1))) {
-				playerIn.dropItem(new ItemStack(Items_Teatime.DASHI_bot_1), false); }
-
-			worldIn.setBlockState(pos, Dish_Blocks.SCONESET_kara.getDefaultState()
-					.with(SconeSet_kara.STAGE_1_2, Integer.valueOf(2))); }
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DASHI_bot_1));
+	
+				worldIn.setBlockState(pos, this.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(BaseStage3_Face.STAGE_1_3, Integer.valueOf(3))); }
 			
 			if (item != Items.GLASS_BOTTLE) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
 		
-		if (i != 4) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
-		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
-	}
-
-	protected boolean hasWater(IWorldReader worldIn, BlockPos pos) {
-		for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-2, -2, -2), pos.add(2, 2, 2))) {
-			if (worldIn.getFluidState(blockpos).isTagged(FluidTags.WATER)) {
-				return true;
-			}
+		if (i == 3) {
+			if (itemstack.isEmpty()) {
+				CMEvents.soundTake_Pick(worldIn, pos);
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items.PAPER));
+	
+				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); }
+			
+			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
+		
+		/** 'true' to not put anything on top. **/
+		return true;
+	}
+
+
+	/* Collision */
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		int i = ((Integer)state.getValue(STAGE_1_3)).intValue();
+
+		if (i == 3) { return new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.00625D, 0.8125D); }
+		return new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D);
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
-	/* Distinguish LOST from WATERLOGGED. */
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.get(WATERLOGGED)) { return true; }
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
-	/* Update BlockState. */
+
+	/*Drop Item and Clone Item.*/
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		int i = ((Integer)state.getValue(STAGE_1_3)).intValue();
 
-		if (inWater(state, worldIn, pos) == true) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
-
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
-
-	/* TickRandom */
-	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
+		if (i == 3) { stack.add(new ItemStack(Items.PAPER, 1, 0)); }
+		if (i != 3) { stack.add(new ItemStack(Items_Teatime.NIBOSHI, 1, 0)); }
+		return stack;
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		int i = state.get(STAGE_1_4);
-		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
-
-		if (i < 4 && !hasWater(worldIn, pos) && rand.nextInt(4) == 0) {
-			worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
-
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100);
-			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.destroyBlock(pos, true); }
-
-		else { }
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.NIBOSHI, 1, 0);
 	}
 
-	/* Collisions for each property. */
+	/* フェンスとの接続拒否 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
-	}
-
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_niboshi_boiled")).applyTextStyle(TextFormatting.GRAY));
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 }

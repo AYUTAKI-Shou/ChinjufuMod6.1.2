@@ -5,6 +5,6 @@
 		"front": "chinjufumod:blocks/windowb_oak",
 		"side": "chinjufumod:blocks/muku_oak",
 		"totte": "chinjufumod:blocks/windowb_spruce",
-		"glass": "minecraft:block/glass"
+		"glass": "minecraft:blocks/glass"
 	}
 }

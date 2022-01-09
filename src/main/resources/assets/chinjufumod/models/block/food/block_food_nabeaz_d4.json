@@ -147,7 +147,7 @@
 			"from": [ 4, 0.0, 4 ],
 			"to": [ 12, 0.9, 12 ],
 			"faces": {
-				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#amazake", "tintindex": 2 }
+				"up" : {"uv": [ 4.0, 4.0, 12.0, 12.0 ], "texture": "#amazake", "tintindex": 34 }
 			}
 		},
 

@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/snow",
+		"particle": "chinjufumod:blocks/snow_cm",
 		"mizu": "chinjufumod:blocks/wake_water"
 	},
 	"elements": [

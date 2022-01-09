@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_schoolchair",
 	"textures": {
-		"particle": "minecraft:block/jungle_planks",
+		"particle": "minecraft:blocks/planks_jungle",
 		"leg": "chinjufumod:blocks/muku_jungle",
-		"side": "minecraft:block/jungle_planks",
-		"top": "minecraft:block/jungle_planks"
+		"side": "minecraft:blocks/planks_jungle",
+		"top": "minecraft:blocks/planks_jungle"
 		}
 }

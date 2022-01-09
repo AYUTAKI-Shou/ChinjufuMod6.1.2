@@ -2,8 +2,8 @@
 	"parent": "chinjufumod:block/base/base_garasudob_right_top",
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_bigoak",
-		"ji": "minecraft:block/glass",
-		"ita": "minecraft:block/dark_oak_planks",
+		"ji": "minecraft:blocks/glass",
+		"ita": "minecraft:blocks/planks_big_oak",
 		"waku": "chinjufumod:blocks/muku_bigoak",
 		"totte": "chinjufumod:blocks/muku_spruce",
 		"rail": "chinjufumod:blocks/muku_spruce"

@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/white_stained_glass",
-		"front": "minecraft:block/white_stained_glass",
-		"back": "minecraft:block/white_stained_glass",
-		"side": "minecraft:block/white_stained_glass"
+		"particle": "blocks/glass_white",
+		"front": "blocks/glass_white",
+		"back": "blocks/glass_white",
+		"side": "blocks/glass_white"
 	}
 }

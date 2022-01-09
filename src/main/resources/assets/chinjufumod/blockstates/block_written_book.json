@@ -1,131 +1,67 @@
 {
 	"variants": {
-		"down=false,facing=north,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1", "y": 180 },
-		"down=false,facing=south,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1" },
-		"down=false,facing=west,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1", "y": 90 },
-		"down=false,facing=east,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1", "y": 270 },
+		"down=false,facing=north,stage=1": { "model": "chinjufumod:written/block_written_book1", "y": 180 },
+		"down=false,facing=south,stage=1": { "model": "chinjufumod:written/block_written_book1" },
+		"down=false,facing=west,stage=1": { "model": "chinjufumod:written/block_written_book1", "y": 90 },
+		"down=false,facing=east,stage=1": { "model": "chinjufumod:written/block_written_book1", "y": 270 },
 		
-		"down=false,facing=north,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2", "y": 180 },
-		"down=false,facing=south,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2" },
-		"down=false,facing=west,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2", "y": 90 },
-		"down=false,facing=east,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2", "y": 270 },
+		"down=false,facing=north,stage=2": { "model": "chinjufumod:written/block_written_book2", "y": 180 },
+		"down=false,facing=south,stage=2": { "model": "chinjufumod:written/block_written_book2" },
+		"down=false,facing=west,stage=2": { "model": "chinjufumod:written/block_written_book2", "y": 90 },
+		"down=false,facing=east,stage=2": { "model": "chinjufumod:written/block_written_book2", "y": 270 },
 		
-		"down=false,facing=north,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3", "y": 180 },
-		"down=false,facing=south,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3" },
-		"down=false,facing=west,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3", "y": 90 },
-		"down=false,facing=east,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3", "y": 270 },
+		"down=false,facing=north,stage=3": { "model": "chinjufumod:written/block_written_book3", "y": 180 },
+		"down=false,facing=south,stage=3": { "model": "chinjufumod:written/block_written_book3" },
+		"down=false,facing=west,stage=3": { "model": "chinjufumod:written/block_written_book3", "y": 90 },
+		"down=false,facing=east,stage=3": { "model": "chinjufumod:written/block_written_book3", "y": 270 },
 		
-		"down=false,facing=north,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4", "y": 180 },
-				{ "model": "chinjufumod:block/written/block_written_book4l", "y": 180 },
-				{ "model": "chinjufumod:block/written/block_written_book4r", "y": 180 } ],
-		"down=false,facing=south,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4" },
-				{ "model": "chinjufumod:block/written/block_written_book4l" },
-				{ "model": "chinjufumod:block/written/block_written_book4r" } ],
-		"down=false,facing=west,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4", "y": 90 },
-				{ "model": "chinjufumod:block/written/block_written_book4l", "y": 90 },
-				{ "model": "chinjufumod:block/written/block_written_book4r", "y": 90 } ],
-		"down=false,facing=east,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4", "y": 270 },
-				{ "model": "chinjufumod:block/written/block_written_book4l", "y": 270 },
-				{ "model": "chinjufumod:block/written/block_written_book4r", "y": 270 } ],
-				
-			"down=false,facing=north,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1", "y": 180 },
-			"down=false,facing=south,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1" },
-			"down=false,facing=west,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1", "y": 90 },
-			"down=false,facing=east,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1", "y": 270 },
-			
-			"down=false,facing=north,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2", "y": 180 },
-			"down=false,facing=south,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2" },
-			"down=false,facing=west,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2", "y": 90 },
-			"down=false,facing=east,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2", "y": 270 },
-			
-			"down=false,facing=north,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3", "y": 180 },
-			"down=false,facing=south,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3" },
-			"down=false,facing=west,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3", "y": 90 },
-			"down=false,facing=east,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3", "y": 270 },
-			
-			"down=false,facing=north,lost=true,stage=4": [
-					{ "model": "chinjufumod:block/written/block_written_bookw4", "y": 180 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l", "y": 180 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r", "y": 180 } ],
-			"down=false,facing=south,lost=true,stage=4": [ 
-					{ "model": "chinjufumod:block/written/block_written_bookw4" },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l" },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r" } ],
-			"down=false,facing=west,lost=true,stage=4": [
-					{ "model": "chinjufumod:block/written/block_written_bookw4", "y": 90 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l", "y": 90 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r", "y": 90 } ],
-			"down=false,facing=east,lost=true,stage=4": [ 
-					{ "model": "chinjufumod:block/written/block_written_bookw4", "y": 270 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l", "y": 270 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r", "y": 270 } ],
+		"down=false,facing=north,stage=4": [
+				{ "model": "chinjufumod:written/block_written_book4", "y": 180 },
+				{ "model": "chinjufumod:written/block_written_book4l", "y": 180 },
+				{ "model": "chinjufumod:written/block_written_book4r", "y": 180 } ],
+		"down=false,facing=south,stage=4": [
+				{ "model": "chinjufumod:written/block_written_book4" },
+				{ "model": "chinjufumod:written/block_written_book4l" },
+				{ "model": "chinjufumod:written/block_written_book4r" } ],
+		"down=false,facing=west,stage=4": [
+				{ "model": "chinjufumod:written/block_written_book4", "y": 90 },
+				{ "model": "chinjufumod:written/block_written_book4l", "y": 90 },
+				{ "model": "chinjufumod:written/block_written_book4r", "y": 90 } ],
+		"down=false,facing=east,stage=4": [
+				{ "model": "chinjufumod:written/block_written_book4", "y": 270 },
+				{ "model": "chinjufumod:written/block_written_book4l", "y": 270 },
+				{ "model": "chinjufumod:written/block_written_book4r", "y": 270 } ],
 					
-		"down=true,facing=north,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1_down", "y": 180 },
-		"down=true,facing=south,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1_down" },
-		"down=true,facing=west,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1_down", "y": 90 },
-		"down=true,facing=east,lost=false,stage=1": { "model": "chinjufumod:block/written/block_written_book1_down", "y": 270 },
-		
-		"down=true,facing=north,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2_down", "y": 180 },
-		"down=true,facing=south,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2_down" },
-		"down=true,facing=west,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2_down", "y": 90 },
-		"down=true,facing=east,lost=false,stage=2": { "model": "chinjufumod:block/written/block_written_book2_down", "y": 270 },
-		
-		"down=true,facing=north,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3_down", "y": 180 },
-		"down=true,facing=south,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3_down" },
-		"down=true,facing=west,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3_down", "y": 90 },
-		"down=true,facing=east,lost=false,stage=3": { "model": "chinjufumod:block/written/block_written_book3_down", "y": 270 },
-		
-		"down=true,facing=north,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4_down", "y": 180 },
-				{ "model": "chinjufumod:block/written/block_written_book4l_down", "y": 180 },
-				{ "model": "chinjufumod:block/written/block_written_book4r_down", "y": 180 } ],
-		"down=true,facing=south,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4_down" },
-				{ "model": "chinjufumod:block/written/block_written_book4l_down" },
-				{ "model": "chinjufumod:block/written/block_written_book4r_down" } ],
-		"down=true,facing=west,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4_down", "y": 90 },
-				{ "model": "chinjufumod:block/written/block_written_book4l_down", "y": 90 },
-				{ "model": "chinjufumod:block/written/block_written_book4r_down", "y": 90 } ],
-		"down=true,facing=east,lost=false,stage=4": [
-				{ "model": "chinjufumod:block/written/block_written_book4_down", "y": 270 },
-				{ "model": "chinjufumod:block/written/block_written_book4l_down", "y": 270 },
-				{ "model": "chinjufumod:block/written/block_written_book4r_down", "y": 270 } ],
-				
-			"down=true,facing=north,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1_down", "y": 180 },
-			"down=true,facing=south,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1_down" },
-			"down=true,facing=west,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1_down", "y": 90 },
-			"down=true,facing=east,lost=true,stage=1": { "model": "chinjufumod:block/written/block_written_bookw1_down", "y": 270 },
+			"down=true,facing=north,stage=1": { "model": "chinjufumod:written/block_written_book1_down", "y": 180 },
+			"down=true,facing=south,stage=1": { "model": "chinjufumod:written/block_written_book1_down" },
+			"down=true,facing=west,stage=1": { "model": "chinjufumod:written/block_written_book1_down", "y": 90 },
+			"down=true,facing=east,stage=1": { "model": "chinjufumod:written/block_written_book1_down", "y": 270 },
 			
-			"down=true,facing=north,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2_down", "y": 180 },
-			"down=true,facing=south,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2_down" },
-			"down=true,facing=west,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2_down", "y": 90 },
-			"down=true,facing=east,lost=true,stage=2": { "model": "chinjufumod:block/written/block_written_bookw2_down", "y": 270 },
+			"down=true,facing=north,stage=2": { "model": "chinjufumod:written/block_written_book2_down", "y": 180 },
+			"down=true,facing=south,stage=2": { "model": "chinjufumod:written/block_written_book2_down" },
+			"down=true,facing=west,stage=2": { "model": "chinjufumod:written/block_written_book2_down", "y": 90 },
+			"down=true,facing=east,stage=2": { "model": "chinjufumod:written/block_written_book2_down", "y": 270 },
 			
-			"down=true,facing=north,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3_down", "y": 180 },
-			"down=true,facing=south,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3_down" },
-			"down=true,facing=west,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3_down", "y": 90 },
-			"down=true,facing=east,lost=true,stage=3": { "model": "chinjufumod:block/written/block_written_bookw3_down", "y": 270 },
+			"down=true,facing=north,stage=3": { "model": "chinjufumod:written/block_written_book3_down", "y": 180 },
+			"down=true,facing=south,stage=3": { "model": "chinjufumod:written/block_written_book3_down" },
+			"down=true,facing=west,stage=3": { "model": "chinjufumod:written/block_written_book3_down", "y": 90 },
+			"down=true,facing=east,stage=3": { "model": "chinjufumod:written/block_written_book3_down", "y": 270 },
 			
-			"down=true,facing=north,lost=true,stage=4": [
-					{ "model": "chinjufumod:block/written/block_written_bookw4_down", "y": 180 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l_down", "y": 180 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r_down", "y": 180 } ],
-			"down=true,facing=south,lost=true,stage=4": [
-					{ "model": "chinjufumod:block/written/block_written_bookw4_down" },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l_down" },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r_down" } ],
-			"down=true,facing=west,lost=true,stage=4": [
-					{ "model": "chinjufumod:block/written/block_written_bookw4_down", "y": 90 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l_down", "y": 90 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r_down", "y": 90 } ],
-			"down=true,facing=east,lost=true,stage=4": [
-					{ "model": "chinjufumod:block/written/block_written_bookw4_down", "y": 270 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4l_down", "y": 270 },
-					{ "model": "chinjufumod:block/written/block_written_bookw4r_down", "y": 270 } ]
+			"down=true,facing=north,stage=4": [
+					{ "model": "chinjufumod:written/block_written_book4_down", "y": 180 },
+					{ "model": "chinjufumod:written/block_written_book4l_down", "y": 180 },
+					{ "model": "chinjufumod:written/block_written_book4r_down", "y": 180 } ],
+			"down=true,facing=south,stage=4": [
+					{ "model": "chinjufumod:written/block_written_book4_down" },
+					{ "model": "chinjufumod:written/block_written_book4l_down" },
+					{ "model": "chinjufumod:written/block_written_book4r_down" } ],
+			"down=true,facing=west,stage=4": [
+					{ "model": "chinjufumod:written/block_written_book4_down", "y": 90 },
+					{ "model": "chinjufumod:written/block_written_book4l_down", "y": 90 },
+					{ "model": "chinjufumod:written/block_written_book4r_down", "y": 90 } ],
+			"down=true,facing=east,stage=4": [
+					{ "model": "chinjufumod:written/block_written_book4_down", "y": 270 },
+					{ "model": "chinjufumod:written/block_written_book4l_down", "y": 270 },
+					{ "model": "chinjufumod:written/block_written_book4r_down", "y": 270 } ]
 	}
 }

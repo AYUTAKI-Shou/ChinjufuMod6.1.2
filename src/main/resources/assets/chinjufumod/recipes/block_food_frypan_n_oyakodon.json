@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "cm_frypan_oyakodon",
+
+	"ingredients": [
+		{ "type": "forge:ore_dict", "ore": "egg" },
+		[ { "type": "forge:ore_dict", "ore": "chicken" }, { "type": "forge:ore_dict", "ore": "listAllchickenraw" } ],
+		{ "item": "minecraft:sugar" },
+		[ { "item": "chinjufumod:item_measurecup_full", "data": 0 }, { "item": "minecraft:potion", "data": 0 } ],
+		{ "type": "forge:ore_dict", "ore": "foodSoysauce" },
+		[ { "item": "chinjufumod:block_dashi_bot" },
+			{ "item": "chinjufumod:block_dashi_bot_2" },
+			{ "item": "chinjufumod:block_dashi_bot_3" },
+			{ "item": "chinjufumod:block_dashi_bot_4" } ],
+		{ "type": "forge:ore_dict", "ore": "cropOnion" },
+		{ "item": "chinjufumod:block_food_frypan" }
+	],
+
+	"result": { "item": "chinjufumod:block_food_frypan_n2", "data": 2, "count" : 1 }
+}

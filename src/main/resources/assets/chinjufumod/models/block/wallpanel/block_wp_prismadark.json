@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/dark_prismarine",
-		"front": "minecraft:block/dark_prismarine",
-		"back": "minecraft:block/dark_prismarine",
-		"side": "minecraft:block/dark_prismarine"
+		"particle": "blocks/prismarine_dark",
+		"front": "blocks/prismarine_dark",
+		"back": "blocks/prismarine_dark",
+		"side": "blocks/prismarine_dark"
 	}
 }

@@ -1,9 +1,9 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/oak_log",
-		"miki": "minecraft:block/oak_log",
-		"miki_top": "minecraft:block/oak_log_top",
+		"particle": "chinjufumod:blocks/leaf_oakkare",
+		"miki": "minecraft:blocks/log_oak",
+		"miki_top": "minecraft:blocks/log_oak_top",
 		"ha": "chinjufumod:blocks/leaf_oakkare_gray"
 	},
 	"elements": [
@@ -12,11 +12,11 @@
 			"from": [ 2.0, 14.0, 2.0 ],
 			"to": [ 14.0, 16.0, 14.0 ],
 			"faces": {
-				"down" : { "uv": [ 2.0, 2.0, 14.0, 14.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 14.0, 12.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 15.0, 14.0, 3.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"east" : { "uv": [ 1.0, 14.0, 13.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"west" : { "uv": [ 16.0, 14.0, 4.0, 16.0 ], "texture": "#ha", "tintindex": 1 }
+				"down" : { "uv": [ 2.0, 2.0, 14.0, 14.0 ], "texture": "#ha", "tintindex": 8 },
+				"north": { "uv": [ 0.0, 14.0, 12.0, 16.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 15.0, 14.0, 3.0, 16.0 ], "texture": "#ha", "tintindex": 8 },
+				"east" : { "uv": [ 1.0, 14.0, 13.0, 16.0 ], "texture": "#ha", "tintindex": 8 },
+				"west" : { "uv": [ 16.0, 14.0, 4.0, 16.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 		{
@@ -25,8 +25,8 @@
 			"to": [ 14.0, 16.0, 8.01 ],
 			"rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
 			"faces": {
-				"north": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 }
+				"north": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 		{
@@ -35,8 +35,8 @@
 			"to": [ 8.01, 16.0, 14.0 ],
 			"rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
 			"faces": {
-				"east" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 },
-				"west" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 1 }
+				"east" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 8 },
+				"west" : { "uv": [ 0.0, 14.0, 16.0, 16.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 

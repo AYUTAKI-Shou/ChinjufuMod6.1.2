@@ -1,0 +1,18 @@
+{
+	"variants": {
+		"stage=1": { "model": "chinjufumod:block_brick_gra_c" },
+		"stage=2": { "model": "chinjufumod:block_brick_dio_c" },
+		"stage=3": { "model": "chinjufumod:block_brick_and_c" },
+		"stage=4": { "model": "chinjufumod:block_brick_gra_ch_c" },
+		"stage=5": { "model": "chinjufumod:block_brick_dio_ch_c" },
+		"stage=6": { "model": "chinjufumod:block_brick_and_ch_c" },
+		"stage=7": { "model": "chinjufumod:block_brick_gra_cr_c" },
+		"stage=8": { "model": "chinjufumod:block_brick_dio_cr_c" },
+		"stage=9": { "model": "chinjufumod:block_brick_and_cr_c" },
+		"stage=10": { "model": "chinjufumod:block_brick_gra_mos_c" },
+		"stage=11": { "model": "chinjufumod:block_brick_dio_mos_c" },
+		"stage=12": { "model": "chinjufumod:block_brick_and_mos_c" },
+		"stage=13": { "model": "chinjufumod:block_dirtwall" },
+		"stage=14": { "model": "chinjufumod:block_dirtwall_cr" }
+	}
+}

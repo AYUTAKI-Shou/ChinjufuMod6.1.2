@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/quartz_pillar",
-		"front": "minecraft:block/quartz_pillar_top",
-		"back": "minecraft:block/quartz_pillar_top",
-		"side": "minecraft:block/quartz_pillar"
+		"particle": "blocks/quartz_block_lines",
+		"front": "blocks/quartz_block_lines_top",
+		"back": "blocks/quartz_block_lines_top",
+		"side": "blocks/quartz_block_lines"
 	}
 }

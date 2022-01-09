@@ -1,27 +1,23 @@
 {
 	"variants": {
-		"axis=y,stage=1": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f" },
-		"axis=z,stage=1": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f", "x": 90 },
-		"axis=x,stage=1": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f", "x": 90, "y": 90 },
+		"axis=y,stage=0": { "model": "chinjufumod:taru/block_taru_ringoshu_f" },
+		"axis=z,stage=0": { "model": "chinjufumod:taru/block_taru_ringoshu_f", "x": 90 },
+		"axis=x,stage=0": { "model": "chinjufumod:taru/block_taru_ringoshu_f", "x": 90, "y": 90 },
+		"axis=none,stage=0": { "model": "chinjufumod:taru/block_taru_ringoshu_f" },
 
-		"axis=y,stage=2": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f" },
-		"axis=z,stage=2": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f", "x": 90 },
-		"axis=x,stage=2": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f", "x": 90, "y": 90 },
+		"axis=y,stage=1": { "model": "chinjufumod:taru/block_taru_ringoshu_1" },
+		"axis=z,stage=1": { "model": "chinjufumod:taru/block_taru_ringoshu_1", "x": 90 },
+		"axis=x,stage=1": { "model": "chinjufumod:taru/block_taru_ringoshu_1", "x": 90, "y": 90 },
+		"axis=none,stage=1": { "model": "chinjufumod:taru/block_taru_ringoshu_1" },
 
-		"axis=y,stage=3": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f" },
-		"axis=z,stage=3": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f", "x": 90 },
-		"axis=x,stage=3": { "model": "chinjufumod:block/taru/block_taru_ringoshu_f", "x": 90, "y": 90 },
+		"axis=y,stage=2": { "model": "chinjufumod:taru/block_taru_ringoshu_2" },
+		"axis=z,stage=2": { "model": "chinjufumod:taru/block_taru_ringoshu_2", "x": 90 },
+		"axis=x,stage=2": { "model": "chinjufumod:taru/block_taru_ringoshu_2", "x": 90, "y": 90 },
+		"axis=none,stage=2": { "model": "chinjufumod:taru/block_taru_ringoshu_2" },
 
-		"axis=y,stage=4": { "model": "chinjufumod:block/taru/block_taru_ringoshu_1" },
-		"axis=z,stage=4": { "model": "chinjufumod:block/taru/block_taru_ringoshu_1", "x": 90 },
-		"axis=x,stage=4": { "model": "chinjufumod:block/taru/block_taru_ringoshu_1", "x": 90, "y": 90 },
-
-		"axis=y,stage=5": { "model": "chinjufumod:block/taru/block_taru_ringoshu_1" },
-		"axis=z,stage=5": { "model": "chinjufumod:block/taru/block_taru_ringoshu_1", "x": 90 },
-		"axis=x,stage=5": { "model": "chinjufumod:block/taru/block_taru_ringoshu_1", "x": 90, "y": 90 },
-
-		"axis=y,stage=6": { "model": "chinjufumod:block/taru/block_taru_ringoshu_2" },
-		"axis=z,stage=6": { "model": "chinjufumod:block/taru/block_taru_ringoshu_2", "x": 90 },
-		"axis=x,stage=6": { "model": "chinjufumod:block/taru/block_taru_ringoshu_2", "x": 90, "y": 90 }
+		"axis=y,stage=3": { "model": "chinjufumod:taru/block_taru_hakkou2" },
+		"axis=z,stage=3": { "model": "chinjufumod:taru/block_taru_hakkou2", "x": 90 },
+		"axis=x,stage=3": { "model": "chinjufumod:taru/block_taru_hakkou2", "x": 90, "y": 90 },
+		"axis=none,stage=3": { "model": "chinjufumod:taru/block_taru_hakkou2" }
 	}
 }

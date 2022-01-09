@@ -8,7 +8,7 @@
 		"salada3": "chinjufumod:blocks/food_carot",
 		"tomato": "chinjufumod:blocks/food_tomato",
 		"cup": "chinjufumod:blocks/dish_white",
-		"water": "minecraft:block/water_still",
+		"water": "chinjufumod:blocks/water_still",
 		"currysara": "chinjufumod:blocks/dish_white",
 		"kome": "chinjufumod:blocks/food_gohan",
 		"rou": "chinjufumod:blocks/food_curryrou",
@@ -337,7 +337,7 @@
 			"from": [ 4, -7.7, 2 ],
 			"to": [ 6, -5.7, 4 ],
 			"faces": {
-				"up" : {"uv": [ 4.0, 2.0, 6.0, 4.0 ], "texture": "#water", "tintindex": 1 }
+				"up" : {"uv": [ 4.0, 2.0, 6.0, 4.0 ], "texture": "#water", "tintindex": 20 }
 			}
 		},
 

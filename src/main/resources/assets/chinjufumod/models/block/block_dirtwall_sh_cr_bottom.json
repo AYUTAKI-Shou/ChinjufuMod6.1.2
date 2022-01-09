@@ -1,5 +1,5 @@
 {
-	"parent": "block/slab",
+	"parent": "block/half_slab",
 	"textures": {
 		"bottom": "chinjufumod:blocks/dirtwall_cr",
 		"top": "chinjufumod:blocks/dirtwall_cr",

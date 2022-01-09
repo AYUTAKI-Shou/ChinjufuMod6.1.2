@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_oak",
 		"leg": "chinjufumod:blocks/muku_oak",
-		"top": "minecraft:block/oak_planks"
+		"top": "minecraft:blocks/planks_oak"
 	},
 	"elements": [
 		{

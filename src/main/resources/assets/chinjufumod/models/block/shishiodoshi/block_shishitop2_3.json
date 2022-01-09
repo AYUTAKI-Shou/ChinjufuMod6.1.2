@@ -4,8 +4,8 @@
 		"particle": "chinjufumod:blocks/shishiodoshi",
 		"take": "chinjufumod:blocks/shishiodoshi",
 		"ki": "chinjufumod:blocks/muku_oak",
-		"flow": "minecraft:block/water_flow",
-		"ishi": "minecraft:block/stone"
+		"flow": "chinjufumod:blocks/water_flow",
+		"ishi": "minecraft:blocks/stone"
 	},
 	"elements": [
 
@@ -107,7 +107,7 @@
 			"from": [ -3.5, 0, -1.49 ],
 			"to": [ -3, 8.1, -1 ],
 			"faces": {
-				"north": { "uv": [ 0.0, 8.0, 1.0, 0.0 ], "texture": "#flow", "tintindex": 1 }
+				"north": { "uv": [ 0.0, 8.0, 1.0, 0.0 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 
@@ -116,7 +116,7 @@
 			"from": [ -3.5, 8, -1.5 ],
 			"to": [ -3, 8.1, 8 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 1.0, 9.5 ], "texture": "#flow", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 1.0, 9.5 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 
@@ -125,10 +125,10 @@
 			"from": [ -3.5, -0.5, 7.75 ],
 			"to": [ -3, 8.1, 8 ],
 			"faces": {
-				"north": { "uv": [ 0.0, 2.0, 1.0, 10.5 ], "texture": "#flow", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 2.0, 1.0, 10.5 ], "texture": "#flow", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 2.0, 0.5, 10.5 ], "texture": "#flow", "tintindex": 1 },
-				"east": { "uv": [ 0.5, 2.0, 1.0, 10.5 ], "texture": "#flow", "tintindex": 1 }
+				"north": { "uv": [ 0.0, 2.0, 1.0, 10.5 ], "texture": "#flow", "tintindex": 20 },
+				"south": { "uv": [ 0.0, 2.0, 1.0, 10.5 ], "texture": "#flow", "tintindex": 20 },
+				"west": { "uv": [ 0.0, 2.0, 0.5, 10.5 ], "texture": "#flow", "tintindex": 20 },
+				"east": { "uv": [ 0.5, 2.0, 1.0, 10.5 ], "texture": "#flow", "tintindex": 20 }
 			}
 		}
 	]

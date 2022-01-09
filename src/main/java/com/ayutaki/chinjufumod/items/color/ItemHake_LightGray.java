@@ -1,39 +1,56 @@
 package com.ayutaki.chinjufumod.items.color;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlab_Water;
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
-import com.ayutaki.chinjufumod.blocks.base.BaseStage2_FaceWater;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabWType2;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage2_Face;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage4_Face;
 import com.ayutaki.chinjufumod.blocks.chair.BaseSofa;
 import com.ayutaki.chinjufumod.blocks.chair.CafeChair;
-import com.ayutaki.chinjufumod.blocks.chair.Sofa;
 import com.ayutaki.chinjufumod.blocks.chair.Zabuton;
 import com.ayutaki.chinjufumod.blocks.chair.Zaisu;
-import com.ayutaki.chinjufumod.blocks.furniture.Andon;
+import com.ayutaki.chinjufumod.blocks.furniture.Andon_1;
+import com.ayutaki.chinjufumod.blocks.furniture.Andon_2;
+import com.ayutaki.chinjufumod.blocks.furniture.Andon_3;
+import com.ayutaki.chinjufumod.blocks.furniture.Andon_4;
 import com.ayutaki.chinjufumod.blocks.furniture.Candle;
-import com.ayutaki.chinjufumod.blocks.futon.Futon;
+import com.ayutaki.chinjufumod.blocks.furniture.Lit_Andon_1;
+import com.ayutaki.chinjufumod.blocks.furniture.Lit_Andon_2;
+import com.ayutaki.chinjufumod.blocks.furniture.Lit_Andon_3;
+import com.ayutaki.chinjufumod.blocks.furniture.Lit_Andon_4;
+import com.ayutaki.chinjufumod.blocks.furniture.Lit_Candle;
+import com.ayutaki.chinjufumod.blocks.fusuma.BaseFusuma;
+import com.ayutaki.chinjufumod.blocks.fusuma.BaseFusuma_B;
+import com.ayutaki.chinjufumod.blocks.futon.BaseFuton;
 import com.ayutaki.chinjufumod.blocks.harbor.CTruss;
-import com.ayutaki.chinjufumod.blocks.jpblock.Base_Full_JP;
-import com.ayutaki.chinjufumod.blocks.jpblock.Base_Slab_JP;
-import com.ayutaki.chinjufumod.blocks.jpblock.Full_Kawara;
-import com.ayutaki.chinjufumod.blocks.jpblock.Full_Namako;
-import com.ayutaki.chinjufumod.blocks.jpblock.Full_Namako_B;
-import com.ayutaki.chinjufumod.blocks.jpblock.Full_Plaster;
-import com.ayutaki.chinjufumod.blocks.jpblock.Slab_Kawara;
-import com.ayutaki.chinjufumod.blocks.jpblock.Slab_Namako;
-import com.ayutaki.chinjufumod.blocks.jpblock.Slab_Namako_B;
-import com.ayutaki.chinjufumod.blocks.jpblock.Slab_Plaster;
-import com.ayutaki.chinjufumod.blocks.jpblock.Stairs_Kawara;
-import com.ayutaki.chinjufumod.blocks.jpblock.Stairs_Namako;
-import com.ayutaki.chinjufumod.blocks.jpblock.Stairs_Namako_B;
-import com.ayutaki.chinjufumod.blocks.jpblock.Stairs_Plaster;
-import com.ayutaki.chinjufumod.blocks.jpblock.Tatami;
-import com.ayutaki.chinjufumod.blocks.jpblock.Tatami_Y;
+import com.ayutaki.chinjufumod.blocks.jpblock.Base_JpFull;
+import com.ayutaki.chinjufumod.blocks.jpblock.Base_Wall;
+import com.ayutaki.chinjufumod.blocks.jpblock.Base_WallKawara;
+import com.ayutaki.chinjufumod.blocks.jpblock.Kawara;
+import com.ayutaki.chinjufumod.blocks.jpblock.Kawara_Crash;
+import com.ayutaki.chinjufumod.blocks.jpblock.Kawara_Slab;
+import com.ayutaki.chinjufumod.blocks.jpblock.Kawara_Stairs;
+import com.ayutaki.chinjufumod.blocks.jpblock.Namako;
+import com.ayutaki.chinjufumod.blocks.jpblock.NamakoB;
+import com.ayutaki.chinjufumod.blocks.jpblock.NamakoB_Crash;
+import com.ayutaki.chinjufumod.blocks.jpblock.NamakoB_Slab;
+import com.ayutaki.chinjufumod.blocks.jpblock.NamakoB_Stairs;
+import com.ayutaki.chinjufumod.blocks.jpblock.NamakoStairs;
+import com.ayutaki.chinjufumod.blocks.jpblock.Namako_Crash;
+import com.ayutaki.chinjufumod.blocks.jpblock.Namako_Slab;
+import com.ayutaki.chinjufumod.blocks.jpblock.Plaster;
+import com.ayutaki.chinjufumod.blocks.jpblock.Plaster_Crash;
+import com.ayutaki.chinjufumod.blocks.jpblock.Plaster_Slab;
+import com.ayutaki.chinjufumod.blocks.jpblock.Plaster_Stairs;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Kawara;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Namako;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_NamakoB;
+import com.ayutaki.chinjufumod.blocks.jpblock.Wall_NamakoBCrash;
+import com.ayutaki.chinjufumod.blocks.jpblock.Wall_NamakoCrash;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Plaster;
+import com.ayutaki.chinjufumod.blocks.jpblock.Wall_PlasterCrash;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Sama;
-import com.ayutaki.chinjufumod.blocks.kamoislab.Base_KamoiPlaster;
+import com.ayutaki.chinjufumod.blocks.jpkasa.BaseMKasa;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Acacia;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Birch;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_DarkOak;
@@ -43,1047 +60,1201 @@ import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Kaede;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Oak;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Sakura;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Spruce;
-import com.ayutaki.chinjufumod.blocks.ranma.Noren;
-import com.ayutaki.chinjufumod.blocks.slidedoor.BaseSlidedoor;
-import com.ayutaki.chinjufumod.blocks.slidedoor.Fusuma;
-import com.ayutaki.chinjufumod.blocks.slidedoor.Fusuma_B;
-import com.ayutaki.chinjufumod.blocks.unitblock.Wagasa;
-import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Clay;
-import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Glass;
-import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Namako;
-import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Namako_B;
-import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Plaster;
+import com.ayutaki.chinjufumod.blocks.noren.BaseNoren;
+import com.ayutaki.chinjufumod.blocks.tatami.Tatami_H;
+import com.ayutaki.chinjufumod.blocks.tatami.Tatami_HY;
+import com.ayutaki.chinjufumod.blocks.wallpane.BaseStage2_WP;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_clay;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_clay_color;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_glass;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_glass_stained;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_namako;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_namako_B;
+import com.ayutaki.chinjufumod.blocks.wallpane.WP_plaster;
 import com.ayutaki.chinjufumod.handler.CMEvents;
-import com.ayutaki.chinjufumod.registry.Chair_Blocks;
 import com.ayutaki.chinjufumod.registry.Furniture_Blocks;
+import com.ayutaki.chinjufumod.registry.Futon_Blocks;
+import com.ayutaki.chinjufumod.registry.Garden_Blocks;
 import com.ayutaki.chinjufumod.registry.Harbor_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Wadeco;
-import com.ayutaki.chinjufumod.registry.JPChair_Blocks;
-import com.ayutaki.chinjufumod.registry.JP_Blocks;
-import com.ayutaki.chinjufumod.registry.JPdeco_Blocks;
-import com.ayutaki.chinjufumod.registry.KamoiPlaster_Blocks;
-import com.ayutaki.chinjufumod.registry.Ranma_Blocks;
-import com.ayutaki.chinjufumod.registry.Slidedoor_Blocks;
-import com.ayutaki.chinjufumod.registry.Unit_Blocks;
+import com.ayutaki.chinjufumod.registry.JPBlock_Blocks;
+import com.ayutaki.chinjufumod.registry.JPDeco_Blocks;
+import com.ayutaki.chinjufumod.registry.KamoiShikkui_Blocks;
+import com.ayutaki.chinjufumod.registry.Lamp_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPaneJP_Blocks;
 import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
+import com.ayutaki.chinjufumod.registry.doors.Fusuma_Blocks;
+import com.ayutaki.chinjufumod.state.BlockStateHalf;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CarpetBlock;
-import net.minecraft.block.CauldronBlock;
-import net.minecraft.block.ConcretePowderBlock;
-import net.minecraft.block.GlazedTerracottaBlock;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.block.StainedGlassBlock;
-import net.minecraft.block.StainedGlassPaneBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.BlockCarpet;
+import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockConcretePowder;
+import net.minecraft.block.BlockGlazedTerracotta;
+import net.minecraft.block.BlockHardenedClay;
+import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.BlockStainedGlassPane;
+import net.minecraft.block.BlockStainedHardenedClay;
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 public class ItemHake_LightGray extends Base_ItemHake {
 
-	public ItemHake_LightGray(Properties builder) {
-		super(builder);
+	public ItemHake_LightGray(String unlocalizedName) {
+		super(unlocalizedName);
 	}
 
 	/* FlintAndSteel */
-	public ActionResultType onItemUse(ItemUseContext context) {
-		PlayerEntity playerIn = context.getPlayer();
-		IWorld iworld = context.getWorld();
-		BlockPos blockpos = context.getPos();
-		BlockState blockstate = iworld.getBlockState(blockpos);
-		Block block = blockstate.getBlock();
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing,
+			float hitX, float hitY, float hitZ) {
 
-		ItemStack itemstack = context.getItem();
-		boolean mode = playerIn.abilities.isCreativeMode;
-
-		/** 木材 採用見送り **/
-
+		IBlockState stateIn = worldIn.getBlockState(pos);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		Block blockIn = stateIn.getBlock();
+		
 		/** 羊毛・コンクリート **/
-		if (block == Blocks.WHITE_WOOL || block == Blocks.ORANGE_WOOL || block == Blocks.MAGENTA_WOOL ||
-				block == Blocks.LIGHT_BLUE_WOOL || block == Blocks.YELLOW_WOOL || block == Blocks.LIME_WOOL ||
-				block == Blocks.PINK_WOOL || block == Blocks.GRAY_WOOL || block == Blocks.CYAN_WOOL ||
-				block == Blocks.PURPLE_WOOL || block == Blocks.BLUE_WOOL || block == Blocks.BROWN_WOOL ||
-				block == Blocks.GREEN_WOOL || block == Blocks.RED_WOOL || block == Blocks.BLACK_WOOL) {
+		if (blockIn instanceof BlockColored || blockIn instanceof BlockConcretePowder ||
+				blockIn instanceof BlockStainedGlass || blockIn instanceof BlockStainedHardenedClay) {
+			int color = ((EnumDyeColor)stateIn.getValue(BlockColored.COLOR)).getMetadata();
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_WOOL.getDefaultState(), 3);
+			if (color != 8) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, stateIn.withProperty(BlockColored.COLOR, EnumDyeColor.SILVER), 11);
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } ); //BreakAnimation 無しで筆を返すことも可能
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block == Blocks.WHITE_CONCRETE || block == Blocks.ORANGE_CONCRETE || block == Blocks.MAGENTA_CONCRETE ||
-				block == Blocks.LIGHT_BLUE_CONCRETE || block == Blocks.YELLOW_CONCRETE || block == Blocks.LIME_CONCRETE ||
-				block == Blocks.PINK_CONCRETE || block == Blocks.GRAY_CONCRETE || block == Blocks.CYAN_CONCRETE ||
-				block == Blocks.PURPLE_CONCRETE || block == Blocks.BLUE_CONCRETE || block == Blocks.BROWN_CONCRETE ||
-				block == Blocks.GREEN_CONCRETE || block == Blocks.RED_CONCRETE || block == Blocks.BLACK_CONCRETE) {
+		/** ガラスブロック **/
+		if (blockIn == Blocks.GLASS) {
+			CMEvents.soundPaint(worldIn, playerIn, pos);
+			worldIn.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState()
+					.withProperty(BlockStainedGlass.COLOR, EnumDyeColor.SILVER), 11);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_CONCRETE.getDefaultState(), 3);
+			if (playerIn instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+			if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+			if (itemstack.getMaxDamage() <= 2) {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+				itemstack.shrink(1); }
 
-			return ActionResultType.SUCCESS;
+			return EnumActionResult.SUCCESS;
 		}
 
-		if (block == Blocks.WHITE_TERRACOTTA || block == Blocks.ORANGE_TERRACOTTA || block == Blocks.MAGENTA_TERRACOTTA ||
-				block == Blocks.LIGHT_BLUE_TERRACOTTA || block == Blocks.YELLOW_TERRACOTTA || block == Blocks.LIME_TERRACOTTA ||
-				block == Blocks.PINK_TERRACOTTA || block == Blocks.GRAY_TERRACOTTA || block == Blocks.CYAN_TERRACOTTA ||
-				block == Blocks.PURPLE_TERRACOTTA || block == Blocks.BLUE_TERRACOTTA || block == Blocks.BROWN_TERRACOTTA ||
-				block == Blocks.GREEN_TERRACOTTA || block == Blocks.RED_TERRACOTTA || block == Blocks.BLACK_TERRACOTTA ||
-				block == Blocks.TERRACOTTA) {
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_TERRACOTTA.getDefaultState(), 3);
+		/** 板ガラス, カーペット **/
+		if (blockIn instanceof BlockStainedGlassPane || blockIn instanceof BlockCarpet) {
+			int color = ((EnumDyeColor)stateIn.getValue(BlockColored.COLOR)).getMetadata();
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+			if (color != 8) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, stateIn.withProperty(BlockColored.COLOR, EnumDyeColor.SILVER), 11);
 
-			return ActionResultType.SUCCESS;
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof ConcretePowderBlock && block != Blocks.LIGHT_GRAY_CONCRETE_POWDER) {
+		if (blockIn == Blocks.GLASS_PANE) {
+			CMEvents.soundPaint(worldIn, playerIn, pos);
+			worldIn.setBlockState(pos, Blocks.STAINED_GLASS_PANE.getDefaultState()
+					.withProperty(BlockStainedGlassPane.COLOR, EnumDyeColor.SILVER), 11);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_CONCRETE_POWDER.getDefaultState(), 3);
+			if (playerIn instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+			if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+			if (itemstack.getMaxDamage() <= 1) {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+				itemstack.shrink(1); }
 
-			return ActionResultType.SUCCESS;
+			return EnumActionResult.SUCCESS;
 		}
 
-		if ((block instanceof StainedGlassBlock && block != Blocks.LIGHT_GRAY_STAINED_GLASS) || block == Blocks.GLASS) {
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_STAINED_GLASS.getDefaultState(), 3);
+		/** 堅焼き粘土 **/
+		if (blockIn instanceof BlockHardenedClay) {
+			CMEvents.soundPaint(worldIn, playerIn, pos);
+			worldIn.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState()
+					.withProperty(BlockStainedHardenedClay.COLOR, EnumDyeColor.SILVER), 11);
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+			if (playerIn instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+			if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+			if (itemstack.getMaxDamage() <= 2) {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+				itemstack.shrink(1); }
+
+			return EnumActionResult.SUCCESS;
 		}
+
 
 		/** テラコッタ **/
-		if (block instanceof GlazedTerracottaBlock && block != Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA) {
+		if (blockIn instanceof BlockGlazedTerracotta) {
+			if (blockIn != Blocks.SILVER_GLAZED_TERRACOTTA) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, Blocks.SILVER_GLAZED_TERRACOTTA.getDefaultState()
+						.withProperty(BlockGlazedTerracotta.FACING, stateIn.getValue(BlockGlazedTerracotta.FACING)), 11);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.getDefaultState()
-					.with(GlazedTerracottaBlock.HORIZONTAL_FACING, blockstate.get(GlazedTerracottaBlock.HORIZONTAL_FACING)), 3);
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
 
-			return ActionResultType.SUCCESS;
-		}
-
-		/** 板ガラス **/
-		if ((block instanceof StainedGlassPaneBlock && block != Blocks.LIGHT_GRAY_STAINED_GLASS_PANE) || block == Blocks.GLASS_PANE) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultState()
-					.with(PaneBlock.NORTH, blockstate.get(PaneBlock.NORTH))
-					.with(PaneBlock.EAST, blockstate.get(PaneBlock.EAST))
-					.with(PaneBlock.SOUTH, blockstate.get(PaneBlock.SOUTH))
-					.with(PaneBlock.WEST, blockstate.get(PaneBlock.WEST))
-					.with(PaneBlock.WATERLOGGED, blockstate.get(PaneBlock.WATERLOGGED)), 3);
-
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		/**カーペット **/
-		if (block instanceof CarpetBlock && block != Blocks.LIGHT_GRAY_CARPET) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Blocks.LIGHT_GRAY_CARPET.getDefaultState(), 3);
-
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 
 		/** 瓦・漆喰・なまこ壁 **/
-		if (block instanceof Full_Kawara && block != JP_Blocks.KAWARA_lightg) {
+		if (blockIn instanceof Plaster || blockIn instanceof Plaster_Crash ||
+				blockIn instanceof Kawara || blockIn instanceof Kawara_Crash ||
+				blockIn instanceof Namako || blockIn instanceof Namako_Crash ||
+				blockIn instanceof NamakoB || blockIn instanceof NamakoB_Crash) {
+			int color = ((Integer)stateIn.getValue(Base_JpFull.STAGE_0_15)).intValue();
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_lightg.getDefaultState()
-					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
+			if (color != 8) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, stateIn.withProperty(Base_JpFull.STAGE_0_15, Integer.valueOf(8)), 11);
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof Full_Plaster && block != JP_Blocks.SHIKKUI_lightg && block != JP_Blocks.DIRTWALL) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_lightg.getDefaultState()
-					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Full_Namako && block != JP_Blocks.NAMAKO_lightg) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_lightg.getDefaultState()
-					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Full_Namako_B && block != JP_Blocks.NAMAKOB_lightg) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_lightg.getDefaultState()
-					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		/** 階段 **/
-		if (block instanceof Stairs_Kawara && block != JP_Blocks.KAWARA_ST_lightg) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_ST_lightg.getDefaultState()
-					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
-					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
-					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
-					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Stairs_Plaster && block != JP_Blocks.SHIKKUI_ST_lightg && block != JP_Blocks.DIRTWALL_stairs) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_ST_lightg.getDefaultState()
-					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
-					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
-					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
-					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Stairs_Namako && block != JP_Blocks.NAMAKO_ST_lightg) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_ST_lightg.getDefaultState()
-					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
-					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
-					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
-					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Stairs_Namako_B && block != JP_Blocks.NAMAKOB_ST_lightg) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_ST_lightg.getDefaultState()
-					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
-					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
-					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
-					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
-
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
 
 		/** ハーフブロック **/
-		if (block instanceof Slab_Kawara && block != JP_Blocks.KAWARA_SH_lightg) {
+		if (blockIn instanceof Kawara_Slab) {
+			if (blockIn != JPBlock_Blocks.KAWARA_SH_lightg) {
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_SH_lightg.getDefaultState()
-					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
-					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
-					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, JPBlock_Blocks.KAWARA_SH_lightg.getDefaultState()
+						.withProperty(BaseSlabWType2.CRA, stateIn.getValue(BaseSlabWType2.CRA))
+						.withProperty(BaseSlabWType2.DOUBLE, stateIn.getValue(BaseSlabWType2.DOUBLE))
+						.withProperty(BaseSlabWType2.HALF, stateIn.getValue(BaseSlabWType2.HALF)), 11);
 
-			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.damageItem(2, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) != true) {
+					if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+					if (itemstack.getMaxDamage() <= 1) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) == true) {
+					if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+					if (itemstack.getMaxDamage() <= 2) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				return EnumActionResult.SUCCESS;
 			}
-
-			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.damageItem(1, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
-			}
-			return ActionResultType.SUCCESS;
 		}
 
-		if (block instanceof Slab_Plaster && block != JP_Blocks.SHIKKUI_SH_lightg && block != JP_Blocks.DIRTWALL_SH) {
+		if (blockIn instanceof Plaster_Slab) {
+			if (blockIn != JPBlock_Blocks.SHIKKUI_SH_lightg) {
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_SH_lightg.getDefaultState()
-					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
-					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
-					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, JPBlock_Blocks.SHIKKUI_SH_lightg.getDefaultState()
+						.withProperty(BaseSlabWType2.CRA, stateIn.getValue(BaseSlabWType2.CRA))
+						.withProperty(BaseSlabWType2.DOUBLE, stateIn.getValue(BaseSlabWType2.DOUBLE))
+						.withProperty(BaseSlabWType2.HALF, stateIn.getValue(BaseSlabWType2.HALF)), 11);
 
-			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.damageItem(2, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) != true) {
+					if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+					if (itemstack.getMaxDamage() <= 1) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) == true) {
+					if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+					if (itemstack.getMaxDamage() <= 2) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				return EnumActionResult.SUCCESS;
 			}
-
-			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.damageItem(1, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
-			}
-			return ActionResultType.SUCCESS;
 		}
 
-		if (block instanceof Slab_Namako && block != JP_Blocks.NAMAKO_SH_lightg) {
+		if (blockIn instanceof Namako_Slab) {
+			if (blockIn != JPBlock_Blocks.NAMAKO_SH_lightg) {
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_SH_lightg.getDefaultState()
-					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
-					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
-					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, JPBlock_Blocks.NAMAKO_SH_lightg.getDefaultState()
+						.withProperty(BaseSlabWType2.CRA, stateIn.getValue(BaseSlabWType2.CRA))
+						.withProperty(BaseSlabWType2.DOUBLE, stateIn.getValue(BaseSlabWType2.DOUBLE))
+						.withProperty(BaseSlabWType2.HALF, stateIn.getValue(BaseSlabWType2.HALF)), 11);
 
-			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.damageItem(2, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) != true) {
+					if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+					if (itemstack.getMaxDamage() <= 1) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) == true) {
+					if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+					if (itemstack.getMaxDamage() <= 2) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				return EnumActionResult.SUCCESS;
 			}
-
-			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.damageItem(1, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
-			}
-			return ActionResultType.SUCCESS;
 		}
 
-		if (block instanceof Slab_Namako_B && block != JP_Blocks.NAMAKOB_SH_lightg) {
+		if (blockIn instanceof NamakoB_Slab) {
+			if (blockIn != JPBlock_Blocks.NAMAKOB_SH_lightg) {
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_SH_lightg.getDefaultState()
-					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
-					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
-					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, JPBlock_Blocks.NAMAKOB_SH_lightg.getDefaultState()
+						.withProperty(BaseSlabWType2.CRA, stateIn.getValue(BaseSlabWType2.CRA))
+						.withProperty(BaseSlabWType2.DOUBLE, stateIn.getValue(BaseSlabWType2.DOUBLE))
+						.withProperty(BaseSlabWType2.HALF, stateIn.getValue(BaseSlabWType2.HALF)), 11);
 
-			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.damageItem(2, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) != true) {
+					if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+					if (itemstack.getMaxDamage() <= 1) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				if (stateIn.getValue(BaseSlabWType2.DOUBLE) == true) {
+					if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+					if (itemstack.getMaxDamage() <= 2) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				return EnumActionResult.SUCCESS;
 			}
+		}
 
-			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.damageItem(1, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+
+		/** 階段 **/
+		if (blockIn instanceof Kawara_Stairs) {
+			if (blockIn != JPBlock_Blocks.KAWARA_ST_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+
+				worldIn.setBlockState(pos, JPBlock_Blocks.KAWARA_ST_lightg.getDefaultState()
+						.withProperty(BlockStairs.FACING, stateIn.getValue(BlockStairs.FACING))
+						.withProperty(BlockStairs.HALF, stateIn.getValue(BlockStairs.HALF))
+						.withProperty(BlockStairs.SHAPE, stateIn.getValue(BlockStairs.SHAPE)), 11);
+
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
 			}
-			return ActionResultType.SUCCESS;
+		}
+
+		if (blockIn instanceof Plaster_Stairs) {
+			if (blockIn != JPBlock_Blocks.SHIKKUI_ST_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+
+				worldIn.setBlockState(pos, JPBlock_Blocks.SHIKKUI_ST_lightg.getDefaultState()
+						.withProperty(BlockStairs.FACING, stateIn.getValue(BlockStairs.FACING))
+						.withProperty(BlockStairs.HALF, stateIn.getValue(BlockStairs.HALF))
+						.withProperty(BlockStairs.SHAPE, stateIn.getValue(BlockStairs.SHAPE)), 11);
+
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		if (blockIn instanceof NamakoStairs) {
+			if (blockIn != JPBlock_Blocks.NAMAKO_ST_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+
+				worldIn.setBlockState(pos, JPBlock_Blocks.NAMAKO_ST_lightg.getDefaultState()
+						.withProperty(BlockStairs.FACING, stateIn.getValue(BlockStairs.FACING))
+						.withProperty(BlockStairs.HALF, stateIn.getValue(BlockStairs.HALF))
+						.withProperty(BlockStairs.SHAPE, stateIn.getValue(BlockStairs.SHAPE)), 11);
+
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		if (blockIn instanceof NamakoB_Stairs) {
+			if (blockIn != JPBlock_Blocks.NAMAKOB_ST_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+
+				worldIn.setBlockState(pos, JPBlock_Blocks.NAMAKOB_ST_lightg.getDefaultState()
+						.withProperty(BlockStairs.FACING, stateIn.getValue(BlockStairs.FACING))
+						.withProperty(BlockStairs.HALF, stateIn.getValue(BlockStairs.HALF))
+						.withProperty(BlockStairs.SHAPE, stateIn.getValue(BlockStairs.SHAPE)), 11);
+
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		///////////////////////
 		/** トラス **/
-		if (block instanceof CTruss && block != Harbor_Blocks.TRUSS) {
+		if (blockIn instanceof CTruss) {
+			if (blockIn != Harbor_Blocks.TRUSS) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Harbor_Blocks.TRUSS.getDefaultState()
-					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
-					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, Harbor_Blocks.TRUSS.getDefaultState()
+						.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** 椅子・座布団・キャンドル **/
-		if (block instanceof CafeChair && block != Chair_Blocks.CAFECHAIR_lightg) {
+		if (blockIn instanceof CafeChair || blockIn instanceof Zabuton ||
+				blockIn instanceof Candle || blockIn instanceof Lit_Candle) {
+			int stage = ((Integer)stateIn.getValue(CafeChair.STAGE_0_15)).intValue();
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Chair_Blocks.CAFECHAIR_lightg.getDefaultState(), 3);
+			if (stage != 8) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				worldIn.setBlockState(pos, stateIn.withProperty(CafeChair.STAGE_0_15, Integer.valueOf(8)), 11);
 
-			return ActionResultType.SUCCESS;
-		}
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-		if (block instanceof Zabuton && block != JPChair_Blocks.ZABUTON_lightg && block != JPChair_Blocks.WARAZABUTON) {
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JPChair_Blocks.ZABUTON_lightg.getDefaultState(), 3);
-
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Candle && block != Furniture_Blocks.CANDLE_lightg) {
-
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Furniture_Blocks.CANDLE_lightg.getDefaultState()
-					.with(Candle.LIT, blockstate.get(Candle.LIT))
-					.with(Candle.DOWN, blockstate.get(Candle.DOWN))
-					.with(Candle.WATERLOGGED, blockstate.get(Candle.WATERLOGGED)), 3);
-
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** 行灯 **/
-		if (block instanceof Andon && block != JPdeco_Blocks.ANDON_lightg) {
+		if (blockIn instanceof Andon_1 || blockIn instanceof Andon_2 ||
+				blockIn instanceof Andon_3 || blockIn instanceof Andon_4) {
+			int stage = ((Integer)stateIn.getValue(BaseStage4_Face.STAGE_1_4)).intValue();
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JPdeco_Blocks.ANDON_lightg.getDefaultState()
-					.with(Andon.LIT, blockstate.get(Andon.LIT))
-					.with(Andon.H_FACING, blockstate.get(Andon.H_FACING))
-					.with(Andon.WATERLOGGED, blockstate.get(Andon.WATERLOGGED)), 3);
+			if (!(blockIn == Lamp_Blocks.ANDON_3 && stage == 1)) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				worldIn.setBlockState(pos, Lamp_Blocks.ANDON_3.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, Integer.valueOf(1)), 11);
 
-			return ActionResultType.SUCCESS;
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		if (blockIn instanceof Lit_Andon_1 || blockIn instanceof Lit_Andon_2 ||
+				blockIn instanceof Lit_Andon_3 || blockIn instanceof Lit_Andon_4) {
+			int stage = ((Integer)stateIn.getValue(BaseStage4_Face.STAGE_1_4)).intValue();
+
+			if (!(blockIn == Lamp_Blocks.LIT_ANDON_3 && stage == 1)) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+
+				worldIn.setBlockState(pos, Lamp_Blocks.LIT_ANDON_3.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, Integer.valueOf(1)), 11);
+
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** ソファ **/
-		if (block instanceof Sofa && block != Chair_Blocks.SOFA_lightg) {
+		if (blockIn instanceof BaseSofa) {
+			if (blockIn != Furniture_Blocks.SOFA_lightg && blockIn != Furniture_Blocks.SOFA_leather) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Chair_Blocks.SOFA_lightg.getDefaultState()
-					.with(BaseSofa.TYPE, blockstate.get(BaseSofa.TYPE))
-					.with(BaseSofa.H_FACING, blockstate.get(BaseSofa.H_FACING))
-					.with(BaseSofa.WATERLOGGED, blockstate.get(BaseSofa.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, Furniture_Blocks.SOFA_lightg.getDefaultState()
+						.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
 
-			itemstack.damageItem(2, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+				if (itemstack.getMaxDamage() <= 2) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** 座椅子 **/
-		if (block instanceof Zaisu && block != JPChair_Blocks.ZAISU_lightg) {
+		if (blockIn instanceof Zaisu) {
+			if (blockIn != JPDeco_Blocks.ZAISU_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JPChair_Blocks.ZAISU_lightg.getDefaultState()
-					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
-					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, JPDeco_Blocks.ZAISU_lightg.getDefaultState()
+						.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** のれん **/
-		if (block instanceof Noren && block != Ranma_Blocks.NOREN_lightg) {
+		if (blockIn instanceof BaseNoren) {
+			if (blockIn != JPDeco_Blocks.NOREN_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Ranma_Blocks.NOREN_lightg.getDefaultState()
-					.with(Noren.TYPE, blockstate.get(Noren.TYPE))
-					.with(Noren.H_FACING, blockstate.get(Noren.H_FACING))
-					.with(Noren.WATERLOGGED, blockstate.get(Noren.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, JPDeco_Blocks.NOREN_lightg.getDefaultState()
+						.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** 布団 **/
-		if (block instanceof Futon && block != JPdeco_Blocks.FUTON_lightg) {
+		if (blockIn instanceof BaseFuton) {
+			if (blockIn != Futon_Blocks.FUTON_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JPdeco_Blocks.FUTON_lightg.getDefaultState()
-					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
-					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
-					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, Futon_Blocks.FUTON_lightg.getDefaultState()
+						.withProperty(BaseStage2_Face.H_FACING, stateIn.getValue(BaseStage2_Face.H_FACING))
+						.withProperty(BaseStage2_Face.STAGE_1_2, stateIn.getValue(BaseStage2_Face.STAGE_1_2)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** 畳 **/
-		if (block instanceof Tatami && block != JPdeco_Blocks.TATAMI_H_lightg && block != JPdeco_Blocks.TATAMI_H) {
+		if (blockIn instanceof Tatami_H) {
+			if (blockIn != JPDeco_Blocks.TATAMI_H_lightg && blockIn != JPDeco_Blocks.TATAMI_H) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JPdeco_Blocks.TATAMI_H_lightg.getDefaultState()
-					.with(BaseFacingSlab_Water.TYPE, blockstate.get(BaseFacingSlab_Water.TYPE))
-					.with(BaseFacingSlab_Water.H_FACING, blockstate.get(BaseFacingSlab_Water.H_FACING))
-					.with(BaseFacingSlab_Water.WATERLOGGED, blockstate.get(BaseFacingSlab_Water.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, JPDeco_Blocks.TATAMI_H_lightg.getDefaultState()
+						.withProperty(BaseFacingSlabW.H_FACING, stateIn.getValue(BaseFacingSlabW.H_FACING))
+						.withProperty(BaseFacingSlabW.DOUBLE, stateIn.getValue(BaseFacingSlabW.DOUBLE))
+						.withProperty(BaseFacingSlabW.HALF, stateIn.getValue(BaseFacingSlabW.HALF)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof Tatami_Y && block != JPdeco_Blocks.TATAMI_HY_lightg && block != JPdeco_Blocks.TATAMI_HY) {
+		if (blockIn instanceof Tatami_HY) {
+			if (blockIn != JPDeco_Blocks.TATAMI_HY_lightg && blockIn != JPDeco_Blocks.TATAMI_HY) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JPdeco_Blocks.TATAMI_HY_lightg.getDefaultState()
-					.with(BaseFacingSlab_Water.TYPE, blockstate.get(BaseFacingSlab_Water.TYPE))
-					.with(BaseFacingSlab_Water.H_FACING, blockstate.get(BaseFacingSlab_Water.H_FACING))
-					.with(BaseFacingSlab_Water.WATERLOGGED, blockstate.get(BaseFacingSlab_Water.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, JPDeco_Blocks.TATAMI_HY_lightg.getDefaultState()
+						.withProperty(BaseFacingSlabW.H_FACING, stateIn.getValue(BaseFacingSlabW.H_FACING))
+						.withProperty(BaseFacingSlabW.DOUBLE, stateIn.getValue(BaseFacingSlabW.DOUBLE))
+						.withProperty(BaseFacingSlabW.HALF, stateIn.getValue(BaseFacingSlabW.HALF)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** 傘 **/
-		if (block instanceof Wagasa && block != Unit_Blocks.KASA_lightg) {
+		if (blockIn instanceof BaseMKasa) {
+			if (blockIn != Garden_Blocks.KASA_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, Unit_Blocks.KASA_lightg.getDefaultState()
-					.with(Wagasa.NORTH, blockstate.get(Wagasa.NORTH))
-					.with(Wagasa.EAST, blockstate.get(Wagasa.EAST))
-					.with(Wagasa.SOUTH, blockstate.get(Wagasa.SOUTH))
-					.with(Wagasa.WEST, blockstate.get(Wagasa.WEST))
-					.with(Wagasa.WHICH, Boolean.valueOf(false))
-					.with(Wagasa.WATERLOGGED, blockstate.get(Wagasa.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, Garden_Blocks.KASA_lightg.getDefaultState(), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
-
 
 		///////////////////////
-		/** ふすま **/
-		if (block instanceof Fusuma && block != Slidedoor_Blocks.FUSUMA_lightg) {
+		/** ふすま HINGEはUPPERから H_FACINGはLOWERから **/
+		IBlockState upstate = worldIn.getBlockState(pos.up());
+		IBlockState downstate = worldIn.getBlockState(pos.down());
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
+		if (blockIn instanceof BaseFusuma) {
+			if (blockIn != Fusuma_Blocks.FUSUMA_lightgray) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.LOWER) {
-				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMA_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlockState(blockpos.up(), Slidedoor_Blocks.FUSUMA_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
+				if (stateIn.getValue(BaseFusuma.HALF) == BlockStateHalf.LOWER) {
+					worldIn.setBlockState(pos, Fusuma_Blocks.FUSUMA_lightgray.getDefaultState()
+							.withProperty(BaseFusuma.H_FACING, stateIn.getValue(BaseFusuma.H_FACING))
+							.withProperty(BaseFusuma.OPEN, stateIn.getValue(BaseFusuma.OPEN))
+							.withProperty(BaseFusuma.HINGE, upstate.getValue(BaseFusuma.HINGE))
+							.withProperty(BaseFusuma.POWERED, upstate.getValue(BaseFusuma.POWERED))
+							.withProperty(BaseFusuma.HALF, BlockStateHalf.LOWER), 11);
+					worldIn.setBlockState(pos.up(), Fusuma_Blocks.FUSUMA_lightgray.getDefaultState()
+							.withProperty(BaseFusuma.H_FACING, stateIn.getValue(BaseFusuma.H_FACING))
+							.withProperty(BaseFusuma.OPEN, stateIn.getValue(BaseFusuma.OPEN))
+							.withProperty(BaseFusuma.HINGE, upstate.getValue(BaseFusuma.HINGE))
+							.withProperty(BaseFusuma.POWERED, upstate.getValue(BaseFusuma.POWERED))
+							.withProperty(BaseFusuma.HALF, BlockStateHalf.UPPER), 11); }
 
-			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.UPPER) {
-				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMA_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlockState(blockpos.down(), Slidedoor_Blocks.FUSUMA_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
+				if (stateIn.getValue(BaseFusuma.HALF) == BlockStateHalf.UPPER) {
+					worldIn.setBlockState(pos, Fusuma_Blocks.FUSUMA_lightgray.getDefaultState()
+							.withProperty(BaseFusuma.H_FACING, downstate.getValue(BaseFusuma.H_FACING))
+							.withProperty(BaseFusuma.OPEN, downstate.getValue(BaseFusuma.OPEN))
+							.withProperty(BaseFusuma.HINGE, stateIn.getValue(BaseFusuma.HINGE))
+							.withProperty(BaseFusuma.POWERED, stateIn.getValue(BaseFusuma.POWERED))
+							.withProperty(BaseFusuma.HALF, BlockStateHalf.UPPER), 11);
+					worldIn.setBlockState(pos.down(), Fusuma_Blocks.FUSUMA_lightgray.getDefaultState()
+							.withProperty(BaseFusuma.H_FACING, downstate.getValue(BaseFusuma.H_FACING))
+							.withProperty(BaseFusuma.OPEN, downstate.getValue(BaseFusuma.OPEN))
+							.withProperty(BaseFusuma.HINGE, stateIn.getValue(BaseFusuma.HINGE))
+							.withProperty(BaseFusuma.POWERED, stateIn.getValue(BaseFusuma.POWERED))
+							.withProperty(BaseFusuma.HALF, BlockStateHalf.LOWER), 11); }
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof Fusuma_B && block != Slidedoor_Blocks.FUSUMAB_lightg) {
+		if (blockIn instanceof BaseFusuma_B) {
+			if (blockIn != Fusuma_Blocks.FUSUMAB_lightgray) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
+				if (stateIn.getValue(BaseFusuma_B.HALF) == BlockStateHalf.LOWER) {
+					worldIn.setBlockState(pos, Fusuma_Blocks.FUSUMAB_lightgray.getDefaultState()
+							.withProperty(BaseFusuma_B.H_FACING, stateIn.getValue(BaseFusuma_B.H_FACING))
+							.withProperty(BaseFusuma_B.OPEN, stateIn.getValue(BaseFusuma_B.OPEN))
+							.withProperty(BaseFusuma_B.HINGE, upstate.getValue(BaseFusuma_B.HINGE))
+							.withProperty(BaseFusuma_B.POWERED, upstate.getValue(BaseFusuma_B.POWERED))
+							.withProperty(BaseFusuma_B.HALF, BlockStateHalf.LOWER), 11);
+					worldIn.setBlockState(pos.up(), Fusuma_Blocks.FUSUMAB_lightgray.getDefaultState()
+							.withProperty(BaseFusuma_B.H_FACING, stateIn.getValue(BaseFusuma_B.H_FACING))
+							.withProperty(BaseFusuma_B.OPEN, stateIn.getValue(BaseFusuma_B.OPEN))
+							.withProperty(BaseFusuma_B.HINGE, upstate.getValue(BaseFusuma_B.HINGE))
+							.withProperty(BaseFusuma_B.POWERED, upstate.getValue(BaseFusuma_B.POWERED))
+							.withProperty(BaseFusuma_B.HALF, BlockStateHalf.UPPER), 11); }
 
-			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.LOWER) {
-				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMAB_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlockState(blockpos.up(), Slidedoor_Blocks.FUSUMAB_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
+				if (stateIn.getValue(BaseFusuma_B.HALF) == BlockStateHalf.UPPER) {
+					worldIn.setBlockState(pos, Fusuma_Blocks.FUSUMAB_lightgray.getDefaultState()
+							.withProperty(BaseFusuma_B.H_FACING, downstate.getValue(BaseFusuma_B.H_FACING))
+							.withProperty(BaseFusuma_B.OPEN, downstate.getValue(BaseFusuma_B.OPEN))
+							.withProperty(BaseFusuma_B.HINGE, stateIn.getValue(BaseFusuma_B.HINGE))
+							.withProperty(BaseFusuma_B.POWERED, stateIn.getValue(BaseFusuma_B.POWERED))
+							.withProperty(BaseFusuma_B.HALF, BlockStateHalf.UPPER), 11);
+					worldIn.setBlockState(pos.down(), Fusuma_Blocks.FUSUMAB_lightgray.getDefaultState()
+							.withProperty(BaseFusuma_B.H_FACING, downstate.getValue(BaseFusuma_B.H_FACING))
+							.withProperty(BaseFusuma_B.OPEN, downstate.getValue(BaseFusuma_B.OPEN))
+							.withProperty(BaseFusuma_B.HINGE, stateIn.getValue(BaseFusuma_B.HINGE))
+							.withProperty(BaseFusuma_B.POWERED, stateIn.getValue(BaseFusuma_B.POWERED))
+							.withProperty(BaseFusuma_B.HALF, BlockStateHalf.LOWER), 11); }
 
-			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.UPPER) {
-				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMAB_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlockState(blockpos.down(), Slidedoor_Blocks.FUSUMAB_lightg.getDefaultState()
-						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
-						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
-						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
-						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
-						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
 
-			return ActionResultType.SUCCESS;
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		///////////////////////
 		/** 鴨居 **/
-		if (block instanceof KamoiPlaster_Oak && block != KamoiPlaster_Blocks.KAMOI_lightg_oak) {
+		if (blockIn instanceof KamoiPlaster_Oak) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_o) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_oak.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_o.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Spruce && block != KamoiPlaster_Blocks.KAMOI_lightg_spru) {
+		if (blockIn instanceof KamoiPlaster_Spruce) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_s) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_spru.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_s.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Birch && block != KamoiPlaster_Blocks.KAMOI_lightg_bir) {
+		if (blockIn instanceof KamoiPlaster_Birch) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_b) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_bir.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_b.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Jungle && block != KamoiPlaster_Blocks.KAMOI_lightg_jun) {
+		if (blockIn instanceof KamoiPlaster_Jungle) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_j) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_jun.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_j.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Acacia && block != KamoiPlaster_Blocks.KAMOI_lightg_aca) {
+		if (blockIn instanceof KamoiPlaster_Acacia) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_a) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_aca.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_a.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_DarkOak && block != KamoiPlaster_Blocks.KAMOI_lightg_doak) {
+		if (blockIn instanceof KamoiPlaster_DarkOak) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_d) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_doak.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_d.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Sakura && block != KamoiPlaster_Blocks.KAMOI_lightg_sakura) {
+		if (blockIn instanceof KamoiPlaster_Sakura) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_saku) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_sakura.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_saku.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Kaede && block != KamoiPlaster_Blocks.KAMOI_lightg_kaede) {
+		if (blockIn instanceof KamoiPlaster_Kaede) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_kae) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_kaede.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_kae.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof KamoiPlaster_Ichoh && block != KamoiPlaster_Blocks.KAMOI_lightg_ichoh) {
+		if (blockIn instanceof KamoiPlaster_Ichoh) {
+			if (blockIn != KamoiShikkui_Blocks.KAMOI_lightg_ich) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_lightg_ichoh.getDefaultState()
-					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
-					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_ich.getDefaultState()
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
-
 
 		///////////////////////
 		/** 粘土 **/
-		if (block instanceof WallPane_Clay && block != WallPane_Blocks.WP_CLAY_lightg) {
+		if (blockIn instanceof WP_clay_color) {
+			if (blockIn != WallPane_Blocks.WP_CLAY_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, WallPane_Blocks.WP_CLAY_lightg.getDefaultState()
-					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
-					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, WallPane_Blocks.WP_CLAY_lightg.getDefaultState()
+						.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		if (blockIn instanceof WP_clay) {
+			CMEvents.soundPaint(worldIn, playerIn, pos);
+
+			worldIn.setBlockState(pos, WallPane_Blocks.WP_CLAY_lightg.getDefaultState()
+					.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
+
+			if (playerIn instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+			if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+			if (itemstack.getMaxDamage() <= 1) {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+				itemstack.shrink(1); }
+
+			return EnumActionResult.SUCCESS;
 		}
 
 		/** ガラス **/
-		if (block instanceof WallPane_Glass && block != WallPane_Blocks.WP_GLASS_lightg) {
+		if (blockIn instanceof WP_glass_stained) {
+			if (blockIn != WallPane_Blocks.WP_GLASS_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, WallPane_Blocks.WP_GLASS_lightg.getDefaultState()
-					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
-					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, WallPane_Blocks.WP_GLASS_lightg.getDefaultState()
+						.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		if (blockIn instanceof WP_glass) {
+			CMEvents.soundPaint(worldIn, playerIn, pos);
+
+			worldIn.setBlockState(pos, WallPane_Blocks.WP_GLASS_lightg.getDefaultState()
+					.withProperty(BaseFacingSapo.H_FACING, stateIn.getValue(BaseFacingSapo.H_FACING)), 11);
+
+			if (playerIn instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+			if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+			if (itemstack.getMaxDamage() <= 1) {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+				itemstack.shrink(1); }
+
+			return EnumActionResult.SUCCESS;
 		}
 
 		/** しっくい **/
-		if (block instanceof WallPane_Plaster && block != WallPane_Blocks.WP_PLASTER_lightg) {
+		if (blockIn instanceof WP_plaster) {
+			if (blockIn != WallPaneJP_Blocks.WP_PLASTER_lightg && blockIn != WallPaneJP_Blocks.WP_DIRTWALL) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, WallPane_Blocks.WP_PLASTER_lightg.getDefaultState()
-					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
-					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
-					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, WallPaneJP_Blocks.WP_PLASTER_lightg.getDefaultState()
+						.withProperty(BaseStage2_WP.H_FACING, stateIn.getValue(BaseStage2_WP.H_FACING))
+						.withProperty(BaseStage2_WP.STAGE_1_2, stateIn.getValue(BaseStage2_WP.STAGE_1_2)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		/** なまこ **/
-		if (block instanceof WallPane_Namako && block != WallPane_Blocks.WP_NAMAKO_lightg) {
+		if (blockIn instanceof WP_namako) {
+			if (blockIn != WallPaneJP_Blocks.WP_NAMAKO_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, WallPane_Blocks.WP_NAMAKO_lightg.getDefaultState()
-					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
-					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
-					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, WallPaneJP_Blocks.WP_NAMAKO_lightg.getDefaultState()
+						.withProperty(BaseStage2_WP.H_FACING, stateIn.getValue(BaseStage2_WP.H_FACING))
+						.withProperty(BaseStage2_WP.STAGE_1_2, stateIn.getValue(BaseStage2_WP.STAGE_1_2)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
-		if (block instanceof WallPane_Namako_B && block != WallPane_Blocks.WP_NAMAKOB_lightg) {
+		if (blockIn instanceof WP_namako_B) {
+			if (blockIn != WallPaneJP_Blocks.WP_NAMAKOB_lightg) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
 
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, WallPane_Blocks.WP_NAMAKOB_lightg.getDefaultState()
-					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
-					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
-					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos, WallPaneJP_Blocks.WP_NAMAKOB_lightg.getDefaultState()
+						.withProperty(BaseStage2_WP.H_FACING, stateIn.getValue(BaseStage2_WP.H_FACING))
+						.withProperty(BaseStage2_WP.STAGE_1_2, stateIn.getValue(BaseStage2_WP.STAGE_1_2)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 
 		///6.1.2////////////////////
-		if (block instanceof Wall_Plaster && block != JP_Blocks.SHIKKUI_WALL_lightg && block != JP_Blocks.DIRTWALL_WALL) {
-			
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_WALL_lightg.getDefaultState()
-					.with(Wall_Plaster.NORTH, blockstate.get(Wall_Plaster.NORTH))
-					.with(Wall_Plaster.SOUTH, blockstate.get(Wall_Plaster.SOUTH))
-					.with(Wall_Plaster.EAST, blockstate.get(Wall_Plaster.EAST))
-					.with(Wall_Plaster.WEST, blockstate.get(Wall_Plaster.WEST))
-					.with(Wall_Plaster.CRACK, blockstate.get(Wall_Plaster.CRACK))
-					.with(Wall_Plaster.WATERLOGGED, blockstate.get(Wall_Plaster.WATERLOGGED)), 3);
+		if (blockIn instanceof Wall_Plaster || blockIn instanceof Wall_PlasterCrash ||
+				blockIn instanceof Wall_Namako || blockIn instanceof Wall_NamakoCrash ||
+				blockIn instanceof Wall_NamakoB || blockIn instanceof Wall_NamakoBCrash) {
+			int color = ((Integer)stateIn.getValue(Base_Wall.STAGE_0_15)).intValue();
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+			if (color != 8) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, stateIn.withProperty(Base_Wall.STAGE_0_15, Integer.valueOf(8))
+						.withProperty(Base_Wall.NORTH, stateIn.getValue(Base_Wall.NORTH))
+						.withProperty(Base_Wall.EAST, stateIn.getValue(Base_Wall.EAST))
+						.withProperty(Base_Wall.SOUTH, stateIn.getValue(Base_Wall.SOUTH))
+						.withProperty(Base_Wall.WEST, stateIn.getValue(Base_Wall.WEST)), 11);
 
-			return ActionResultType.SUCCESS;
-		}
-		
-		if (block instanceof Wall_Sama && block != JP_Blocks.SHIKKUI_SAMA_lightg && block != JP_Blocks.DIRTWALL_SAMA) {
-			
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_SAMA_lightg.getDefaultState()
-					.with(Wall_Sama.H_FACING, blockstate.get(Wall_Sama.H_FACING))
-					.with(Wall_Sama.STAGE_1_4, blockstate.get(Wall_Sama.STAGE_1_4))
-					.with(Wall_Sama.WATERLOGGED, blockstate.get(Wall_Sama.WATERLOGGED)), 3);
-			
-			if (blockstate.get(Wall_Sama.STAGE_1_4) <= 2) {
-				itemstack.damageItem(1, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
 			}
-			
-			if (blockstate.get(Wall_Sama.STAGE_1_4) >= 3) {
-				itemstack.damageItem(2, playerIn, user -> {
-					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.sendBreakAnimation(context.getHand()); } );
+		}
+		
+		if (blockIn instanceof Wall_Kawara) {
+			int color = ((Integer)stateIn.getValue(Base_WallKawara.STAGE_0_15)).intValue();
+
+			if (color != 8) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, stateIn.withProperty(Base_WallKawara.STAGE_0_15, Integer.valueOf(8))
+						.withProperty(Base_WallKawara.NORTH, stateIn.getValue(Base_WallKawara.NORTH))
+						.withProperty(Base_WallKawara.EAST, stateIn.getValue(Base_WallKawara.EAST))
+						.withProperty(Base_WallKawara.SOUTH, stateIn.getValue(Base_WallKawara.SOUTH))
+						.withProperty(Base_WallKawara.WEST, stateIn.getValue(Base_WallKawara.WEST)), 11);
+
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
+
+				if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+				if (itemstack.getMaxDamage() <= 1) {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+					itemstack.shrink(1); }
+
+				return EnumActionResult.SUCCESS;
 			}
-
-			return ActionResultType.SUCCESS;
-		}
-
-		if (block instanceof Wall_Kawara && block != JP_Blocks.KAWARA_WALL_lightg) {
-			
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_WALL_lightg.getDefaultState()
-					.with(Wall_Kawara.NORTH, blockstate.get(Wall_Kawara.NORTH))
-					.with(Wall_Kawara.SOUTH, blockstate.get(Wall_Kawara.SOUTH))
-					.with(Wall_Kawara.EAST, blockstate.get(Wall_Kawara.EAST))
-					.with(Wall_Kawara.WEST, blockstate.get(Wall_Kawara.WEST))
-					.with(Wall_Kawara.WATERLOGGED, blockstate.get(Wall_Kawara.WATERLOGGED)), 3);
-			
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
 		}
 		
-		if (block instanceof Wall_Namako && block != JP_Blocks.NAMAKO_WALL_lightg) {
-			
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_WALL_lightg.getDefaultState()
-					.with(Wall_Namako.NORTH, blockstate.get(Wall_Namako.NORTH))
-					.with(Wall_Namako.SOUTH, blockstate.get(Wall_Namako.SOUTH))
-					.with(Wall_Namako.EAST, blockstate.get(Wall_Namako.EAST))
-					.with(Wall_Namako.WEST, blockstate.get(Wall_Namako.WEST))
-					.with(Wall_Namako.CRACK, blockstate.get(Wall_Namako.CRACK))
-					.with(Wall_Namako.WATERLOGGED, blockstate.get(Wall_Namako.WATERLOGGED)), 3);
+		if (blockIn instanceof Wall_Sama) {
+			if (blockIn != JPBlock_Blocks.SHIKKUI_SAMA_lightg && blockIn != JPBlock_Blocks.DIRTWALL_SAMA) {
+				CMEvents.soundPaint(worldIn, playerIn, pos);
+				worldIn.setBlockState(pos, JPBlock_Blocks.SHIKKUI_SAMA_lightg.getDefaultState()
+						.withProperty(BaseStage4_Face.STAGE_1_4, stateIn.getValue(BaseStage4_Face.STAGE_1_4))
+						.withProperty(BaseStage4_Face.H_FACING, stateIn.getValue(BaseStage4_Face.H_FACING)), 11);
 
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
+				if (playerIn instanceof EntityPlayerMP) {
+					CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack); }
 
-			return ActionResultType.SUCCESS;
+				if (stateIn.getValue(BaseStage4_Face.STAGE_1_4) == 1 || stateIn.getValue(BaseStage4_Face.STAGE_1_4) == 2) {
+					if (itemstack.getMaxDamage() > 1) { itemstack.damageItem(1, playerIn); }
+					if (itemstack.getMaxDamage() <= 1) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				if (stateIn.getValue(BaseStage4_Face.STAGE_1_4) != 1 && stateIn.getValue(BaseStage4_Face.STAGE_1_4) != 2) {
+					if (itemstack.getMaxDamage() > 2) { itemstack.damageItem(2, playerIn); }
+					if (itemstack.getMaxDamage() <= 2) {
+						if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+							playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
+						itemstack.shrink(1); } }
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
 		
-		if (block instanceof Wall_NamakoB && block != JP_Blocks.NAMAKOB_WALL_lightg) {
-			
-			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_WALL_lightg.getDefaultState()
-					.with(Wall_NamakoB.NORTH, blockstate.get(Wall_NamakoB.NORTH))
-					.with(Wall_NamakoB.SOUTH, blockstate.get(Wall_NamakoB.SOUTH))
-					.with(Wall_NamakoB.EAST, blockstate.get(Wall_NamakoB.EAST))
-					.with(Wall_NamakoB.WEST, blockstate.get(Wall_NamakoB.WEST))
-					.with(Wall_NamakoB.CRACK, blockstate.get(Wall_NamakoB.CRACK))
-					.with(Wall_NamakoB.WATERLOGGED, blockstate.get(Wall_NamakoB.WATERLOGGED)), 3);
-
-			itemstack.damageItem(1, playerIn, user -> {
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.sendBreakAnimation(context.getHand()); } );
-
-			return ActionResultType.SUCCESS;
-		}
 		
-		/* Wash the brush. MIZUOKE work is in the block. */
-		if (block == Blocks.CAULDRON) {
-			int level = blockstate.get(CauldronBlock.LEVEL);
+		/* 洗浄 → 水桶はブロックで処理 */
+		boolean mode = playerIn.capabilities.isCreativeMode;
+
+		if (blockIn == Blocks.CAULDRON) {
+			int level = stateIn.getValue(BlockCauldron.LEVEL);
 			if (level != 0) {
-				CMEvents.soundWash(iworld, playerIn, blockpos);
-				iworld.setBlockState(blockpos, blockstate.with(CauldronBlock.LEVEL, Integer.valueOf(level - 1)), 3);
+				((BlockCauldron)blockIn).setWaterLevel(worldIn, pos, stateIn, level - 1);
+				CMEvents.soundWash(worldIn, playerIn, pos);
 
 				/** アイテムを返す **/
-				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE, 1, 0))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE, 1, 0), false); }
 
 				if (!mode) { itemstack.shrink(1); }
-				return ActionResultType.SUCCESS;
+
+				return EnumActionResult.SUCCESS;
 			}
 		}
 
-		return ActionResultType.FAIL;
+		return EnumActionResult.PASS;
 	}
 
 }

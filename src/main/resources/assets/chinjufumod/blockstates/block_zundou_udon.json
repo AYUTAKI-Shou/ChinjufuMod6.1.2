@@ -1,23 +1,23 @@
 {
 	"variants": {
-		"facing=north,stage=1": { "model": "chinjufumod:block/zundou/block_zundou_udon_f2c", "y": 180 },
-		"facing=south,stage=1": { "model": "chinjufumod:block/zundou/block_zundou_udon_f2c", "y": 0 },
-		"facing=west,stage=1": { "model": "chinjufumod:block/zundou/block_zundou_udon_f2c", "y": 90 },
-		"facing=east,stage=1": { "model": "chinjufumod:block/zundou/block_zundou_udon_f2c", "y": 270 },
+		"facing=north,stage=1": { "model": "chinjufumod:zundou/block_zundou_udon_f2c", "y": 180 },
+		"facing=south,stage=1": { "model": "chinjufumod:zundou/block_zundou_udon_f2c", "y": 0 },
+		"facing=west,stage=1": { "model": "chinjufumod:zundou/block_zundou_udon_f2c", "y": 90 },
+		"facing=east,stage=1": { "model": "chinjufumod:zundou/block_zundou_udon_f2c", "y": 270 },
 
-		"facing=north,stage=2": { "model": "chinjufumod:block/zundou/block_zundou_udon_f", "y": 180 },
-		"facing=south,stage=2": { "model": "chinjufumod:block/zundou/block_zundou_udon_f", "y": 0 },
-		"facing=west,stage=2": { "model": "chinjufumod:block/zundou/block_zundou_udon_f", "y": 90 },
-		"facing=east,stage=2": { "model": "chinjufumod:block/zundou/block_zundou_udon_f", "y": 270 },
+		"facing=north,stage=2": { "model": "chinjufumod:zundou/block_zundou_udon_f", "y": 180 },
+		"facing=south,stage=2": { "model": "chinjufumod:zundou/block_zundou_udon_f", "y": 0 },
+		"facing=west,stage=2": { "model": "chinjufumod:zundou/block_zundou_udon_f", "y": 90 },
+		"facing=east,stage=2": { "model": "chinjufumod:zundou/block_zundou_udon_f", "y": 270 },
 
-		"facing=north,stage=3": { "model": "chinjufumod:block/zundou/block_zundou_udon_b2c", "y": 180 },
-		"facing=south,stage=3": { "model": "chinjufumod:block/zundou/block_zundou_udon_b2c", "y": 0 },
-		"facing=west,stage=3": { "model": "chinjufumod:block/zundou/block_zundou_udon_b2c", "y": 90 },
-		"facing=east,stage=3": { "model": "chinjufumod:block/zundou/block_zundou_udon_b2c", "y": 270 },
+		"facing=north,stage=3": { "model": "chinjufumod:zundou/block_zundou_udon_b2c", "y": 180 },
+		"facing=south,stage=3": { "model": "chinjufumod:zundou/block_zundou_udon_b2c", "y": 0 },
+		"facing=west,stage=3": { "model": "chinjufumod:zundou/block_zundou_udon_b2c", "y": 90 },
+		"facing=east,stage=3": { "model": "chinjufumod:zundou/block_zundou_udon_b2c", "y": 270 },
 
-		"facing=north,stage=4": { "model": "chinjufumod:block/zundou/block_zundou_udon_b", "y": 180 },
-		"facing=south,stage=4": { "model": "chinjufumod:block/zundou/block_zundou_udon_b", "y": 0 },
-		"facing=west,stage=4": { "model": "chinjufumod:block/zundou/block_zundou_udon_b", "y": 90 },
-		"facing=east,stage=4": { "model": "chinjufumod:block/zundou/block_zundou_udon_b", "y": 270 }
+		"facing=north,stage=4": { "model": "chinjufumod:zundou/block_zundou_udon_b", "y": 180 },
+		"facing=south,stage=4": { "model": "chinjufumod:zundou/block_zundou_udon_b", "y": 0 },
+		"facing=west,stage=4": { "model": "chinjufumod:zundou/block_zundou_udon_b", "y": 90 },
+		"facing=east,stage=4": { "model": "chinjufumod:zundou/block_zundou_udon_b", "y": 270 }
 	}
 }

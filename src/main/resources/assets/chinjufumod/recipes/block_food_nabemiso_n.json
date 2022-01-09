@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "cm_food_nabemiso",
+
+	"ingredients": [
+		{ "type": "forge:ore_dict", "ore": "bucketWater" },
+		[ { "type": "forge:ore_dict", "ore": "foodSilkentofu" }, { "type": "forge:ore_dict", "ore": "foodSilkentoufu" } ],
+		[ { "type": "forge:ore_dict", "ore": "foodSilkentofu" }, { "type": "forge:ore_dict", "ore": "foodSilkentoufu" } ],
+		{ "type": "forge:ore_dict", "ore": "foodMisopaste" },
+		[ { "item": "chinjufumod:block_dashi_bot" },
+			{ "item": "chinjufumod:block_dashi_bot_2" },
+			{ "item": "chinjufumod:block_dashi_bot_3" },
+			{ "item": "chinjufumod:block_dashi_bot_4" } ],
+		{ "item": "chinjufumod:block_food_karanabe" }
+	],
+
+	"result": { "item": "chinjufumod:block_food_nabenama_1", "data": 2, "count" : 1 }
+}

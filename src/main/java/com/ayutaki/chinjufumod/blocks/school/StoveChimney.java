@@ -2,179 +2,119 @@ package com.ayutaki.chinjufumod.blocks.school;
 
 import javax.annotation.Nullable;
 
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class StoveChimney extends Block implements IWaterLoggable {
+public class StoveChimney extends Block {
 
-	/* Property */
-	public static final BooleanProperty UP = BooleanProperty.create("up");
-	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final BooleanProperty NORTH = BooleanProperty.create("north");
-	public static final BooleanProperty EAST = BooleanProperty.create("east");
-	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
-	public static final BooleanProperty WEST = BooleanProperty.create("west");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final String ID = "block_stovechimney";
 
-	private static final VoxelShape AABB_CENTER = Block.makeCuboidShape(5.9D, 5.9D, 5.9D, 10.1D, 10.1D, 10.1D);
-	private static final VoxelShape AABB_UP = Block.makeCuboidShape(5.9D, 10.1D, 5.9D, 10.1D, 16.0D, 10.1D);
-	private static final VoxelShape AABB_DOWN = Block.makeCuboidShape(5.9D, 0.0D, 5.9D, 10.1D, 10.1D, 10.1D);
-	private static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.9D, 5.9D, 0.0D, 10.1D, 10.1D, 5.9D);
-	private static final VoxelShape AABB_EAST = Block.makeCuboidShape(10.1D, 5.9D, 5.9D, 16.0D, 10.1D, 10.1D);
-	private static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.9D, 5.9D, 10.1D, 10.1D, 10.1D, 16.0D);
-	private static final VoxelShape AABB_WEST = Block.makeCuboidShape(0.0D, 5.9D, 5.9D, 5.9D, 10.1D, 10.1D);
+	public static final PropertyBool DOWN = PropertyBool.create("down");
+	public static final PropertyBool UP = PropertyBool.create("up");
+	public static final PropertyBool NORTH = PropertyBool.create("north");
+	public static final PropertyBool EAST = PropertyBool.create("east");
+	public static final PropertyBool SOUTH = PropertyBool.create("south");
+	public static final PropertyBool WEST = PropertyBool.create("west");
 
-	public StoveChimney(Block.Properties properties) {
-		super(properties);
+	public StoveChimney() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
-				.with(EAST, Boolean.valueOf(false))
-				.with(SOUTH, Boolean.valueOf(false))
-				.with(WEST, Boolean.valueOf(false))
-				.with(UP, Boolean.valueOf(false))
-				.with(DOWN, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+		setCreativeTab(ChinjufuModTabs.CHINJUFU);
+
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(10.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(DOWN, Boolean.valueOf(false))
+				.withProperty(UP, Boolean.valueOf(false))
+				.withProperty(NORTH, Boolean.valueOf(false))
+				.withProperty(EAST, Boolean.valueOf(false))
+				.withProperty(SOUTH, Boolean.valueOf(false))
+				.withProperty(WEST, Boolean.valueOf(false)));
 	}
 
-	/* Gives a value when placed. */
+	public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+		return false;
+	}
+
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getBlock() instanceof StoveChimney;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return true;
+	}
+
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
+
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, Boolean.valueOf(this.canConnectTo(worldIn, pos.down())))
+				.withProperty(UP, Boolean.valueOf(this.canConnectTo(worldIn, pos.up())))
+				.withProperty(NORTH, Boolean.valueOf(this.canConnectTo(worldIn, pos.north())))
+				.withProperty(EAST, Boolean.valueOf(this.canConnectTo(worldIn, pos.east())))
+				.withProperty(SOUTH, Boolean.valueOf(this.canConnectTo(worldIn, pos.south())))
+				.withProperty(WEST, Boolean.valueOf(this.canConnectTo(worldIn, pos.west())));
+	}
+
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { DOWN, UP, NORTH, EAST, SOUTH, WEST });
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return false;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
-	}
-
-	/* Connect the blocks. */
-	private boolean canConnectTo(IWorld worldIn, BlockPos source, Direction direction) {
-		BlockState state = worldIn.getBlockState(source.offset(direction));
-		return state.getBlock() == this;
-	}
-
-	/* Update BlockState. */
-	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		boolean up = canConnectTo(worldIn, pos, Direction.UP);
-		boolean down = canConnectTo(worldIn, pos, Direction.DOWN);
-		boolean north = canConnectTo(worldIn, pos, Direction.NORTH);
-		boolean east = canConnectTo(worldIn, pos, Direction.EAST);
-		boolean south = canConnectTo(worldIn, pos, Direction.SOUTH);
-		boolean west = canConnectTo(worldIn, pos, Direction.WEST);
-		return stateIn.with(UP, up).with(DOWN, down).with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
-	}
-
-	/* Collision */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-
-		boolean up = state.get(UP).booleanValue();
-		boolean down = state.get(DOWN).booleanValue();
-		boolean north = state.get(NORTH).booleanValue();
-		boolean east = state.get(EAST).booleanValue();
-		boolean south = state.get(SOUTH).booleanValue();
-		boolean west = state.get(WEST).booleanValue();
-
-		VoxelShape shape = AABB_CENTER;
-
-		if (!up && !north && !south && !east && !west && !down) {
-			shape = VoxelShapes.or(shape, AABB_UP, AABB_DOWN); }
-
-		if (up) {
-			if (down) { shape = VoxelShapes.or(shape, AABB_UP, AABB_DOWN); }
-			if (!north && !south && !east && !west && !down) { shape = VoxelShapes.or(shape, AABB_UP, AABB_DOWN); }
-			shape = VoxelShapes.or(shape, AABB_UP);
-		}
-
-		if (down) {
-			if (up) { shape = VoxelShapes.or(shape, AABB_UP, AABB_DOWN); }
-			if (!north && !south && !east && !west && !up) { shape = VoxelShapes.or(shape, AABB_UP, AABB_DOWN); }
-			shape = VoxelShapes.or(shape, AABB_DOWN);
-		}
-
-		if (north) {
-			if (south) { shape = VoxelShapes.or(shape, AABB_NORTH, AABB_SOUTH); }
-			if (!up && !down && !east && !west && !south) { shape = VoxelShapes.or(shape, AABB_NORTH, AABB_SOUTH); }
-			shape = VoxelShapes.or(shape, AABB_NORTH);
-		}
-
-		if (south) {
-			if (north) { shape = VoxelShapes.or(shape, AABB_NORTH, AABB_SOUTH); }
-			if (!up && !down && !east && !west && !north) { shape = VoxelShapes.or(shape, AABB_NORTH, AABB_SOUTH); }
-			shape = VoxelShapes.or(shape, AABB_SOUTH);
-		}
-
-		if (east) {
-			if (west) { shape = VoxelShapes.or(shape, AABB_WEST, AABB_EAST); }
-			if (!up && !down && !north && !south && !west) { shape = VoxelShapes.or(shape, AABB_WEST, AABB_EAST); }
-			shape = VoxelShapes.or(shape, AABB_EAST);
-		}
-
-		if (west) {
-			if (east) { shape = VoxelShapes.or(shape, AABB_WEST, AABB_EAST); }
-			if (!up && !down && !north && !south && !east) { shape = VoxelShapes.or(shape, AABB_WEST, AABB_EAST); }
-			shape = VoxelShapes.or(shape, AABB_WEST);
-		}
-
-		return shape;
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	/* 立方体 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Create Blockstate */
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
-	}
-
-	/* 採取適正ツール */
-	@Nullable
-	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
 

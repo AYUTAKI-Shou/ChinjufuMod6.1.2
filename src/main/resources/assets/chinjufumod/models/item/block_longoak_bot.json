@@ -1,5 +1,5 @@
 {
-	"parent": "chinjufumod:block/garden/block_long_oak",
+	"parent": "chinjufumod:block/ikegaki/block_long_oak",
 	"display": {
 		"gui": {
 			"rotation": [ 5, 45, 0 ],

@@ -1,73 +1,102 @@
 package com.ayutaki.chinjufumod.blocks.garden;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ayutaki.chinjufumod.registry.Garden_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class Niwaishi extends Base_Niwaishi {
 
-	/* Collision */
-	protected static final VoxelShape AABB_0 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 16.0D, 13.5D);
-	protected static final VoxelShape AABB_2 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 14.0D, 13.5D);
-	protected static final VoxelShape AABB_4 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 12.0D, 13.5D);
-	protected static final VoxelShape AABB_6 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 10.0D, 13.5D);
-	protected static final VoxelShape AABB_8 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 8.0D, 13.5D);
-	protected static final VoxelShape AABB_10 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 6.0D, 13.5D);
-	protected static final VoxelShape AABB_12 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 4.0D, 13.5D);
-	protected static final VoxelShape AABB_14 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 2.0D, 13.5D);
+	private static final AxisAlignedBB AABB_0 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 1.0, 0.84375);
+	private static final AxisAlignedBB AABB_2 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.875, 0.84375);
+	private static final AxisAlignedBB AABB_4 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.75, 0.84375);
+	private static final AxisAlignedBB AABB_6 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.625, 0.84375);
+	private static final AxisAlignedBB AABB_8 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.5, 0.84375);
+	private static final AxisAlignedBB AABB_10 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.375, 0.84375);
+	private static final AxisAlignedBB AABB_12 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.25, 0.84375);
+	private static final AxisAlignedBB AABB_14 = new AxisAlignedBB(0.15625, 0.0D, 0.15625, 0.84375, 0.125, 0.84375);
 
-	public Niwaishi(Block.Properties properties) {
-		super(properties);
+	public Niwaishi() {
+		super();
+
+		setHardness(2.0F);
+		setResistance(10.0F);
+		setSoundType(SoundType.STONE);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
+	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int i = state.get(STAGE_0_15);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
 
 		switch (i) {
 		case 0 :
-		case 1 : 
+		case 1 :
 		default :
 			return AABB_0;
+			
 		case 2 :
-		case 3 : 
+		case 3 :
 			return AABB_2;
+			
 		case 4 :
 		case 5 :
 			return AABB_4;
+			
 		case 6 :
-		case 7 : 
+		case 7 :
 			return AABB_6;
+
 		case 8 :
-		case 9 : 
+		case 9 :
 			return AABB_8;
+			
 		case 10 :
-		case 11 : 
+		case 11 :
 			return AABB_10;
+
 		case 12 :
-		case 13 : 
+		case 13 :
 			return AABB_12;
+
 		case 14 :
-		case 15 : 
+		case 15 :
 			return AABB_14;
 		} // switch
 	}
 
-	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
 
-		if (this == Garden_Blocks.NIWAISHI_and) { return new ItemStack(Items.ANDESITE); }
-		if (this == Garden_Blocks.NIWAISHI_dio) { return new ItemStack(Items.DIORITE); }
-		if (this == Garden_Blocks.NIWAISHI_gra) { return new ItemStack(Items.GRANITE); }
-		return new ItemStack(Items.STONE);
+		if (this == Garden_Blocks.NIWAISHI) { stack.add(new ItemStack(Blocks.STONE, 1, 0)); }
+		if (this == Garden_Blocks.NIWAISHI_gra) { stack.add(new ItemStack(Blocks.STONE, 1, 1)); }
+		if (this == Garden_Blocks.NIWAISHI_dio) { stack.add(new ItemStack(Blocks.STONE, 1, 3)); }
+		if (this == Garden_Blocks.NIWAISHI_and) { stack.add(new ItemStack(Blocks.STONE, 1, 5)); }
+
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		if (this == Garden_Blocks.NIWAISHI_gra) { return new ItemStack(Blocks.STONE, 1, 1); }
+		if (this == Garden_Blocks.NIWAISHI_dio) { return new ItemStack(Blocks.STONE, 1, 3); }
+		if (this == Garden_Blocks.NIWAISHI_and) { return new ItemStack(Blocks.STONE, 1, 5); }
+		return new ItemStack(Blocks.STONE, 1, 0);
 	}
 
 }

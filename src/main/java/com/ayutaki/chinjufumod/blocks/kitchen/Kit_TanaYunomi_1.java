@@ -1,108 +1,102 @@
 package com.ayutaki.chinjufumod.blocks.kitchen;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Kit_TanaYunomi_1 extends Base_Tana7 {
+public class Kit_TanaYunomi_1 extends BaseKit_Tana4Stage {
 
-	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 10.0D);
-	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(6.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
+	public static final String ID = "block_kit_yunomi1";
 
-	public Kit_TanaYunomi_1(Block.Properties properties) {
-		super(properties);
+	public Kit_TanaYunomi_1() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.get(STAGE_1_7);
+		int k;
+		k = itemstack.getMetadata();
 
-		if (item != Items_Teatime.YUNOMI && item != Items_Teatime.KYUSU_kara) {
+		if ((item != Items_Teatime.Item_DISH || k != 1) && item != Items_Teatime.KYUSU_kara) {
 			if (itemstack.isEmpty()) {
-				if (i != 7) {
-					playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.YUNOMI));
-					CMEvents.soundItemPick(worldIn, pos);
-					
-					if (i != 1) { worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i - 1))); }
-					if (i == 1) { worldIn.setBlockState(pos, Kitchen_Blocks.KIT_TANA.getDefaultState().with(H_FACING, state.get(H_FACING))); } }
-		
-				if (i == 7) {
-					playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.KYUSU_kara));
-					CMEvents.soundItemPick(worldIn, pos);
-					
-					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i - 1))); } }
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.Item_DISH, 1, 1));
+				CMEvents.soundItemPick(worldIn, pos);
+	
+				if (i == 1) { worldIn.setBlockState(pos, Kitchen_Blocks.KIT_TANA.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))); }
+				if (i > 1) { worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i - 1)), 3); } }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
 		
-		if (item == Items_Teatime.YUNOMI) {
-			if (i < 6) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundDishPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i + 1))); }
-			
-			if (i >= 6) { CMEvents.textNotHave(worldIn, pos, playerIn); }
+		if (item == Items_Teatime.Item_DISH && k == 1) {
+			CMEvents.Consume_1Item(playerIn, hand);
+			CMEvents.soundDishPlace(worldIn, pos);
+			if (i < 4) { worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			if (i == 4) { worldIn.setBlockState(pos, Kitchen_Blocks.KIT_YUNOMIA
+						.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 		}
 		
-		if (item == Items_Teatime.KYUSU_kara) {
-			if (i == 6) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundDishPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i + 1))); }
-			
-			if (i != 6) { CMEvents.textNotHave(worldIn, pos, playerIn); }
-		}
+		if (item == Items_Teatime.KYUSU_kara) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* Collisions for each property. */
+
+	/* Drop Item and Clone Item. */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
 
-		Direction direction = state.get(H_FACING);
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
-		switch(direction) {
-		case SOUTH:
-			return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
-		case NORTH:
-		default:
-			return AABB_NORTH;
-		case EAST:
-			return AABB_EAST;
-		}
+		if (i == 1) {
+			stack.add(new ItemStack(Items_Teatime.KIT_TANA, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.Item_DISH, 1, 1)); }
+
+		if (i == 2) {
+			stack.add(new ItemStack(Items_Teatime.KIT_TANA, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.Item_DISH, 2, 1)); }
+
+		if (i == 3) {
+			stack.add(new ItemStack(Items_Teatime.KIT_TANA, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.Item_DISH, 3, 1)); }
+
+		if (i == 4) {
+			stack.add(new ItemStack(Items_Teatime.KIT_TANA, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.Item_DISH, 4, 1)); }
+		return stack;
 	}
 
-	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
 		return new ItemStack(Items_Teatime.KIT_TANA);
 	}
 

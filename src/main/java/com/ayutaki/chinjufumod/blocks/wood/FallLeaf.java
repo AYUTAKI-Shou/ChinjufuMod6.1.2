@@ -1,131 +1,176 @@
 package com.ayutaki.chinjufumod.blocks.wood;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.registry.Wood_Blocks;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.registry.Items_Seasonal;
+import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.GrassBlock;
-import net.minecraft.block.SnowBlock;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.HoeItem;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.lighting.LightEngine;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FallLeaf extends GrassBlock {
+public class FallLeaf extends Block {
 
-	public FallLeaf(Block.Properties properties) {
-		super(properties);
+	public static final String ID = "block_fall_leaf";
+
+	public FallLeaf() {
+		super(Material.GROUND);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setCreativeTab(ChinjufuModTabs.SEASONAL);
+
+		setSoundType(SoundType.PLANT);
+		setHardness(0.75F);
+		setResistance(5.0F);
+
+		setTickRandomly(true);
 	}
 
-	/* RightClick Action */
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	/* TickRandomによる隣接ブロックへの侵食 */
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
-		ItemStack itemstack = playerIn.getHeldItem(hand);
-		Item item = itemstack.getItem();
+		if (!worldIn.isRemote) {
 
-		if (item instanceof ShovelItem) {
-			itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(hand); } );
-			worldIn.playSound(null, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			worldIn.setBlockState(pos, Blocks.GRASS_PATH.getDefaultState());
-			return ActionResultType.SUCCESS; }
+			/** pos.upが暗いと土ブロックになる **/
+			if (worldIn.getLightFromNeighbors(pos.up()) < 4 && worldIn.getBlockState(pos.up()).getLightOpacity(worldIn, pos.up()) > 2) {
+				worldIn.setBlockState(pos, Blocks.DIRT.getDefaultState());
+			}
 
-		if (item instanceof HoeItem) {
-			itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(hand); } );
-			worldIn.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			worldIn.setBlockState(pos, Wood_Blocks.SUIDEN.getDefaultState());
-			return ActionResultType.SUCCESS; }
+			else {
 
-		/* モブ湧きのため PASS */
-		return ActionResultType.PASS;
-	}
+				if (worldIn.getLightFromNeighbors(pos.up()) >= 9) {
 
+					for (int i = 0; i < 4; ++i) {
+						BlockPos blockpos = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1);
 
-	/* tick進行条件 */
-	private static boolean getUpBlockState(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.up();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		if (blockstate.getBlock() == Blocks.SNOW && blockstate.get(SnowBlock.LAYERS) == 1) {
-			return true;
-		}
-		else {
-		int i = LightEngine.func_215613_a(worldIn, state, pos, blockstate, blockpos, Direction.UP, blockstate.getOpacity(worldIn, blockpos));
-			return i < worldIn.getMaxLightLevel();
-		}
-	}
+						if (blockpos.getY() >= 0 && blockpos.getY() < 256 && !worldIn.isBlockLoaded(blockpos)) {
+							return;
+						}
 
-	private static boolean getUpBlockFluid(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.up();
-		return getUpBlockState(state, worldIn, pos) && !worldIn.getFluidState(blockpos).isTagged(FluidTags.WATER);
-	}
+						IBlockState iblockstate = worldIn.getBlockState(blockpos.up());
+						IBlockState iblockstate1 = worldIn.getBlockState(blockpos);
 
-	/* 時間経過による隣接ブロックへの侵食 */
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		if (!getUpBlockState(state, worldIn, pos)) {
-			if (!worldIn.isAreaLoaded(pos, 3)) return;
-			worldIn.setBlockState(pos, Blocks.DIRT.getDefaultState());
-		}
-
-		else {
-			if (worldIn.getLight(pos.up()) >= 9) {
-				BlockState blockstate = this.getDefaultState();
-
-				for(int i = 0; i < 4; ++i) {
-					BlockPos blockpos = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1);
-					/** 付近の土ブロックを落ち葉ブロックに変える **/
-					if (worldIn.getBlockState(blockpos).getBlock() == Blocks.DIRT && getUpBlockFluid(blockstate, worldIn, blockpos)) {
-						worldIn.setBlockState(blockpos, blockstate.with(SNOWY, Boolean.valueOf(worldIn.getBlockState(blockpos.up()).getBlock() == Blocks.SNOW)));
+						/** 付近の土ブロックを落ち葉ブロックに変える **/
+						if (iblockstate1.getBlock() == Blocks.DIRT && iblockstate1.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.DIRT && worldIn.getLightFromNeighbors(blockpos.up()) >= 4 && iblockstate.getLightOpacity(worldIn, pos.up()) <= 2) {
+							worldIn.setBlockState(blockpos, Seasonal_Blocks.FALL_LEAF.getDefaultState());
+						}
 					}
 				}
 			}
 		}
 	}
 
-	/* バイオーム生成時に、木や草が生えるようにする → forge:dirt タグに追加する必要がある */
+	/* バイオーム生成時に、木や草が生えるようにする */
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, net.minecraftforge.common.IPlantable plantable) {
+	public boolean canSustainPlant(IBlockState state, IBlockAccess worldIn, BlockPos pos,
+			EnumFacing direction, net.minecraftforge.common.IPlantable plantable) {
 		return true;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public void onPlantGrow(IBlockState state, World worldIn, BlockPos pos, BlockPos source) { }
+
+	/* RightClick Action */
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		boolean mode = playerIn.capabilities.isCreativeMode;
+
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		Item item = itemstack.getItem();
+
+		/** && かつ || または **/
+		if (item == Items.DIAMOND_SHOVEL || item == Items.GOLDEN_SHOVEL || item == Items.IRON_SHOVEL || item == Items
+				.STONE_SHOVEL || item == Items.WOODEN_SHOVEL) {
+
+			((EntityLivingBase) playerIn).playSound(SoundEvents.ITEM_SHOVEL_FLATTEN, 1.0F, 1.0F);
+			worldIn.setBlockState(pos, Blocks.GRASS_PATH.getDefaultState());
+
+			if (!mode) { itemstack.damageItem(1, playerIn); }
+			if (mode) { }
+			return true;
+	 	}
+
+		if (item == Items.DIAMOND_HOE || item == Items.GOLDEN_HOE || item == Items.IRON_HOE || item == Items
+				.STONE_HOE || item == Items.WOODEN_HOE) {
+
+			((EntityLivingBase) playerIn).playSound(SoundEvents.ITEM_HOE_TILL, 1.0F, 1.0F);
+			worldIn.setBlockState(pos, Seasonal_Blocks.SUIDEN.getDefaultState());
+
+			if (!mode) { itemstack.damageItem(1, playerIn); }
+			if (mode) { }
+			return true;
+	 	}
+
+		/** モンスターわきのためにfalse **/
+		return false;
+	}
+
+
+	/* モンスターをSpawnするようにする */
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess worldIn, BlockPos pos,
+		net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
 		return true;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_fall_leaf")).applyTextStyle(TextFormatting.GRAY));
+	/* 描画関連 */
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return true;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Blocks.DIRT));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Seasonal.FALL_LEAF);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_fall_leaf", meta));
 	}
 
 }

@@ -3,12 +3,12 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/bucket_side_hakusai_1",
 		"front" : "chinjufumod:blocks/bucket_front_hakusai_1",
-		"side": "chinjufumod:blocks/bucket_side_hakusai_2",
+		"side": "chinjufumod:blocks/bucket_side_hakusai_1",
 		"inside": "chinjufumod:blocks/bucket_inside_hakusai_1",
 		"end" : "chinjufumod:blocks/bucket_end_hakusai_1",
 		"naka" : "chinjufumod:blocks/hakusaiduke_1",
-		"ishi" : "minecraft:block/stone",
-		"mizu": "minecraft:block/water_still"
+		"ishi" : "minecraft:blocks/stone",
+		"mizu": "chinjufumod:blocks/water_still"
 	},
 	"elements": [
 		{
@@ -228,7 +228,7 @@
 			"from": [ 1, 12.9, 1 ],
 			"to": [ 15, 13, 15 ],
 			"faces": {
-				"up": { "texture":"#mizu", "tintindex": 1 }
+				"up": { "texture":"#mizu", "tintindex": 20 }
 			}
 		},
 

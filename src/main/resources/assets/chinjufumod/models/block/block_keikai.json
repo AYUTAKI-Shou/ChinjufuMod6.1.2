@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/keikai",
 		"top": "chinjufumod:blocks/keikai",
-		"bottom": "minecraft:block/stone"
+		"bottom": "minecraft:blocks/stone"
 	},
 	"elements": [
 		{ "from": [ 0, 0, 0 ],

@@ -1,5 +1,8 @@
 {
 	"variants": {
-		"": { "model": "chinjufumod:block/tree/block_tree_ichoh_leaf" }
+		"check_decay=false,decayable=false": { "model": "chinjufumod:tree/block_tree_ichoh_leaf" },
+		"check_decay=false,decayable=true": { "model": "chinjufumod:tree/block_tree_ichoh_leaf" },
+		"check_decay=true,decayable=false": { "model": "chinjufumod:tree/block_tree_ichoh_leaf" },
+		"check_decay=true,decayable=true": { "model": "chinjufumod:tree/block_tree_ichoh_leaf" }
 	}
 }

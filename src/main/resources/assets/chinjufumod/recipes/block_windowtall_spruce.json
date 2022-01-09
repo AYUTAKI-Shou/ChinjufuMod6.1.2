@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_windowtall",
+
+	"pattern": [
+		"XY",
+		"XY"
+	],
+
+	"key": {
+		"X": { "type": "forge:ore_dict", "ore": "blockGlassColorless" },
+		"Y": { "type": "forge:ore_dict", "ore": "plankWoodSpruce" }
+	},
+
+	"result": { "item": "chinjufumod:block_windowtall_spruce", "data": 0, "count": 8 }
+}

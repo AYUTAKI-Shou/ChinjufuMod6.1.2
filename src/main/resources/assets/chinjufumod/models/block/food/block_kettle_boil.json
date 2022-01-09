@@ -4,7 +4,7 @@
 		"totte": "chinjufumod:blocks/kettle_totte",
 		"up": "chinjufumod:blocks/kettle",
 		"bottom": "chinjufumod:blocks/kettle",
-		"mizu": "minecraft:block/water_still",
+		"mizu": "chinjufumod:blocks/water_still",
 		"particle": "chinjufumod:blocks/kettle"
 	},
 	"elements": [
@@ -49,7 +49,7 @@
 			"from": [ 5, 1, 5 ],
 			"to": [ 11, 4, 11 ],
 			"faces": {
-				"up": { "texture": "#mizu", "tintindex": 1 }
+				"up": { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
 		{

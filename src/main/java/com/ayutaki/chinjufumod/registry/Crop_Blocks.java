@@ -1,14 +1,18 @@
 package com.ayutaki.chinjufumod.registry;
 
-import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.blocks.crop.Ami_Shikake;
-import com.ayutaki.chinjufumod.blocks.crop.Ami_Youshoku;
+import com.ayutaki.chinjufumod.RegisterHandler_CM;
 import com.ayutaki.chinjufumod.blocks.crop.Cabbage;
 import com.ayutaki.chinjufumod.blocks.crop.Chanoki;
 import com.ayutaki.chinjufumod.blocks.crop.Corn;
+import com.ayutaki.chinjufumod.blocks.crop.Corn_Top;
 import com.ayutaki.chinjufumod.blocks.crop.Enden;
 import com.ayutaki.chinjufumod.blocks.crop.Enden_kara;
-import com.ayutaki.chinjufumod.blocks.crop.Grape;
+import com.ayutaki.chinjufumod.blocks.crop.GrapeTop_3B_B;
+import com.ayutaki.chinjufumod.blocks.crop.GrapeTop_C_kare;
+import com.ayutaki.chinjufumod.blocks.crop.GrapeTop_Nae_3;
+import com.ayutaki.chinjufumod.blocks.crop.Grape_3B_B;
+import com.ayutaki.chinjufumod.blocks.crop.Grape_C_kare;
+import com.ayutaki.chinjufumod.blocks.crop.Grape_Nae_3;
 import com.ayutaki.chinjufumod.blocks.crop.Hakusai;
 import com.ayutaki.chinjufumod.blocks.crop.HodaGi_A_Bot;
 import com.ayutaki.chinjufumod.blocks.crop.HodaGi_A_Top;
@@ -17,7 +21,9 @@ import com.ayutaki.chinjufumod.blocks.crop.HodaGi_B_Top;
 import com.ayutaki.chinjufumod.blocks.crop.HodaGi_C_Bot;
 import com.ayutaki.chinjufumod.blocks.crop.HodaGi_C_Top;
 import com.ayutaki.chinjufumod.blocks.crop.Inagi;
-import com.ayutaki.chinjufumod.blocks.crop.Mikan;
+import com.ayutaki.chinjufumod.blocks.crop.Inagi_Top;
+import com.ayutaki.chinjufumod.blocks.crop.Mikan_Nae;
+import com.ayutaki.chinjufumod.blocks.crop.Mikan_Top;
 import com.ayutaki.chinjufumod.blocks.crop.NoriAmi;
 import com.ayutaki.chinjufumod.blocks.crop.Onion;
 import com.ayutaki.chinjufumod.blocks.crop.Rice;
@@ -26,61 +32,118 @@ import com.ayutaki.chinjufumod.blocks.crop.Sakura_me;
 import com.ayutaki.chinjufumod.blocks.crop.SeedsBox;
 import com.ayutaki.chinjufumod.blocks.crop.Soy;
 import com.ayutaki.chinjufumod.blocks.crop.Spinach;
+import com.ayutaki.chinjufumod.blocks.crop.Toami_Wide;
 import com.ayutaki.chinjufumod.blocks.crop.Tomato;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Crop_Blocks {
+public final class Crop_Blocks {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	public static Block SEEDSBOX;
 
-	public static Block SEEDSBOX = register("block_seedsbox", new SeedsBox(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.CROP).notSolid()));
+	public static Block CHANOKI;
+	public static Block BUDOUNOKI_nae, BUDOUNOKI_B, BUDOUNOKI_C,
+								BUDOUTOP_nae, BUDOUTOP_B, BUDOUTOP_C;
+	public static Block MIKAN, MIKAN_TOP;
 
-	public static Block CABBAGE = register("block_vege_cabbage", new Cabbage(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block HAKUSAI = register("block_vege_hakusai", new Hakusai(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block CORN = register("block_vege_corn", new Corn(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block ONION = register("block_vege_onion", new Onion(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block RICE = register("block_vege_rice", new Rice(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block RICE_8 = register("block_vege_rice_8", new Rice_8(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block SOY = register("block_vege_soy", new Soy(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block SPINACH = register("block_vege_spinach", new Spinach(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block TOMATO = register("block_vege_tomato", new Tomato(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
-	public static Block SAKURA = register("block_tree_sakura_me", new Sakura_me(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.1F).sound(SoundType.CROP).notSolid()));
+	public static Block CABBAGE, HAKUSAI, CORN, CORN_TOP;
+	public static Block ONION, RICE, RICE_8;
+	public static Block SOY, SPINACH, TOMATO, SAKURA;
 
-	public static Block CHANOKI = register("block_wood_chanoki", new Chanoki(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block BUDOUNOKI = register("block_wood_grape", new Grape(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block MIKAN = register("block_wood_mikan", new Mikan(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block HODAGI_A_BOT, HODAGI_A_TOP;
+	public static Block HODAGI_B_BOT, HODAGI_B_TOP;
+	public static Block HODAGI_C_BOT, HODAGI_C_TOP;
 
-	public static Block HODAGI_A_BOT = register("block_hodagi_a_bot", new HodaGi_A_Bot(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block HODAGI_A_TOP = register("block_hodagi_a_top", new HodaGi_A_Top(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block HODAGI_B_BOT = register("block_hodagi_b_bot", new HodaGi_B_Bot(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block HODAGI_B_TOP = register("block_hodagi_b_top", new HodaGi_B_Top(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block HODAGI_C_BOT = register("block_hodagi_c_bot", new HodaGi_C_Bot(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block HODAGI_C_TOP = register("block_hodagi_c_top", new HodaGi_C_Top(Block.Properties.create(Material.WOOD).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block INAGI_BOT, INAGI_TOP, NORIAMI, ENDEN, ENDEN_k ,TOAMI_W;
 
-	public static Block NORIAMI = register("block_noriami", new NoriAmi(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
-	public static Block INAGI = register("block_inagi", new Inagi(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.WOOD).notSolid()));
 
-	public static Block ENDEN = register("block_enden", new Enden(Block.Properties.create(Material.SAND).tickRandomly().hardnessAndResistance(2.0F).sound(SoundType.SAND).notSolid()));
-	public static Block ENDEN_k = register("block_enden_k", new Enden_kara(Block.Properties.create(Material.SAND).tickRandomly().hardnessAndResistance(2.0F).sound(SoundType.SAND).notSolid()));
-	
-	public static Block TOAMI = register("item_toami", new Block(Block.Properties.create(Material.WOOL)));
-	public static Block SHIKAKE_AMI = register("block_ami_shikake", new Ami_Shikake(Block.Properties.create(Material.WOOL).tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.CLOTH).notSolid()));
-	public static Block YOUSHOKU_AMI = register("block_ami_youshoku", new Ami_Youshoku(Block.Properties.create(Material.WOOL).tickRandomly().hardnessAndResistance(1.0F).sound(SoundType.CLOTH).notSolid()));
-	
-	/* Share variables */
+	public static void init() {
 
-	///* Register *///
-	private static Block register(String name, Block block) {
-		BLOCKS.register(name, () -> block);
-		return block;
+		SEEDSBOX = new SeedsBox();
+
+		CHANOKI = new Chanoki();
+		BUDOUNOKI_nae = new Grape_Nae_3();
+		BUDOUNOKI_B = new Grape_3B_B();
+		BUDOUNOKI_C = new Grape_C_kare();
+		BUDOUTOP_nae = new GrapeTop_Nae_3();
+		BUDOUTOP_B = new GrapeTop_3B_B();
+		BUDOUTOP_C = new GrapeTop_C_kare();
+		MIKAN = new Mikan_Nae();
+		MIKAN_TOP = new Mikan_Top();
+
+		CABBAGE = new Cabbage();
+		HAKUSAI = new Hakusai();
+		CORN = new Corn();
+		CORN_TOP = new Corn_Top();
+		ONION = new Onion();
+		RICE = new Rice();
+		RICE_8 = new Rice_8();
+		SOY = new Soy();
+		SPINACH = new Spinach();
+		TOMATO = new Tomato();
+		SAKURA = new Sakura_me();
+
+		HODAGI_A_BOT = new HodaGi_A_Bot();
+		HODAGI_A_TOP = new HodaGi_A_Top();
+		HODAGI_B_BOT = new HodaGi_B_Bot();
+		HODAGI_B_TOP = new HodaGi_B_Top();
+		HODAGI_C_BOT = new HodaGi_C_Bot();
+		HODAGI_C_TOP = new HodaGi_C_Top();
+
+		INAGI_BOT = new Inagi();
+		INAGI_TOP = new Inagi_Top();
+
+		NORIAMI = new NoriAmi();
+		ENDEN = new Enden();
+		ENDEN_k = new Enden_kara();
+		TOAMI_W = new Toami_Wide();
+	}
+
+
+	public static void register() {
+
+		registerBlock(SEEDSBOX);
+
+		registerBlock(CHANOKI);
+		registerBlock(BUDOUNOKI_nae);
+		registerBlock(BUDOUNOKI_B);
+		registerBlock(BUDOUNOKI_C);
+		registerBlock(BUDOUTOP_nae);
+		registerBlock(BUDOUTOP_B);
+		registerBlock(BUDOUTOP_C);
+		registerBlock(MIKAN);
+		registerBlock(MIKAN_TOP);
+
+		registerBlock(CABBAGE);
+		registerBlock(HAKUSAI);
+		registerBlock(CORN);
+		registerBlock(CORN_TOP);
+		registerBlock(ONION);
+		registerBlock(RICE);
+		registerBlock(RICE_8);
+		registerBlock(SOY);
+		registerBlock(SPINACH);
+		registerBlock(TOMATO);
+		registerBlock(SAKURA);
+
+		registerBlock(HODAGI_A_BOT);
+		registerBlock(HODAGI_A_TOP);
+		registerBlock(HODAGI_B_BOT);
+		registerBlock(HODAGI_B_TOP);
+		registerBlock(HODAGI_C_BOT);
+		registerBlock(HODAGI_C_TOP);
+
+		registerBlock(INAGI_BOT);
+		registerBlock(INAGI_TOP);
+
+		registerBlock(NORIAMI);
+		registerBlock(ENDEN);
+		registerBlock(ENDEN_k);
+		registerBlock(TOAMI_W);
+	}
+
+	public static void registerBlock(Block block) {
+		RegisterHandler_CM.Blocks.BLOCKS.add(block);
 	}
 
 }

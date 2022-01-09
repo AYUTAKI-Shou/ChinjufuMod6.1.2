@@ -4,158 +4,192 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSapo;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
+import com.ayutaki.chinjufumod.entity.EntitySittableBlock;
+import com.ayutaki.chinjufumod.entity.SittableUtil;
+import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BaseSofa extends Block implements IWaterLoggable {
+public class BaseSofa extends BaseFacingSapo {
 
-	/* Property */
-	public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	/* つなげたくないから旧式のまま */
+	public static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
 
-	public BaseSofa(Block.Properties properties) {
-		super(properties);
+	protected static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.375, 0.875);
+	protected static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.0, 0.0, 0.875, 0.375, 1.0);
+	protected static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.125, 0.0, 0.0, 1.0, 0.375, 1.0);
+	protected static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0, 0.0, 0.125, 1.0, 0.375, 1.0);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(TYPE, Type.DEFAULT)
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+	protected static final AxisAlignedBB CHAIR_BASE = new AxisAlignedBB(0.125, 0.0, 0.125, 0.875, 0.375, 0.875);
+	protected static final AxisAlignedBB CHAIR_BACKREST_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, 0.375, 0.0, 0.1, 1.0, 1.0);
+	protected static final AxisAlignedBB CHAIR_BACKREST_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.375, 0.0, 0.1, 1.0, 1.0);
+	protected static final AxisAlignedBB CHAIR_BACKREST_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, 0.375, 0.0, 0.1, 1.0, 1.0);
+	protected static final AxisAlignedBB CHAIR_BACKREST_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.375, 0.0, 0.1, 1.0, 1.0);
+
+	protected BaseSofa() {
+		super(Material.WOOD);
+		setCreativeTab(ChinjufuModTabs.CHINJUFU);
+
+		setHardness(1.0F);
+		setResistance(5.0F);
+		setSoundType(SoundType.WOOD);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
-	/* Gives a value when placed. +180 .getOpposite() */
+	/* RightClick Action */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
-	}
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
-	}
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		Item item = itemstack.getItem();
 
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
-	}
+		if (item instanceof Base_ItemHake) { return false; }
 
-	/* Connect the blocks. */
-	private boolean canConnectTo(IWorld worldIn, BlockPos source, Direction direction, Direction targetDirection) {
-		BlockState state = worldIn.getBlockState(source.offset(direction));
-
-		if(state.getBlock() == this) {
-			Direction sofaDirection = state.get(H_FACING);
-			return sofaDirection.equals(targetDirection);
+		else {
+			if (SittableUtil.sitOnBlock(worldIn, pos.getX(), pos.getY(), pos.getZ(), playerIn, 2.5 * 0.0625)) {
+				worldIn.updateComparatorOutputLevel(pos, this);
+				CMEvents.soundKinuzure(worldIn, pos);
+				return true;
+			}
 		}
 		return false;
 	}
 
-	private BlockState getConnectState(BlockState state, IWorld worldIn, BlockPos pos, Direction dir) {
-		boolean left = canConnectTo(worldIn, pos, dir.rotateY(), dir) || canConnectTo(worldIn, pos, dir.rotateY(), dir.rotateY());
-		boolean right = canConnectTo(worldIn, pos, dir.rotateYCCW(), dir) || canConnectTo(worldIn, pos, dir.rotateYCCW(), dir.rotateYCCW());
-
-		if(left && right) {
-			return state.with(TYPE, Type.BOTH);
-		}
-
-		else if(left) {
-			return state.with(TYPE, Type.RIGHT);
-		}
-
-		else if(right) {
-			return state.with(TYPE, Type.LEFT);
-		}
-		return state.with(TYPE, Type.DEFAULT);
-	}
-
-	/* Update BlockState. */
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		return this.getConnectState(state, worldIn, pos, state.get(H_FACING));
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
 	}
 
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Create Blockstate */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(H_FACING, TYPE, WATERLOGGED);
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return SittableUtil.isSomeoneSitting(worldIn, pos.getX(), pos.getY(), pos.getZ()) ? 1 : 0;
 	}
 
-	public enum Type implements IStringSerializable {
-		DEFAULT("default"),
-		LEFT("left"),
-		RIGHT("right"),
-		BOTH("both");
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-		private final String id;
+		state = state.getActualState(source, pos);
+		EnumFacing direction = (EnumFacing)state.getValue(H_FACING);
 
-		Type(String id) { this.id = id; }
+		switch (direction) {
+		case SOUTH:
+			return AABB_SOUTH;
+
+		case EAST:
+			return AABB_EAST;
+
+		case WEST:
+			return AABB_WEST;
+
+		case NORTH:
+		default:
+			return AABB_NORTH;
+		}
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean t_f) {
+
+		if (!(entityIn instanceof EntitySittableBlock)) {
+
+			EnumFacing direction= state.getValue(H_FACING);
+			switch(direction) {
+			case SOUTH:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, CHAIR_BACKREST_SOUTH);
+				break;
+				
+			case EAST:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, CHAIR_BACKREST_EAST);
+				break;
+				
+			case WEST:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, CHAIR_BACKREST_WEST);
+				break;
+				
+			case NORTH:
+			default:
+				super.addCollisionBoxToList(pos, entityBox, collidingBoxes, CHAIR_BACKREST_NORTH);
+				break;
+			}
+			super.addCollisionBoxToList(pos, entityBox, collidingBoxes, CHAIR_BASE);
+		}
+	}
+
+	/* 隣と連結 */
+
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { H_FACING, TYPE });
+	}
+
+
+	public static enum Type implements IStringSerializable {
+		DEFAULT, LEFT, RIGHT, BOTH;
 
 		@Override
-		public String getName() { return id; }
-
-		@Override
-		public String toString() { return id; }
+		public String getName() {
+			return this.toString().toLowerCase();
+		}
 	}
 
-	/* 窒息 */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_isu")).applyTextStyle(TextFormatting.GRAY));
+	/* ToolTip*/
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_isu", meta));
 	}
 
 }

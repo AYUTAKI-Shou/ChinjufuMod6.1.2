@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "cm_candle",
+
+	"ingredients": [
+		[ { "item": "chinjufumod:item_oriito" }, { "item": "minecraft:string" } ],
+		[ { "item": "chinjufumod:item_oriito" }, { "item": "minecraft:string" } ],
+		[ { "item": "chinjufumod:item_oriito" }, { "item": "minecraft:string" } ],
+		[ { "item": "chinjufumod:item_soy" }, { "item": "minecraft:slime_ball" } ],
+		[ { "item": "chinjufumod:item_soy" }, { "item": "minecraft:slime_ball" } ],
+		[ { "item": "chinjufumod:item_soy" }, { "item": "minecraft:slime_ball" } ],
+		{ "type": "forge:ore_dict", "ore": "blockGlassColorless" },
+		{ "item": "minecraft:cactus", "data": 0 },
+		[ { "item": "minecraft:red_flower", "data": 3 }, { "item": "minecraft:red_flower", "data": 6 }, { "item": "minecraft:red_flower", "data": 8 } ]
+	],
+
+	"result": { "item": "chinjufumod:block_candle", "data": 5, "count" : 3 }
+}

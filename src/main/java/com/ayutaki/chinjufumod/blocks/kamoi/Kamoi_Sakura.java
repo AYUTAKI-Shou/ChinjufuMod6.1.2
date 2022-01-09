@@ -1,33 +1,41 @@
 package com.ayutaki.chinjufumod.blocks.kamoi;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Wablock;
 import com.ayutaki.chinjufumod.registry.KamoiPlanks_Blocks;
-import com.ayutaki.chinjufumod.registry.KamoiPlaster_Blocks;
+import com.ayutaki.chinjufumod.registry.KamoiShikkui_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class Kamoi_Sakura extends Base_Kamoi {
 
-	public Kamoi_Sakura(Block.Properties properties) {
-		super(properties);
+	public Kamoi_Sakura(Material material, String unlocalizedName) {
+		super(material);
+		setUnlocalizedName(unlocalizedName);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, unlocalizedName));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
@@ -36,256 +44,246 @@ public class Kamoi_Sakura extends Base_Kamoi {
 			if (item == Items_Wablock.DIRTWALL_SH) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_dirt_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; }
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_dirt_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; }
 
 			if (item == Items_Wablock.SHIKKUI_SH_white) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_white_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //0
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_white_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //0
 
 			if (item == Items_Wablock.SHIKKUI_SH_orange) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_orange_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //1
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_orange_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //1
 
 			if (item == Items_Wablock.SHIKKUI_SH_magenta) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_magenta_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //2
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_magenta_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //2
 
 			if (item == Items_Wablock.SHIKKUI_SH_lightb) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_lightb_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //3
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightb_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //3
 
 			if (item == Items_Wablock.SHIKKUI_SH_yellow) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_yellow_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //4
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_yellow_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //4
 
 			if (item == Items_Wablock.SHIKKUI_SH_lime) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_lime_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //5
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lime_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //5
 
 			if (item == Items_Wablock.SHIKKUI_SH_pink) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_pink_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //6
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_pink_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //6
 
 			if (item == Items_Wablock.SHIKKUI_SH_gray) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_gray_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //7
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_gray_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //7
 
 			if (item == Items_Wablock.SHIKKUI_SH_lightg) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_lightg_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //8
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_lightg_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //8
 
 			if (item == Items_Wablock.SHIKKUI_SH_cyan) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_cyan_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //9
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_cyan_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //9
 
 			if (item == Items_Wablock.SHIKKUI_SH_purple) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_purple_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //10
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_purple_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //10
 
 			if (item == Items_Wablock.SHIKKUI_SH_blue) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_blue_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //11
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_blue_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //11
 
 			if (item == Items_Wablock.SHIKKUI_SH_brown) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_brown_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //12
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_brown_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //12
 
 			if (item == Items_Wablock.SHIKKUI_SH_green) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_green_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //13
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_green_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //13
 
 			if (item == Items_Wablock.SHIKKUI_SH_red) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_red_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //14
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_red_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //14
 
 			if (item == Items_Wablock.SHIKKUI_SH_black) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundStonePlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlaster_Blocks.KAMOI_black_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //15
+				worldIn.setBlockState(pos, KamoiShikkui_Blocks.KAMOI_black_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //15
 
 			/** 木材 **/
-			if (item == Items.OAK_SLAB) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_oak_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //Oak
+			if (item == new ItemStack(Blocks.WOODEN_SLAB).getItem()) {
+				int k;
+				k = itemstack.getMetadata();
 
-			if (item == Items.SPRUCE_SLAB) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_spru_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //Spruce
+				if (k == 0) {
+					CMEvents.Consume_1Item(playerIn, hand);
+					CMEvents.soundWoodPlace(worldIn, pos);
+					worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_oak_saku.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))
+							.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+					return true; } //オーク
 
-			if (item == Items.BIRCH_SLAB) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_bir_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //Birch
+				if (k == 1) {
+					CMEvents.Consume_1Item(playerIn, hand);
+					CMEvents.soundWoodPlace(worldIn, pos);
+					worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_spru_saku.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))
+							.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+					return true; } //マツ
 
-			if (item == Items.JUNGLE_SLAB) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_jun_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //Jungle
+				if (k == 2) {
+					CMEvents.Consume_1Item(playerIn, hand);
+					CMEvents.soundWoodPlace(worldIn, pos);
+					worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_bir_saku.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))
+							.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+					return true; } //シラカバ
 
-			if (item == Items.ACACIA_SLAB) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_aca_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //Acacia
+				if (k == 3) {
+					CMEvents.Consume_1Item(playerIn, hand);
+					CMEvents.soundWoodPlace(worldIn, pos);
+					worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_jun_saku.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))
+							.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+					return true; } //ジャングル
 
-			if (item == Items.DARK_OAK_SLAB) {
-				CMEvents.Consume_1Item(playerIn, hand);
-				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_doak_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //DarkOak
+				if (k == 4) {
+					CMEvents.Consume_1Item(playerIn, hand);
+					CMEvents.soundWoodPlace(worldIn, pos);
+					worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_aca_saku.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))
+							.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+					return true; } //アカシア
+
+				if (k == 5) {
+					CMEvents.Consume_1Item(playerIn, hand);
+					CMEvents.soundWoodPlace(worldIn, pos);
+					worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_doak_saku.getDefaultState()
+							.withProperty(H_FACING, state.getValue(H_FACING))
+							.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+					return true; } //ダークオーク
+			}
 
 			if (item == Items_Seasonal.SAKURA_slabhalf) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_saku_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //SAKURA
+				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_saku_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //サクラ
 
 			if (item == Items_Seasonal.KAEDE_slabhalf) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_kae_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //KAEDE
+				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_kae_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //カエデ
 
 			if (item == Items_Seasonal.ICHOH_slabhalf) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWoodPlace(worldIn, pos);
-				
-				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_ich_sakura.getDefaultState()
-						.with(H_FACING, state.get(H_FACING))
-						.with(STAGE_1_4, state.get(STAGE_1_4)), 3);
-				return ActionResultType.SUCCESS; } //ICHOH
+				worldIn.setBlockState(pos, KamoiPlanks_Blocks.KAMOI_ich_saku.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(STAGE_1_4, state.getValue(STAGE_1_4)));
+				return true; } //イチョウ
 			
 			if (itemstack.isEmpty()) {
 				CMEvents.textNotSneak(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
+				return true; }
 		}
 
 		/** 形状変化 **/
 		if (playerIn.isSneaking() && itemstack.isEmpty()) {
 			CMEvents.soundWoodPlace(worldIn, pos);
-			worldIn.setBlockState(pos, state.cycle(STAGE_1_4));
-			return ActionResultType.SUCCESS;
+			worldIn.setBlockState(pos, state.cycleProperty(STAGE_1_4), 2);
+			return true;
 		}
-		return ActionResultType.PASS;
+		return false;
 	}
 
-	/* Clone Item in Creative. */
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Seasonal.PILLARSLAB_saku);
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_saku, 1, 0));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Seasonal.PILLARSLAB_saku, 1, 0);
 	}
 
 }

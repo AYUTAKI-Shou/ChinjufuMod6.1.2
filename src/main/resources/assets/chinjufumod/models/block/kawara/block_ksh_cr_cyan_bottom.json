@@ -1,5 +1,5 @@
 {
-	"parent": "block/slab",
+	"parent": "block/half_slab",
 	"textures": {
 		"bottom": "chinjufumod:blocks/kawara_cr_cyan",
 		"top": "chinjufumod:blocks/kawara_cr_cyan",

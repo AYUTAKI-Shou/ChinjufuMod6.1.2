@@ -1,11 +1,13 @@
 package com.ayutaki.chinjufumod.blocks.wood;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.crop.Inagi;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
 import com.ayutaki.chinjufumod.blocks.crop.Rice_8;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Crop_Blocks;
@@ -13,334 +15,289 @@ import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.MovingPistonBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.HoeItem;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class Suiden extends Block implements IWaterLoggable {
+public class Suiden extends Block {
+
+	public static final String ID = "block_suiden";
 
 	/* Property */
-	public static final BooleanProperty NORTH = BooleanProperty.create("north");
-	public static final BooleanProperty EAST = BooleanProperty.create("east");
-	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
-	public static final BooleanProperty WEST = BooleanProperty.create("west");
+	public static final PropertyBool SOUTH = PropertyBool.create("south");
+	public static final PropertyBool NORTH = PropertyBool.create("north");
+	public static final PropertyBool WEST = PropertyBool.create("west");
+	public static final PropertyBool EAST = PropertyBool.create("east");
 	/* 1=耕した、2=水を張った、3=水を抜く、4=乾く、5=土作り、6=分解、7=浸透 */
-	public static final IntegerProperty WET_1_7 = IntegerProperty.create("wet", 1, 7);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final PropertyInteger WET_1_7 = PropertyInteger.create("wet", 1, 7);
 
-	protected static final VoxelShape AABB_COL = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D);
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
+	public Suiden() {
+		super(Material.GROUND);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+		setCreativeTab(ChinjufuModTabs.SEASONAL);
 
-	public Suiden(Properties properties) {
-		super(properties);
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(SOUTH, false)
+				.withProperty(NORTH, false)
+				.withProperty(WEST, false)
+				.withProperty(EAST, false)
+				.withProperty(WET_1_7, Integer.valueOf(1)));
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
-				.with(EAST, Boolean.valueOf(false))
-				.with(SOUTH, Boolean.valueOf(false))
-				.with(WEST, Boolean.valueOf(false))
-				.with(WET_1_7, Integer.valueOf(1))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
+		setHardness(2.0F);
+		setResistance(10.0F);
+
+		setSoundType(SoundType.GROUND);
+
+		setTickRandomly(true);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
+		boolean mode = playerIn.capabilities.isCreativeMode;
+		/* 1=耕した、2=水を張った、3=水を抜く、4=乾く、5=土作り、6=分解、7=浸透 */
+		int wet = ((Integer)state.getValue(WET_1_7)).intValue();
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
+		int k;
+		k = itemstack.getMetadata();
 
-		int wet = state.get(WET_1_7);
-		/** 1=耕した、2=水を張った、3=水を抜く、4=乾く、5=土作り、6=分解、7=浸透 **/
+		if (wet == 1 && (item == Items.DIAMOND_HOE || item == Items.GOLDEN_HOE || item == Items.IRON_HOE || item == Items
+				.STONE_HOE || item == Items.WOODEN_HOE)) {
 
-		/** 田起こし **/
-		if (item instanceof HoeItem) {
-			
-			if (wet == 1) {
-				itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(hand); } );
-				worldIn.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(2)).with(WATERLOGGED, Boolean.valueOf(true))); }
-			
-			if (wet == 5 || wet == 6 || wet == 7) {
-				itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(hand); } );
-				worldIn.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(1)).with(WATERLOGGED, Boolean.valueOf(false))); }
-			
-			if (wet != 1 && wet != 5 && wet != 6 && wet != 7) {
-				CMEvents.textNotHave(worldIn, pos, playerIn); }
-			
-			return ActionResultType.SUCCESS; }
-		
-		/** 米を植える **/
-		if (item == Items_Teatime.SEEDS_RICE) { 
-			
-			if (wet == 2) {
-				if (worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()) {
-					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.BLOCK_WET_GRASS_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					
-					worldIn.setBlockState(pos.up(), Crop_Blocks.RICE_8.getDefaultState().with(Rice_8.AGE, Integer.valueOf(0))); }
-				
-				if (!worldIn.getBlockState(pos.up()).getMaterial().isReplaceable() && 
-						worldIn.getBlockState(pos.up()).getBlock() != Crop_Blocks.RICE_8) {
-					CMEvents.textNoPlace(worldIn, pos, playerIn); } }
-			
-			if (wet != 2) {
-				CMEvents.textNotHave(worldIn, pos, playerIn); }
-			
-			return ActionResultType.SUCCESS; }
+			((EntityLivingBase) playerIn).playSound(SoundEvents.ITEM_HOE_TILL, 1.0F, 1.0F);
+			worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(2)));
+
+			if (!mode) { itemstack.damageItem(1, playerIn); }
+			if (mode) { }
+			return true; }
+
+
+		/** 田植え **/
+		if (wet != 2 && item == Items_Teatime.SEEDS_RICE) { return true; }
+
+		if (wet == 2 && item == Items_Teatime.SEEDS_RICE && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()) {
+
+			CMEvents.Consume_1Item(playerIn, hand);
+			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			worldIn.setBlockState(pos.up(), Crop_Blocks.RICE_8.getDefaultState().withProperty(Rice_8.AGE, Integer.valueOf(0)));
+			return true; }
+
 
 		/** 土壌調整 **/
-		if (item == Items_Teatime.INEWARA || item == Items_Seasonal.WARAHAI || item == Items_Seasonal
-				.OCHIBA_carpet || item == Items_Seasonal.KAEDE_carpet || item == Items.BONE_MEAL) {
+		if (wet == 4 && worldIn.isAirBlock(pos.up()) && (item == Items_Teatime.INEWARA || item == Items_Seasonal.WARAHAI ||
+				item == Items_Seasonal.OCHIBA_carpet || item == Items_Seasonal.KAEDE_carpet || (item == Items.DYE && k == 15))) {
 
-			if (wet == 4) {
-				if (upAir(worldIn, pos)) {
-					CMEvents.Consume_1Item(playerIn, hand);
-					CMEvents.soundSnowPlace(worldIn, pos);
-					
-					worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(5)).with(WATERLOGGED, Boolean.valueOf(false))); }
-				
-				if (!upAir(worldIn, pos)) {
-					CMEvents.textNoPlace(worldIn, pos, playerIn); } }
-			
-			if (wet != 4) {
-				CMEvents.textNotHave(worldIn, pos, playerIn); }
-			
-			return ActionResultType.SUCCESS; }
-		
-		/** 撮影用チート
-		if (item == Items_Seasonal.ICHOH_carpet) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundSnowPlace(worldIn, pos);
-			
-			worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(4)).with(WATERLOGGED, Boolean.valueOf(false)));
-			return ActionResultType.SUCCESS;
-		} **/
+			worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(5)));
+			return true; }
 
-		return ActionResultType.PASS;
+
+		/** 田起こし **/
+		if (wet >= 5 && (item == Items.DIAMOND_HOE || item == Items.GOLDEN_HOE || item == Items.IRON_HOE || item == Items
+				.STONE_HOE || item == Items.WOODEN_HOE)) {
+
+			((EntityLivingBase) playerIn).playSound(SoundEvents.ITEM_HOE_TILL, 1.0F, 1.0F);
+			worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(1)));
+
+			if (!mode) { itemstack.damageItem(1, playerIn); }
+			if (mode) { }
+			return true; }
+
+		return false;
 	}
 
-	/* Connect the blocks. */
-	private boolean canConnectTo(IWorld worldIn, BlockPos source, Direction direction, int wet) {
-		BlockState state = worldIn.getBlockState(source.offset(direction));
-		return state.getBlock() == this && state.get(WET_1_7) == wet;
-	}
 
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		/** 2の時だけ **/
-		return (state.get(WATERLOGGED) && state.get(WET_1_7) == 2) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Update BlockState. */
-	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-
-		if (facing == Direction.UP && !state.isValidPosition(worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1); }
-
-		/** 1=耕した、2=水を張った、3=水を抜く、4=乾く、5=土作り、6=分解、7=浸透 **/
-		int wet = state.get(WET_1_7);
-
-		if (wet ==2) {
-			if (growCrops(worldIn, pos)) { worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1); } }
-
-		if (wet ==3) {
-			if (growCrops2(worldIn, pos)) { worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1); } }
-
-		if (wet ==3) {
-			if (upAir(worldIn, pos)) { worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1); } }
-
-		boolean north = canConnectTo(worldIn, pos, Direction.NORTH, wet);
-		boolean east = canConnectTo(worldIn, pos, Direction.EAST, wet);
-		boolean south = canConnectTo(worldIn, pos, Direction.SOUTH, wet);
-		boolean west = canConnectTo(worldIn, pos, Direction.WEST, wet);
-		return state.with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
+	/* 隣接ブロック */
+	private boolean canConnectTo(IBlockAccess worldIn, BlockPos pos, EnumFacing facing, int wet) {
+		IBlockState state = worldIn.getBlockState(pos.offset(facing));
+		return state.getBlock() == this && state.getValue(WET_1_7) == wet;
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockState blockstate = worldIn.getBlockState(pos.up());
-		return !blockstate.getMaterial().isSolid() || blockstate.getBlock() instanceof FenceGateBlock || blockstate
-				.getBlock() instanceof Rice_8 || blockstate.getBlock() instanceof Inagi || blockstate
-				.getBlock() instanceof MovingPistonBlock;
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+
+		int wet = ((Integer)state.getValue(WET_1_7)).intValue();
+
+		boolean south = canConnectTo(worldIn, pos, EnumFacing.SOUTH, wet);
+		boolean north = canConnectTo(worldIn, pos, EnumFacing.NORTH, wet);
+		boolean west = canConnectTo(worldIn, pos, EnumFacing.WEST, wet);
+		boolean east = canConnectTo(worldIn, pos, EnumFacing.EAST, wet);
+		return state.withProperty(SOUTH, south)
+				.withProperty(NORTH, north)
+				.withProperty(WEST, west)
+				.withProperty(EAST, east);
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return !this.getDefaultState().isValidPosition(context.getWorld(), context.getPos()) ? Blocks.DIRT.getDefaultState() : this.getDefaultState();
+
+	/* TickRandomと変化条件 */
+	public static void turnToDirt(World worldIn, BlockPos pos) {
+		worldIn.setBlockState(pos, Blocks.DIRT.getDefaultState());
 	}
 
-	/* TickRandom and Conditions for TickRandom. */
-	public static void turnToDirt(BlockState state, World worldIn, BlockPos pos) {
-		worldIn.setBlockState(pos, nudgeEntitiesWithNewState(state, Blocks.DIRT.getDefaultState(), worldIn, pos));
-	}
-
-	private boolean growCrops(IBlockReader worldIn, BlockPos pos) {
-		BlockState upstate = worldIn.getBlockState(pos.up());
-		Block upblock = upstate.getBlock();
-		return (upblock == Crop_Blocks.RICE_8 && upstate.get(Rice_8.AGE) > 5);
-	}
-
-	private boolean growCrops2(IBlockReader worldIn, BlockPos pos) {
-		BlockState upstate = worldIn.getBlockState(pos.up());
-		Block upblock = upstate.getBlock();
-		return (upblock == Crop_Blocks.RICE_8 && upstate.get(Rice_8.AGE) > 6);
-	}
-
-	private boolean upAir(IBlockReader worldIn, BlockPos pos) {
-		BlockState upstate = worldIn.getBlockState(pos.up());
+	private boolean upAir(World worldIn, BlockPos pos) {
+		IBlockState upstate = worldIn.getBlockState(pos.up());
 		Block upblock = upstate.getBlock();
 		return (upblock == Blocks.AIR);
 	}
 
-	private static boolean hasWater(IWorldReader worldIn, BlockPos pos) {
-		for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-4, 0, -4), pos.add(4, 1, 4))) {
-			if (worldIn.getFluidState(blockpos).isTagged(FluidTags.WATER)) {
+	private static boolean hasWater(World worldIn, BlockPos pos) {
+		for (BlockPos.MutableBlockPos nearpos : BlockPos.getAllInBoxMutable(pos.add(-4, 0, -4), pos.add(4, 1, 4))) {
+			if (worldIn.getBlockState(nearpos).getMaterial() == Material.WATER) {
 				return true;
 			}
 		}
 		return net.minecraftforge.common.FarmlandWaterManager.hasBlockWaterTicket(worldIn, pos);
 	}
 
-	/* TickRandom */
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (!state.isValidPosition(worldIn, pos)) { turnToDirt(state, worldIn, pos); }
-	}
-	
-	@Override
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
 		if (!worldIn.isAreaLoaded(pos, 2)) { return; }
 
-		if (!hasWater(worldIn, pos) && !worldIn.isRainingAt(pos.up())) { 
-			if (rand.nextInt(2) == 0) { turnToDirt(state, worldIn, pos); }
-		}
+		if (!hasWater(worldIn, pos) && !worldIn.isRainingAt(pos.up())) { turnToDirt(worldIn, pos); }
 
 		else {
 			/** 1=耕した、2=水を張った、3=水を抜く、4=乾く、5=土作り、6=分解、7=浸透 **/
-			int wet = state.get(WET_1_7);
+			int wet = ((Integer)state.getValue(WET_1_7)).intValue();
 
 			if (wet == 1 && rand.nextInt(1) == 0) {
-				worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(2)).with(WATERLOGGED, Boolean.valueOf(true)), 2); }
+				worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(2))); }
 
-			if (wet == 2) {
-				if (!growCrops(worldIn, pos)) { }
+			if (wet == 2) { }
 
-				else { worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(3)).with(WATERLOGGED, Boolean.valueOf(false)), 2); } }
-
-			if (wet == 3) {
-				if (!growCrops2(worldIn, pos) && !upAir(worldIn, pos)) { }
-
-				else { worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(4)).with(WATERLOGGED, Boolean.valueOf(false)), 2); } }
+			if (wet == 3 && upAir(worldIn, pos) && rand.nextInt(1) == 0) {
+				worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(4))); }
 
 			if (wet == 4) { }
 
 			if (wet == 5 && rand.nextInt(3) == 0) {
-				worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(6)).with(WATERLOGGED, Boolean.valueOf(false)), 2); }
+				worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(6))); }
 
 			if (wet == 6 && rand.nextInt(3) == 0) {
-				worldIn.setBlockState(pos, state.with(WET_1_7, Integer.valueOf(7)).with(WATERLOGGED, Boolean.valueOf(false)), 2); }
-
-			if (wet == 7) { }
+				worldIn.setBlockState(pos, state.withProperty(WET_1_7, Integer.valueOf(7))); }
 		}
+
 	}
 
-	/* プロパティごとの当たり判定*/
-	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_COL;
+	@SuppressWarnings("deprecation")
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+
+		if (worldIn.getBlockState(pos.up()).getMaterial().isSolid()) {
+			turnToDirt(worldIn, pos); }
 	}
 
 	/* Collision */
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
-	}
-
-	/* Create Blockstate */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(NORTH, EAST, SOUTH, WEST, WET_1_7, WATERLOGGED);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 	}
 
-	/* 透過 */
-	public boolean isTransparent(BlockState state) {
-		return true;
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
 	}
 
-	/* 窒息 滑るため false */
+	/* Data value */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(WET_1_7, meta);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer)state.getValue(WET_1_7)).intValue();
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (7 - ((Integer)blockState.getValue(WET_1_7)).intValue()) * 2;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockState baseState, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		if (side == EnumFacing.UP) { return true; }
 		return false;
 	}
 
-	/* 立方体 */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { SOUTH, NORTH, WEST, EAST, WET_1_7 });
 	}
 
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		return false;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public boolean isViewBlocking(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return true;
-	}
-
-	/* モブ湧き */
+	/* モンスターをSpawnするようにする */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		int wet = state.get(WET_1_7);
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess worldIn, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+		int wet = ((Integer)state.getValue(WET_1_7)).intValue();
 		if (wet == 2) { return false; }
 		return true;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_suiden")).applyTextStyle(TextFormatting.GRAY));
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return true;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Item.getItemFromBlock(Blocks.DIRT)));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Item.getItemFromBlock(Blocks.DIRT));
 	}
 
 }

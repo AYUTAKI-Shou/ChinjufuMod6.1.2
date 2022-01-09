@@ -2,10 +2,10 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/mizuoke_side",
-		"milk": "chinjufumod:blocks/milk_still",
 		"end": "chinjufumod:blocks/mizuoke_end",
 		"side": "chinjufumod:blocks/mizuoke_side",
-		"inside": "chinjufumod:blocks/mizuoke_inside"
+		"inside": "chinjufumod:blocks/mizuoke_inside",
+		"milk": "chinjufumod:blocks/milk_still"
 	},
 	"elements": [
 		{
@@ -16,7 +16,6 @@
 				"up" : { "texture": "#milk" }
 			}
 		},
-
 		{
 			"name": "bot",
 			"from": [ 5, 0.5, 5 ],

@@ -5,7 +5,7 @@
 		"front": "chinjufumod:blocks/trays_front_kara",
 		"end": "chinjufumod:blocks/trays_end_kara",
 		"side": "chinjufumod:blocks/trays_side_kara",
-		"konbu": "minecraft:item/kelp"
+		"konbu": "minecraft:items/kelp"
 	},
 	"elements": [
 		{

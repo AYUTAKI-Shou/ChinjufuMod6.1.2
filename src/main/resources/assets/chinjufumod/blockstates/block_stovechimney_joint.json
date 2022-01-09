@@ -1,8 +1,8 @@
 {
- "variants": {
-	"facing=north": { "model": "chinjufumod:block/school/block_schimney_joint", "y": 90 },
-	"facing=south": { "model": "chinjufumod:block/school/block_schimney_joint", "y": 270 },
-	"facing=west": { "model": "chinjufumod:block/school/block_schimney_joint" },
-	"facing=east": { "model": "chinjufumod:block/school/block_schimney_joint", "y": 180 }
- }
+  "variants": {
+	"facing=north": { "model": "chinjufumod:school/block_schimney_joint", "y": 90 },
+	"facing=south": { "model": "chinjufumod:school/block_schimney_joint", "y": 270 },
+	"facing=west":  { "model": "chinjufumod:school/block_schimney_joint" },
+	"facing=east":  { "model": "chinjufumod:school/block_schimney_joint", "y": 180 }
+  }
 }

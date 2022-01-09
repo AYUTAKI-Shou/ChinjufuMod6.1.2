@@ -1,5 +1,5 @@
 {
-	"parent": "chinjufumod:block/block_shouhou_empty",
+	"parent": "chinjufumod:block/item_shouhou_empty",
 	"display": {
 		"gui": {
 			"rotation": [ 50, 310, 0 ],

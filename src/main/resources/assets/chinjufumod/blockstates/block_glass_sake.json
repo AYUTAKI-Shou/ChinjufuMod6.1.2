@@ -1,11 +1,36 @@
 {
 	"variants": {
-		"down=false,stage=0": { "model": "chinjufumod:block/glass/block_gla_sake_1" },
-		"down=false,stage=1": { "model": "chinjufumod:block/glass/block_gla_sake_2" },
-		"down=false,stage=2": { "model": "chinjufumod:block/glass/block_gla_sake_kara" },
+		"down=false,stage=1": { "model": "chinjufumod:glass/block_gla_sakenama_1" },
+		"down=false,stage=2": { "model": "chinjufumod:glass/block_gla_sakenama_2" },
+		"down=false,stage=3": { "model": "chinjufumod:glass/block_gla_sake_kara" },
+		"down=false,stage=4": { "model": "chinjufumod:glass/block_gla_sake_1" },
+		"down=false,stage=5": { "model": "chinjufumod:glass/block_gla_sake_2" },
+		"down=false,stage=6": { "model": "chinjufumod:glass/block_gla_sake_kara" },
+		"down=false,stage=7": { "model": "chinjufumod:glass/block_gla_sakejuku_1" },
+		"down=false,stage=8": { "model": "chinjufumod:glass/block_gla_sakejuku_2" },
+		"down=false,stage=9": { "model": "chinjufumod:glass/block_gla_sake_kara" },
+		"down=false,stage=10": { "model": "chinjufumod:glass/block_gla_mead_1" },
+		"down=false,stage=11": { "model": "chinjufumod:glass/block_gla_mead_2" },
+		"down=false,stage=12": { "model": "chinjufumod:glass/block_gla_mead_kara" },
+		"down=false,stage=13": { "model": "chinjufumod:glass/block_gla_meadjuku_1" },
+		"down=false,stage=14": { "model": "chinjufumod:glass/block_gla_meadjuku_2" },
+		"down=false,stage=15": { "model": "chinjufumod:glass/block_gla_mead_kara" },
 
-		"down=true,stage=0": { "model": "chinjufumod:block/glass/block_gla_sake_d1" },
-		"down=true,stage=1": { "model": "chinjufumod:block/glass/block_gla_sake_d2" },
-		"down=true,stage=2": { "model": "chinjufumod:block/glass/block_gla_sake_dkara" }
+
+		"down=true,stage=1": { "model": "chinjufumod:glass/block_gla_sakenama_d1" },
+		"down=true,stage=2": { "model": "chinjufumod:glass/block_gla_sakenama_d2" },
+		"down=true,stage=3": { "model": "chinjufumod:glass/block_gla_sake_dkara" },
+		"down=true,stage=4": { "model": "chinjufumod:glass/block_gla_sake_d1" },
+		"down=true,stage=5": { "model": "chinjufumod:glass/block_gla_sake_d2" },
+		"down=true,stage=6": { "model": "chinjufumod:glass/block_gla_sake_dkara" },
+		"down=true,stage=7": { "model": "chinjufumod:glass/block_gla_sakejuku_d1" },
+		"down=true,stage=8": { "model": "chinjufumod:glass/block_gla_sakejuku_d2" },
+		"down=true,stage=9": { "model": "chinjufumod:glass/block_gla_sake_dkara" },
+		"down=true,stage=10": { "model": "chinjufumod:glass/block_gla_mead_d1" },
+		"down=true,stage=11": { "model": "chinjufumod:glass/block_gla_mead_d2" },
+		"down=true,stage=12": { "model": "chinjufumod:glass/block_gla_mead_dkara" },
+		"down=true,stage=13": { "model": "chinjufumod:glass/block_gla_meadjuku_d1" },
+		"down=true,stage=14": { "model": "chinjufumod:glass/block_gla_meadjuku_d2" },
+		"down=true,stage=15": { "model": "chinjufumod:glass/block_gla_mead_dkara" }
 	}
 }

@@ -1,8 +1,9 @@
 {
 	"variants": {
-		"type=bottom": { "model": "chinjufumod:block/wooden/block_slabhalf_ichoh_bottom" },
-		"type=top": { "model": "chinjufumod:block/wooden/block_slabhalf_ichoh_top" },
+		"double=false,half=bottom": { "model": "chinjufumod:wooden/block_slabhalf_ichoh_bottom" },
+		"double=false,half=top": { "model": "chinjufumod:wooden/block_slabhalf_ichoh_top" },
 
-		"type=double": { "model": "chinjufumod:block/wooden/block_planks_ichoh" }
+		"double=true,half=top": { "model": "chinjufumod:wooden/block_planks_ichoh" },
+		"double=true,half=bottom": { "model": "chinjufumod:wooden/block_planks_ichoh" }
 	}
 }

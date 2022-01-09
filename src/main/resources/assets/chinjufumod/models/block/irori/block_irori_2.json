@@ -5,7 +5,7 @@
 		"waku": "chinjufumod:blocks/irori_waku",
 		"hai": "chinjufumod:blocks/irori_ash",
 		"ki": "chinjufumod:blocks/irori_coal",
-		"fire": "minecraft:block/fire_0"
+		"fire": "minecraft:blocks/fire_layer_0"
 	},
 	"elements": [
 		{

@@ -58,7 +58,7 @@
 				"up": { "texture":"#front" },
 				"down" : { "texture":"#front" },
 				"north": { "texture":"#inside" },
-				"south": { "uv": [ 3.75, 10.5, 12.25, 13.5 ], "texture":"#side" },
+				"south": { "uv": [ 3.75, 10.5, 12.25, 13.5 ], "texture":"#side"  },
 				"west" : { "uv": [ 11.25, 10.5, 12.25, 13.5 ], "texture":"#side" },
 				"east" : { "uv": [ 3.75, 10.5, 4.75, 13.5 ], "texture":"#side" }
 			}

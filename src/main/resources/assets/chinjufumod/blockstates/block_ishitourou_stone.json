@@ -1,6 +1,8 @@
 {
 	"variants": {
-		"lit=false": { "model": "chinjufumod:block/ishitourou/block_ishitourou_stone" },
-		"lit=true": { "model": "chinjufumod:block/ishitourou/lit_ishitourou_stone" }
+		"stage=1": { "model": "chinjufumod:ishitourou/block_ishitourou_stone" },
+		"stage=2": { "model": "chinjufumod:ishitourou/block_ishitourou_gra" },
+		"stage=3": { "model": "chinjufumod:ishitourou/block_ishitourou_dio" },
+		"stage=4": { "model": "chinjufumod:ishitourou/block_ishitourou_and" }
 	}
 }

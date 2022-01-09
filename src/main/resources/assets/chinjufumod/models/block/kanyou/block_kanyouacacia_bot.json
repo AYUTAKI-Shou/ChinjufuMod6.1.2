@@ -1,11 +1,11 @@
 {
 	"parent": "chinjufumod:block/base/base_kanyou_bot",
 	"textures": {
-		"particle": "minecraft:block/acacia_log",
-		"miki": "minecraft:block/acacia_log",
-		"miki_top": "minecraft:block/acacia_log_top",
-		"ha": "minecraft:block/acacia_leaves",
+		"particle": "minecraft:blocks/log_acacia",
+		"miki": "minecraft:blocks/log_acacia",
+		"miki_top": "minecraft:blocks/log_acacia_top",
+		"ha": "minecraft:blocks/leaves_acacia",
 		"hachi": "chinjufumod:blocks/dish_brown",
-		"tuchi": "minecraft:block/farmland_moist"
+		"tuchi": "minecraft:blocks/farmland_wet"
 	}
 }

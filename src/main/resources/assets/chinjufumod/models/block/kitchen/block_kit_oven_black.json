@@ -7,8 +7,8 @@
 		"oven": "chinjufumod:blocks/kitchen_oven",
 		"ash": "chinjufumod:blocks/kitchen_oven_ash",
 		"heat": "chinjufumod:blocks/kitchen_oven_heat",
-		"ami": "minecraft:block/iron_block",
-		"mado": "minecraft:block/black_stained_glass"
+		"ami": "minecraft:blocks/iron_block",
+		"mado": "minecraft:blocks/glass_black"
 	},
 	"elements": [
 		{

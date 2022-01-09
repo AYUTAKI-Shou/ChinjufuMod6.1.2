@@ -3,8 +3,8 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_brown",
 		"hachi": "chinjufumod:blocks/dish_brown",
-		"tsuchi": "minecraft:block/farmland_moist",
-		"miki": "minecraft:block/oak_log",
+		"tsuchi": "minecraft:blocks/farmland_wet",
+		"miki": "minecraft:blocks/log_oak",
 		"ha": "chinjufumod:blocks/leaf_oakkare_gray"
 	},
 	"elements":[
@@ -326,12 +326,12 @@
 			"from": [ 9, 4, 2 ],
 			"to": [ 12, 7, 6 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 1 },
-				"down": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"east": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 8 },
+				"down": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 8 },
+				"north": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"east": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"west": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 		{
@@ -339,12 +339,12 @@
 			"from": [ 4, 4, 2 ],
 			"to": [ 7, 7, 6 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 1 },
-				"down": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"east": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 8 },
+				"down": { "uv": [ 0.0, 0.0, 9.0, 12.0 ], "texture": "#ha", "tintindex": 8 },
+				"north": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 0.0, 0.0, 9.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"east": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"west": { "uv": [ 0.0, 0.0, 12.0, 9.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 		{
@@ -352,12 +352,12 @@
 			"from": [ 5.5, 4.01, 1 ],
 			"to": [ 10.5, 7.01, 3 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"down": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"east": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"down": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"north": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"east": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"west": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 		{
@@ -365,12 +365,12 @@
 			"from": [ 5.5, 4.01, 5 ],
 			"to": [ 10.5, 7.01, 7 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"down": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"east": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"down": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"north": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 0.0, 0.0, 15.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"east": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 8 },
+				"west": { "uv": [ 0.0, 0.0, 6.0, 9.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		},
 		{
@@ -378,12 +378,12 @@
 			"from": [ 5.51, 6, 2.01 ],
 			"to": [ 10.49, 8, 5.99 ],
 			"faces": {
-				"up": { "uv": [ 0.0, 0.0, 15.0, 12.0 ], "texture": "#ha", "tintindex": 1 },
-				"down": { "uv": [ 0.0, 0.0, 15.0, 12.0 ], "texture": "#ha", "tintindex": 1 },
-				"north": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"south": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"east": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 },
-				"west": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 1 }
+				"up": { "uv": [ 0.0, 0.0, 15.0, 12.0 ], "texture": "#ha", "tintindex": 8 },
+				"down": { "uv": [ 0.0, 0.0, 15.0, 12.0 ], "texture": "#ha", "tintindex": 8 },
+				"north": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"south": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"east": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 },
+				"west": { "uv": [ 0.0, 0.0, 15.0, 6.0 ], "texture": "#ha", "tintindex": 8 }
 			}
 		}
 

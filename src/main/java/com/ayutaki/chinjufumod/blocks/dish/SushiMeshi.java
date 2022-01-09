@@ -1,294 +1,238 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlab_Water;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabWType2;
 import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai;
+import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai_sub;
 import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu;
+import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu_sub;
 import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk;
-import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
+import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk_sub;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.BlockHalfStoneSlab;
+import net.minecraft.block.BlockHalfStoneSlabNew;
+import net.minecraft.block.BlockHalfWoodSlab;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SushiMeshi extends Block implements IWaterLoggable {
+public class SushiMeshi extends Block {
+
+	public static final String ID = "block_food_sushimeshi";
 
 	/* Property */
-	public static final IntegerProperty STAGE_0_15 = IntegerProperty.create("stage", 0, 15);
-	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final PropertyInteger STAGE_0_15 = PropertyInteger.create("stage", 0, 15);
+	public static final PropertyBool DOWN = PropertyBool.create("down");
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 2.5D, 15.0D);
-	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(1.0D, -8.0D, 1.0D, 15.0D, 0.1D, 15.0D);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.15625D, 0.9375D);
+	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0625D, -0.5D, 0.0625D, 0.9375D, 0.01D, 0.9375D);
 
-	public SushiMeshi(Block.Properties properties) {
-		super(properties);
+	public SushiMeshi() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState()
-				.with(STAGE_0_15, Integer.valueOf(0))
-				.with(DOWN, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+		/*鍋・皿*/
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(STAGE_0_15, Integer.valueOf(0))
+				.withProperty(DOWN, Boolean.valueOf(false)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.get(STAGE_0_15);
+		int k;
+		k = itemstack.getMetadata();
 
-		if (item == Items_Teatime.KIRIMI_S) {
+		if (item == Items_Teatime.KIRIMI && k== 1) {
 			/** Collect with an Item **/
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
-			
-			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_S)); }
-			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_S))) {
-				playerIn.dropItem(new ItemStack(Items_Teatime.SUSHI_S), false); }
 
-			if (i != 15) { worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(i + 1))); }
+			playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI, 1, 1));
 
-			if (i == 15) {
-				worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState().with(Pizza.DOWN, state.get(DOWN))
-						.with(Pizza.STAGE_1_6, Integer.valueOf(6))); }
+			if (i != 15) { worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i + 1)), 3); }
+			if (i == 15) { worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState()
+						.withProperty(Pizza_cooked.STAGE_1_6, Integer.valueOf(6))); }
 		}
 
-		if (item == Items_Teatime.KIRIMI_F) {
+		if (item == Items_Teatime.KIRIMI && k== 2) {
 			/** Collect with an Item **/
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
-			
-			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_F)); }
-			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_F))) {
-				playerIn.dropItem(new ItemStack(Items_Teatime.SUSHI_F), false); }
 
-			if (i != 15) { worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(i + 1))); }
+			playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI, 1, 2));
 
-			if (i == 15) {
-				worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState().with(Pizza.DOWN, state.get(DOWN))
-						.with(Pizza.STAGE_1_6, Integer.valueOf(6))); }
+			if (i != 15) { worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i + 1)), 3); }
+			if (i == 15) { worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState()
+						.withProperty(Pizza_cooked.STAGE_1_6, Integer.valueOf(6))); }
 		}
 
-		if (item == Items_Teatime.KIRIMI_B) {
+		if (item == Items_Teatime.KIRIMI && k== 3) {
 			/** Collect with an Item **/
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
-			
-			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_B)); }
-			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_B))) {
-				playerIn.dropItem(new ItemStack(Items_Teatime.SUSHI_B), false); }
 
-			if (i != 15) { worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(i + 1))); }
+			playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI, 1, 3));
 
-			if (i == 15) {
-				worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState().with(Pizza.DOWN, state.get(DOWN))
-						.with(Pizza.STAGE_1_6, Integer.valueOf(6))); }
+			if (i != 15) { worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i + 1)), 3); }
+			if (i == 15) { worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState()
+						.withProperty(Pizza_cooked.STAGE_1_6, Integer.valueOf(6))); }
 		}
 
-		if (item == Items_Teatime.KIRIMI_T) {
+		if (item == Items_Teatime.KIRIMI && k== 4) {
 			/** Collect with an Item **/
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
-			
-			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_T)); }
-			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI_T))) {
-				playerIn.dropItem(new ItemStack(Items_Teatime.SUSHI_T), false); }
 
-			if (i != 15) { worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(i + 1))); }
+			playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SUSHI, 1, 4));
 
-			if (i == 15) {
-				worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState().with(Pizza.DOWN, state.get(DOWN))
-						.with(Pizza.STAGE_1_6, Integer.valueOf(6))); }
+			if (i != 15) { worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i + 1)), 3); }
+			if (i == 15) { worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState()
+						.withProperty(Pizza_cooked.STAGE_1_6, Integer.valueOf(6))); }
 		}
 		
-		if (item != Items_Teatime.KIRIMI_S && item != Items_Teatime.KIRIMI_F && 
-				item != Items_Teatime.KIRIMI_B && item != Items_Teatime.KIRIMI_T) {
-			CMEvents.textNotHave(worldIn, pos, playerIn); }
+		if (item != Items_Teatime.KIRIMI) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	
-	/* Gives a value when placed. */
+
+	/* Collision */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader worldIn = context.getWorld();
-		BlockPos pos = context.getPos();
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(DOWN, this.connectHalf(worldIn, pos, Direction.DOWN));
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		state = state.getActualState(source, pos);
+		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+
+		/** !down= true : false **/
+		return flag? AABB : AABB_DOWN;
 	}
 
-	/* Connect the blocks. */
-	protected boolean connectHalf(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* 直下ブロックに対する返し */
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos);
 		Block block = state.getBlock();
 
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				block instanceof LowDesk || block instanceof Chabudai || block instanceof Kotatsu);
+		return block instanceof Chabudai || block instanceof LowDesk || block instanceof Kotatsu ||
+					block instanceof Chabudai_sub || block instanceof LowDesk_sub || block instanceof Kotatsu_sub ||
+					(block instanceof BaseFacingSlabW && state.getValue(BaseFacingSlabW.HALF) == BaseFacingSlabW.SlabHalf.BOTTOM && state.getValue(BaseFacingSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabW && state.getValue(BaseSlabW.HALF) == BaseSlabW.SlabHalf.BOTTOM && state.getValue(BaseSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabWType2 && state.getValue(BaseSlabWType2.HALF) == BaseSlabWType2.SlabHalf.BOTTOM && state.getValue(BaseSlabWType2.DOUBLE) == false) ||
+					(block instanceof BlockHalfWoodSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlabNew && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM);
 	}
 
-	protected boolean connectWater(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
-		Block block = state.getBlock();
-
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof LowDesk && state.get(LowDesk.WATERLOGGED)) ||
-				(block instanceof Chabudai && state.get(Chabudai.WATERLOGGED)) ||
-				(block instanceof Kotatsu && state.get(Kotatsu.WATERLOGGED)));
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Distinguish LOST from WATERLOGGED. */
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.get(WATERLOGGED) || connectWater(worldIn, pos, Direction.DOWN)) { return true; }
-		return false;
-	}
-	
-	/* Update BlockState. */
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-
-		if (connectWater(worldIn, pos, Direction.DOWN)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, Fluids.WATER.getTickRate(worldIn)); }
-
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn)); }
-
-		boolean down = connectHalf(worldIn, pos, Direction.DOWN);
-		return state.with(DOWN, down);
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, this.canConnectTo(worldIn, pos.down()));
 	}
 
-	/* Create Blockstate */
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(DOWN, STAGE_0_15, WATERLOGGED);
+	/* Data value */
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer)state.getValue(STAGE_0_15)).intValue();
 	}
 
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STAGE_0_15, Integer.valueOf(meta));
+	}
+
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (16 - ((Integer)blockState.getValue(STAGE_0_15)).intValue()) * 2;
+	}
+
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { DOWN, STAGE_0_15 });
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
-	/* 立方体 */
+	/* 側面に松明などを置けるようにする */
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* 描画指定 */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
-		return flag? AABB_BOX : AABB_DOWN;
-	}
-
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.get(STAGE_0_15);
-		return (i == 0)? new ItemStack(Items_Teatime.SUSHIMESHI) : new ItemStack(Items.BOWL);
-	}
-
-	/* TickRandom */
-	@Override
-	public int tickRate(IWorldReader world) {
-		return 60;
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
+
+		if (i == 0) { stack.add(new ItemStack(Items_Teatime.SUSHIMESHI, 1, 0)); }
+		if (i != 0) { stack.add(new ItemStack(Items.BOWL, 1, 0)); }
+		return stack;
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlockState(pos, Dish_Blocks.PIZZA.getDefaultState().with(Pizza.DOWN, state.get(DOWN))
-					.with(Pizza.STAGE_1_6, Integer.valueOf(6))
-					.with(Pizza.WATERLOGGED, state.get(WATERLOGGED)), 3);
-			this.dropRottenfood(worldIn, pos); }
-		
-		else { }
-	}
-
-	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
-		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
-	}
-
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_food_sushimeshi")).applyTextStyle(TextFormatting.GRAY));
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.SUSHIMESHI, 1, 0);
 	}
 
 }

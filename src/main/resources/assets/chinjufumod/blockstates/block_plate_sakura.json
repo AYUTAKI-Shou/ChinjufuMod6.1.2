@@ -1,6 +1,6 @@
 {
 	"variants": {
-		"powered=false": { "model": "chinjufumod:block/wooden/block_plate_sakura" },
-		"powered=true": { "model": "chinjufumod:block/wooden/block_plate_sakura_down" }
+		"powered=false": { "model": "chinjufumod:wooden/block_plate_sakura" },
+		"powered=true": { "model": "chinjufumod:wooden/block_plate_sakura_down" }
 	}
 }

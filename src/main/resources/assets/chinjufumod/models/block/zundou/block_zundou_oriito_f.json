@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_lightg",
-		"aku": "minecraft:block/water_flow",
+		"aku": "chinjufumod:blocks/water_flow",
 		"oriito": "chinjufumod:blocks/taba_kusa",
 		"nabe": "chinjufumod:blocks/dish_lightg"
 	},
@@ -160,7 +160,7 @@
 			"from": [ 4.5, 0.5, 4.5 ],
 			"to": [ 8.0, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#aku", "rotation": 270, "tintindex": 1 }
+				"up" : { "texture": "#aku", "rotation": 270, "tintindex": 33 }
 			}
 		},
 		{
@@ -168,7 +168,7 @@
 			"from": [ 8.0, 0.5, 4.5 ],
 			"to": [ 11.5, 7.0, 11.5 ],
 			"faces": {
-				"up" : { "texture": "#aku", "rotation": 90, "tintindex": 1 }
+				"up" : { "texture": "#aku", "rotation": 90, "tintindex": 33 }
 			}
 		}
 	]

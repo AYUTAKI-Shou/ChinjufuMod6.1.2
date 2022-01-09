@@ -1,5 +1,5 @@
 {
 	"variants": {
-		"": { "model": "chinjufumod:block/school/block_schimney_topk" }
+		"normal": { "model": "chinjufumod:school/block_schimney_topk" }
 	}
 }

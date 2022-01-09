@@ -1,10 +1,13 @@
 {
 	"variants": {
-		"cra=false,type=bottom": { "model": "chinjufumod:block/namako/block_nsh_magenta_bottom" },
-		"cra=false,type=top": { "model": "chinjufumod:block/namako/block_nsh_magenta_top" },
-		"cra=true,type=bottom": { "model": "chinjufumod:block/namako/block_nsh_cr_magenta_bottom" },
-		"cra=true,type=top": { "model": "chinjufumod:block/namako/block_nsh_cr_magenta_top" },
-		"cra=false,type=double": { "model": "chinjufumod:block/namako/block_namako_magenta" },
-		"cra=true,type=double": { "model": "chinjufumod:block/namako/block_namako_cr_magenta" }
+		"cra=false,double=false,half=bottom": { "model": "chinjufumod:namako/block_nsh_magenta_bottom" },
+		"cra=false,double=false,half=top": { "model": "chinjufumod:namako/block_nsh_magenta_top" },
+		"cra=true,double=false,half=bottom": { "model": "chinjufumod:namako/block_nsh_cr_magenta_bottom" },
+		"cra=true,double=false,half=top": { "model": "chinjufumod:namako/block_nsh_cr_magenta_top" },
+
+		"cra=false,double=true,half=bottom": { "model": "chinjufumod:namako/block_namako_magenta" },
+		"cra=false,double=true,half=top": { "model": "chinjufumod:namako/block_namako_magenta" },
+		"cra=true,double=true,half=bottom": { "model": "chinjufumod:namako/block_namako_cr_magenta" },
+		"cra=true,double=true,half=top": { "model": "chinjufumod:namako/block_namako_cr_magenta" }
 	}
 }

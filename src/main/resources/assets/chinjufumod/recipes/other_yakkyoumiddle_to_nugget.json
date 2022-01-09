@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_ammu",
+
+	"pattern": [
+		"XXX"
+	],
+
+	"key": {
+		"X": { "item": "chinjufumod:item_cartridge_medium" }
+	},
+
+	"result": { "item": "minecraft:iron_nugget", "data": 0, "count": 1 }
+}

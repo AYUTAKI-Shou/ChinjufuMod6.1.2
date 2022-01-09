@@ -1,206 +1,275 @@
 package com.ayutaki.chinjufumod.blocks.garden;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
+import com.ayutaki.chinjufumod.registry.Items_Wadeco;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
-public class Chouzubachi extends Block implements IWaterLoggable {
+public class Chouzubachi extends Block {
 
-	/* Property 空=0,1,2,3=満,4=溢 */
-	public static final IntegerProperty STAGE_0_3 = IntegerProperty.create("stage", 0, 3);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 10.0D, 15.0D);
+	public static final String ID = "block_chouzubachi_kara";
 
-	public Chouzubachi(Block.Properties properties) {
-		super(properties);
+	/* Property */
+	/** 石=空0,1,2,3 GRA=空4,5,6,7 DIO=空8,9,10,11 AND=空12,13,14,15 空スタートで確定 **/
+	public static final PropertyInteger STAGE_0_15 = PropertyInteger.create("stage", 0, 15);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(STAGE_0_3, Integer.valueOf(0))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+	public Chouzubachi() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(STAGE_0_15, Integer.valueOf(0)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.get(STAGE_0_3);
 
-		if (!state.get(WATERLOGGED)) {
-			if (i > 0) {
-				if (itemstack.isEmpty()) {
+		/** 石=空0,1,2,3 GRA=空4,5,6,7 DIO=空8,9,10,11 AND=空12,13,14,15 **/
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
+		
+		if (i >= 0 && i <= 3) {
+			if (i != 0) {
+				if (itemstack.isEmpty() && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) {
 					CMEvents.soundWaterUse(worldIn, pos);
-					worldIn.setBlockState(pos, state.with(STAGE_0_3, Integer.valueOf(i - 1))); }
+					worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i - 1)), 3); }
 				
-				if (!itemstack.isEmpty()) {
-					CMEvents.textFullItem(worldIn, pos, playerIn); }
-			}
+				if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); } }
 			
-			if (i < 3) {
+			if (i != 3) {
 				if (item == Items.WATER_BUCKET) {
-
 					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand);
-					worldIn.setBlockState(pos, state.with(STAGE_0_3, Integer.valueOf(3))); }
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(3))); }
 				
 				if (item == Items_Teatime.MIZUOKE_full) {
-
 					CMEvents.MIZUOKEfull_Empty(worldIn, pos, playerIn, hand);
-					worldIn.setBlockState(pos, state.with(STAGE_0_3, Integer.valueOf(3))); }
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(3))); }
 				
 				if (i == 0 && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) { 
-					CMEvents.textNotHave(worldIn, pos, playerIn); }
-			}
+					CMEvents.textNotHave(worldIn, pos, playerIn); } }
 		}
 		
-		if (state.get(WATERLOGGED)) { 
-			CMEvents.textIsWaterlogged(worldIn, pos, playerIn);
-			return ActionResultType.SUCCESS;
+		if (i >= 4 && i <= 7) {
+			if (i != 4) {
+				if (itemstack.isEmpty() && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) {
+					CMEvents.soundWaterUse(worldIn, pos);
+					worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i - 1)), 3); }
+				
+				if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); } }
+			
+			if (i != 7) {
+				if (item == Items.WATER_BUCKET) {
+					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand);
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(7))); }
+				
+				if (item == Items_Teatime.MIZUOKE_full) {
+					CMEvents.MIZUOKEfull_Empty(worldIn, pos, playerIn, hand);
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(7))); }
+				
+				if (i == 4 && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) { 
+					CMEvents.textNotHave(worldIn, pos, playerIn); } }
 		}
-
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
-	}
-
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	/* 立方体 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
-	}
-
-	/* 採取適正ツール */
-	@Nullable
-	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
-	}
-
-	@Override
-	public int getHarvestLevel(BlockState state) {
-		return 0;
-	}
-
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
-	}
-
-	/* Gives a value when placed. +180 .getOpposite() */
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	@SuppressWarnings("deprecation")
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
+		
+		if (i >= 8 && i <= 11) {
+			if (i != 8) {
+				if (itemstack.isEmpty() && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) {
+					CMEvents.soundWaterUse(worldIn, pos);
+					worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i - 1)), 3); }
+				
+				if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); } }
+			
+			if (i != 11) {
+				if (item == Items.WATER_BUCKET) {
+					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand);
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(11))); }
+				
+				if (item == Items_Teatime.MIZUOKE_full) {
+					CMEvents.MIZUOKEfull_Empty(worldIn, pos, playerIn, hand);
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(11))); }
+				
+				if (i == 8 && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) { 
+					CMEvents.textNotHave(worldIn, pos, playerIn); } }
+		}
+		
+		if (i >= 12 && i <= 15) {
+			if (i != 12) {
+				if (itemstack.isEmpty() && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) {
+					CMEvents.soundWaterUse(worldIn, pos);
+					worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i - 1)), 3); }
+				
+				if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); } }
+			
+			if (i != 15) {
+				if (item == Items.WATER_BUCKET) {
+					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand);
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(15))); }
+				
+				if (item == Items_Teatime.MIZUOKE_full) {
+					CMEvents.MIZUOKEfull_Empty(worldIn, pos, playerIn, hand);
+					worldIn.setBlockState(pos, this.getDefaultState().withProperty(Chouzubachi.STAGE_0_15, Integer.valueOf(15))); }
+				
+				if (i == 12 && item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full) { 
+					CMEvents.textNotHave(worldIn, pos, playerIn); } }
+		}
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
 	/* TickRandom */
 	@Override
-	public int tickRate(IWorldReader world) {
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+		/** 石=空0,1,2,3 GRA=空4,5,6,7 DIO=空8,9,10,11 AND=空12,13,14,15 **/
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
+
+		if (worldIn.isRainingAt(pos.up())) {
+
+			if (i == 3 || i ==7 || i == 11 || i == 15) { }
+
+			else { worldIn.setBlockState(pos, state.withProperty(STAGE_0_15, Integer.valueOf(i + 1))); }
+		}
+		worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		/** 1000tick = Minecraft内 1h = リアル時間 50秒 **/
 		return 300;
 	}
 
+	/* Collision */
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.625D, 0.9375D);
+	}
+
+	/* Data value */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(STAGE_0_15, Integer.valueOf(meta));
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		int i = state.get(STAGE_0_3);
-
-		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
-
-		if (i < 3 && !state.get(WATERLOGGED) && worldIn.isRainingAt(pos.up())) {
-			worldIn.setBlockState(pos, state.with(STAGE_0_3, Integer.valueOf(i + 1)));
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-		}
-
-		if (i < 3 && state.get(WATERLOGGED)) {
-			worldIn.setBlockState(pos, state.with(STAGE_0_3, Integer.valueOf(3)));
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-		}
-
-		else { }
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer)state.getValue(STAGE_0_15)).intValue();
 	}
 
-	/* Create Blockstate */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(STAGE_0_3, WATERLOGGED);
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { STAGE_0_15 });
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_chouzubachi")).applyTextStyle(TextFormatting.GRAY));
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (15 - ((Integer)blockState.getValue(STAGE_0_15)).intValue()) * 2;
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return false;
+	}
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* Harvest by Pickaxe. */
+	@Nullable
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
+	}
+
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		return 0;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
+		/** 石=空0,1,2,3 GRA=空4,5,6,7 DIO=空8,9,10,11 AND=空12,13,14,15 空スタートで確定 **/
+		if (i <= 3) { stack.add(new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 0)); }
+		if (i >= 4 && i <= 7) { stack.add(new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 1)); }
+		if (i >= 8 && i <= 11) { stack.add(new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 2)); }
+		if (i >= 12) { stack.add(new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 3)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
+
+		if (i >= 4 && i <= 7) { return new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 1); }
+		if (i >= 8 && i <= 11) { return new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 2); }
+		if (i >= 12) { return new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 3); }
+		return new ItemStack(Items_Wadeco.CHOUZUBACHI, 1, 0);
 	}
 
 }

@@ -1,23 +1,23 @@
 {
 	"variants": {
-	"facing=north,stage=1": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru1n" },
-	"facing=south,stage=1": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru1s" },
-	"facing=west,stage=1": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru1w" },
-	"facing=east,stage=1": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru1e" },
+	"facing=north,stage=1": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru1n" },
+	"facing=south,stage=1": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru1s" },
+	"facing=west,stage=1": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru1w" },
+	"facing=east,stage=1": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru1e" },
 
-		"facing=north,stage=2": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru2n" },
-		"facing=south,stage=2": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru2s" },
-		"facing=west,stage=2": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru2w" },
-		"facing=east,stage=2": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru2e" },
+		"facing=north,stage=2": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru2n" },
+		"facing=south,stage=2": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru2s" },
+		"facing=west,stage=2": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru2w" },
+		"facing=east,stage=2": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru2e" },
 
-	"facing=north,stage=3": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru3n" },
-	"facing=south,stage=3": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru3s" },
-	"facing=west,stage=3": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru3w" },
-	"facing=east,stage=3": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru3e" },
+	"facing=north,stage=3": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru3n" },
+	"facing=south,stage=3": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru3s" },
+	"facing=west,stage=3": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru3w" },
+	"facing=east,stage=3": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru3e" },
 
-		"facing=north,stage=4": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru4n" },
-		"facing=south,stage=4": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru4s" },
-		"facing=west,stage=4": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru4w" },
-		"facing=east,stage=4": { "model": "chinjufumod:block/kamoicolor/block_ka_blue_spru4e" }
+		"facing=north,stage=4": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru4n" },
+		"facing=south,stage=4": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru4s" },
+		"facing=west,stage=4": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru4w" },
+		"facing=east,stage=4": { "model": "chinjufumod:kamoicolor/block_ka_blue_spru4e" }
 	}
 }

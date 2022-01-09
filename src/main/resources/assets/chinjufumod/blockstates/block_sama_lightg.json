@@ -1,23 +1,23 @@
 {
 	"variants": {
-		"facing=north,stage=1": { "model": "chinjufumod:block/sama/block_sama_lightg", "y": 180 },
-		"facing=south,stage=1": { "model": "chinjufumod:block/sama/block_sama_lightg", "y": 0 },
-		"facing=west,stage=1": { "model": "chinjufumod:block/sama/block_sama_lightg", "y": 90 },
-		"facing=east,stage=1": { "model": "chinjufumod:block/sama/block_sama_lightg", "y": 270 },
+		"facing=north,stage=1": { "model": "chinjufumod:sama/block_sama_lightg", "y": 180 },
+		"facing=south,stage=1": { "model": "chinjufumod:sama/block_sama_lightg", "y": 0 },
+		"facing=west,stage=1": { "model": "chinjufumod:sama/block_sama_lightg", "y": 90 },
+		"facing=east,stage=1": { "model": "chinjufumod:sama/block_sama_lightg", "y": 270 },
 
-			"facing=north,stage=2": { "model": "chinjufumod:block/sama/block_sama_lightg_cr", "y": 180 },
-			"facing=south,stage=2": { "model": "chinjufumod:block/sama/block_sama_lightg_cr", "y": 0 },
-			"facing=west,stage=2": { "model": "chinjufumod:block/sama/block_sama_lightg_cr", "y": 90 },
-			"facing=east,stage=2": { "model": "chinjufumod:block/sama/block_sama_lightg_cr", "y": 270 },
+			"facing=north,stage=2": { "model": "chinjufumod:sama/block_sama_lightg_cr", "y": 180 },
+			"facing=south,stage=2": { "model": "chinjufumod:sama/block_sama_lightg_cr", "y": 0 },
+			"facing=west,stage=2": { "model": "chinjufumod:sama/block_sama_lightg_cr", "y": 90 },
+			"facing=east,stage=2": { "model": "chinjufumod:sama/block_sama_lightg_cr", "y": 270 },
 			
-		"facing=north,stage=3": { "model": "chinjufumod:block/sama/block_sama_lightg_w", "y": 180 },
-		"facing=south,stage=3": { "model": "chinjufumod:block/sama/block_sama_lightg_w", "y": 0 },
-		"facing=west,stage=3": { "model": "chinjufumod:block/sama/block_sama_lightg_w", "y": 90 },
-		"facing=east,stage=3": { "model": "chinjufumod:block/sama/block_sama_lightg_w", "y": 270 },
+		"facing=north,stage=3": { "model": "chinjufumod:sama/block_sama_lightg_w", "y": 180 },
+		"facing=south,stage=3": { "model": "chinjufumod:sama/block_sama_lightg_w", "y": 0 },
+		"facing=west,stage=3": { "model": "chinjufumod:sama/block_sama_lightg_w", "y": 90 },
+		"facing=east,stage=3": { "model": "chinjufumod:sama/block_sama_lightg_w", "y": 270 },
 
-			"facing=north,stage=4": { "model": "chinjufumod:block/sama/block_sama_lightg_crw", "y": 180 },
-			"facing=south,stage=4": { "model": "chinjufumod:block/sama/block_sama_lightg_crw", "y": 0 },
-			"facing=west,stage=4": { "model": "chinjufumod:block/sama/block_sama_lightg_crw", "y": 90 },
-			"facing=east,stage=4": { "model": "chinjufumod:block/sama/block_sama_lightg_crw", "y": 270 }
+			"facing=north,stage=4": { "model": "chinjufumod:sama/block_sama_lightg_crw", "y": 180 },
+			"facing=south,stage=4": { "model": "chinjufumod:sama/block_sama_lightg_crw", "y": 0 },
+			"facing=west,stage=4": { "model": "chinjufumod:sama/block_sama_lightg_crw", "y": 90 },
+			"facing=east,stage=4": { "model": "chinjufumod:sama/block_sama_lightg_crw", "y": 270 }
 	}
 }

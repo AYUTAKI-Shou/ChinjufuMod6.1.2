@@ -5,7 +5,7 @@
 		"geta": "chinjufumod:blocks/muku_oak",
 		"sara": "chinjufumod:blocks/dish_white",
 		"shouyu": "chinjufumod:blocks/shouyu",
-		"tea": "minecraft:block/water_still",
+		"tea": "chinjufumod:blocks/water_still",
 		"yunomi": "chinjufumod:blocks/dish_green",
 		"fish": "chinjufumod:blocks/sushi_fish",
 		"fish2": "chinjufumod:blocks/sushi_fish2",
@@ -78,7 +78,7 @@
 			"from": [ 11.8, -7.5, 5.2 ],
 			"to": [ 13.8, -7.3, 7.2 ],
 			"faces": {
-				"up" : { "uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#tea", "tintindex": 1 }
+				"up" : { "uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#tea", "tintindex": 30 }
 			}
 		},
 

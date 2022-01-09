@@ -1,20 +1,20 @@
 {
 	"variants": {
-		"stage=0": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_0" },
-		"stage=1": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_0", "y": 90},
-		"stage=2": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_2" },
-		"stage=3": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_2", "y": 90 },
-		"stage=4": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_4" },
-		"stage=5": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_4", "y": 90 },
-		"stage=6": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_6" },
-		"stage=7": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_6", "y": 90 },
-		"stage=8": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_8" },
-		"stage=9": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_8", "y": 90 },
-		"stage=10": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_a" },
-		"stage=11": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_a", "y": 90 },
-		"stage=12": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_c" },
-		"stage=13": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_c", "y": 90 },
-		"stage=14": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_e" },
-		"stage=15": { "model": "chinjufumod:block/niwaishi/block_niwaishi_slab_dio_e", "y": 90 }
+		"stage=0": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_0" },
+		"stage=1": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_0", "y": 90},
+		"stage=2": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_2" },
+		"stage=3": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_2", "y": 90 },
+		"stage=4": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_4" },
+		"stage=5": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_4", "y": 90 },
+		"stage=6": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_6" },
+		"stage=7": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_6", "y": 90 },
+		"stage=8": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_8" },
+		"stage=9": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_8", "y": 90 },
+		"stage=10": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_a" },
+		"stage=11": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_a", "y": 90 },
+		"stage=12": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_c" },
+		"stage=13": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_c", "y": 90 },
+		"stage=14": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_e" },
+		"stage=15": { "model": "chinjufumod:niwaishi/block_niwaishi_slab_dio_e", "y": 90 }
 	}
 }

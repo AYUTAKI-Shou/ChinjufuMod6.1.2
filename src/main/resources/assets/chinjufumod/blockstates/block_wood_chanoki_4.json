@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"stage=0": { "model": "chinjufumod:crop/block_wood_chanoki_nae" },
+		"stage=1": { "model": "chinjufumod:crop/block_wood_chanoki_1" },
+		"stage=2": { "model": "chinjufumod:crop/block_wood_chanoki_2" },
+		"stage=3": { "model": "chinjufumod:crop/block_wood_chanoki_3" },
+		"stage=4": { "model": "chinjufumod:crop/block_wood_chanoki_4" }
+	}
+}

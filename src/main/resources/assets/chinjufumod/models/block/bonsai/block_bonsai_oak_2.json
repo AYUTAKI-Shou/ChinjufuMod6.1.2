@@ -3,9 +3,9 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_brown",
 		"hachi": "chinjufumod:blocks/dish_brown",
-		"tsuchi": "minecraft:block/farmland_moist",
-		"miki": "minecraft:block/oak_log",
-		"ha": "minecraft:block/oak_leaves"
+		"tsuchi": "minecraft:blocks/farmland_wet",
+		"miki": "minecraft:blocks/log_oak",
+		"ha": "minecraft:blocks/leaves_oak"
 	},
 	"elements":[
 		{

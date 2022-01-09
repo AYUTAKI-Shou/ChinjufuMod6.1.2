@@ -1,8 +1,8 @@
 {
 	"variants": {
-		"stage=1": { "model": "chinjufumod:block/food/block_food_cheese_1" },
-		"stage=2": { "model": "chinjufumod:block/food/block_food_cheese_2" },
-		"stage=3": { "model": "chinjufumod:block/food/block_food_cheese_3" },
-		"stage=4": { "model": "chinjufumod:block/food/block_food_cheese_4" }
+		"stage=1": { "model": "chinjufumod:food/block_food_cheese_1" },
+		"stage=2": { "model": "chinjufumod:food/block_food_cheese_2" },
+		"stage=3": { "model": "chinjufumod:food/block_food_cheese_3" },
+		"stage=4": { "model": "chinjufumod:food/block_food_cheese_4" }
 	}
 }

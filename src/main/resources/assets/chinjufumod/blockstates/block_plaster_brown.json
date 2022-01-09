@@ -1,6 +1,0 @@
-{
-	"variants": {
-		"cra=false": { "model": "chinjufumod:block/plaster/block_plaster_brown" },
-		"cra=true": { "model": "chinjufumod:block/plaster/block_plaster_cr_brown" }
-	}
-}

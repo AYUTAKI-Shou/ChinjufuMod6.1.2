@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_spruce",
-		"tea": "minecraft:block/water_still",
+		"tea": "chinjufumod:blocks/water_still",
 		"yunomi": "chinjufumod:blocks/dish_green",
 		"senbei": "chinjufumod:blocks/senbei",
 		"sara": "chinjufumod:blocks/muku_spruce",
@@ -184,7 +184,7 @@
 			"from": [ 11, -7, 7 ],
 			"to": [ 13, -5.8, 9 ],
 			"faces": {
-				"up" : {"uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#tea", "tintindex": 1 }
+				"up" : {"uv": [ 7.0, 7.0, 9.0, 9.0 ], "texture": "#tea", "tintindex": 30 }
 			}
 		}
 	]

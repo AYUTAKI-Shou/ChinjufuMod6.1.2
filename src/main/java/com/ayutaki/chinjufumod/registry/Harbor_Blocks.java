@@ -1,57 +1,77 @@
 package com.ayutaki.chinjufumod.registry;
 
-import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.RegisterHandler_CM;
 import com.ayutaki.chinjufumod.blocks.harbor.CTruss;
 import com.ayutaki.chinjufumod.blocks.harbor.Keikai;
-import com.ayutaki.chinjufumod.blocks.harbor.Keiryu;
+import com.ayutaki.chinjufumod.blocks.harbor.Keiryukui;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Harbor_Blocks {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	public static Block KEIKAIBLOCK;
 
-	public static Block KEIKAIBLOCK = register("block_keikai", new Keikai(Block.Properties.create(Material.WOOD)
-			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid()));
+	public static Block KEIRYUKUI,KEIRYUKUI_b;
 
-	public static Block KEIRYUKUI = register("block_keiryukui", new Keiryu(Block.Properties.create(Material.WOOD)
-			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
-	public static Block KEIRYUKUI_b = register("block_keiryukui_b", new Keiryu(Block.Properties.create(Material.WOOD)
-			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
+	public static Block TRUSS, TRUSS_white, TRUSS_orange, TRUSS_magenta,
+								TRUSS_lightb, TRUSS_yellow, TRUSS_lime, TRUSS_pink,
+								TRUSS_gray, TRUSS_cyan, TRUSS_purple, TRUSS_blue,
+								TRUSS_brown, TRUSS_green, TRUSS_red, TRUSS_black;
 
-	public static Block TRUSS = register("block_ctruss", truss());
-	public static Block TRUSS_white = register("block_ctruss_white", truss());
-	public static Block TRUSS_orange = register("block_ctruss_orange", truss());
-	public static Block TRUSS_magenta = register("block_ctruss_magenta", truss());
-	public static Block TRUSS_lightb = register("block_ctruss_lightb", truss());
-	public static Block TRUSS_yellow = register("block_ctruss_yellow", truss());
-	public static Block TRUSS_lime = register("block_ctruss_lime", truss());
-	public static Block TRUSS_pink = register("block_ctruss_pink", truss());
-	public static Block TRUSS_gray = register("block_ctruss_gray", truss());
-	public static Block TRUSS_cyan = register("block_ctruss_cyan", truss());
-	public static Block TRUSS_purple = register("block_ctruss_purple", truss());
-	public static Block TRUSS_blue = register("block_ctruss_blue", truss());
-	public static Block TRUSS_brown = register("block_ctruss_brown", truss());
-	public static Block TRUSS_green = register("block_ctruss_green", truss());
-	public static Block TRUSS_red = register("block_ctruss_red", truss());
-	public static Block TRUSS_black = register("block_ctruss_black", truss());
 
-	/* Share variables */
-	private static CTruss truss() {
-		return new CTruss(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid());
+	public static void init() {
+		KEIKAIBLOCK = new Keikai();
+
+		KEIRYUKUI = new Keiryukui().setRegistryName("block_keiryukui").setUnlocalizedName("block_keiryukui");
+		KEIRYUKUI_b = new Keiryukui().setRegistryName("block_keiryukui_b").setUnlocalizedName("block_keiryukui_b");
+
+		TRUSS = new CTruss().setRegistryName("block_ctruss").setUnlocalizedName("block_ctruss");
+		TRUSS_white = new CTruss().setRegistryName("block_ctruss_white").setUnlocalizedName("block_ctruss_white");
+		TRUSS_orange = new CTruss().setRegistryName("block_ctruss_orange").setUnlocalizedName("block_ctruss_orange");
+		TRUSS_magenta = new CTruss().setRegistryName("block_ctruss_magenta").setUnlocalizedName("block_ctruss_magenta");
+		TRUSS_lightb = new CTruss().setRegistryName("block_ctruss_lightb").setUnlocalizedName("block_ctruss_lightb");
+		TRUSS_yellow = new CTruss().setRegistryName("block_ctruss_yellow").setUnlocalizedName("block_ctruss_yellow");
+		TRUSS_lime = new CTruss().setRegistryName("block_ctruss_lime").setUnlocalizedName("block_ctruss_lime");
+		TRUSS_pink = new CTruss().setRegistryName("block_ctruss_pink").setUnlocalizedName("block_ctruss_pink");
+		TRUSS_gray = new CTruss().setRegistryName("block_ctruss_gray").setUnlocalizedName("block_ctruss_gray");
+		TRUSS_cyan = new CTruss().setRegistryName("block_ctruss_cyan").setUnlocalizedName("block_ctruss_cyan");
+		TRUSS_purple = new CTruss().setRegistryName("block_ctruss_purple").setUnlocalizedName("block_ctruss_purple");
+		TRUSS_blue = new CTruss().setRegistryName("block_ctruss_blue").setUnlocalizedName("block_ctruss_blue");
+		TRUSS_brown = new CTruss().setRegistryName("block_ctruss_brown").setUnlocalizedName("block_ctruss_brown");
+		TRUSS_green = new CTruss().setRegistryName("block_ctruss_green").setUnlocalizedName("block_ctruss_green");
+		TRUSS_red = new CTruss().setRegistryName("block_ctruss_red").setUnlocalizedName("block_ctruss_red");
+		TRUSS_black = new CTruss().setRegistryName("block_ctruss_black").setUnlocalizedName("block_ctruss_black");
+
 	}
 
-	///* Register *///
-	private static Block register(String name, Block block) {
-		BLOCKS.register(name, () -> block);
-		return block;
+
+	public static void register() {
+		registerBlock(KEIKAIBLOCK);
+		registerBlock(KEIRYUKUI);
+		registerBlock(KEIRYUKUI_b);
+
+		registerBlock(TRUSS);
+		registerBlock(TRUSS_white);
+		registerBlock(TRUSS_orange);
+		registerBlock(TRUSS_magenta);
+		registerBlock(TRUSS_lightb);
+		registerBlock(TRUSS_yellow);
+		registerBlock(TRUSS_lime);
+		registerBlock(TRUSS_pink);
+		registerBlock(TRUSS_gray);
+		registerBlock(TRUSS_cyan);
+		registerBlock(TRUSS_purple);
+		registerBlock(TRUSS_blue);
+		registerBlock(TRUSS_brown);
+		registerBlock(TRUSS_green);
+		registerBlock(TRUSS_red);
+		registerBlock(TRUSS_black);
+
+
+	}
+
+	public static void registerBlock(Block block) {
+		RegisterHandler_CM.Blocks.BLOCKS.add(block);
 	}
 
 }

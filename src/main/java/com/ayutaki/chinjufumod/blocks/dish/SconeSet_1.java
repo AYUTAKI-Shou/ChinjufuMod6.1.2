@@ -1,134 +1,140 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
-import com.ayutaki.chinjufumod.blocks.base.BaseStage8_FaceWater;
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage4_Face;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
-public class SconeSet_1 extends BaseStage8_FaceWater {
+public class SconeSet_1 extends BaseStage4_Face {
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 10.5D, 13.0D);
+	public static final String ID = "block_food_sconeset_1";
 
-	public SconeSet_1(Block.Properties properties) {
-		super(properties);
+	public SconeSet_1() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		/*寸胴・フライパン*/
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-		int i = state.get(STAGE_1_8);
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
-		/** Hand is empty. **/
+		/** Hand is Empty. **/
 		if (itemstack.isEmpty()) {
+			CMEvents.soundItemPick(worldIn, pos);
 
-			CMEvents.soundTake_Pick(worldIn, pos);
-			if (i < 8) {
-				if (i == 1) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.EGGSAND)); }
-				if (i == 2) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHICKENSAND)); }
-				if (i == 3) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.EGGSAND)); }
-				if (i == 4) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHICKENSAND)); }
+			if (i == 1) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.EGGSAND, 1));
+				worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
 
-				if (i == 5) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SCONE)); }
-				if (i == 6) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SCONE)); }
-				if (i == 7) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CAKE)); }
+			if (i == 2) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHICKENSAND, 1));
+				worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
 
-				worldIn.setBlockState(pos, state.with(STAGE_1_8, Integer.valueOf(i + 1))); }
+			if (i == 3) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.EGGSAND, 1));
+				worldIn.setBlockState(pos, state.withProperty(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
 
-			if (i == 8) {
-				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CAKE));
-
-				worldIn.setBlockState(pos, Dish_Blocks.SCONESET_kara.getDefaultState()
-						.with(BaseFacingWater.H_FACING, state.get(H_FACING))); }
+			if (i == 4) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHICKENSAND, 1));
+				worldIn.setBlockState(pos, Dish_Blocks.SCONESET_a.getDefaultState().withProperty(H_FACING, state.getValue(H_FACING))); }
 		}
 		
 		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		
-		/** SUCCESS to not put anything on top. **/
-		return ActionResultType.SUCCESS;
+		/** 'true' to not put anything on top. **/
+		return true;
 	}
 
-	/* 窒息 */
+	/* Collision */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.65625D, 0.8125D);
 	}
 
-	/* 立方体 */
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/*Drop Item and Clone Item.*/
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+
+		if (i == 1) {
+			stack.add(new ItemStack(Items_Teatime.SCONESET_1, 1, 0));
+		}
+
+		if (i == 2) {
+			stack.add(new ItemStack(Items_Teatime.SCONESET_kara, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.CAKE, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.SCONE, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.CHICKENSAND, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.EGGSAND, 1, 0));
+		}
+
+		if (i == 3) {
+			stack.add(new ItemStack(Items_Teatime.SCONESET_kara, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.CAKE, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.SCONE, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.CHICKENSAND, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.EGGSAND, 1, 0));
+		}
+
+		if (i == 4) {
+			stack.add(new ItemStack(Items_Teatime.SCONESET_kara, 1, 0));
+			stack.add(new ItemStack(Items_Teatime.CAKE, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.SCONE, 2, 0));
+			stack.add(new ItemStack(Items_Teatime.CHICKENSAND, 1, 0));
+		}
+			return stack;
 	}
 
-	/* モブ湧き */
 	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.SCONESET_1, 1, 0);
 	}
 
-	/* Collisions for each property. */
+	/* フェンスとの接続拒否 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
-	}
-
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.get(STAGE_1_8);
-		return (i == 1)? new ItemStack(Items_Teatime.SCONESET_1) : new ItemStack(Items_Teatime.SCONESET_kara);
-	}
-
-	/* TickRandom */
-	@Override
-	public int tickRate(IWorldReader world) {
-		return 60;
-	}
-
-	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-	}
-
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		if (state.get(WATERLOGGED)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlockState(pos, Dish_Blocks.SCONESET_kara.getDefaultState()
-					.with(SconeSet_kara.H_FACING, state.get(H_FACING))
-					.with(SconeSet_kara.WATERLOGGED, state.get(WATERLOGGED)), 3);
-			this.dropRottenfood(worldIn, pos); }
-		
-		else { }
-	}
-
-	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
-		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 }

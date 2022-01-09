@@ -1,124 +1,165 @@
 package com.ayutaki.chinjufumod.blocks.furnace;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseStage2_FaceWater;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage2_Face;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
-import com.ayutaki.chinjufumod.registry.School_Blocks;
+import com.ayutaki.chinjufumod.registry.Furniture_Blocks;
+import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CStove_Bot extends BaseStage2_FaceWater {
+public class CStove_bot extends BaseStage2_Face {
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+	public static final String ID = "block_cstove_bot";
 
-	public CStove_Bot(Block.Properties properties) {
-		super(properties);
+	public CStove_bot() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setCreativeTab(ChinjufuModTabs.CHINJUFU);
+
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(10.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
-	/* Gives a value when placed. +180 .getOpposite() */
+	/* 同時破壊とドロップの指定 */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		BlockPos blockpos = context.getPos();
+	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
 
-		/** 直上が置き換え可能なブロックの時 **/
-		if (blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context)) {
-			return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-					.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
+		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
+		if (worldIn.getBlockState(pos.up()).getBlock() == Furniture_Blocks.CSTOVE_top || worldIn
+				.getBlockState(pos.up()).getBlock() == Furniture_Blocks.LIT_CSTOVE_top) {
+			worldIn.destroyBlock(pos.up(), false);
 		}
+	}
 
-		/** それ以外の時 **/
-		else { return null; }
+	/* 設置制限 */
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getMaterial().isReplaceable() &&
+				worldIn.getBlockState(pos.up()).getMaterial().isReplaceable();
+	}
+
+	/* 設置時に直上ブロックを呼び出し。.getOpposite() を追加して方向を反転 */
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
+			float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+
+		if (this == Furniture_Blocks.CSTOVE_bot) {
+
+			worldIn.setBlockState(pos.up(), Furniture_Blocks.CSTOVE_top.getDefaultState()
+					.withProperty(H_FACING, placer.getHorizontalFacing().getOpposite()));
+		}
+		return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-
-		/** Hand is empty. **/
 		if (itemstack.isEmpty()) {
-			if (playerIn.isSneaking()) { 
+			if (playerIn.isSneaking()) {
 				worldIn.playSound(null, pos, SoundEvents_CM.OPEN, SoundCategory.BLOCKS, 0.4F, 1.0F);
-				worldIn.setBlockState(pos, state.cycle(STAGE_1_2)); }
-			
+				worldIn.setBlockState(pos, state.cycleProperty(STAGE_1_2), 3); }
+		
 			if (!playerIn.isSneaking()) { CMEvents.textNotSneak(worldIn, pos, playerIn); }
+			return true;
 		}
-		return ActionResultType.SUCCESS;
+		return false;
 	}
 
-	/* Add DoubleBlockHalf.UPPER on the Block. */
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		worldIn.setBlockState(pos.up(), School_Blocks.CSTOVE_top.getDefaultState()
-				.with(CStove_Top.H_FACING, state.get(H_FACING))
-				.with(CStove_Top.WATERLOGGED, worldIn.getFluidState(pos.up()).getFluid() == Fluids.WATER)
-				.with(CStove_Top.LIT, Boolean.valueOf(false)));
-	}
-
-	/* Destroy at the same time. & Drop item. */
+	/* Collision */
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-
-		BlockState blockstate = worldIn.getBlockState(pos.up());
-		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
-		if (blockstate.getBlock() == School_Blocks.CSTOVE_top) {
-			worldIn.destroyBlock(pos.up(), false);
-		}
-		super.onBlockHarvested(worldIn, pos, state, playerIn);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 	}
 
-	/* Collisions for each property. */
+	/* Rendering */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 
-	/* 採取適正ツール */
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_cstove_bot")).applyTextStyle(TextFormatting.GRAY));
+	/* ドロップ指定 */
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return new ItemStack(Items_Chinjufu.CSTOVE_bot).getItem();
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Chinjufu.CSTOVE_bot);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_cstove_bot", meta));
 	}
 
 }

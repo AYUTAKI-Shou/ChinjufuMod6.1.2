@@ -7,7 +7,7 @@
 		"inside": "chinjufumod:blocks/bucket_inside",
 		"end" : "chinjufumod:blocks/bucket_end",
 		"naka" : "chinjufumod:blocks/tanmono",
-		"ishi" : "minecraft:block/stone"
+		"ishi" : "minecraft:blocks/stone"
 	},
 	"elements": [
 		{

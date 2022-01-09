@@ -2,10 +2,10 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/mizuoke_side",
-		"mizu": "minecraft:block/water_still",
 		"end": "chinjufumod:blocks/mizuoke_end",
 		"side": "chinjufumod:blocks/mizuoke_side",
-		"inside": "chinjufumod:blocks/mizuoke_inside"
+		"inside": "chinjufumod:blocks/mizuoke_inside",
+		"mizu": "chinjufumod:blocks/water_still"
 	},
 	"elements": [
 		{
@@ -13,10 +13,9 @@
 			"from": [ 5, 0.5, 5 ],
 			"to": [ 11, 2.2, 11 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1 }
+				"up" : { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
-
 		{
 			"name": "bot",
 			"from": [ 5, 0.5, 5 ],

@@ -1,8 +1,5 @@
 {
 	"variants": {
-		"facing=north": { "model": "chinjufumod:block/block_fuel_can" },
-		"facing=south": { "model": "chinjufumod:block/block_fuel_can", "y": 180 },
-		"facing=west": { "model": "chinjufumod:block/block_fuel_can", "y": 270 },
-		"facing=east": { "model": "chinjufumod:block/block_fuel_can", "y": 90 }
+		"normal": { "model": "chinjufumod:block_fuel_can" }
 	}
 }

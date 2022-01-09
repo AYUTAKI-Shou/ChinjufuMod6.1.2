@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/green_terracotta",
-		"front": "minecraft:block/green_terracotta",
-		"back": "minecraft:block/green_terracotta",
-		"side": "minecraft:block/green_terracotta"
+		"particle": "blocks/hardened_clay_stained_green",
+		"front": "blocks/hardened_clay_stained_green",
+		"back": "blocks/hardened_clay_stained_green",
+		"side": "blocks/hardened_clay_stained_green"
 	}
 }

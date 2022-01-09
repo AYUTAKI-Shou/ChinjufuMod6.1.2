@@ -1,0 +1,2438 @@
+#ロシア語
+#Tab
+itemGroup.tab_chinjufumod=ChinjufuMod
+itemGroup.tab_teatime=ChinjufuMod TeaTime
+itemGroup.tab_seasonal=ChinjufuMod Seasonal
+itemGroup.tab_cmarmor=ChinjufuMod Outfitting
+itemGroup.tab_cmodwadeco=ChinjufuMod JP deco
+itemGroup.tab_cmodwablock=ChinjufuMod JP block
+itemGroup.tab_wallpanel=ChinjufuMod WallPanel
+
+#Advancements
+advancements.cm_story.root.title=Добро пожаловать в ChinjufuMod
+advancements.cm_story.root.description=Получил Ключевой элемент ChinjufuMod.
+	
+advancements.cm_story.get_stamp.title=Возвращение адмирала
+advancements.cm_story.get_stamp.description=Я получил Адмирал уплотнения обратно.
+	
+advancements.cm_story.weapon.get_workorder.title=Новое оружие и броня
+advancements.cm_story.weapon.get_workorder.description=У меня есть рабочий заказ.
+advancements.cm_story.weapon.get_ammo.title=Создайте амуниция
+advancements.cm_story.weapon.get_ammo.description=У меня есть амуниция.
+advancements.cm_story.weapon.get_rensouhou.title=Создайте пушку
+advancements.cm_story.weapon.get_rensouhou.description=У меня есть пушку.
+advancements.cm_story.weapon.get_kansaiki.title=Вернуться к метателю
+advancements.cm_story.weapon.get_kansaiki.description=У меня есть истребитель.
+advancements.cm_story.weapon.get_armor.title=Более сильная броня
+advancements.cm_story.weapon.get_armor.description=У меня есть броня ChinjufuMod.
+advancements.cm_story.weapon.get_bootskai.title=Бег по воде
+advancements.cm_story.weapon.get_bootskai.description=У меня есть ботинки реформа.
+	
+advancements.cm_story.teatime.get_cookingtool.title=Создайте инструмент для кулинарии
+advancements.cm_story.teatime.get_cookingtool.description=У меня есть инструмент для кулинарии.
+advancements.cm_story.teatime.get_singledish.title=Я шеф-повар.
+advancements.cm_story.teatime.get_singledish.description=У меня одно блюдо.
+advancements.cm_story.teatime.get_teishoku.title=Давай поедим много
+advancements.cm_story.teatime.get_teishoku.description=У меня есть меню блюдо.
+advancements.cm_story.teatime.get_tea.title=Сделай перерыв
+advancements.cm_story.teatime.get_tea.description=У меня есть чашку чая.
+advancements.cm_story.teatime.get_teastand.title=Время чая важно
+advancements.cm_story.teatime.get_teastand.description=У меня есть Tea stand с Scone
+	
+advancements.cm_story.taru.get_koubo.title=Мир брожения
+advancements.cm_story.taru.get_koubo.description=У меня дрожжи.
+advancements.cm_story.taru.get_taru.title=Создайте ферментационная бочка
+advancements.cm_story.taru.get_taru.description=У меня есть ферментационная бочка.
+advancements.cm_story.taru.get_wine.title=Розлив вина
+advancements.cm_story.taru.get_wine.description=У меня есть вино.
+advancements.cm_story.taru.get_wineglass.title=Ваше здоровье!
+advancements.cm_story.taru.get_wineglass.description=У меня есть стекло с вино.
+advancements.cm_story.taru.get_vinegar.title=Розлив рисовый уксус
+advancements.cm_story.taru.get_vinegar.description=У меня рисовый уксус.
+advancements.cm_story.taru.get_sushi.title=Я шеф-повар SUSHI
+advancements.cm_story.taru.get_sushi.description=У меня есть SUSHI.
+advancements.cm_story.taru.get_shouyu.title=Розлив соевый соус
+advancements.cm_story.taru.get_shouyu.description=У меня есть соевый соус.
+advancements.cm_story.taru.get_shouyusushi.title=Вкусные SUSHI
+advancements.cm_story.taru.get_shouyusushi.description=У меня есть SUSHI с соевым соусом.
+	
+advancements.cm_story.season.get_1_newyear.title=С новым годом
+advancements.cm_story.season.get_1_newyear.description=У меня есть украшения нового года.
+advancements.cm_story.season.get_2_valentine.title=С днем ​​Святого Валентина
+advancements.cm_story.season.get_2_valentine.description=У меня есть шоколад в форме сердца.
+advancements.cm_story.season.get_3_hinakazari.title=HINAMATSURI
+advancements.cm_story.season.get_3_hinakazari.description=У меня есть HINAKAZARI.
+advancements.cm_story.season.get_4_sakura.title=Сезон Сакура
+advancements.cm_story.season.get_4_sakura.description=У меня Сакура цветок.
+advancements.cm_story.season.get_5_tealeaf.title=Урожай чайных лист
+advancements.cm_story.season.get_5_tealeaf.description=У меня чайных лист.
+advancements.cm_story.season.get_6_kasa.title=Сезон дождя
+advancements.cm_story.season.get_6_kasa.description=У меня блок WAGASA.
+advancements.cm_story.season.get_7_kakigouri.title=Сезон Kakigōri
+advancements.cm_story.season.get_7_kakigouri.description=У меня есть Kakigōri
+advancements.cm_story.season.get_8_yukata.title=Сезон YUKATA
+advancements.cm_story.season.get_8_yukata.description=У меня есть YUKATA.
+advancements.cm_story.season.get_9_harvest.title=Урожай рисовое растение
+advancements.cm_story.season.get_9_harvest.description=У меня есть рисовое растение.
+advancements.cm_story.season.get_10_autumn.title=Сезон осенних листьев
+advancements.cm_story.season.get_10_autumn.description=У меня осенние листья.
+advancements.cm_story.season.get_11_kotatsu.title=Зимняя подготовка
+advancements.cm_story.season.get_11_kotatsu.description=У меня есть KOTATSU.
+advancements.cm_story.season.get_12_xmas.title=С Рождеством
+advancements.cm_story.season.get_12_xmas.description=У меня есть рождественская ёлка.
+	
+advancements.cm_story.jpblock.get_sekkai.title=Материал блоков в японском стиле
+advancements.cm_story.jpblock.get_sekkai.description=У меня есть материал блоков в японском стиле.
+advancements.cm_story.jpblock.get_jpblock.title=Блок в японском стиле
+advancements.cm_story.jpblock.get_jpblock.description=У меня есть блок в японском стиле.
+advancements.cm_story.jpblock.get_slidedoor.title=Комната с раздвижные дверь
+advancements.cm_story.jpblock.get_slidedoor.description=У меня есть раздвижная дверь.
+advancements.cm_story.jpblock.get_tatami.title=Комната с TATAMI
+advancements.cm_story.jpblock.get_tatami.description=У меня есть TATAMI.
+advancements.cm_story.jpblock.get_jpgarden.title=Садовник в японском стиле
+advancements.cm_story.jpblock.get_jpgarden.description=У меня есть блок украшения сада.
+	
+advancements.cm_story.crops.get_seedsbox.title=Шанс получить семена
+advancements.cm_story.crops.get_seedsbox.description=У меня есть мешок с семенами.
+advancements.cm_story.crops.get_seeds.title=Давайте выращивать урожай.
+advancements.cm_story.crops.get_seeds.description=У меня есть семена ChinjufuMod.
+advancements.cm_story.crops.get_crops.title=Праздник урожая
+advancements.cm_story.crops.get_crops.description=У меня есть урожай ChinjufuMod.
+
+advancements.cm_story.fishing.toami.title=Ищу большой улов
+advancements.cm_story.fishing.toami.description=У меня Рыболовная сеть.
+advancements.cm_story.fishing.squid.title=Новые морепродукты
+advancements.cm_story.fishing.squid.description=У меня есть Сырой кальмар.
+	
+#config
+config.bauxiteore.enabledGenerator=Генерировать Бокситы руда
+config.bauxiteore.enabledGenerator.tooltip=Если установлено значение [true],, будет генерироваться бокситы руда.
+config.bauxiteore.chance=Частота бокситы руда
+config.bauxiteore.chance.tooltip=Красная пыль=25, Золотая руда=8
+
+config.cherrybiome.register=Генерировать Сакура биом
+config.cherrybiome.register.tooltip=Если установлено значение [true], будет генерироваться Сакура биом.
+config.cherrybiome.chance=Частота Сакура биом
+config.cherrybiome.chance.tooltip=общий=19, редкий=1
+config.cherrytree.chance=Частота Сакура дерева
+config.cherrytree.chance.tooltip=общий=19, редкий=1
+
+config.acerbiome.register=Генерировать Acer биом
+config.acerbiome.register.tooltip=Если установлено значение [true], будет генерироваться Acer биом.
+config.acerbiome.chance=Частота Acer биом
+config.acerbiome.chance.tooltip=общий=19, редкий=1
+config.acertree.chance=Частота Acer дерева
+config.acertree.chance.tooltip=общий=19, редкий=1
+
+config.ginkgobiome.register=Генерировать Гинкго биом
+config.ginkgobiome.register.tooltip=Если установлено значение [true], будет генерироваться Гинкго биом.
+config.ginkgobiome.chance=Частота Гинкго биом
+config.ginkgobiome.chance.tooltip=общий=19, редкий=1
+config.ginkgotree.chance=Частота Гинкго дерева
+config.ginkgotree.chance.tooltip=общий=19, редкий=1
+
+config.blastblockbreak.enabled=Взрыв боеприпасов ломает блок
+config.blastblockbreak.enabled.tooltip=Если установлено значение [true], взрыв боеприпасов ломает блокя.
+
+config.antiShadow=Сотрите тень от раздвижной двери значением освещенности 1.
+
+config.usemakimono=Используйте блоки прокрутки
+config.usemakimono.tooltip=Если установлено значение [true], вы можете использовать блоки прокрутки.
+
+
+
+
+#Block
+tile.block_empty_box.name=Пустые коробки
+item.block_fuel_can.name=Топливные баки
+item.block_ammunition_box.name=Амуниция коробки
+item.block_steel_block.name=Стальной блок
+item.block_gold_block.name=Золотые слитки
+item.block_bauxite_box.name=Бокситы коробка
+tile.block_stamp_block.name=Адмирал уплотнения_блок
+tile.block_bauxite_ore.name=Бокситы руда
+
+#Item
+item.item_emblem_c.name=Змблема
+item.item_admiralstamp.name=Адмирал уплотнения
+item.item_admiralstamp_b.name=Адмирал уплотнения
+item.item_workorder.name=Рабочий заказ
+item.item_bauxite.name=Боксит
+item.item_sumi_c.name=SUMI
+item.item_shousekkai_c.name=Гашёная известь
+item.item_claykawara.name=Вагонка глина_KAWARA
+
+tips.item_admiral_stamp=Предмет, используемый в качестве материала ремесла.
+tips.item_sumi=Сажа была излечена с помощью клея
+tips.item_shousekkai_c=Материал SHIKKUI.
+tips.item_claykawara=Гореть в печи, это превращается в KAWARA.
+
+#Weapon
+item.item_ammunition_kc.name=Амуниция большие
+item.item_ammunition_medium.name=Амуниция средний
+item.item_ammunition_small.name=Амуниция малые
+
+item.item_cartridge_kc.name=Пустые гильзы большие
+item.item_cartridge_medium.name=Пустые гильзы средний
+item.item_cartridge_small.name=Пустые гильзы малые
+item.item_nugget_iron.name=Кусочек железа
+
+item.item_rensouhou127.name=127мм пушка
+item.item_shigurehou.name=SHIGURE пушка
+item.item_koukakuhou100.name=100мм зенитная пушка
+tips.item_rensouhou127=Basic:3.0D, PlayerLV≧12:3.5D, LV≧19:4.0D, LV≧25:4.5D
+tips.item_shigurehou=Basic:3.0D, PlayerLV≧12:3.5D, LV≧19:4.0D, LV≧25:4.5D
+tips.item_koukakuhou100=Basic:3.5D, PlayerLV≧12:4.0D, LV≧19:4.5D, LV≧25:5.0D
+	
+item.item_rensouhou155.name=155мм пушка
+item.item_rensouhou203.name=203мм пушка
+item.item_rensouhou203_skc34.name=SKC34 203мм пушка
+tips.item_rensouhou155=Basic:5.5D, PlayerLV≧12:6.0D, LV≧19:6.5D, LV≧25:7.0D
+tips.item_rensouhou203=Basic:6.0D, PlayerLV≧12:6.5D, LV≧19:7.0D, LV≧25:7.5D
+tips.item_rensouhou203_skc34=Basic:7.0D, PlayerLV≧12:7.5D, LV≧19:8.0D, LV≧25:8.5D
+	
+item.item_rensouhou356.name=356мм пушка
+item.item_rensouhou356_s3.name=Tройной 356мм пушка
+item.item_rensouhou380.name=380мм пушка
+tips.item_rensouhou356=Basic:9.5D, PlayerLV≧12:10.0D, LV≧19:10.5D, LV≧25:11.0D
+tips.item_rensouhou356_s3=Basic:11.0D, PlayerLV≧12:11.5D, LV≧19:12.0D, LV≧25:12.5D
+tips.item_rensouhou380=Basic:10.5D, PlayerLV≧12:11.0D, LV≧19:11.5D, LV≧25:12.0D
+	
+tips.item_rensouhou_large=Стреляйте амуниция большие и атакуйте живые существа.
+tips.item_rensouhou_medium=Стреляйте амуниция средний и атакуйте живые существа.
+tips.item_rensouhou_small=Стреляйте амуниция малые и атакуйте живые существа.
+	
+item.item_kk_ju87.name=Ju87
+item.item_kk_ryusei.name=RYUSEI
+item.item_kk_swordfish.name=Swordfish
+item.item_kk_tbf.name=TBF Avenger
+item.item_kk_tenzan.name=TENZAN
+item.item_kk_type97.name=Торпедоносец Type97
+tips.item_kk=Бросайте и атакуйте монстров щелчком правой кнопки мыши.
+tips.item_kk_ju87=Basic:9.0F, PlayerLV≧12:10.0F, LV≧19:11.0F, LV≧25:12.0F
+tips.item_kk_ryusei=Basic:10.0F, PlayerLV≧12:11.0F, LV≧19:12.0F, LV≧25:13.0F
+tips.item_kk_swordfish=Basic:5.0F, PlayerLV≧12:6.0F, LV≧19:7.0F, LV≧25:8.0F
+tips.item_kk_tbf=Basic:11.0F, PlayerLV≧12:12.0F, LV≧19:13.0F, LV≧25:14.0F
+tips.item_kk_tenzan=Basic:7.0F, PlayerLV≧12:8.0F, LV≧19:9.0F, LV≧25:10.0F
+tips.item_kk_type97=Basic:5.0F, PlayerLV≧12:6.0F, LV≧19:7.0F, LV≧25:8.0F
+
+item.item_gyorai_61cm.name=61см Торпедо
+tips.item_gyorai=Бросайте и атакуйте живые существа щелчком правой кнопки мыши.
+tips.item_gyorai2=Basic:11.0F, PlayerLV≧12:12.0F, LV≧19:13.0F, LV≧25:14.0F
+
+#Armor
+item.item_fubuki_helmet.name=FUBUKI_шлем
+item.item_fubuki_chestplate.name=FUBUKI_Нагрудник
+item.item_fubuki_leggings.name=FUBUKI_поножи
+item.item_fubuki_boots.name=FUBUKI_ботинки
+
+item.item_kasumi_helmet.name=KASUMI_шлем
+item.item_kasumi_chestplate.name=KASUMI_Нагрудник
+item.item_kasumi_leggings.name=KASUMI_поножи
+item.item_kasumi_boots.name=KASUMI_ботинки
+
+item.item_shigure_helmet.name=SHIGURE_шлем
+item.item_shigure_chestplate.name=SHIGURE_Нагрудник
+item.item_shigure_leggings.name=SHIGURE_поножи
+item.item_shigure_boots.name=SHIGURE_ботинки
+
+item.item_shiratsuyu_helmet.name=SHIRATSUYU_шлем
+item.item_shiratsuyu_chestplate.name=SHIRATSUYU_Нагрудник
+item.item_shiratsuyu_leggings.name=SHIRATSUYU_поножи
+item.item_shiratsuyu_boots.name=SHIRATSUYU_ботинки
+	
+item.item_fubuki_bootskai.name=FUBUKI_ботинки реформа
+item.item_kasumi_bootskai.name=KASUMI_ботинки реформа
+item.item_shigure_bootskai.name=SHIGURE_ботинки реформа
+item.item_shiratsuyu_bootskai.name=SHIRATSUYU_ботинки реформа
+
+item.item_akagi_boots.name=AKAGI_ботинки
+item.item_akagi_bootskai.name=AKAGI_ботинки реформа
+item.item_akagi_chestplate.name=AKAGI_Нагрудник
+item.item_akagi_helmet.name=AKAGI_шлем
+item.item_akagi_leggings.name=AKAGI_поножи
+
+item.item_kaga_boots.name=KAGA_ботинки
+item.item_kaga_bootskai.name=KAGA_ботинки реформа
+item.item_kaga_chestplate.name=KAGA_Нагрудник
+item.item_kaga_helmet.name=KAGA_шлем
+item.item_kaga_leggings.name=KAGA_поножи
+
+item.item_kongou_boots.name=KONGOU_ботинки
+item.item_kongou_bootskai.name=KONGOU_ботинки реформа
+item.item_kongou_chestplate.name=KONGOU_Нагрудник
+item.item_kongou_helmet.name=KONGOU_шлем
+item.item_kongou_leggings.name=KONGOU_поножи
+
+item.item_mogami_boots.name=MOGAMI_ботинки
+item.item_mogami_bootskai.name=MOGAMI_ботинки реформа
+item.item_mogami_chestplate.name=MOGAMI_Нагрудник
+item.item_mogami_helmet.name=MOGAMI_шлем
+item.item_mogami_leggings.name=MOGAMI_поножи
+
+item.item_ryujou_boots.name=RYUJOU_ботинки
+item.item_ryujou_bootskai.name=RYUJOU_ботинки реформа
+item.item_ryujou_chestplate.name=RYUJOU_Нагрудник
+item.item_ryujou_helmet.name=RYUJOU_шлем
+item.item_ryujou_leggings.name=RYUJOU_поножи
+
+item.item_sendai_boots.name=SENDAI_ботинки
+item.item_sendai_bootskai.name=SENDAI_ботинки реформа
+item.item_sendai_chestplate.name=SENDAI_Нагрудник
+item.item_sendai_helmet.name=SENDAI_шлем
+item.item_sendai_leggings.name=SENDAI_поножи
+
+item.item_tone_boots.name=TONE_ботинки
+item.item_tone_bootskai.name=TONE_ботинки реформа
+item.item_tone_chestplate.name=TONE_Нагрудник
+item.item_tone_helmet.name=TONE_шлем
+item.item_tone_leggings.name=TONE_поножи
+
+item.item_yura_boots.name=YURA_ботинки
+item.item_yura_bootskai.name=YURA_ботинки реформа
+item.item_yura_chestplate.name=YURA_Нагрудник
+item.item_yura_helmet.name=YURA_шлем
+item.item_yura_leggings.name=YURA_поножи
+
+tips.item_suijou_boots=Бег по воде
+	
+#LetterTray
+item.block_lowdesk.name=Низкий стол
+item.block_lowdesk_acacia.name=Низкий стол_акация
+item.block_lowdesk_birch.name=Низкий стол_березовый
+item.block_lowdesk_darkoak.name=Низкий стол_темный дуб
+item.block_lowdesk_jungle.name=Низкий стол_тропического
+item.block_lowdesk_spruce.name=Низкий стол_еловые
+item.block_lowdesk_ichoh.name=Низкий стол_гинкго
+item.block_lowdesk_kaede.name=Низкий стол_acer
+item.block_lowdesk_sakura.name=Низкий стол_cакура
+
+item.block_lettertray_c.name=Quill перо набор
+item.block_fudetray_c.name=Кисть и чернила камень
+tips.block_lettertray=Используя книгу и 10 точки EX, вы пишете случайную зачарованная книга.
+
+#Funiture
+item.block_admiralchair.name=Адмирал стул
+item.block_admiralchair_red.name=Адмирал стул_красная
+
+item.block_unitdesk.name=Стол комбинирование
+item.block_unitdesk_acacia.name=Стол комбинирование_акация
+item.block_unitdesk_birch.name=Стол комбинирование_березовый
+item.block_unitdesk_darkoak.name=Стол комбинирование_темный дуб
+item.block_unitdesk_jungle.name=Стол комбинирование_тропического
+item.block_unitdesk_spruce.name=Стол комбинирование_еловые
+item.block_unitdesk_ichoh.name=Стол комбинирование_гинкго
+item.block_unitdesk_kaede.name=Стол комбинирование_acer
+item.block_unitdesk_sakura.name=Стол комбинирование_cакура
+
+item.block_dressingtable.name=Туалетный столик
+item.block_dressingtable_a.name=Туалетный столик_акация
+item.block_dressingtable_b.name=Туалетный столик_березовый
+item.block_dressingtable_d.name=Туалетный столик_темный дуб
+item.block_dressingtable_j.name=Туалетный столик_тропического
+item.block_dressingtable_s.name=Туалетный столик_еловые
+
+item.block_diningchair.name=Обеденный стул
+item.block_diningchair_a.name=Обеденный стул_акация
+item.block_diningchair_b.name=Обеденный стул_березовый
+item.block_diningchair_d.name=Обеденный стул_темный дуб
+item.block_diningchair_j.name=Обеденный стул_тропического
+item.block_diningchair_s.name=Обеденный стул_еловые
+
+item.block_cafechair_black.name=Кафе стул_черная
+item.block_cafechair_blue.name=Кафе стул_синяя
+item.block_cafechair_brown.name=Кафе стул_коричневая
+item.block_cafechair_cyan.name=Кафе стул_бирюзовая
+item.block_cafechair_gray.name=Кафе стул_серая
+item.block_cafechair_green.name=Кафе стул_зеленая
+item.block_cafechair_lightb.name=Кафе стул_голубая
+item.block_cafechair_lightg.name=Кафе стул_светло-серая
+item.block_cafechair_lime.name=Кафе стул_лаймовая
+item.block_cafechair_magenta.name=Кафе стул_пурпурная
+item.block_cafechair_orange.name=Кафе стул_оранжевая
+item.block_cafechair_pink.name=Кафе стул_розовая
+item.block_cafechair_purple.name=Кафе стул_фиолетовая
+item.block_cafechair_red.name=Кафе стул_красная
+item.block_cafechair_white.name=Кафе стул_белая
+item.block_cafechair_yellow.name=Кафе стул_желтая
+
+tile.block_zaisu_black.name=ZAISU_черная
+tile.block_zaisu_blue.name=ZAISU_синяя
+tile.block_zaisu_brown.name=ZAISU_коричневая
+tile.block_zaisu_cyan.name=ZAISU_бирюзовая
+tile.block_zaisu_gray.name=ZAISU_серая
+tile.block_zaisu_green.name=ZAISU_зеленая
+tile.block_zaisu_lightb.name=ZAISU_голубая
+tile.block_zaisu_lightg.name=ZAISU_светло-серая
+tile.block_zaisu_lime.name=ZAISU_лаймовая
+tile.block_zaisu_magenta.name=ZAISU_пурпурная
+tile.block_zaisu_orange.name=ZAISU_оранжевая
+tile.block_zaisu_pink.name=ZAISU_розовая
+tile.block_zaisu_purple.name=ZAISU_фиолетовая
+tile.block_zaisu_red.name=ZAISU_красная
+tile.block_zaisu_white.name=ZAISU_белая
+tile.block_zaisu_yellow.name=ZAISU_желтая
+
+tips.block_zaisu=Щелкните правой кнопкой мыши, чтобы сесть. Безногий стул
+tips.block_isu=Щелкните правой кнопкой мыши, чтобы сесть.
+
+#School
+tile.block_blackboard.name=классная доска
+
+tile.block_schoolchair.name=Школа кресло
+tile.block_schoolchair_a.name=Школа кресло_акация
+tile.block_schoolchair_b.name=Школа кресло_березовый
+tile.block_schoolchair_d.name=Школа кресло_темный дуб
+tile.block_schoolchair_j.name=Школа кресло_тропического
+tile.block_schoolchair_s.name=Школа кресло_еловые
+
+tile.block_schooldesk.name=Школа парта
+tile.block_schooldesk_a.name=Школа парта_акация
+tile.block_schooldesk_b.name=Школа парта_березовый
+tile.block_schooldesk_d.name=Школа парта_темный дуб
+tile.block_schooldesk_j.name=Школа парта_тропического
+tile.block_schooldesk_s.name=Школа парта_еловые
+
+tile.block_teacherdesk.name=Стол учителя
+tile.block_teacherdesk_a.name=Стол учителя_акация
+tile.block_teacherdesk_b.name=Стол учителя_березовый
+tile.block_teacherdesk_d.name=Стол учителя_темный дуб
+tile.block_teacherdesk_j.name=Стол учителя_тропического
+tile.block_teacherdesk_s.name=Стол учителя_еловые
+
+item.block_window.name=Oкно
+item.block_window_acacia.name=Oкно_акация
+item.block_window_birch.name=Oкно_березовый
+item.block_window_darkoak.name=Oкно_темный дуб
+item.block_window_jungle.name=Oкно_тропического
+item.block_window_spruce.name=Oкно_еловые
+item.block_window_ichoh.name=Oкно_гинкго
+item.block_window_kaede.name=Oкно_acer
+item.block_window_sakura.name=Oкно_cакура
+
+tips.block_window=Задний ход, положив его в приседание. Щелкните правой [открыть / закрыть].
+
+item.block_windowb.name=Двойное окно
+item.block_windowb_acacia.name=Двойное окно_акация
+item.block_windowb_birch.name=Двойное окно_березовый
+item.block_windowb_darkoak.name=Двойное окно_темный дуб
+item.block_windowb_jungle.name=Двойное окно_тропического
+item.block_windowb_spruce.name=Двойное окно_еловые
+item.block_windowb_ichoh.name=Двойное окно_гинкго
+item.block_windowb_kaede.name=Двойное окно_acer
+item.block_windowb_sakura.name=Двойное окно_cакура
+tips.block_windowb=Щелкните правой [открыть / закрыть].
+
+item.block_windowtall.name=Высокое окно
+item.block_windowtall_acacia.name=Высокое окно_акация
+item.block_windowtall_birch.name=Высокое окно_березовый
+item.block_windowtall_darkoak.name=Высокое окно_темный дуб
+item.block_windowtall_jungle.name=Высокое окно_тропического
+item.block_windowtall_spruce.name=Высокое окно_еловые
+item.block_windowtall_ichoh.name=Высокое окно_гинкго
+item.block_windowtall_kaede.name=Высокое окно_acer
+item.block_windowtall_sakura.name=Высокое окно_cакура
+
+item.block_windowtallbot.name=Подъемные окна
+item.block_windowtallbot_acacia.name=Подъемные окна_акация
+item.block_windowtallbot_birch.name=Подъемные окна_березовый
+item.block_windowtallbot_darkoak.name=Подъемные окна_темный дуб
+item.block_windowtallbot_jungle.name=Подъемные окна_тропического
+item.block_windowtallbot_spruce.name=Подъемные окна_еловые
+item.block_windowtallbot_ichoh.name=Подъемные окна_гинкго
+item.block_windowtallbot_kaede.name=Подъемные окна_acer
+item.block_windowtallbot_sakura.name=Подъемные окна_cакура
+
+tile.block_stovechimney_joint.name=дымоход_стык
+tile.block_stovechimney.name=дымоход
+tile.block_stovechimney_topk.name=дымоход глава_зонтичный
+
+#Mamiya
+item.block_mendai.name=Скамья
+item.block_mendai_red.name=Скамья_красная
+
+item.block_mzabuton_black.name=ZABUTON_черная
+item.block_mzabuton_blue.name=ZABUTON_синяя
+item.block_mzabuton_brown.name=ZABUTON_коричневая
+item.block_mzabuton_cyan.name=ZABUTON_бирюзовая
+item.block_mzabuton_gray.name=ZABUTON_серая
+item.block_mzabuton_green.name=ZABUTON_зеленая
+item.block_mzabuton_lightb.name=ZABUTON_голубая
+item.block_mzabuton_lightg.name=ZABUTON_светло-серая
+item.block_mzabuton_lime.name=ZABUTON_лаймовая
+item.block_mzabuton_magenta.name=ZABUTON_пурпурная
+item.block_mzabuton_orange.name=ZABUTON_оранжевая
+item.block_mzabuton_pink.name=ZABUTON_розовая
+item.block_mzabuton_purple.name=ZABUTON_фиолетовая
+item.block_mzabuton_red.name=ZABUTON_красная
+item.block_mzabuton_white.name=ZABUTON_белая
+item.block_mzabuton_yellow.name=ZABUTON_желтая
+item.block_wara_zabuton.name=ZABUTON_солома
+
+tips.block_mzabuton=Щелкните правой кнопкой мыши, чтобы сесть. Подушка для сидения
+
+item.block_cafetable.name=Кафе стол
+item.block_cafetable_acacia.name=Кафе стол_акация
+item.block_cafetable_birch.name=Кафе стол_березовый
+item.block_cafetable_darkoak.name=Кафе стол_темный дуб
+item.block_cafetable_jungle.name=Кафе стол_тропического
+item.block_cafetable_spruce.name=Кафе стол_еловые
+item.block_cafetable_ichoh.name=Кафе стол_гинкго
+item.block_cafetable_kaede.name=Кафе стол_acer
+item.block_cafetable_sakura.name=Кафе стол_cакура
+
+item.block_logchair.name=Пень стул
+item.block_logchair_acacia.name=Пень стул_акация
+item.block_logchair_birch.name=Пень стул_березовый
+item.block_logchair_darkoak.name=Пень стул_темный дуб
+item.block_logchair_jungle.name=Пень стул_тропического
+item.block_logchair_spruce.name=Пень стул_еловые
+item.block_logchair_ichoh.name=Пень стул_гинкго
+item.block_logchair_kaede.name=Пень стул_acer
+item.block_logchair_sakura.name=Пень стул_cакура
+
+tile.block_mkasa_black.name=WAGASA блок_черная
+tile.block_mkasa_blue.name=WAGASA блок_синяя
+tile.block_mkasa_brown.name=WAGASA блок_коричневая
+tile.block_mkasa_cyan.name=WAGASA блок_бирюзовая
+tile.block_mkasa_gray.name=WAGASA блок_серая
+tile.block_mkasa_green.name=WAGASA блок_зеленая
+tile.block_mkasa_lightb.name=WAGASA блок_голубая
+tile.block_mkasa_lightg.name=WAGASA блок_светло-серая
+tile.block_mkasa_lime.name=WAGASA блок_лаймовая
+tile.block_mkasa_magenta.name=WAGASA блок_пурпурная
+tile.block_mkasa_orange.name=WAGASA блок_оранжевая
+tile.block_mkasa_pink.name=WAGASA блок_розовая
+tile.block_mkasa_purple.name=WAGASA блок_фиолетовая
+tile.block_mkasa_red.name=WAGASA блок_красная
+tile.block_mkasa_white.name=WAGASA блок_белая
+tile.block_mkasa_yellow.name=WAGASA блок_желтая
+
+tips.block_mkasa=Декоративный блок. Японский стиль зонтик
+
+#Harbor
+tile.block_keikai.name=Бдительность блок
+tile.block_keiryukui.name=Швартовые сваи
+tile.block_keiryukui_b.name=Швартовые сваи_черная
+
+tile.block_ctruss.name=Ферменной
+tile.block_ctruss_black.name=Ферменной_черная
+tile.block_ctruss_blue.name=Ферменной_синяя
+tile.block_ctruss_brown.name=Ферменной_коричневая
+tile.block_ctruss_cyan.name=Ферменной_бирюзовая
+tile.block_ctruss_gray.name=Ферменной_серая
+tile.block_ctruss_green.name=Ферменной_зеленая
+tile.block_ctruss_lightb.name=Ферменной_голубая
+tile.block_ctruss_lime.name=Ферменной_лаймовая
+tile.block_ctruss_magenta.name=Ферменной_пурпурная
+tile.block_ctruss_orange.name=Ферменной_оранжевая
+tile.block_ctruss_pink.name=Ферменной_розовая
+tile.block_ctruss_purple.name=Ферменной_фиолетовая
+tile.block_ctruss_red.name=Ферменной_красная
+tile.block_ctruss_white.name=Ферменной_белая
+tile.block_ctruss_yellow.name=Ферменной_желтая
+
+#Seasons
+item.block_kagamimochi.name=KAGAMIMOCHI
+tips.block_kagamimochi=Подношения <TOSHIGAMI>. Молиться о хорошем урожае. Дек. 28-Янв. 11
+tile.block_shimenawa.name=SHIMENAWA
+tips.block_shimenawa=Украшения Нового года приветствовать <TOSHIGAMI>. Скажите <TOSHIGAMI>, чтобы убрать дом. С 13 по 15 января
+item.block_kadomatsu.name=KADOMATSU
+tips.block_kadomatsu=Украшения Нового года приветствовать <TOSHIGAMI>. Молиться за долголетие. С 13 по 15 января
+
+item.block_yunomi.name=YUNOMI
+tips.block_yunomi=Кубок японского чая
+
+item.block_chabudai.name=CHABUDAI
+item.block_chabudai_acacia.name=CHABUDAI_акация
+item.block_chabudai_birch.name=CHABUDAI_березовый
+item.block_chabudai_darkoak.name=CHABUDAI_темный дуб
+item.block_chabudai_jungle.name=CHABUDAI_тропического
+item.block_chabudai_spruce.name=CHABUDAI_еловые
+item.block_chabudai_ichoh.name=CHABUDAI_гинкго
+item.block_chabudai_kaede.name=CHABUDAI_acer
+item.block_chabudai_sakura.name=CHABUDAI_cакура
+tips.block_chabudai=Низкий стол для еды.
+
+item.block_kotatsu.name=KOTATSU
+item.block_kotatsu_acacia.name=KOTATSU_акация
+item.block_kotatsu_birch.name=KOTATSU_березовый
+item.block_kotatsu_darkoak.name=KOTATSU_темный дуб
+item.block_kotatsu_jungle.name=KOTATSU_тропического
+item.block_kotatsu_spruce.name=KOTATSU_еловые
+item.block_kotatsu_ichoh.name=KOTATSU_гинкго
+item.block_kotatsu_kaede.name=KOTATSU_acer
+item.block_kotatsu_sakura.name=KOTATSU_cакура
+tips.block_kotatsu=Комбинированный стол для обогрева и одеяло.
+
+tile.block_hinadan.name=HINADAN
+tips.block_hinadan=Основа HINAKAZARI.
+tile.block_hinakazari.name=HINAKAZARI
+tips.block_hinakazari=Украшение <HINAMATSURI>. 3 марта - <HINAMATSURI>, чтобы помолиться за здоровый рост девочек.
+
+#Wallpane
+tile.block_pillar_aca_c.name=Столб_акация
+tile.block_pillar_bir_c.name=Столб_березовый
+tile.block_pillar_doak_c.name=Столб_темный дуб
+tile.block_pillar_jun_c.name=Столб_тропического
+tile.block_pillar_oak_c.name=Столб_дуб
+tile.block_pillar_spru_c.name=Столб_еловые
+
+tile.block_rockstairs_and.name=Ступеньки андезит
+tile.block_rockstairs_dio.name=Ступеньки диорит
+tile.block_rockstairs_gra.name=Ступеньки гранит
+
+tile.block_rand_slabhalf.name=Плита андезит
+tile.block_rdio_slabhalf.name=Плита диорит
+tile.block_rgra_slabhalf.name=Плита гранит
+
+item.block_brick_and_c.name=Андезит кирпичи
+item.block_brick_dio_c.name=Диорит кирпичи
+item.block_brick_gra_c.name=Гранит кирпичи
+
+item.block_brick_and_ch_c.name=Резные андезит кирпичи
+item.block_brick_dio_ch_c.name=Резные диорит кирпичи
+item.block_brick_gra_ch_c.name=Резные гранит кирпичи
+
+item.block_brick_and_cr_c.name=Потрескавшиеся андезит кирпичи
+item.block_brick_dio_cr_c.name=Потрескавшиеся диорит кирпичи
+item.block_brick_gra_cr_c.name=Потрескавшиеся гранит кирпичи
+
+item.block_brick_and_mos_c.name=Замшелые андезит кирпичи
+item.block_brick_dio_mos_c.name=Замшелые диорит кирпичи
+item.block_brick_gra_mos_c.name=Замшелые гранит кирпичи
+
+tile.block_brickstairs_and_c.name=Ступеньки андезит кирпичи
+tile.block_brickstairs_dio_c.name=Ступеньки диорит кирпичи
+tile.block_brickstairs_gra_c.name=Ступеньки гранит кирпичи
+
+tile.block_bac_slabhalf.name=Плита андезит кирпичи
+tile.block_bdc_slabhalf.name=Плита диорит кирпичи
+tile.block_bgc_slabhalf.name=Плита гранит кирпичи
+
+tile.block_brick_stone_pil_c.name=Столб_камень
+tile.block_brick_and_pil_c.name=Столб_андезит
+tile.block_brick_dio_pil_c.name=Столб_диорит
+tile.block_brick_gra_pil_c.name=Столб_гранит
+
+tile.block_wp_log_aca.name=Панель_акация
+tile.block_wp_log_bir.name=Панель_березовый
+tile.block_wp_log_doak.name=Панель_темный дуб
+tile.block_wp_log_jun.name=Панель_тропического
+tile.block_wp_log_oak.name=Панель_дуб
+tile.block_wp_log_spru.name=Панель_еловые
+
+tile.block_wp_plank_aca.name=Панель_акация доски
+tile.block_wp_plank_bir.name=Панель_березовый доски
+tile.block_wp_plank_doak.name=Панель_темный дуб доски
+tile.block_wp_plank_jun.name=Панель_тропического доски
+tile.block_wp_plank_oak.name=Панель_дуб доски
+tile.block_wp_plank_spru.name=Панель_еловые доски
+
+tile.block_wp_stone.name=Панель_камень
+tile.block_wp_stone_m.name=Панель_булыжник
+
+tile.block_wp_stone_and.name=Панель_андезит
+tile.block_wp_stone_dio.name=Панель_диорит
+tile.block_wp_stone_gra.name=Панель_гранит
+
+tile.block_wp_stone_b.name=Панель_камень кирпичи
+tile.block_wp_stone_andb.name=Панель_андезит кирпичи
+tile.block_wp_stone_diob.name=Панель_диорит кирпичи
+tile.block_wp_stone_grab.name=Панель_гранит кирпичи
+
+tile.block_wp_stone_p.name=Панель_камень столб
+tile.block_wp_stone_andp.name=Панель_андезит столб
+tile.block_wp_stone_diop.name=Панель_диорит столб
+tile.block_wp_stone_grap.name=Панель_гранит столб
+
+tile.block_wp_brick.name=Панель_кирпичи
+
+tile.block_wp_sand_stone.name=Панель_песчаник
+tile.block_wp_redsand_stone.name=Панель_красный песчаник
+
+tile.block_wp_prisma.name=Панель_призмарин
+tile.block_wp_obsidian.name=Панель_обсидиан
+
+tile.block_wp_clay.name=Панель_Терракота
+tile.block_wp_clay_black.name=Панель_черная Терракота
+tile.block_wp_clay_blue.name=Панель_синяя Терракота
+tile.block_wp_clay_brown.name=Панель_коричневая Терракота
+tile.block_wp_clay_cyan.name=Панель_бирюзовая Терракота
+tile.block_wp_clay_gray.name=Панель_серая Терракота
+tile.block_wp_clay_green.name=Панель_зеленая Терракота
+tile.block_wp_clay_lightb.name=Панель_голубая Терракота
+tile.block_wp_clay_lightg.name=Панель_светло-серая Терракота
+tile.block_wp_clay_lime.name=Панель_лаймовая Терракота
+tile.block_wp_clay_magenta.name=Панель_пурпурная Терракота
+tile.block_wp_clay_orange.name=Панель_оранжевая Терракота
+tile.block_wp_clay_pink.name=Панель_розовая Терракота
+tile.block_wp_clay_purple.name=Панель_фиолетовая Терракота
+tile.block_wp_clay_red.name=Панель_красная Терракота
+tile.block_wp_clay_white.name=Панель_белая Терракота
+tile.block_wp_clay_yellow.name=Панель_желтая Терракота
+
+tile.block_wp_glass.name=Панель_стекло
+tile.block_wp_glass_black.name=Панель_черная стекло
+tile.block_wp_glass_blue.name=Панель_синяя стекло
+tile.block_wp_glass_brown.name=Панель_коричневая стекло
+tile.block_wp_glass_cyan.name=Панель_бирюзовая стекло
+tile.block_wp_glass_gray.name=Панель_серая стекло
+tile.block_wp_glass_green.name=Панель_зеленая стекло
+tile.block_wp_glass_lightb.name=Панель_голубая стекло
+tile.block_wp_glass_lightg.name=Панель_светло-серая стекло
+tile.block_wp_glass_lime.name=Панель_лаймовая стекло
+tile.block_wp_glass_magenta.name=Панель_пурпурная стекло
+tile.block_wp_glass_orange.name=Панель_оранжевая стекло
+tile.block_wp_glass_pink.name=Панель_розовая стекло
+tile.block_wp_glass_purple.name=Панель_фиолетовая стекло
+tile.block_wp_glass_red.name=Панель_красная стекло
+tile.block_wp_glass_white.name=Панель_белая стекло
+tile.block_wp_glass_yellow.name=Панель_желтая стекло
+
+tile.block_wp_netherrack.name=Панель_незерит
+tile.block_wp_netherb.name=Панель_незерит кирпичи
+tile.block_wp_netherb10.name=Панель_незерит кирпичи
+tile.block_wp_quartz.name=Панель_кварчевый
+tile.block_wp_quartz_pil.name=Панель_кварчевый колонна
+
+tile.block_wp_endstone.name=Панель_зндерняк
+tile.block_wp_endstone_b.name=Панель_зндерняк кирпичи
+
+tile.block_wp_purpur.name=Панель_пурпур
+tile.block_wp_purpur_pil.name=Панель_пурпур столб
+
+tile.block_wp_dirtwall.name=Панель_Саман
+tile.block_wp_plaster_black.name=Панель_SHIKKUI черная
+tile.block_wp_plaster_blue.name=Панель_SHIKKUI синяя
+tile.block_wp_plaster_brown.name=Панель_SHIKKUI коричневая
+tile.block_wp_plaster_cyan.name=Панель_SHIKKUI бирюзовая
+tile.block_wp_plaster_gray.name=Панель_SHIKKUI серая
+tile.block_wp_plaster_green.name=Панель_SHIKKUI зеленая
+tile.block_wp_plaster_lightb.name=Панель_SHIKKUI голубая
+tile.block_wp_plaster_lightg.name=Панель_SHIKKUI светло-серая
+tile.block_wp_plaster_lime.name=Панель_SHIKKUI лаймовая
+tile.block_wp_plaster_magenta.name=Панель_SHIKKUI пурпурная
+tile.block_wp_plaster_orange.name=Панель_SHIKKUI оранжевая
+tile.block_wp_plaster_pink.name=Панель_SHIKKUI розовая
+tile.block_wp_plaster_purple.name=Панель_SHIKKUI фиолетовая
+tile.block_wp_plaster_red.name=Панель_SHIKKUI красная
+tile.block_wp_plaster_white.name=Панель_SHIKKUI белая
+tile.block_wp_plaster_yellow.name=Панель_SHIKKUI желтая
+
+tile.block_wp_namako_black.name=Панель_NAMAKO стена черная
+tile.block_wp_namako_blue.name=Панель_NAMAKO стена синяя
+tile.block_wp_namako_brown.name=Панель_NAMAKO стена коричневая
+tile.block_wp_namako_cyan.name=Панель_NAMAKO стена бирюзовая
+tile.block_wp_namako_gray.name=Панель_NAMAKO стена серая
+tile.block_wp_namako_green.name=Панель_NAMAKO стена зеленая
+tile.block_wp_namako_lightb.name=Панель_NAMAKO стена голубая
+tile.block_wp_namako_lightg.name=Панель_NAMAKO стена светло-серая
+tile.block_wp_namako_lime.name=Панель_NAMAKO стена лаймовая
+tile.block_wp_namako_magenta.name=Панель_NAMAKO стена пурпурная
+tile.block_wp_namako_orange.name=Панель_NAMAKO стена оранжевая
+tile.block_wp_namako_pink.name=Панель_NAMAKO стена розовая
+tile.block_wp_namako_purple.name=Панель_NAMAKO стена фиолетовая
+tile.block_wp_namako_red.name=Панель_NAMAKO стена красная
+tile.block_wp_namako_white.name=Панель_NAMAKO стена белая
+tile.block_wp_namako_yellow.name=Панель_NAMAKO стена желтая
+
+tile.block_wp_namako_b_black.name=Панель_NAMAKO стена тип2 черная
+tile.block_wp_namako_b_blue.name=Панель_NAMAKO стена тип2 синяя
+tile.block_wp_namako_b_brown.name=Панель_NAMAKO стена тип2 коричневая
+tile.block_wp_namako_b_cyan.name=Панель_NAMAKO стена тип2 бирюзовая
+tile.block_wp_namako_b_gray.name=Панель_NAMAKO стена тип2 серая
+tile.block_wp_namako_b_green.name=Панель_NAMAKO стена тип2 зеленая
+tile.block_wp_namako_b_lightb.name=Панель_NAMAKO стена тип2 голубая
+tile.block_wp_namako_b_lightg.name=Панель_NAMAKO стена тип2 светло-серая
+tile.block_wp_namako_b_lime.name=Панель_NAMAKO стена тип2 лаймовая
+tile.block_wp_namako_b_magenta.name=Панель_NAMAKO стена тип2 пурпурная
+tile.block_wp_namako_b_orange.name=Панель_NAMAKO стена тип2 оранжевая
+tile.block_wp_namako_b_pink.name=Панель_NAMAKO стена тип2 розовая
+tile.block_wp_namako_b_purple.name=Панель_NAMAKO стена тип2 фиолетовая
+tile.block_wp_namako_b_red.name=Панель_NAMAKO стена тип2 красная
+tile.block_wp_namako_b_white.name=Панель_NAMAKO стена тип2 белая
+tile.block_wp_namako_b_yellow.name=Панель_NAMAKO стена тип2 желтая
+
+tips.wp_stage2=Изменить правой кнопкой мыши в приседание. 2 этап.
+tips.wp_stage3=Изменить правой кнопкой мыши в приседание. 3 этап.
+tips.wp_stage4=Изменить правой кнопкой мыши в приседание. 4 этап.
+
+#Fusuma
+tile.block_shoujih.name=SHOUJI окно
+tile.block_shoujih_acacia.name=SHOUJI окно_акация
+tile.block_shoujih_birch.name=SHOUJI окно_березовый
+tile.block_shoujih_darkoak.name=SHOUJI окно_темный дуб
+tile.block_shoujih_jungle.name=SHOUJI окно_тропического
+tile.block_shoujih_spruce.name=SHOUJI окно_еловые
+
+#Ranma
+tile.block_ranma_aca.name=RANMA_акация
+tile.block_ranma_bir.name=RANMA_березовый
+tile.block_ranma_doak.name=RANMA_темный дуб
+tile.block_ranma_jun.name=RANMA_тропического
+tile.block_ranma_oak.name=RANMA
+tile.block_ranma_spru.name=RANMA_еловые
+tips.block_ranma=Он используется для дневного освещения, вентиляции, украшения.
+
+tile.block_ranmab_aca.name=RANMA тип2_акация
+tile.block_ranmab_bir.name=RANMA тип2_березовый
+tile.block_ranmab_doak.name=RANMA тип2_темный дуб
+tile.block_ranmab_jun.name=RANMA тип2_тропического
+tile.block_ranmab_oak.name=RANMA тип2
+tile.block_ranmab_spru.name=RANMA тип2_еловые
+
+tile.block_ranmac_aca.name=RANMA тип3_акация
+tile.block_ranmac_bir.name=RANMA тип3_березовый
+tile.block_ranmac_doak.name=RANMA тип3_темный дуб
+tile.block_ranmac_jun.name=RANMA тип3_тропического
+tile.block_ranmac_oak.name=RANMA тип3
+tile.block_ranmac_spru.name=RANMA тип3_еловые
+
+tile.block_kanki_aca.name=Вентиляция_акация
+tile.block_kanki_bir.name=Вентиляция_березовый
+tile.block_kanki_doak.name=Вентиляция_емный дуб
+tile.block_kanki_jun.name=Вентиляция_тропического
+tile.block_kanki_oak.name=Вентиляция
+tile.block_kanki_spru.name=Вентиляция_еловые
+
+tile.block_koushi_oak.name=Вертикальная решетка
+tile.block_koushi_aca.name=Вертикальная решетка_акация
+tile.block_koushi_bir.name=Вертикальная решетка_березовый
+tile.block_koushi_doak.name=Вертикальная решетка_емный дуб
+tile.block_koushi_jun.name=Вертикальная решетка_тропического
+tile.block_koushi_spru.name=Вертикальная решетка_еловые
+
+#Tatami
+tile.block_tatamih.name=TATAMI_без края
+tile.block_tatamih_black.name=TATAMI_черная
+tile.block_tatamih_blue.name=TATAMI_синяя
+tile.block_tatamih_brown.name=TATAMI_коричневая
+tile.block_tatamih_cyan.name=TATAMI_бирюзовая
+tile.block_tatamih_gray.name=TATAMI_серая
+tile.block_tatamih_green.name=TATAMI_зеленая
+tile.block_tatamih_lightb.name=TATAMI_голубая
+tile.block_tatamih_lightg.name=TATAMI_светло-серая
+tile.block_tatamih_lime.name=TATAMI_лаймовая
+tile.block_tatamih_magenta.name=TATAMI_пурпурная
+tile.block_tatamih_orange.name=TATAMI_оранжевая
+tile.block_tatamih_pink.name=TATAMI_розовая
+tile.block_tatamih_purple.name=TATAMI_фиолетовая
+tile.block_tatamih_red.name=TATAMI_красная
+tile.block_tatamih_yellow.name=TATAMI_желтая
+tile.block_tatamih_white.name=TATAMI_белая
+tips.block_tatami=Направленные материалы для пола.
+
+tile.block_futon_c_black.name=FUTON_черная
+tile.block_futon_c_blue.name=FUTON_синяя
+tile.block_futon_c_brown.name=FUTON_коричневая
+tile.block_futon_c_cyan.name=FUTON_бирюзовая
+tile.block_futon_c_gray.name=FUTON_серая
+tile.block_futon_c_green.name=FUTON_зеленая
+tile.block_futon_c_lightb.name=FUTON_голубая
+tile.block_futon_c_lightg.name=FUTON_светло-серая
+tile.block_futon_c_lime.name=FUTON_лаймовая
+tile.block_futon_c_magenta.name=FUTON_пурпурная
+tile.block_futon_c_orange.name=FUTON_оранжевая
+tile.block_futon_c_pink.name=FUTON_розовая
+tile.block_futon_c_purple.name=FUTON_фиолетовая
+tile.block_futon_c_red.name=FUTON_красная
+tile.block_futon_c_yellow.name=FUTON_желтая
+tile.block_futon_c_white.name=FUTON_белая
+tips.block_futon=Открываем правой кнопкой мыши в приседание. Сидение и регенерация.
+
+#Kawara
+item.block_kawara_black.name=KAWARA
+item.block_kawara_blue.name=KAWARA_синяя
+item.block_kawara_brown.name=KAWARA_коричневая
+item.block_kawara_cyan.name=KAWARA_бирюзовая
+item.block_kawara_gray.name=KAWARA_серая
+item.block_kawara_green.name=KAWARA_зеленая
+item.block_kawara_lightb.name=KAWARA_голубая
+item.block_kawara_lightg.name=KAWARA_светло-серая
+item.block_kawara_lime.name=KAWARA_лаймовая
+item.block_kawara_magenta.name=KAWARA_пурпурная
+item.block_kawara_orange.name=KAWARA_оранжевая
+item.block_kawara_pink.name=KAWARA_розовая
+item.block_kawara_purple.name=KAWARA_фиолетовая
+item.block_kawara_red.name=KAWARA_красная
+item.block_kawara_yellow.name=KAWARA_желтая
+item.block_kawara_white.name=KAWARA_белая
+tips.block_kawara=Кровельный материал, сделанный из выпечки.
+
+tile.block_kst_black.name=KAWARA ступеньки
+tile.block_kst_blue.name=KAWARA ступеньки_синяя
+tile.block_kst_brown.name=KAWARA ступеньки_коричневая
+tile.block_kst_cyan.name=KAWARA ступеньки_бирюзовая
+tile.block_kst_gray.name=KAWARA ступеньки_серая
+tile.block_kst_green.name=KAWARA ступеньки_зеленая
+tile.block_kst_lightb.name=KAWARA ступеньки_голубая
+tile.block_kst_lightg.name=KAWARA ступеньки_светло-серая
+tile.block_kst_lime.name=KAWARA ступеньки_лаймовая
+tile.block_kst_magenta.name=KAWARA ступеньки_пурпурная
+tile.block_kst_orange.name=KAWARA ступеньки_оранжевая
+tile.block_kst_pink.name=KAWARA ступеньки_розовая
+tile.block_kst_purple.name=KAWARA ступеньки_фиолетовая
+tile.block_kst_red.name=KAWARA ступеньки_красная
+tile.block_kst_yellow.name=KAWARA ступеньки_желтая
+tile.block_kst_white.name=KAWARA ступеньки_белая
+
+tile.block_ksh_black.name=KAWARA плита
+tile.block_ksh_blue.name=KAWARA плита_синяя
+tile.block_ksh_brown.name=KAWARA плита_коричневая
+tile.block_ksh_cyan.name=KAWARA плита_бирюзовая
+tile.block_ksh_gray.name=KAWARA плита_серая
+tile.block_ksh_green.name=KAWARA плита_зеленая
+tile.block_ksh_lightb.name=KAWARA плита_голубая
+tile.block_ksh_lightg.name=KAWARA плита_светло-серая
+tile.block_ksh_lime.name=KAWARA плита_лаймовая
+tile.block_ksh_magenta.name=KAWARA плита_пурпурная
+tile.block_ksh_orange.name=KAWARA плита_оранжевая
+tile.block_ksh_pink.name=KAWARA плита_розовая
+tile.block_ksh_purple.name=KAWARA плита_фиолетовая
+tile.block_ksh_red.name=KAWARA плита_красная
+tile.block_ksh_yellow.name=KAWARA плита_желтая
+tile.block_ksh_white.name=KAWARA плита_белая
+
+item.block_namako_black.name=NAMAKO стена_черная
+item.block_namako_blue.name=NAMAKO стена_синяя
+item.block_namako_brown.name=NAMAKO стена_коричневая
+item.block_namako_cyan.name=NAMAKO стена_бирюзовая
+item.block_namako_gray.name=NAMAKO стена_серая
+item.block_namako_green.name=NAMAKO стена_зеленая
+item.block_namako_lightb.name=NAMAKO стена_голубая
+item.block_namako_lightg.name=NAMAKO стена_светло-серая
+item.block_namako_lime.name=NAMAKO стена_лаймовая
+item.block_namako_magenta.name=NAMAKO стена_пурпурная
+item.block_namako_orange.name=NAMAKO стена_оранжевая
+item.block_namako_pink.name=NAMAKO стена_розовая
+item.block_namako_purple.name=NAMAKO стена_фиолетовая
+item.block_namako_red.name=NAMAKO стена_красная
+item.block_namako_yellow.name=NAMAKO стена_желтая
+item.block_namako_white.name=NAMAKO стена
+tips.block_namako=Стена с KAWARA застряла с SHIKKUI.
+
+tile.block_nst_black.name=NAMAKO ступеньки_черная
+tile.block_nst_blue.name=NAMAKO ступеньки_синяя
+tile.block_nst_brown.name=NAMAKO ступеньки_коричневая
+tile.block_nst_cyan.name=NAMAKO ступеньки_бирюзовая
+tile.block_nst_gray.name=NAMAKO ступеньки_серая
+tile.block_nst_green.name=NAMAKO ступеньки_зеленая
+tile.block_nst_lightb.name=NAMAKO ступеньки_голубая
+tile.block_nst_lightg.name=NAMAKO ступеньки_светло-серая
+tile.block_nst_lime.name=NAMAKO ступеньки_лаймовая
+tile.block_nst_magenta.name=NAMAKO ступеньки_пурпурная
+tile.block_nst_orange.name=NAMAKO ступеньки_оранжевая
+tile.block_nst_pink.name=NAMAKO ступеньки_розовая
+tile.block_nst_purple.name=NAMAKO ступеньки_фиолетовая
+tile.block_nst_red.name=NAMAKO ступеньки_красная
+tile.block_nst_yellow.name=NAMAKO ступеньки_желтая
+tile.block_nst_white.name=NAMAKO ступеньки
+
+tile.block_nsh_black.name=NAMAKO плита_черная
+tile.block_nsh_blue.name=NAMAKO плита_синяя
+tile.block_nsh_brown.name=NAMAKO плита_коричневая
+tile.block_nsh_cyan.name=NAMAKO плита_бирюзовая
+tile.block_nsh_gray.name=NAMAKO плита_серая
+tile.block_nsh_green.name=NAMAKO плита_зеленая
+tile.block_nsh_lightb.name=NAMAKO плита_голубая
+tile.block_nsh_lightg.name=NAMAKO плита_светло-серая
+tile.block_nsh_lime.name=NAMAKO плита_лаймовая
+tile.block_nsh_magenta.name=NAMAKO плита_пурпурная
+tile.block_nsh_orange.name=NAMAKO плита_оранжевая
+tile.block_nsh_pink.name=NAMAKO плита_розовая
+tile.block_nsh_purple.name=NAMAKO плита_фиолетовая
+tile.block_nsh_red.name=NAMAKO плита_красная
+tile.block_nsh_yellow.name=NAMAKO плита_желтая
+tile.block_nsh_white.name=NAMAKO плита
+
+item.block_namako_b_black.name=NAMAKO стена тип2_черная
+item.block_namako_b_blue.name=NAMAKO стена тип2_синяя
+item.block_namako_b_brown.name=NAMAKO стена тип2_коричневая
+item.block_namako_b_cyan.name=NAMAKO стена тип2_бирюзовая
+item.block_namako_b_gray.name=NAMAKO стена тип2_серая
+item.block_namako_b_green.name=NAMAKO стена тип2_зеленая
+item.block_namako_b_lightb.name=NAMAKO стена тип2_голубая
+item.block_namako_b_lightg.name=NAMAKO стена тип2_светло-серая
+item.block_namako_b_lime.name=NAMAKO стена тип2_лаймовая
+item.block_namako_b_magenta.name=NAMAKO стена тип2_пурпурная
+item.block_namako_b_orange.name=NAMAKO стена тип2_оранжевая
+item.block_namako_b_pink.name=NAMAKO стена тип2_розовая
+item.block_namako_b_purple.name=NAMAKO стена тип2_фиолетовая
+item.block_namako_b_red.name=NAMAKO стена тип2_красная
+item.block_namako_b_yellow.name=NAMAKO стена тип2_желтая
+item.block_namako_b_white.name=NAMAKO стена тип2
+
+tile.block_nst_b_black.name=NAMAKO ступеньки тип2_черная
+tile.block_nst_b_blue.name=NAMAKO ступеньки тип2_синяя
+tile.block_nst_b_brown.name=NAMAKO ступеньки тип2_коричневая
+tile.block_nst_b_cyan.name=NAMAKO ступеньки тип2_бирюзовая
+tile.block_nst_b_gray.name=NAMAKO ступеньки тип2_серая
+tile.block_nst_b_green.name=NAMAKO ступеньки тип2_зеленая
+tile.block_nst_b_lightb.name=NAMAKO ступеньки тип2_голубая
+tile.block_nst_b_lightg.name=NAMAKO ступеньки тип2_светло-серая
+tile.block_nst_b_lime.name=NAMAKO ступеньки тип2_лаймовая
+tile.block_nst_b_magenta.name=NAMAKO ступеньки тип2_пурпурная
+tile.block_nst_b_orange.name=NAMAKO ступеньки тип2_оранжевая
+tile.block_nst_b_pink.name=NAMAKO ступеньки тип2_розовая
+tile.block_nst_b_purple.name=NAMAKO ступеньки тип2_фиолетовая
+tile.block_nst_b_red.name=NAMAKO ступеньки тип2_красная
+tile.block_nst_b_yellow.name=NAMAKO ступеньки тип2_желтая
+tile.block_nst_b_white.name=NAMAKO ступеньки тип2
+
+tile.block_nsh_b_black.name=NAMAKO плита тип2_черная
+tile.block_nsh_b_blue.name=NAMAKO плита тип2_синяя
+tile.block_nsh_b_brown.name=NAMAKO плита тип2_коричневая
+tile.block_nsh_b_cyan.name=NAMAKO плита тип2_бирюзовая
+tile.block_nsh_b_gray.name=NAMAKO плита тип2_серая
+tile.block_nsh_b_green.name=NAMAKO плита тип2_зеленая
+tile.block_nsh_b_lightb.name=NAMAKO плита тип2_голубая
+tile.block_nsh_b_lightg.name=NAMAKO плита тип2_светло-серая
+tile.block_nsh_b_lime.name=NAMAKO плита тип2_лаймовая
+tile.block_nsh_b_magenta.name=NAMAKO плита тип2_пурпурная
+tile.block_nsh_b_orange.name=NAMAKO плита тип2_оранжевая
+tile.block_nsh_b_pink.name=NAMAKO плита тип2_розовая
+tile.block_nsh_b_purple.name=NAMAKO плита тип2_фиолетовая
+tile.block_nsh_b_red.name=NAMAKO плита тип2_красная
+tile.block_nsh_b_yellow.name=NAMAKO плита тип2_желтая
+tile.block_nsh_b_white.name=NAMAKO плита тип2
+
+item.block_dirtwall.name=Саман блок
+tile.block_dirtwall_st.name=Саман ступеньки
+tile.block_dirtwall_sh.name=Саман плита
+
+#Plaster
+item.block_plaster_black.name=SHIKKUI_черная
+item.block_plaster_blue.name=SHIKKUI_синяя
+item.block_plaster_brown.name=SHIKKUI_коричневая
+item.block_plaster_cyan.name=SHIKKUI_бирюзовая
+item.block_plaster_gray.name=SHIKKUI_серая
+item.block_plaster_green.name=SHIKKUI_зеленая
+item.block_plaster_lightb.name=SHIKKUI_голубая
+item.block_plaster_lightg.name=SHIKKUI_светло-серая
+item.block_plaster_lime.name=SHIKKUI_лаймовая
+item.block_plaster_magenta.name=SHIKKUI_пурпурная
+item.block_plaster_orange.name=SHIKKUI_оранжевая
+item.block_plaster_pink.name=SHIKKUI_розовая
+item.block_plaster_purple.name=SHIKKUI_фиолетовая
+item.block_plaster_red.name=SHIKKUI_красная
+item.block_plaster_yellow.name=SHIKKUI_желтая
+item.block_plaster_white.name=SHIKKUI
+tips.block_plaster=Строительный материал с использованием гашёная известь.
+
+tile.block_pst_black.name=SHIKKUI ступеньки_черная
+tile.block_pst_blue.name=SHIKKUI ступеньки_синяя
+tile.block_pst_brown.name=SHIKKUI ступеньки_коричневая
+tile.block_pst_cyan.name=SHIKKUI ступеньки_бирюзовая
+tile.block_pst_gray.name=SHIKKUI ступеньки_серая
+tile.block_pst_green.name=SHIKKUI ступеньки_зеленая
+tile.block_pst_lightb.name=SHIKKUI ступеньки_голубая
+tile.block_pst_lightg.name=SHIKKUI ступеньки_светло-серая
+tile.block_pst_lime.name=SHIKKUI ступеньки_лаймовая
+tile.block_pst_magenta.name=SHIKKUI ступеньки_пурпурная
+tile.block_pst_orange.name=SHIKKUI ступеньки_оранжевая
+tile.block_pst_pink.name=SHIKKUI ступеньки_розовая
+tile.block_pst_purple.name=SHIKKUI ступеньки_фиолетовая
+tile.block_pst_red.name=SHIKKUI ступеньки_красная
+tile.block_pst_yellow.name=SHIKKUI ступеньки_желтая
+tile.block_pst_white.name=SHIKKUI ступеньки
+
+tile.block_psh_black.name=SHIKKUI плита_черная
+tile.block_psh_blue.name=SHIKKUI плита_синяя
+tile.block_psh_brown.name=SHIKKUI плита_коричневая
+tile.block_psh_cyan.name=SHIKKUI плита_бирюзовая
+tile.block_psh_gray.name=SHIKKUI плита_серая
+tile.block_psh_green.name=SHIKKUI плита_зеленая
+tile.block_psh_lightb.name=SHIKKUI плита_голубая
+tile.block_psh_lightg.name=SHIKKUI плита_светло-серая
+tile.block_psh_lime.name=SHIKKUI плита_лаймовая
+tile.block_psh_magenta.name=SHIKKUI плита_пурпурная
+tile.block_psh_orange.name=SHIKKUI плита_оранжевая
+tile.block_psh_pink.name=SHIKKUI плита_розовая
+tile.block_psh_purple.name=SHIKKUI плита_фиолетовая
+tile.block_psh_red.name=SHIKKUI плита_красная
+tile.block_psh_yellow.name=SHIKKUI плита_желтая
+tile.block_psh_white.name=SHIKKUI плита
+
+#Noren
+tile.block_noren_black.name=NOREN_черная
+tile.block_noren_blue.name=NOREN_синяя
+tile.block_noren_brown.name=NOREN_коричневая
+tile.block_noren_cyan.name=NOREN_бирюзовая
+tile.block_noren_gray.name=NOREN_серая
+tile.block_noren_green.name=NOREN_зеленая
+tile.block_noren_lightb.name=NOREN_голубая
+tile.block_noren_lightg.name=NOREN_светло-серая
+tile.block_noren_lime.name=NOREN_лаймовая
+tile.block_noren_magenta.name=NOREN_пурпурная
+tile.block_noren_orange.name=NOREN_оранжевая
+tile.block_noren_pink.name=NOREN_розовая
+tile.block_noren_purple.name=NOREN_фиолетовая
+tile.block_noren_red.name=NOREN_красная
+tile.block_noren_yellow.name=NOREN_желтая
+tile.block_noren_white.name=NOREN_белая
+tips.block_noren=Ткань будет использоваться для тентов и с завязанными глазами.
+
+#TeaTime
+#Garden
+tile.block_sudare_1.name=SUDARE
+tips.block_sudare=Оконная штора. Правой кнопкой мыши в приседание [открыть / закрыть].
+
+item.block_ishitourou_stone.name=ISHITOUROU к
+item.block_ishitourou_and.name=ISHITOUROU к_андезит
+item.block_ishitourou_dio.name=ISHITOUROU к_диорит
+item.block_ishitourou_gra.name=ISHITOUROU к_гранит
+tips.block_ishitourou=Каменный фонарь. Зажгите огонь с помощью Огниво. Щелкните правой кнопкой мыши [Выкл.].
+
+item.block_longtourou_stone.name=ISHITOUROU
+item.block_longtourou_and.name=ISHITOUROU_андезит
+item.block_longtourou_dio.name=ISHITOUROU_диорит
+item.block_longtourou_gra.name=ISHITOUROU_гранит
+
+item.block_chouzubachi_kara.name=CHOZUBACHI
+item.block_chouzu_and_kara.name=CHOZUBACHI_андезит
+item.block_chouzu_dio_kara.name=CHOZUBACHI_диорит
+item.block_chouzu_gra_kara.name=CHOZUBACHI_гранит
+tips.block_chouzubachi=Каменная миска. Положить в воду ведро для воды.
+
+item.block_longacacia_bot.name=Живая изгородь_акация
+item.block_longbirch_bot.name=Живая изгородь_березовый
+item.block_longdarkoak_bot.name=Живая изгородь_темный дуб
+item.block_longjungle_bot.name=Живая изгородь_тропического
+item.block_longoak_bot.name=Живая изгородь_дуб
+item.block_longspruce_bot.name=Живая изгородь_еловые
+
+item.block_low_acacia.name=Живая изгородь к_акация
+item.block_low_birch.name=Живая изгородь к_березовый
+item.block_low_darkoak.name=Живая изгородь к_темный дуб
+item.block_low_jungle.name=Живая изгородь к_тропического
+item.block_low_oak.name=Живая изгородь к_дуб
+item.block_low_spruce.name=Живая изгородь к_еловые
+
+item.block_teatable.name=Чайный столик
+
+#Hakkou
+item.block_bin_koubo_f.name=Бутылка для дрожжевой культуры
+tips.block_bin_koubo=С течением времени он становится дрожжевым. После культуры уничтожайте и собирайте.
+
+item.block_taru_hakkou.name=Ферментационная бочка
+tips.block_taru_hakkou=Баррель используется для ферментации алкоголя и MISO и т. Д.
+
+item.block_taru_kouji_f.name=KOMEKOUJI полка
+tips.block_taru_kouji=Полка для приготовления риса-солода. Соберите голыми руками.
+
+item.block_taru_shubo_f.name=SHUBO бочка
+tips.block_taru_shubo=Баррель для приготовления дрожжевого пюре. Возьмите его с Миской.
+
+item.block_taru_moromi_f.name=MOROMI бочка
+tips.block_taru_moromi=Баррель для изготовления MOROMI-mash. Возьмите его с Миской.
+
+item.block_taru_jukusei_f.name=Зрелые SAKE бочка
+tips.block_taru_jukusei=Баррель для создания Зрелые SAKE. После ферментации собирайте правой кнопкой мыши.
+
+tile.block_taru_ringoshu_f.name=Сидр бочка
+tips.block_taru_ringoshu=Баррель для создания Сидр. После ферментации собирайте с помощью бутылки с вином.
+
+tile.block_taru_budoushu_f.name=Вино бочка
+tips.block_taru_budoushu=Баррель для создания вино. После ферментации собирайте с помощью бутылки с вином.
+
+item.block_taru_miso_f.name=MISO бочка
+tips.block_taru_miso=Баррель для создания MISO. Соберите голыми руками.
+
+item.block_taru_koucha_f.name=Чайные лотки
+tips.block_taru_koucha=Лотки для окисления чайных листьев. Соберите голыми руками.
+
+tile.block_bot_sakenama_1.name=Сырой SAKE
+tips.block_bot_sakenama=Сжигайте в печи, это превращается в SAKE. Можете выпить это с помощью напитка.
+tile.block_bot_sake_1.name=SAKE
+tips.block_bot_sake=Можете выпить это с помощью напитка.
+tile.block_bot_sakejuku_1.name=Зрелые SAKE
+
+tile.block_bot_cider_1.name=Сидр
+tile.block_bot_ciderjuku_1.name=Зрелые сидр
+tile.block_bot_wine_1.name=Вино
+tile.block_bot_winejuku_1.name=Зрелые вино
+
+item.block_food_nabeaz_n.name=DONABE с пирожным SAKE
+tile.block_food_nabeaz_1.name=DONABE с сладкая половина SAKE
+tips.block_food_nabeaz_1=Можно пить это с помощью YUNOMI.
+
+item.block_glass_sakenama.name=Стекло с сырой SAKE
+item.block_glass_sake.name=Стекло с SAKE
+item.block_glass_sakejuku.name=Стекло с зрелые SAKE
+item.block_glass_amazake.name=Кубок с сладкая половина SAKE
+
+item.block_glass_cider.name=Стекло с Сидр
+item.block_glass_ciderjuku.name=Стекло с зрелые сидр
+item.block_glass_wine.name=Стекло с вино
+item.block_glass_winejuku.name=Стекло с зрелые вино
+
+item.block_food_nabenimame_n.name=DONABE с соей
+item.block_food_nabenimame_b.name=DONABE с вареной соей
+tips.block_food_nabenimame_b=Возьмите его с Миской.
+
+#Kitchen
+tile.block_kitchen.name=Счетчик кухни
+tips.block_kitchen=Может хранить инструменты для приготовления пищи.
+
+tile.block_kit_board.name=Разделочная доска
+tips.block_kit_board=Может использоваться как таблица ремесел.
+
+item.block_kit_sink.name=Стол для раковины
+tips.block_kit_sink=Если есть вода под 2 блоками, щелкните правой кнопкой мыши [вкл. / Выкл.].
+
+tile.block_kit_stove.name=Кухонная плита
+tips.block_kit_stove=Прокрасться правой кнопкой мыши [вкл.]. Щелкните правой кнопкой мыши [Выкл.].
+
+tile.block_kit_oven.name=Варочная печь
+tile.block_kit_oven_black.name=Варочная печь_черная
+container.kitchen_oven=Варочная печь нутро
+tips.block_kit_oven=Может использоваться для приготовления и плавки.
+
+tile.block_irori.name=IRORI
+container.irori=IRORI нутро
+tips.block_irori=Японский камин. Подогрейте DONABE огнем с древесный уголь.
+
+tile.block_kit_kanki.name=Вентилятор
+tips.block_kit_kanki=Щелкните правой кнопкой мыши [вкл. / Выкл.]. Прокрасться правой кнопкой мыши [изменить тип].
+
+tile.block_kit_duct.name=Вентиляционный канал
+tile.block_kit_ductend.name=Вентиляция
+tips.block_kit_ductend=Прокрасться правой кнопкой мыши [изменить тип].
+
+tile.block_kit_tana.name=Шкаф
+tips.block_kit_tana=Может хранить посуду по типу.
+
+container.cstove=Печь нутро
+tile.block_cstove_bot.name=Дровяная печь
+tips.block_cstove_bot=Печь верхний можно использовать как Печка.
+
+#Pantry
+tile.block_boxh_empty.name=Пустая коробка
+tile.block_boxh_apple.name=Коробка яблоко
+tile.block_boxh_beef.name=Коробка Сырая говядина
+tile.block_boxh_beetroot.name=Коробка Свёкла
+tile.block_boxh_bread.name=Коробка Хлеб
+tile.block_boxh_carrot.name=Коробка Морковь
+tile.block_boxh_chicken.name=Коробка Сырая курятина
+tile.block_boxh_chorus.name=Коробка Плод коруса
+tile.block_boxh_coco.name=Мешок какао
+tile.block_boxh_egg.name=Коробка Яйцо
+tile.block_boxh_fish.name=Коробка Сырая рыба
+tile.block_boxh_flour.name=Мешок Пшеница
+tile.block_boxh_mutton.name=Коробка Сырая баранина
+tile.block_boxh_pork.name=Коробка Сырая свинина
+tile.block_boxh_potato.name=Коробка Картофель
+tile.block_boxh_rabbit.name=Коробка Сырая крольчатина
+tile.block_boxh_cod.name=Коробка Сырая треска
+tile.block_boxh_swberry.name=Коробка Сладкие ягоды
+
+tile.block_boxh_cabbage.name=Коробка капуста
+tile.block_boxh_hakusai.name=Коробка китайская капуста
+tile.block_boxh_corn.name=Коробка кукуруза
+tile.block_boxh_grape.name=Коробка виноград
+tile.block_boxh_onion.name=Коробка лук
+tile.block_boxh_rice.name=Мешок рис
+tile.block_boxh_soy.name=Мешок соя
+tile.block_boxh_spinach.name=Коробка шпинат
+tile.block_boxh_tomato.name=Коробка помидор
+tile.block_boxh_tgreen.name=Мешок зеленый чай
+tile.block_boxh_tred.name=Мешок черный чай
+
+tile.block_tea_chadutsu.name=Банки с зеленым чаем
+tile.block_tea_can.name=Чайные банки
+tile.block_tawara_cm.name=TAWARA
+
+#Foodblock
+tips.block_frypan=Можно приготовить на [Печь / Кухонная плита / Варочная печь].
+tips.block_nabe=Можно приготовить на [Печь / Кухонная плита / Варочная печь / IRORI].
+tips.block_kettle=Вскипятите воду на [Печь / Кухонная плита / Варочная печь / IRORI / Печь].
+tips.block_simpledish=Используйте его, щелкнув правой кнопкой мыши и поместите в приседание.
+
+item.block_kettle_full.name=Чайник с водой
+
+item.block_food_karanabe.name=Пустое DONABE
+tips.block_food_karanabe=Положите продукты в Верстак и нагрейте их.
+
+item.block_food_nabeshio_n.name=DONABE с морской водой
+item.block_food_nabeshio_b.name=DONABE с солью
+item.block_food_nabetoufu_n.name=DONABE с соевым молоком
+item.block_food_nabetoufu_b.name=DONABE с TOFU
+tips.block_food_nabetoufu_b=Соберите голыми руками.
+
+item.block_food_nabe_n.name=DONABE с сырым курицей
+item.block_food_nabe_1.name=DONABE с приготовленной курицей
+tips.block_food_nabe_1=Возьмите его с TONSUI.
+
+item.block_food_tonsui_1.name=TONSUI с приготовленной курицей
+item.block_food_nabegohan_n.name=DONABE с сырым рисом
+item.block_food_nabegohan_1.name=DONABE с приготовленным рисом
+tips.block_food_nabegohan_1=Возьмите его с CHAWAN, тарелка или Миской.
+
+item.block_food_gohan_1.name=CHAWAN с приготовленным рисом
+item.block_food_rice_1.name=Тарелка с приготовленным рисом
+item.block_food_nabemiso_n.name=DONABE с сырым супом MISO
+item.block_food_nabemiso_1.name=DONABE с супом MISO
+tips.block_food_nabemiso_1=Возьмите его с помощью SHIKKI.
+
+item.block_food_misosp_1.name=Суп MISO
+item.block_food_nabecorns_n.name=DONABE с сырым кукурузным супом
+item.block_food_nabecorns_1.name=DONABE с кукурузным супом
+tips.block_food_nabecorns_1=Возьмите его с тарелка.
+item.block_food_cornsp_1.name=Кукурузный суп
+
+item.block_food_frypan.name=Сковорода
+
+item.block_food_tgy_1.name=Тарелка с омлет
+item.block_food_tgytei_1.name=Меню омлет
+item.block_food_yakizakanatei_1.name=Меню Жареная рыба
+item.block_food_yakijyaketei_1.name=Меню Жареная лосось
+item.block_food_egb_1.name=Тарелка с яйцом гамбург
+item.block_food_egbset_1.name=Меню яичный гамбург
+
+item.block_food_zundou.name=Stockpot
+item.block_food_cunabe_n.name=Stockpot с сырым карри
+item.block_food_cunabe_1.name=Stockpot с вареной карри
+tips.block_food_cunabe_1=Возьмите его с помощью Тарелка с приготовленным рисом.
+item.block_food_curry_1.name=Карри и рис
+item.block_food_curryset_1.name=Меню карри и риса
+
+item.block_food_stewnabe_n.name=Stockpot с сырым тушеным кремом
+item.block_food_stewnabe_1.name=Stockpot с вареной тушеным кремом
+item.block_food_stew_1.name=Тушеным курицей с кремом
+
+item.block_food_roastchicken_1.name=Жареная курица
+tips.block_roastchicken_1=Возьмите его с тарелка.
+item.block_food_chickenb_1.name=Тарелка с жареная курица
+
+item.block_food_sconeset_1.name=Tea stand с Scone
+
+item.block_food_teastand.name=Tea stand
+item.block_food_teacup_1.name=Чашкой с черным чаем
+item.block_food_teapot_1.name=Чайник с черным чаем
+tips.block_food_teapot_1=Можно пить это с Чашкой.
+
+item.block_food_teapot.name=Чайник пустой
+item.block_food_teaset_1.name=Черным чаем с Scone
+item.block_food_jpteacup_1.name=YUNOMI с зеленым чаем
+item.block_food_kyusu_1.name=KYUSU с зеленым чаем
+tips.block_food_kyusu_1=Можно пить это с помощью YUNOMI.
+
+item.block_food_kyusu.name=KYUSU пустой
+item.block_food_jpteaset_1.name=Зеленый чай с SENBEI
+item.block_food_icecream_1.name=Мороженое
+
+#FoodItem
+item.item_food_bun.name=булочка
+item.item_food_cake.name=Кекс
+item.item_food_scone.name=Scone
+item.item_food_senbei.name=SENBEI
+tips.item_food_senbei=Рисовый крекер.
+
+item.item_food_chickensand.name=Куриный сендвич
+item.item_food_eggsand.name=Яйцом сендвич
+
+item.item_food_cabbage.name=Капуста
+item.item_food_corn.name=Кукуруза
+item.item_food_grape.name=Виноград
+item.item_food_onion.name=Лук
+item.item_food_spinach.name=Шпинат
+item.item_food_tomato.name=Помидор
+item.item_food_cornb.name=Запеченная кукуруза
+item.item_food_hakusai.name=Китайская капуста
+
+#TTimeItem
+item.item_chaba.name=Чайный лист
+item.item_chaba_green.name=Зеленый чай
+item.item_chaba_red.name=Черный чай
+
+item.item_salt.name=Соль
+item.item_nigari.name=NIGARI
+tips.item_nigari=Он используется при создании TOFU.
+
+item.item_sakekasu.name=SAKE торт
+tips.item_sakekasu=Используется для сладкая половина SAKE или удобрения.
+
+item.item_koubo.name=Дрожжи
+tips.item_koubo=Он используется при ферментации.
+
+item.item_mushigome.name=Вареный рис
+
+item.item_komekouji.name=KOMEKOUJI
+tips.item_komekouji=Он используется при создании SAKE и MISO.
+
+item.item_shubo.name=SHUBO
+tips.item_shubo=Брожение в бочку становится MOROMI.
+
+item.item_moromi.name=MOROMI
+tips.item_moromi=Ремесло это становится сырой SAKE и SAKE торт.
+
+item.item_nimame.name=Вареная соя
+item.item_miso.name=MISO
+item.item_food_toufu.name=TOFU
+
+item.item_ine.name=Рисовое растение
+item.item_kome.name=Рис
+item.item_saya.name=Соя в стручке
+item.item_soy.name=Соя
+item.item_flour.name=Мука
+item.item_butter.name=Масло
+
+item.item_kiji_bun.name=булочка тесто
+tips.item_kiji_bun=Ожог в печи, это превращается в булочка.
+
+item.item_kiji_burg.name=Сырой говядина гамбург
+tips.item_kiji_burg=Он готовит на сковороде, и он становится говядина гамбург.
+
+item.item_kiji_scone.name=Scone тесто
+tips.item_kiji_scone=Ожог в печи, это превращается в scone.
+
+item.item_kiji_senbei.name=Крекер риса тесто
+tips.item_kiji_senbei=Ожог в печи, это превращается в SENBEI.
+
+item.item_match_cm.name=Спичка
+tips.item_match_cm=Щелкните правой кнопкой мыши по блоку и он сгорит.
+item.item_kettle_kara.name=Небесный чайник
+item.item_kettle_boil.name=Чайник с горячей водой
+
+item.item_food_sara.name=Тарелка
+item.item_food_chawan.name=CHAWAN
+tips.item_food_chawan=Рисовая миска.
+
+item.item_food_shikki.name=SHIKKI
+tips.item_food_shikki=URUSHI блюдо
+
+item.item_food_tonsui.name=TONSUI
+tips.item_food_tonsui=Маленькая миска для приготовления кастрюли.
+
+item.item_food_yunomi.name=YUNOMI
+tips.item_food_yunomi=Чашка зеленого чая
+
+item.item_food_teacup.name=Чашкой
+item.item_food_driglass.name=Питьевое стекло
+item.item_food_sakebot.name=Бутылка вина
+
+item.item_clay_yunomi.name=Вагонка глина_YUNOMI
+tips.item_clay_yunomi=Ожог в печи, это превращается в YUNOMI.
+
+item.item_clay_kyusu.name=Вагонка глина_KYUSU
+tips.item_clay_kyusu=Ожог в печи, это превращается в KYUSU.
+
+item.item_clay_teacup.name=Вагонка глина_Чашкой
+tips.item_clay_teacup=Ожог в печи, это превращается в Чашкой.
+
+item.item_clay_teapot.name=Вагонка глина_Чайник
+tips.item_clay_teapot=Ожог в печи, это превращается в Чайник.
+
+item.item_clay_sara.name=Вагонка глина_Тарелка
+tips.item_clay_sara=Ожог в печи, это превращается в Тарелка.
+
+item.item_clay_chawan.name=Вагонка глина_CHAWAN
+tips.item_clay_chawan=Ожог в печи, это превращается в CHAWAN.
+
+item.item_clay_nabe.name=Вагонка глина_DONABE
+tips.item_clay_nabe=Ожог в печи, это превращается в DONABE.
+
+item.item_clay_tonsui.name=Вагонка глина_TONSUI
+tips.item_clay_tonsui=Ожог в печи, это превращается в TONSUI.
+
+item.item_seeds_cabbage.name=Семя капуста
+item.item_seeds_soy.name=Семя соя
+item.item_seeds_spinach.name=Семя шпинат
+item.item_seeds_tomato.name=Семя помидор
+item.item_seeds_corn.name=Семя кукуруза
+item.item_seeds_onion.name=Семя лук
+item.item_seeds_rice.name=Семя рис
+tips.block_rice=Посадите его на рисовое поле или Грядка. Вырасти еще на одну ступень на рисовое поле.
+item.item_seeds_hakusai.name=Семя китайская капуста
+
+item.block_seedsbox.name=Мешок с семенами
+tips.block_seedsbox=Если вы сломаны, вы можете получить новые семена наугад. Все 11 типов.
+
+item.block_wood_chanoki_nae.name=Саженцы чайного растения
+tips.block_wood_chanoki_nae=Посадка на яркую грязь, дерево растет.
+
+item.block_wood_grape_nae.name=Виноградное дерево
+tips.block_wood_grape_nae=Посадка на яркую грязь, дерево растет.
+
+#Xmas
+item.item_ingot_alumi.name=Алюминий
+item.block_alumi_block.name=Алюминий блок
+
+item.item_santaakashi_helmet.name=AKASHI Санта-Клаус_Шляпа
+item.item_santaakashi_chestplate.name=AKASHI Санта-Клаус_Мыс
+item.item_santaakashi_leggings.name=AKASHI Санта-Клаус_Платье
+item.item_santaakashi_boots.name=AKASHI Санта-Клаус_ботинок
+item.item_santakumano_helmet.name=KUMANO Санта-Клаус_Зажим для волос
+item.item_santakumano_chestplate.name=KUMANO Санта-Клаус_Мыс
+item.item_santakumano_leggings.name=KUMANO Санта-Клаус_Платье
+item.item_santakumano_boots.name=KUMANO Санта-Клаус_ботинок
+item.item_santasuzuya_helmet.name=SUZUYA Санта-Клаус_Зажим для волос
+item.item_santasuzuya_chestplate.name=SUZUYA Санта-Клаус_Лента
+item.item_santasuzuya_leggings.name=SUZUYA Санта-Клаус_Платье
+item.item_santasuzuya_boots.name=SUZUYA Санта-Клаус_ботинок
+item.item_santaryujou_helmet.name=RYUJOU Санта-Клаус_Шляпа
+item.item_santaryujou_chestplate.name=RYUJOU Санта-Клаус_Пальто
+item.item_santaryujou_leggings.name=RYUJOU Санта-Клаус_Юбка
+item.item_santaryujou_boots.name=RYUJOU Санта-Клаус_ботинок
+
+item.item_santattk_helmet.name=Санта-Клаус_Шляпа
+item.item_santattk_chestplate.name=Санта-Клаус_Пальто
+item.item_santattk_leggings.name=Санта-Клаус_Брюки
+item.item_santattk_boots.name=Санта-Клаус_ботинок
+
+item.block_xmastree.name=Рождественская ёлка
+item.block_xmastree_w.name=Рождественская ёлка_белая
+
+item.block_present_app.name=Подарочная коробка
+item.block_present_bla.name=Подарочная коробка
+item.block_present_bok.name=Подарочная коробка
+item.block_present_dia.name=Подарочная коробка
+item.block_present_lap.name=Подарочная коробка
+item.block_present_chc.name=Подарочная коробка
+item.block_present_chh.name=Подарочная коробка
+
+#3.2.1
+item.block_bin_nyusan_f.name=бутылка культуры молочнокислых бактерий
+tips.block_bin_nyusan=Стань молочнокислых бактерий со временем. После культуры уничтожайте и собирайте.
+item.item_nyusan.name=Молочнокислые бактерии
+tips.item_nyusan=Используйте его при приготовлении сыра.
+item.item_rennet.name=Реннин(молочно-свертывающий фермент)
+tips.item_rennet=Используйте его при приготовлении сыра.
+
+item.block_zundou_milk.name=Stockpot с молоком
+item.block_food_cheesecurd.name=Калье
+tips.block_cheesecurd=Сделать свежий сыр в ремесле. Со временем сделайте сыр.
+item.item_food_cheesef.name=Свежий сыр
+item.block_food_cheese_1.name=Сыр
+tips.block_pizza_cheese=After placement, right click to break into pieces
+item.item_food_cheese.name=Кусочек сыра
+tile.block_kit_cheese_tana.name=Полка из сыра
+tips.block_kit_cheese_tana=Продолжается старение помещенного Калье.
+
+item.item_kiji_pizza.name=Пицца тесто
+item.item_food_pizza_n.name=Сырая пицца
+item.block_food_pizza_1.name=Запеченная пицца
+item.item_food_pizza.name=Кусок пиццы
+
+tile.block_tansu_doak.name=Комод_темный дуб
+tile.block_tansu_oak.name=Комод_дуб
+tile.block_tansu_spruce.name=Комод_еловые
+
+tile.block_fall_leaf.name=Упавшие листья
+tips.block_fall_leaf=Используя лопату, получится Травяная тропинка. Используя мотыгу, получится писовое поле.
+tile.block_tree_ichoh_leaf.name=Гинкго Листва
+tile.block_tree_kaede_leaf.name=Acer Листва
+tile.block_tree_sakura_flow.name=Сакура цветок
+tile.block_tree_oakkare_leaf.name=Осенний дуб Листва
+tile.block_carpet_ichoh.name=Гинкго Ковёр
+tile.block_carpet_kaede.name=Acer Ковёр
+tile.block_carpet_sakura.name=Сакура Ковёр
+tile.block_carpet_ochiba.name=Осенний дуб Ковёр
+tile.block_tree_ichoh_nae.name=Гинкго Саженец
+tile.block_tree_kaede_nae.name=Acer Саженец
+tile.block_tree_sakura_nae.name=Сакура Саженец
+tile.block_tree_oakkare_nae.name=Осенний дуб Саженец
+tile.block_tree_ichoh_log.name=Гинкго Древесина
+tile.block_tree_kaede_log.name=Acer Древесина
+tile.block_tree_sakura_log.name=Сакура Древесина
+item.block_planks_ichoh.name=Гинкго
+item.block_planks_kaede.name=Acer
+item.block_planks_sakura.name=Сакура
+tile.block_pillar_ichoh.name=Столб_гинкго
+tile.block_pillar_kaede.name=Столб_acer
+tile.block_pillar_sakura.name=Столб_cакура
+tile.block_slabhalf_ichoh.name=Плита Гинкго
+tile.block_slabhalf_kaede.name=Плита Acer
+tile.block_slabhalf_sakura.name=Плита Сакура
+tile.block_stairs_ichoh.name=Ступеньки Гинкго
+tile.block_stairs_kaede.name=Ступеньки Acer
+tile.block_stairs_sakura.name=Ступеньки Сакура
+
+item.block_longichoh_bot.name=Живая изгородь_гинкго
+item.block_longkaede_bot.name=Живая изгородь_acer
+item.block_longsakura_bot.name=Живая изгородь_cакура
+item.block_longoakkare_bot.name=Живая изгородь_осенний дуб
+item.block_low_ichoh.name=Живая изгородь к_гинкго
+item.block_low_kaede.name=Живая изгородь к_acer
+item.block_low_sakura.name=Живая изгородь к_cакура
+item.block_low_oakkare.name=Живая изгородь к_осенний дуб
+
+item.block_diningchair_ich.name=Обеденный стул_гинкго
+item.block_diningchair_kae.name=Обеденный стул_acer
+item.block_diningchair_saku.name=Обеденный стул_cакура
+item.block_dressingtable_ich.name=Туалетный столик_гинкго
+item.block_dressingtable_kae.name=Туалетный столик_acer
+item.block_dressingtable_saku.name=Туалетный столик_cакура
+tile.block_schoolchair_ich.name=Школа кресло_гинкго
+tile.block_schoolchair_kae.name=Школа кресло_acer
+tile.block_schoolchair_saku.name=Школа кресло_cакура
+tile.block_schooldesk_ich.name=Школа парта_гинкго
+tile.block_schooldesk_kae.name=Школа парта_acer
+tile.block_schooldesk_saku.name=Школа парта_cакура
+tile.block_teacherdesk_ich.name=Стол учителя_гинкго
+tile.block_teacherdesk_kae.name=Стол учителя_acer
+tile.block_teacherdesk_saku.name=Стол учителя_cакура
+
+tile.block_shoujih_ichoh.name=SHOUJI окно_гинкго
+tile.block_shoujih_kaede.name=SHOUJI окно_acer
+tile.block_shoujih_sakura.name=SHOUJI окно_cакура
+
+tile.block_kanki_ich.name=Вентиляция_гинкго
+tile.block_kanki_kae.name=Вентиляция_acer
+tile.block_kanki_saku.name=Вентиляция_cакура
+tile.block_koushi_ich.name=Вертикальная решетка_гинкго
+tile.block_koushi_kae.name=Вертикальная решетка_acer
+tile.block_koushi_saku.name=Вертикальная решетка_cакура
+tile.block_ranmab_ich.name=RANMA тип2_гинкго
+tile.block_ranmab_kae.name=RANMA тип2_acer
+tile.block_ranmab_saku.name=RANMA тип2_cакура
+tile.block_ranmac_ich.name=RANMA тип3_гинкго
+tile.block_ranmac_kae.name=RANMA тип3_acer
+tile.block_ranmac_saku.name=RANMA тип3_cакура
+tile.block_ranma_ich.name=RANMA_гинкго
+tile.block_ranma_kae.name=RANMA_acer
+tile.block_ranma_saku.name=RANMA_cакура
+
+tile.block_wp_log_ichoh.name=Панель_гинкго
+tile.block_wp_log_kaede.name=Панель_acer
+tile.block_wp_log_sakura.name=Панель_cакура
+tile.block_wp_plank_ichoh.name=Панель_гинкго доски
+tile.block_wp_plank_kaede.name=Панель_acer доски
+tile.block_wp_plank_sakura.name=Панель_cакура доски
+
+tile.block_boxh_cherry.name=Коробка Вишня
+
+item.item_food_cherry.name=Вишня
+item.item_seeds_cherry.name=Семя Сакура
+
+item.item_sword_sakura.name=Меч Сакура
+item.item_sword_ichoh.name=Меч Гинкго
+item.item_sword_kaede.name=Меч Acer
+
+item.item_inewara.name=Солома риса
+item.item_warahai.name=Ясень соломы
+item.block_zundou_aku.name=Stockpot с щелочной раствор
+tips.block_zundou_aku=Кипятите блок крыши Травы, получите Пряжу.
+item.item_oriito.name=Пряжа
+item.item_tanmono.name=Ткань
+
+item.item_ykt_getadoak.name=YUKATA GETA Темный дуб
+item.item_ykt_getaoak.name=YUKATA GETA Дуб
+item.item_ykt_ikaduchi_kazari.name=IKADUCHI Зажим для волос
+item.item_ykt_ikaduchi_mini.name=IKADUCHI YUKATA тело
+item.item_ykt_ikaduchi_long.name=IKADUCHI YUKATA ножка
+item.item_ykt_inaduma_kazari.name=INADUMA Зажим для волос
+item.item_ykt_inaduma_mini.name=INADUMA YUKATA тело
+item.item_ykt_inaduma_long.name=INADUMA YUKATA ножка
+item.item_ykt_hamakaze_kazari.name=HAMAKAZE Зажим для волос
+item.item_ykt_hamakaze_mini.name=HAMAKAZE YUKATA тело
+item.item_ykt_hamakaze_long.name=HAMAKAZE YUKATA ножка
+item.item_ykt_urakaze_kazari.name=URAKAZE Маска Fox
+item.item_ykt_urakaze_mini.name=URAKAZE YUKATA тело
+item.item_ykt_urakaze_long.name=URAKAZE YUKATA ножка
+item.item_ykt_kawakaze_kazari.name=KAWAKAZE Маска Fox
+item.item_ykt_kawakaze_mini.name=KAWAKAZE YUKATA тело
+item.item_ykt_kawakaze_long.name=KAWAKAZE YUKATA ножка
+item.item_ykt_oboro_kazari.name=OBORO Зажим для волос
+item.item_ykt_oboro_mini.name=OBORO YUKATA тело
+item.item_ykt_oboro_long.name=OBORO YUKATA ножка
+item.item_ykt_ttoku_mini.name=Мужской орган YUKATA
+item.item_ykt_ttoku_long.name=Мужской ножка YUKATA
+item.item_ykt_ttokub_mini.name=Мужской орган YUKATA_синий коричневый
+item.item_ykt_ttokub_long.name=Мужской ножка YUKATA_синий коричневый
+
+tips.item_ykt=Обычное платье для ношения на голой коже.
+
+tile.block_uchiwa_black.name=Утіва_черная
+tile.block_uchiwa_blue.name=Утіва_синяя
+tile.block_uchiwa_brown.name=Утіва_коричневая
+tile.block_uchiwa_cyan.name=Утіва_бирюзовая
+tile.block_uchiwa_gray.name=Утіва_серая
+tile.block_uchiwa_green.name=Утіва_зеленая
+tile.block_uchiwa_lightb.name=Утіва_голубая
+tile.block_uchiwa_lightg.name=Утіва_светло-серая
+tile.block_uchiwa_lime.name=Утіва_лаймовая
+tile.block_uchiwa_magenta.name=Утіва_пурпурная
+tile.block_uchiwa_orange.name=Утіва_оранжевая
+tile.block_uchiwa_pink.name=Утіва_розовая
+tile.block_uchiwa_purple.name=Утіва_фиолетовая
+tile.block_uchiwa_red.name=Утіва_красная
+tile.block_uchiwa_white.name=Утіва_белая
+tile.block_uchiwa_yellow.name=Утіва_желтая
+
+tips.block_uchiwa=Декоративный блок
+
+tips.block_wataame=Уберите упаковку и станьте конфеткой.
+tile.block_watagashi.name=Упакованные сахарная вата
+tile.block_watagashi_green.name=Упакованные сахарная вата_зеленый чай
+tile.block_watagashi_pink.name=Упакованные сахарная вата_вишня
+tile.block_watagashi_red.name=Упакованные сахарная вата_виноград
+tile.block_watagashi_yellow.name=Упакованные сахарная вата_яблоко
+item.item_food_watagashi.name=Сахарная вата
+item.item_food_watagashi_g.name=Сахарная вата_зеленый чай
+item.item_food_watagashi_p.name=Сахарная вата_вишня
+item.item_food_watagashi_r.name=Сахарная вата_виноград
+item.item_food_watagashi_y.name=Сахарная вата_яблоко
+
+item.block_kakigouri_block1.name=Kakigōri
+item.block_kakigouri_green1.name=Kakigōri_зеленый чай
+item.block_kakigouri_pink1.name=Kakigōri_вишня
+item.block_kakigouri_red1.name=Kakigōri_виноград
+item.block_kakigouri_yellow1.name=Kakigōri_яблоко
+tile.block_kakigouri_hata.name=Флаг Kakigōri
+
+tips.block_kakigouri=Сбритый ледяной десерт
+
+tile.block_tabakusa.name=Блок Травяная крыша
+tile.block_tabawara.name=Блок Солома риса крыша
+tile.block_tabakaya.name=Блок Соломенная крыша
+
+tile.block_tabakusa_roof.name=Травяная крыша
+tile.block_tabawara_roof.name=Солома риса крыша
+tile.block_tabakaya_roof.name=Соломенная крыша
+
+tile.block_tabakusa_stairs.name=Ступеньки Травяная крыша
+tile.block_tabawara_stairs.name=Ступеньки Солома риса крыша
+tile.block_tabakaya_stairs.name=Ступеньки Соломенная крыша
+tips.block_tabakusa_roof=Направленные материалы крыши. Прокрасться правой кнопкой мыши [изменить тип].
+
+tile.block_tatamih_y.name=Загорелые TATAMI_без края
+tile.block_tatamih_y_black.name=Загорелые TATAMI_черная
+tile.block_tatamih_y_blue.name=Загорелые TATAMI_синяя
+tile.block_tatamih_y_brown.name=Загорелые TATAMI_коричневая
+tile.block_tatamih_y_cyan.name=Загорелые TATAMI_бирюзовая
+tile.block_tatamih_y_gray.name=Загорелые TATAMI_серая
+tile.block_tatamih_y_green.name=Загорелые TATAMI_зеленая
+tile.block_tatamih_y_lightb.name=Загорелые TATAMI_голубая
+tile.block_tatamih_y_lightg.name=Загорелые TATAMI_светло-серая
+tile.block_tatamih_y_lime.name=Загорелые TATAMI_лаймовая
+tile.block_tatamih_y_magenta.name=Загорелые TATAMI_пурпурная
+tile.block_tatamih_y_orange.name=Загорелые TATAMI_оранжевая
+tile.block_tatamih_y_pink.name=Загорелые TATAMI_розовая
+tile.block_tatamih_y_purple.name=Загорелые TATAMI_фиолетовая
+tile.block_tatamih_y_red.name=Загорелые TATAMI_красная
+tile.block_tatamih_y_yellow.name=Загорелые TATAMI_желтая
+tile.block_tatamih_y_white.name=Загорелые TATAMI_белая
+
+tile.block_lamp.name=Настенный светильник
+tips.block_lamp=Щелкните правой кнопкой мыши [вкл. / Выкл.].
+
+tile.block_standbedroom.name=Светильник для спальни
+tile.block_standarm.name=Настольный светильник
+
+item.block_candle_black.name=Свеча_черная
+item.block_candle_blue.name=Свеча_синяя
+item.block_candle_brown.name=Свеча_коричневая
+item.block_candle_cyan.name=Свеча_бирюзовая
+item.block_candle_gray.name=Свеча_серая
+item.block_candle_green.name=Свеча_зеленая
+item.block_candle_lightb.name=Свеча_голубая
+item.block_candle_lightg.name=Свеча_светло-серая
+item.block_candle_lime.name=Свеча_лаймовая
+item.block_candle_magenta.name=Свеча_пурпурная
+item.block_candle_orange.name=Свеча_оранжевая
+item.block_candle_pink.name=Свеча_розовая
+item.block_candle_purple.name=Свеча_фиолетовая
+item.block_candle_red.name=Свеча_красная
+item.block_candle_yellow.name=Свеча_желтая
+item.block_candle_white.name=Свеча
+
+item.block_andon_black.name=ANDON_черная
+item.block_andon_blue.name=ANDON_синяя
+item.block_andon_brown.name=ANDON_коричневая
+item.block_andon_cyan.name=ANDON_бирюзовая
+item.block_andon_gray.name=ANDON_серая
+item.block_andon_green.name=ANDON_зеленая
+item.block_andon_lightb.name=ANDON_голубая
+item.block_andon_lightg.name=ANDON_светло-серая
+item.block_andon_lime.name=ANDON_лаймовая
+item.block_andon_magenta.name=ANDON_пурпурная
+item.block_andon_orange.name=ANDON_оранжевая
+item.block_andon_pink.name=ANDON_розовая
+item.block_andon_purple.name=ANDON_фиолетовая
+item.block_andon_red.name=ANDON_красная
+item.block_andon_yellow.name=ANDON_желтая
+item.block_andon_white.name=ANDON
+tips.block_andon=Напольный светильник. Зажгите огонь с помощью Огниво. Щелкните правой кнопкой мыши [Выкл.].
+
+#SE
+chinjufumod.subtitle.kk_propeller_12=Звук пропеллера
+chinjufumod.subtitle.kk_atack=Attack by aircraft
+chinjufumod.subtitle.kk_impact=Столкновение самолета
+chinjufumod.subtitle.kk_break=Взрыв самолета
+chinjufumod.subtitle.kk_stop=Посадка самолета
+chinjufumod.subtitle.water_splash=Падение в воде
+chinjufumod.subtitle.am_fire=стрелять пушкой
+chinjufumod.subtitle.am_impact=Взрыв
+chinjufumod.subtitle.am_cartridge=гильзы
+chinjufumod.subtitle.wake_water=Бег по воде
+chinjufumod.subtitle.tansu_open=Открыть ящик
+chinjufumod.subtitle.tansu_close=Закрыть ящик
+chinjufumod.subtitle.window_open=Открыть окно
+chinjufumod.subtitle.window_close=Закрыть окно
+chinjufumod.subtitle.window_updown=Подъемные окна
+chinjufumod.subtitle.amado_cancel=AMADO
+
+chinjufumod.subtitle.fusuma=SHOUJI／FUSUMA
+chinjufumod.subtitle.fusuma_short=SHOUJI окно
+chinjufumod.subtitle.hikido=Раздвижная дверь
+chinjufumod.subtitle.hikido_short=Раздвижная дверь
+chinjufumod.subtitle.kinuzure=Ткань трения
+chinjufumod.subtitle.sit_chair=Сесть на стул
+chinjufumod.subtitle.juu=Кук с помощью сковородки
+chinjufumod.subtitle.gutsugutsu=Звук кипения
+chinjufumod.subtitle.tea=Залить чай
+chinjufumod.subtitle.sake=Налить вино
+chinjufumod.subtitle.paku=Поесть
+chinjufumod.subtitle.goku=Питьевой
+chinjufumod.subtitle.kitchen_cut=Кухонный нож
+chinjufumod.subtitle.water_start=Открыть кран
+chinjufumod.subtitle.water_stop=Закрыть кран
+chinjufumod.subtitle.shishiodoshi=SHISHI-ODOSHI
+
+#4.0
+tile.block_sofa_leather.name=Кожаный диван
+tile.block_sofa_black.name=Диван_черная
+tile.block_sofa_blue.name=Диван_синяя
+tile.block_sofa_brown.name=Диван_коричневая
+tile.block_sofa_cyan.name=Диван_бирюзовая
+tile.block_sofa_gray.name=Диван_серая
+tile.block_sofa_green.name=Диван_зеленая
+tile.block_sofa_lightblue.name=Диван_голубая
+tile.block_sofa_lightgray.name=Диван_светло-серая
+tile.block_sofa_lime.name=Диван_лаймовая
+tile.block_sofa_magenta.name=Диван_пурпурная
+tile.block_sofa_orange.name=Диван_оранжевая
+tile.block_sofa_pink.name=Диван_розовая
+tile.block_sofa_purple.name=Диван_фиолетовая
+tile.block_sofa_red.name=Диван_красная
+tile.block_sofa_white.name=Диван_белый
+tile.block_sofa_yellow.name=Диван_желтая
+
+tile.block_bench.name=Скамья_дуб
+tile.block_bench_aca.name=Скамья_акация
+tile.block_bench_bir.name=Скамья_березовый
+tile.block_bench_doak.name=Скамья_темный дуб
+tile.block_bench_jun.name=Скамья_тропического
+tile.block_bench_spru.name=Скамья_еловые
+tile.block_bench_saku.name=Скамья_cакура
+tile.block_bench_kae.name=Скамья_acer
+tile.block_bench_ich.name=Скамья_гинкго
+
+tile.block_bonsai_oak.name=BONSAI_дуб
+tile.block_bonsai_acacia.name=BONSAI_акация
+tile.block_bonsai_birch.name=BONSAI_березовый
+tile.block_bonsai_darkoak.name=BONSAI_темный дуб
+tile.block_bonsai_jungle.name=BONSAI_тропического
+tile.block_bonsai_spruce.name=BONSAI_еловые
+tile.block_bonsai_sakura.name=BONSAI_cакура
+tile.block_bonsai_kaede.name=BONSAI_acer
+tile.block_bonsai_ichoh.name=BONSAI_гинкго
+tile.block_bonsai_oakkare.name=BONSAI_осенний дуб
+tips.block_bonsai=Прокрасться правой кнопкой мыши [изменить тип].
+
+item.block_kanyouoak_bot.name=Комнатные растения_дуб
+item.block_kanyouacacia_bot.name=Комнатные растения_акация
+item.block_kanyoubirch_bot.name=Комнатные растения_березовый
+item.block_kanyoudarkoak_bot.name=Комнатные растения_темный дуб
+item.block_kanyoujungle_bot.name=Комнатные растения_тропического
+item.block_kanyouspruce_bot.name=Комнатные растения_еловые
+item.block_kanyousakura_bot.name=Комнатные растения_cакура
+item.block_kanyoukaede_bot.name=Комнатные растения_acer
+item.block_kanyouichoh_bot.name=Комнатные растения_гинкго
+item.block_kanyouoakkare_bot.name=Комнатные растения_осенний дуб
+tips.block_kanyou=Тип меняется, когда вы помещаете его в приседание.
+	
+item.block_ironfence_bot.name=Железный забор
+
+item.block_door_sakura.name=Cакура дверь
+item.block_door_ichoh.name=Гинкго дверь
+item.block_door_kaede.name=Acer дверь
+
+item.block_gate_iron.name=Железные ворота
+item.block_gate_irongrill.name=Ворота Железного прута
+item.block_gate_spruce_b.name=Еловые ворота
+item.block_gate_spruce.name=Еловые ворота тип2
+tips.block_gate=Задний ход, положив его в приседание. Красного камня [открыть / закрыть].
+
+tile.block_taru_cocoa_f.name=Какао Бочка
+tips.block_taru_cocoa=Бочка для брожения какао-бобов. Возьмите его с Миской.
+
+item.item_cocoa_ferm.name=Ферментированное какао
+tips.item_cocoa_ferm=Плавка становится жареным какао.
+
+item.item_cocoa_roast.name=Жареное какао
+tips.item_cocoa_roast=Ремесло становится какао масса.
+
+item.item_cocoa_mass.name=Какао масса
+tips.item_cocoa_mass=Когда сахар и молоко добавлены, это становится шоколадом.
+
+item.item_choco_raw.name=Миска с шоколадом
+tips.item_choco_raw=Ремесло это становится шоколадом.
+
+item.item_food_choco_heart.name=Шоколад в форме сердца
+item.item_food_choco.name=Шоколад
+item.item_food_choco_apple.name=Шоколад_яблоко
+item.item_food_choco_cherry.name=Шоколад_вишня
+item.item_food_choco_grape.name=Шоколад_виноград
+item.item_food_choco_greentea.name=Шоколад_зеленый чай
+
+item.item_shield_kuchiku.name=Щит Разрушителя
+item.item_shield_yura.name=Щит YURA
+item.item_shield_mogami.name=Щит MOGAMI
+item.item_shield_kongou.name=Щит KONGOU
+tips.item_shield=Щелкните правой кнопкой мыши, чтобы защитить. Ремонтопригоден с железным слитком.
+
+chinjufumod.subtitle.gyorai=Звук торпадо
+chinjufumod.subtitle.gate_wood=Ворота дерева
+chinjufumod.subtitle.gate_iron_open=Железные ворота
+chinjufumod.subtitle.gate_iron_close=Железные ворота
+
+item.block_shouji.name=SHOUJI
+item.block_shouji_acacia.name=SHOUJI_акация
+item.block_shouji_birch.name=SHOUJI_березовый
+item.block_shouji_darkoak.name=SHOUJI_темный дуб
+item.block_shouji_jungle.name=SHOUJI_тропического
+item.block_shouji_spruce.name=SHOUJI_еловые
+tips.block_shouji=Раздвижные дверь и перегородки. Задний ход, положив его в приседание. Щелкните правой [открыть / закрыть].
+
+item.block_shoujib.name=SHOUJI тип2
+item.block_shoujib_acacia.name=SHOUJI тип2_акация
+item.block_shoujib_birch.name=SHOUJI тип2_березовый
+item.block_shoujib_darkoak.name=SHOUJI тип2_темный дуб
+item.block_shoujib_jungle.name=SHOUJI тип2_тропического
+item.block_shoujib_spruce.name=SHOUJI тип2_еловые
+
+item.block_garasudo.name=GARASUDO
+item.block_garasudo_acacia.name=GARASUDO_акация
+item.block_garasudo_birch.name=GARASUDO_березовый
+item.block_garasudo_darkoak.name=GARASUDO_темный дуб
+item.block_garasudo_jungle.name=GARASUDO_тропического
+item.block_garasudo_spruce.name=GARASUDO_еловые
+
+item.block_garasudob.name=GARASUDO тип2
+item.block_garasudob_acacia.name=GARASUDO тип2_акация
+item.block_garasudob_birch.name=GARASUDO тип2_березовый
+item.block_garasudob_darkoak.name=GARASUDO тип2_темный дуб
+item.block_garasudob_jungle.name=GARASUDO тип2_тропического
+item.block_garasudob_spruce.name=GARASUDO тип2_еловые
+tips.block_garasudo=Раздвижные дверь. Задний ход, положив его в приседание. Щелкните правой [открыть / закрыть].
+
+item.block_fusuma.name=FUSUMA
+item.block_fusuma_black.name=FUSUMA_черная
+item.block_fusuma_blue.name=FUSUMA_синяя
+item.block_fusuma_brown.name=FUSUMA_коричневая
+item.block_fusuma_cyan.name=FUSUMA_бирюзовая
+item.block_fusuma_gray.name=FUSUMA_серая
+item.block_fusuma_green.name=FUSUMA_зеленая
+item.block_fusuma_lightb.name=FUSUMA_голубая
+item.block_fusuma_lightg.name=FUSUMA_светло-серая
+item.block_fusuma_lime.name=FUSUMA_лаймовая
+item.block_fusuma_magenta.name=FUSUMA_пурпурная
+item.block_fusuma_orange.name=FUSUMA_оранжевая
+item.block_fusuma_pink.name=FUSUMA_розовая
+item.block_fusuma_purple.name=FUSUMA_фиолетовая
+item.block_fusuma_red.name=FUSUMA_красная
+item.block_fusuma_yellow.name=FUSUMA_желтая
+tips.block_fusuma=Раздвижные дверь и перегородки. Задний ход, положив его в приседание. Щелкните правой [открыть / закрыть].
+
+item.block_fusumab.name=FUSUMA тип2
+item.block_fusumab_black.name=FUSUMA тип2_черная
+item.block_fusumab_blue.name=FUSUMA тип2_синяя
+item.block_fusumab_brown.name=FUSUMA тип2_коричневая
+item.block_fusumab_cyan.name=FUSUMA тип2_бирюзовая
+item.block_fusumab_gray.name=FUSUMA тип2_серая
+item.block_fusumab_green.name=FUSUMA тип2_зеленая
+item.block_fusumab_lightb.name=FUSUMA тип2_голубая
+item.block_fusumab_lightg.name=FUSUMA тип2_светло-серая
+item.block_fusumab_lime.name=FUSUMA тип2_лаймовая
+item.block_fusumab_magenta.name=FUSUMA тип2_пурпурная
+item.block_fusumab_orange.name=FUSUMA тип2_оранжевая
+item.block_fusumab_pink.name=FUSUMA тип2_розовая
+item.block_fusumab_purple.name=FUSUMA тип2_фиолетовая
+item.block_fusumab_red.name=FUSUMA тип2_красная
+item.block_fusumab_yellow.name=FUSUMA тип2_желтая
+
+item.block_shouji_ichoh.name=SHOUJI_гинкго
+item.block_shouji_kaede.name=SHOUJI_acer
+item.block_shouji_sakura.name=SHOUJI_cакура
+item.block_shoujib_ichoh.name=SHOUJI тип2_гинкго
+item.block_shoujib_kaede.name=SHOUJI тип2_acer
+item.block_shoujib_sakura.name=SHOUJI тип2_cакура
+
+item.block_garasudob_ichoh.name=GARASUDO тип2_гинкго
+item.block_garasudob_kaede.name=GARASUDO тип2_acer
+item.block_garasudob_sakura.name=GARASUDO тип2_cакура
+item.block_garasudo_ichoh.name=GARASUDO_гинкго
+item.block_garasudo_kaede.name=GARASUDO_acer
+item.block_garasudo_sakura.name=GARASUDO_cакура
+
+#4.0.1
+item.block_food_dongyu_1.name=GYUDON
+tips.block_food_dongyu_1=Чаша риса с говядиной
+item.block_food_donkatsu_1.name=KATSUDON
+tips.block_food_donkatsu_1=Зажаренный шар риса котлеты свинины
+item.block_food_donmeshi_1.name=Чаша для риса
+item.block_food_donoyako_1.name=OYAKODON
+tips.block_food_donoyako_1=Японский омлет с рисом и курицей
+
+item.block_food_frypan_n_tamago.name=Сковорода с сырым яйцом
+item.block_food_frypan_n_eggb.name=Сковорода с сырым яйцом гамбург
+item.block_food_frypan_n_gyudon.name=Сковорода с сырый GYUDON
+item.block_food_frypan_n_katsu.name=Сковорода с сырый котлета из свинины
+item.block_food_frypan_n_katsudon.name=Сковорода с сырый KATSUDON
+item.block_food_frypan_n_oyakodon.name=Сковорода с сырый OYAKODON
+item.block_food_frypan_n_kinokos.name=Сковорода с сырыми грибами
+item.block_food_frypan_n_tomatos.name=Сковорода с ырым томатным соусом
+
+item.block_food_frypan_b_tamago.name=Сковорода с омлет
+tips.block_food_frypan_sara=Возьмите его с тарелка.
+item.block_food_frypan_b_eggb.name=Сковорода с яйцом гамбург
+item.block_food_frypan_b_gyudon.name=Сковорода с GYUDON
+tips.block_food_frypan_donburi=Возьмите его с чаша для риса.
+item.block_food_frypan_b_katsu.name=Сковорода с котлета из свинины
+item.block_food_frypan_b_katsudon.name=Сковорода с KATSUDON
+item.block_food_frypan_b_oyakodon.name=Сковорода с OYAKODON
+item.block_food_frypan_b_kinokos.name=Сковорода с грибами
+item.block_food_frypan_b_tomatos.name=Сковорода с томатным соусом
+tips.block_food_frypan_pasta=Возьмите его с макаронами.
+
+item.item_food_pasta_n.name=Сырые макароны
+item.item_food_pasta_s.name=Макаронные изделия
+
+item.block_zundou_shiomizu.name=Stockpot с соленой водой
+tips.block_zundou_shiomizu=Готовим макароны и рыба.
+
+item.block_food_pastacheese_1.name=Макароны с сырным соусом
+item.block_food_pastakinoko_1.name=Макароны с грибами
+item.block_food_pastatoma_1.name=Томатный соус макароны
+
+item.block_taru_hakusai_f.name=Китайская капустная бочка 1-й этап
+tips.block_taru_hakusai_f=Бочка для приготовления Китайская капуста соленая. Когда вода выйдет, разбейте ее и соберите.
+item.block_taru_hakusai_f2.name=Китайская капустная бочка 2 этап
+tips.block_taru_hakusai_f2=Бочка для приготовления Китайская капуста соленая. Возьми это с тарелка. 4 раза.
+item.item_food_hakusai2.name=Китайская капуста слабосоленая
+item.block_food_hsd_1.name=Китайская капуста соленая
+
+item.block_taru_komezu_f.name=Бочка с рисовый уксус
+tips.block_taru_komezu=Бочка для приготовления рисового уксуса. Возьми это по колбу. 4 раза.
+item.block_komezu_bot.name=Рисовый уксус
+item.block_komezu_bot_2.name=Рисовый уксус
+
+item.block_taru_shouyu_f.name=Соевый соус Бочка
+tips.block_taru_shouyu=Бочка для приготовления соевого соуса. Возьми это по колбу. 4 раза.
+item.block_shouyu_bot.name=Соевый соус
+item.block_shouyu_bot_2.name=Соевый соус
+item.block_shouyu_bot_3.name=Соевый соус
+item.block_shouyu_bot_4.name=Соевый соус
+chinjufumod.subtitle.shouyu=Залейте соевым соусом.
+tips.block_bot=4 раза
+tips.block_bot_2=3 раза
+tips.block_bot_3=2 раза
+tips.block_bot_4=1 раз
+
+item.item_food_kirimi_salmon.name=Ломтик лосось
+item.item_food_kirimi_fish.name=Ломтик рыба
+item.item_food_kirimi_beef.name=Ломтик сырую говядину
+item.item_food_kirimi_tamago.name=Ломтик омлета
+tips.item_food_kirimi=Возьмите его и щелкните правой кнопкой мыши на SUSHI-рисе, чтобы приготовить SUSHI.
+
+item.block_food_sushimeshi.name=SUSHI рис
+tips.block_food_sushimeshi=Приготовить SUSHI из филе.
+
+item.block_food_shouyusara_1.name=Соевый соус и блюдо
+tips.block_food_shouyusara_1=Используйте с SUSHI.
+
+item.item_food_sushi_salmon.name=SUSHI_Лосось
+item.item_food_sushi_fish.name=SUSHI_Рыба
+item.item_food_sushi_beef.name=SUSHI_Сырую говядину
+item.item_food_sushi_tamago.name=SUSHI_Омлет
+item.item_food_sushishouyu_salmon.name=SUSHI с соевым соусом_Лосось
+item.item_food_sushishouyu_fish.name=SUSHI с соевым соусом_Рыба
+item.item_food_sushishouyu_beef.name=SUSHI с соевым соусом_Сырую говядину
+item.item_food_sushishouyu_tamago.name=SUSHI с соевым соусом_Омлет
+
+item.block_food_sushiset_4shoku.name=Набор SUSHI
+item.block_food_sushiset_salmon.name=Набор SUSHI_Лосось
+item.block_food_sushiset_fish.name=Набор SUSHI_Рыба
+item.block_food_sushiset_beef.name=Набор SUSHI_Сырую говядину
+item.block_food_sushiset_tamago.name=Набор SUSHI_Омлет
+
+item.block_food_sushigeta_kara.name=SUSHI-GETA
+tips.block_food_sushigeta_kara=Деревянная тарелка для SUSHI. Залить соевым соусом и положить SUSHI.
+
+item.block_food_sushioke_kara.name=SUSHI миска
+item.block_food_sushiokefull_1.name=Ассорти из SUSHI
+
+item.block_niboshi.name=Вареная рыба
+tips.block_niboshi_boiled=После сушки соберите в колба.
+item.block_dashi_bot.name=DASHI порошка
+item.block_dashi_bot_2.name=DASHI порошка
+item.block_dashi_bot_3.name=DASHI порошка
+item.block_dashi_bot_4.name=DASHI порошка
+
+item.block_food_dashinabe_1.name=Stockpot с DASHI
+tips.block_food_dashinabe_1=Возьми в DONBURI с Соевый соус.
+
+item.item_clay_donburi.name=Вагонка глина_DONBURI
+tips.item_clay_donburi=Ожог в печи, это превращается в DONBURI.
+
+item.item_food_donburi.name=DONBURI
+tips.item_food_donburi=Используйте для UDON и риса.
+
+item.item_food_udon_n.name=Сырая UDON
+item.block_zundou_mizu.name=Stockpot с водой
+
+item.item_food_shouyu_don.name=DONBURI с Соевый соус
+item.item_food_tsuyu_don.name=DONBURI с Суп
+item.block_food_udonsu_1.name=Простой UDON
+item.block_food_udonniku_1.name=Говядину UDON
+item.block_food_udontsukimi_1.name=Яйцо UDON
+
+item.block_food_senbei.name=SENBEI на тарелке
+item.block_food_scone.name=Scone на тарелке
+item.block_food_mikan.name=Цитрус на тарелке
+
+item.block_wood_mikan.name=Цитрус дерево
+tips.block_wood_mikan=Посадка на яркую грязь, дерево растет.
+item.item_food_mikan.name=Цитрус
+tile.block_boxh_citrus.name=Коробка цитрус
+tile.block_boxh_salmon.name=Коробка Лосось
+
+tile.block_kit2_tana.name=Винная стойка
+tips.block_kit2_tana=Можно держать вино, сидр и сакэ.
+
+tile.block_koushib_oak.name=Горизонтальная решетка
+tile.block_koushib_aca.name=Горизонтальная решетка_акация
+tile.block_koushib_bir.name=Горизонтальная решетка_березовый
+tile.block_koushib_doak.name=Горизонтальная решетка_емный дуб
+tile.block_koushib_jun.name=Горизонтальная решетка_тропического
+tile.block_koushib_spru.name=Горизонтальная решетка_еловые
+tile.block_koushib_ich.name=Горизонтальная решетка_гинкго
+tile.block_koushib_kae.name=Горизонтальная решетка_acer
+tile.block_koushib_saku.name=Горизонтальная решетка_cакура
+
+item.block_shishiodoshi.name=SHISHI-ODOSHI
+tips.block_shishiodoshi=Задний ход, положив его в приседание. Щелкните правой [начало / стоп].
+
+item.block_hodagi_a_bot.name=Грибы древесина
+tips.block_hodagi_a_bot=Грибы растут, когда помещаются в место с уровнем освещенности 11 или меньше.
+item.block_taru_kinoko_f.name=Грибы полка
+tips.block_taru_kinoko=Полка для приготовления DASHI с грибами. Собрать в стеклянную бутылку.
+item.block_taru_konbu_f.name=Ламинария полка
+tips.block_taru_konbu=Полка для приготовления DASHI с ламинария. Собрать в стеклянную бутылку.
+
+item.block_measurecup.name=Мерный стакан
+tips.block_measurecup=Используйте раковину, чтобы налить воду для приготовления пищи.
+item.item_measurecup_full.name=Мерный стакан с водой
+tips.item_measurecup_full=Вода для приготовления
+
+item.block_suiden.name=Рисовое поле
+tips.block_suiden=Посадите здесь рис. Если воды нет рядом, она превращается в Землю.
+
+tile.block_noriami.name=Сеть водорослей
+tips.block_noriami=Поместите на воду и выращивайте водоросли.
+item.block_taru_nori_f.name=NORI полка
+tips.block_taru_nori=Полка для изготовления листов NORI из сырых водорослей.
+
+tile.block_food_frypan_n_kinokoak.name=Грибы в соевом соусе и сахаре
+item.item_food_frypan_b_kinokoak.name=Грибы, приготовленные в соевом соусе и сахаре
+tips.item_frypan_kinokoak=Материал FUTOMAKI
+
+item.item_food_norinama.name=Сырые водоросли
+item.item_food_noriita.name=Лист NORI
+item.item_food_onigiri.name=ONIGIRI
+item.item_food_onigirishake.name=ONIGIRI_Лосось
+item.item_food_futomaki.name=FUTOMAKI
+
+tile.block_shoujihalf.name=Половина SHOUJI
+tile.block_shoujihalf_acacia.name=Половина SHOUJI_акация
+tile.block_shoujihalf_birch.name=Половина SHOUJI_березовый
+tile.block_shoujihalf_darkoak.name=Половина SHOUJI_темный дуб
+tile.block_shoujihalf_jungle.name=Половина SHOUJI_тропического
+tile.block_shoujihalf_spruce.name=Половина SHOUJI_еловые
+tile.block_shoujihalf_ichoh.name=Половина SHOUJI_гинкго
+tile.block_shoujihalf_kaede.name=Половина SHOUJI_acer
+tile.block_shoujihalf_sakura.name=Половина SHOUJI_cакура
+tips.block_shoujihalf=Задний ход, положив его в приседание. Щелкните правой [открыть / закрыть].
+
+tile.block_garasudohalf.name=Половина GARASUDO
+tile.block_garasudohalf_acacia.name=Половина GARASUDO_акация
+tile.block_garasudohalf_birch.name=Половина GARASUDO_березовый
+tile.block_garasudohalf_darkoak.name=Половина GARASUDO_темный дуб
+tile.block_garasudohalf_jungle.name=Половина GARASUDO_тропического
+tile.block_garasudohalf_spruce.name=Половина GARASUDO_еловые
+tile.block_garasudohalf_ichoh.name=Половина GARASUDO_гинкго
+tile.block_garasudohalf_kaede.name=Половина GARASUDO_acer
+tile.block_garasudohalf_sakura.name=Половина GARASUDO_cакура
+
+item.block_tobukurowin.name=TOBUKURO окно_темный дуб
+item.block_tobukuro.name=TOBUKURO_темный дуб
+item.block_tobukurowin_spruce.name=TOBUKURO окно
+item.block_tobukuro_spruce.name=TOBUKURO
+tips.block_tobukuro=Коробка деревянная штормовая дверь. Задний ход, положив его в приседание. Щелкните правой [открыть / закрыть].
+
+tile.block_takeakari.name=Бамбуковый фонарь
+tips.block_takeakari=Зажгите огонь с помощью Огниво. Щелкните правой кнопкой мыши [Выкл.].
+
+item.item_kushi_sakana.name=Сырая рыба на вертеле
+item.item_kushi_sakana_c.name=Рыба на вертеле
+tips.item_kushi_sakana=Наденьте его на IRORI и приготовьте.
+
+tile.block_taru_hachimitsushu_f.name=Медовуха бочка
+tips.block_taru_hachimitsushu=Баррель для создания медовуха. После ферментации собирайте с помощью бутылки с вином.
+tile.block_bot_mead_1.name=Медовуха
+tile.block_bot_meadjuku_1.name=Зрелые медовуха
+item.block_glass_mead.name=Стекло с медовуха
+item.block_glass_meadjuku.name=Стекло с зрелые медовуха
+
+item.item_rotten_food.name=Гнилая пища
+tips.item_rotten_food=Компостируемый предмет.
+	
+tile.block_marinelamp.name=Морская лампа
+
+tile.block_bamboo_cube.name=Бамбуковый блок
+tile.block_bamboo_y_cube.name=Бамбуковый блок загорелые
+tile.block_bamboo_k_cube.name=Бамбуковый блок копченый
+tile.block_bamboo_stairs.name=Бамбуковая ступеньки 
+tile.block_bamboo_y_stairs.name=Бамбуковая ступеньки загорелые
+tile.block_bamboo_k_stairs.name=Бамбуковая ступеньки копченый
+tile.block_bamboo_slab.name=Бамбуковая плита 
+tile.block_bamboo_y_slab.name=Бамбуковая плита загорелые
+tile.block_bamboo_k_slab.name=Бамбуковая плит копченый
+
+tile.block_wp_bamboo.name=Панель_Бамбуковый блок
+tile.block_wp_bamboo_y.name=Панель_Бамбуковый блок загорелые
+tile.block_wp_bamboo_k.name=Панель_Бамбуковый блок копченый
+
+tile.block_bamboo_fence.name=Бамбуковый забор
+tile.block_bamboo_y_fence.name=Бамбуковый забор загорелые
+tile.block_bamboo_k_fence.name=Бамбуковый забор копченый
+tile.block_bamboo_fencegate.name=Бамбуковый калитка
+tile.block_bamboo_y_fencegate.name=Бамбуковый калитка загорелые
+tile.block_bamboo_k_fencegate.name=Бамбуковый калитка копченый
+item.block_bamboo_door.name=Бамбуковый дверь
+item.block_bamboo_y_door.name=Бамбуковый дверь загорелые
+item.block_bamboo_k_door.name=Бамбуковый дверь копченый
+
+tile.block_fence_sakura.name=Cакура забор
+tile.block_fence_kaede.name=Acer забор
+tile.block_fence_ichoh.name=Гинкго забор
+tile.block_fencegate_sakura.name=Cакура калитка
+tile.block_fencegate_kaede.name=Acer калитка
+tile.block_fencegate_ichoh.name=Гинкго калитка
+
+item.block_inagi.name=INAGI
+tips.block_inagi=Повесить 8 рисовое растений. После просушки щелкните правой кнопкой мыши, чтобы собрать рисовое растений.
+item.item_ine_dry.name=Сухое рисовое растение
+
+tile.block_button_sakura.name=Cакура кнопка
+tile.block_button_kaede.name=Acer кнопка
+tile.block_button_ichoh.name=Гинкго кнопка
+tile.block_plate_sakura.name=Cакура нажимная плита
+tile.block_plate_kaede.name=Acer нажимная плита
+tile.block_plate_ichoh.name=Гинкго нажимная плита
+tile.block_trapdoor_sakura.name=Cакура люк
+tile.block_trapdoor_kaede.name=Acer люк
+tile.block_trapdoor_ichoh.name=Гинкго люк
+
+tile.block_bamboo_button.name=Бамбуковый кнопка
+tile.block_bamboo_y_button.name=Бамбуковый кнопка загорелые
+tile.block_bamboo_k_button.name=Бамбуковый кнопка копченый
+tile.block_bamboo_plate.name=Бамбуковый нажимная плита
+tile.block_bamboo_y_plate.name=Бамбуковый нажимная плита загорелые
+tile.block_bamboo_k_plate.name=Бамбуковый нажимная плита копченый
+tile.block_bamboo_trapdoor.name=Бамбуковый люк
+tile.block_bamboo_y_trapdoor.name=Бамбуковый люк загорелые
+tile.block_bamboo_k_trapdoor.name=Бамбуковый люк копченый
+
+item.block_mizuoke.name=MIZUOKE
+tips.block_mizuoke=Деревянное ведро для воды или молока.
+item.block_mizuoke_full.name=MIZUOKE воды
+tips.block_mizuoke_full=Деревянное ведро воды, которое может превратить Песок в Соляной пруд.
+item.item_mizuoke_milk.name=MIZUOKE молока
+tips.item_mizuoke_milk=Деревянное ведро с молоком
+
+tile.block_enden.name=Соляной пруд
+tips.block_enden=Приготовление соли с использованием солнечного света.
+
+item.block_wadaiko.name=WADAIKO
+tile.block_wadaiko_small.name=Маленький WADAIKO
+tips.block_wadaiko=Музыкальный инструмент для игры с палка. Прокрасться правой кнопкой мыши [изменить тип].
+chinjufumod.subtitle.wadaiko_top=Звук WADAIKO
+chinjufumod.subtitle.wadaiko_side=Звук края WADAIKO
+
+#Kamoi
+tile.block_kamoi_oak.name=Половина столба
+tile.block_kamoi_acacia.name=Половина столба_акация
+tile.block_kamoi_birch.name=Половина столба_березовый
+tile.block_kamoi_darkoak.name=Половина столба_темный дуб
+tile.block_kamoi_jungle.name=Половина столба_тропического
+tile.block_kamoi_spruce.name=Половина столба_еловые
+tile.block_kamoi_sakura.name=Половина столба_гинкго
+tile.block_kamoi_kaede.name=Половина столба_acer
+tile.block_kamoi_ichoh.name=Половина столба_cакура
+
+item.item_hake.name=Кисть
+tips.item_hake=Сделайте цветная кисть с красителем.
+
+item.item_hake_black.name=Цветная кисть_черная
+item.item_hake_blue.name=Цветная кисть_синяя
+item.item_hake_brown.name=Цветная кисть_коричневая
+item.item_hake_cyan.name=Цветная кисть_бирюзовая
+item.item_hake_gray.name=Цветная кисть_серая
+item.item_hake_green.name=Цветная кисть_зеленая
+item.item_hake_lightblue.name=Цветная кисть_голубая
+item.item_hake_lightgray.name=Цветная кисть_светло-серая
+item.item_hake_lime.name=Цветная кисть_лаймовая
+item.item_hake_magenta.name=Цветная кисть_пурпурная
+item.item_hake_orange.name=Цветная кисть_оранжевая
+item.item_hake_pink.name=Цветная кисть_розовая
+item.item_hake_purple.name=Цветная кисть_фиолетовая
+item.item_hake_red.name=Цветная кисть_красная
+item.item_hake_yellow.name=Цветная кисть_желтая
+item.item_hake_white.name=Цветная кисть_белый
+
+tips.item_hake_color=Перекрасить блоки.
+chinjufumod.subtitle.paint=Звук живописи
+
+item.item_kumade.name=KUMADE
+tips.item_kumade=Нарисуйте узор на песке и гравии.
+item.item_chisel.name=Долото
+tips.item_chisel=Превратите камень и гранит в садовый камень.
+	
+#6.1.2
+item.block_dirtwall_wall.name=Саман стена
+item.block_pwall_black.name=SHIKKUI стена_черная
+item.block_pwall_blue.name=SHIKKUI стена_синяя
+item.block_pwall_brown.name=SHIKKUI стена_коричневая
+item.block_pwall_cyan.name=SHIKKUI стена_бирюзовая
+item.block_pwall_gray.name=SHIKKUI стена_серая
+item.block_pwall_green.name=SHIKKUI стена_зеленая
+item.block_pwall_lightb.name=SHIKKUI стена_голубая
+item.block_pwall_lightg.name=SHIKKUI стена_светло-серая
+item.block_pwall_lime.name=SHIKKUI стена_лаймовая
+item.block_pwall_magenta.name=SHIKKUI стена_пурпурная
+item.block_pwall_orange.name=SHIKKUI стена_оранжевая
+item.block_pwall_pink.name=SHIKKUI стена_розовая
+item.block_pwall_purple.name=SHIKKUI стена_фиолетовая
+item.block_pwall_red.name=SHIKKUI стена_красная
+item.block_pwall_yellow.name=SHIKKUI стена_желтая
+item.block_pwall_white.name=SHIKKUI стена
+	
+item.block_nwall_black.name=NAMAKO стена_черная
+item.block_nwall_blue.name=NAMAKO стена_синяя
+item.block_nwall_brown.name=NAMAKO стена_коричневая
+item.block_nwall_cyan.name=NAMAKO стена_бирюзовая
+item.block_nwall_gray.name=NAMAKO стена_серая
+item.block_nwall_green.name=NAMAKO стена_зеленая
+item.block_nwall_lightb.name=NAMAKO стена_голубая
+item.block_nwall_lightg.name=NAMAKO стена_светло-серая
+item.block_nwall_lime.name=NAMAKO стена_лаймовая
+item.block_nwall_magenta.name=NAMAKO стена_пурпурная
+item.block_nwall_orange.name=NAMAKO стена_оранжевая
+item.block_nwall_pink.name=NAMAKO стена_розовая
+item.block_nwall_purple.name=NAMAKO стена_фиолетовая
+item.block_nwall_red.name=NAMAKO стена_красная
+item.block_nwall_yellow.name=NAMAKO стена_желтая
+item.block_nwall_white.name=NAMAKO стена
+	
+item.block_nwall_b_black.name=NAMAKO стена тип2_черная
+item.block_nwall_b_blue.name=NAMAKO стена тип2_синяя
+item.block_nwall_b_brown.name=NAMAKO стена тип2_коричневая
+item.block_nwall_b_cyan.name=NAMAKO стена тип2_бирюзовая
+item.block_nwall_b_gray.name=NAMAKO стена тип2_серая
+item.block_nwall_b_green.name=NAMAKO стена тип2_зеленая
+item.block_nwall_b_lightb.name=NAMAKO стена тип2_голубая
+item.block_nwall_b_lightg.name=NAMAKO стена тип2_светло-серая
+item.block_nwall_b_lime.name=NAMAKO стена тип2_лаймовая
+item.block_nwall_b_magenta.name=NAMAKO стена тип2_пурпурная
+item.block_nwall_b_orange.name=NAMAKO стена тип2_оранжевая
+item.block_nwall_b_pink.name=NAMAKO стена тип2_розовая
+item.block_nwall_b_purple.name=NAMAKO стена тип2_фиолетовая
+item.block_nwall_b_red.name=NAMAKO стена тип2_красная
+item.block_nwall_b_yellow.name=NAMAKO стена тип2_желтая
+item.block_nwall_b_white.name=NAMAKO стена тип2
+	
+tile.block_dirtwall_sama.name=Саман бойница
+tile.block_sama_black.name=SHIKKUI бойница_черная
+tile.block_sama_blue.name=SHIKKUI бойница_синяя
+tile.block_sama_brown.name=SHIKKUI бойница_коричневая
+tile.block_sama_cyan.name=SHIKKUI бойница_бирюзовая
+tile.block_sama_gray.name=SHIKKUI бойница_серая
+tile.block_sama_green.name=SHIKKUI бойница_зеленая
+tile.block_sama_lightb.name=SHIKKUI бойница_голубая
+tile.block_sama_lightg.name=SHIKKUI бойница_светло-серая
+tile.block_sama_lime.name=SHIKKUI бойница_лаймовая
+tile.block_sama_magenta.name=SHIKKUI бойница_пурпурная
+tile.block_sama_orange.name=SHIKKUI бойница_оранжевая
+tile.block_sama_pink.name=SHIKKUI бойница_розовая
+tile.block_sama_purple.name=SHIKKUI бойница_фиолетовая
+tile.block_sama_red.name=SHIKKUI бойница_красная
+tile.block_sama_yellow.name=SHIKKUI бойница_желтая
+tile.block_sama_white.name=SHIKKUI бойница
+tips.block_sama=Сложите одинаковые блоки, чтобы получилось толще.
+	
+item.block_kwall_black.name=Стена Крыша_черная
+item.block_kwall_blue.name=Стена Крыша_синяя
+item.block_kwall_brown.name=Стена Крыша_коричневая
+item.block_kwall_cyan.name=Стена Крыша_бирюзовая
+item.block_kwall_gray.name=Стена Крыша_серая
+item.block_kwall_green.name=Стена Крыша_зеленая
+item.block_kwall_lightb.name=Стена Крыша_голубая
+item.block_kwall_lightg.name=Стена Крыша_светло-серая
+item.block_kwall_lime.name=Стена Крыша_лаймовая
+item.block_kwall_magenta.name=Стена Крыша_пурпурная
+item.block_kwall_orange.name=Стена Крыша_оранжевая
+item.block_kwall_pink.name=Стена Крыша_розовая
+item.block_kwall_purple.name=Стена Крыша_фиолетовая
+item.block_kwall_red.name=Стена Крыша_красная
+item.block_kwall_yellow.name=Стена Крыша_желтая
+item.block_kwall_white.name=Стена Крыша_белая
+	
+tile.block_makibishi.name=MAKIBISHI
+tips.block_makibishi=Те, кто шаг на этом будет получит урон.
+	
+item.item_shouhou_empty.name=Пустой отчет
+tips.item_shouhou_empty=Запишите 100 точки EX с помощью 'Кисть и чернила камень' или 'Quill перо набор'.
+item.item_shouhou.name=Боевой отчет
+tips.item_shouhou=Используйте это, чтобы получить 100 точки EX.
+
+item.item_toami.name=Рыболовная сеть
+tips.item_toami=Если вы бросите это в кальмара, вы можете поймать кальмара.
+	
+item.item_squid_raw.name=Сырой кальмар
+item.item_squid_cut.name=Тело кальмара
+item.item_squid_cooked.name=Жареный кальмар
+tips.item_squid_raw=Его можно разделить на 2 чернильных мешочка и тело кальмара.
+item.block_food_donkaisen_1.name=KAISEN-DON
+tips.block_food_donkaisen_1=Свежий рис сырой рыбы
+	
+tile.block_snowcore.name=Маленький снежок
+tips.block_snowcore=Катите его по снегу, чтобы он стал больше. Сложите два из них, чтобы слепить снеговик.
+item.block_snowman_bot1.name=Снеговик
+tips.block_snowman=Его меняют при помощи морковь и шерсти.
+	
+chinjufumod.subtitle.throw=Звук метания	
+chinjufumod.subtitle.write_report=Звук письма
+chinjufumod.subtitle.open=Открытым
+chinjufumod.subtitle.open_oven=Открытым
+chinjufumod.subtitle.touch_block=Вы коснулись блока.
+chinjufumod.subtitle.error=Звук ошибки
+	
+text.chinjufumod.rightclick.waterlogged=Его нельзя использовать, потому что он залит.
+text.chinjufumod.rightclick.notenough_exp=У вас недостаточно точки EX.
+text.chinjufumod.rightclick.nothave=У вас в руке нет предметов, которые можно использовать.
+text.chinjufumod.rightclick.notenough_items=У вас нет достаточного количества предметов.
+text.chinjufumod.rightclick.notsneak=Щелкните правой на нем при приседании.
+text.chinjufumod.rightclick.noplace=Его некуда положить.
+text.chinjufumod.rightclick.fullitem=В вашей руке полно предметов.
+text.chinjufumod.rightclick.earlycollect=Слишком рано собирать.
+text.chinjufumod.rightclick.earlyuse=Слишком рано использовать.
+text.chinjufumod.rightclick.sleeping=Оно спит.
+text.chinjufumod.rightclick.heat=Дайте ему нагреться.
+text.chinjufumod.rightclick.cool=Дайте ему остыть.
+text.chinjufumod.rightclick.blocked=Используемая поверхность заблокирована.
+text.chinjufumod.rightclick.empty=Оно пустое.
+text.chinjufumod.rightclick.repair=Требуется ремонт.

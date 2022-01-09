@@ -1,11 +1,11 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "chinjufumod:blocks/tray_side15",
-		"top": "chinjufumod:blocks/trayfude_top15",
-		"bottom": "chinjufumod:blocks/tray_bottom15",
+		"particle": "chinjufumod:blocks/tray_side",
+		"top": "chinjufumod:blocks/trayfude_top",
+		"bottom": "chinjufumod:blocks/tray_bottom",
 		"item": "chinjufumod:blocks/letterfude_item",
-		"side": "chinjufumod:blocks/tray_side15"
+		"side": "chinjufumod:blocks/tray_side"
 	},
 	"elements": [
 		{

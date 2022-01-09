@@ -1,7 +1,7 @@
 {
 	"parent": "chinjufumod:block/base/base_niwaishi_2",
 	"textures": {
-		"particle": "minecraft:block/polished_andesite",
-		"rock": "minecraft:block/polished_andesite"
+		"particle": "minecraft:blocks/stone_andesite_smooth",
+		"rock": "minecraft:blocks/stone_andesite_smooth"
 	}
 }

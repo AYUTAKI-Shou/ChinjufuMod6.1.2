@@ -4,16 +4,16 @@
 		"particle": "chinjufumod:blocks/suiden_2",
 		"top": "chinjufumod:blocks/suiden_2",
 		"side": "chinjufumod:blocks/suiden_2_side",
-		"down": "minecraft:block/dirt",
-		"mizu": "minecraft:block/water_still"
+		"down": "minecraft:blocks/dirt",
+		"mizu": "chinjufumod:blocks/water_still"
 	},
 	"elements": [
 		{
 			"name": "mizu",
 			"from": [ 0.5, 0.5, 0.5 ],
-			"to": [ 15.5, 14.25, 15.5 ],
+			"to": [ 15.5, 14.2, 15.5 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1 }
+				"up" : { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
 

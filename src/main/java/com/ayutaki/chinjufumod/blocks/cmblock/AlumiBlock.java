@@ -1,221 +1,171 @@
 package com.ayutaki.chinjufumod.blocks.cmblock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage4_Face;
+import com.ayutaki.chinjufumod.handler.CMEvents;
+import com.ayutaki.chinjufumod.registry.Chinjufu_Blocks;
+import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class AlumiBlock extends Block implements IWaterLoggable {
+public class AlumiBlock extends BaseStage4_Face {
 
-	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final EnumProperty<AlumiType> TYPE = EnumProperty.create("type", AlumiType.class);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	/** 1=アルミ、2=鋼材、3=金 **/
+	public static final String ID = "block_alumi_block";
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOTTOM = Block.makeCuboidShape(0.5D, 0.0D, 0.5D, 15.5D, 8.0D, 15.5D);
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.5D, 0.0D, 0.5D, 15.5D, 16.0D, 15.5D);
+	public AlumiBlock() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-	public AlumiBlock(Block.Properties properties) {
-		super(properties);
+		setSoundType(SoundType.METAL);
+		setHardness(1.0F);
+		setResistance(10.0F);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(TYPE, AlumiType.BOTTOM)
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
-	/* Gives a value when placed. +180 .getOpposite() */
+	/* RightClick Action */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getPos();
-		BlockState blockstate = context.getWorld().getBlockState(blockpos);
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-		if (blockstate.getBlock() == this) {
-			/** それの blockstate を拾った上で DOUBLE にする **/
-			return blockstate.with(TYPE, AlumiType.DOUBLE).with(WATERLOGGED, Boolean.valueOf(false));
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		Item item = itemstack.getItem();
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+		int k;
+		k = itemstack.getMetadata();
+
+		/** Hand is Empty.。取り尽くしを考慮してクリエイティブでも回収はできるようにする **/
+		if (itemstack.isEmpty() && facing == EnumFacing.UP) {
+			if (i == 1) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.ALUMI, 1, 1));
+
+				CMEvents.soundItemPick(worldIn, pos);
+				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); }
+
+			if (i == 2) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.ALUMI, 1, 2));
+
+				CMEvents.soundItemPick(worldIn, pos);
+				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); }
+
+			if (i == 3) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Chinjufu.ALUMI, 1, 3));
+
+				CMEvents.soundItemPick(worldIn, pos);
+				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); }
+			return true;
 		}
 
-		else {
-			IFluidState ifluidstate = context.getWorld().getFluidState(blockpos);
-			BlockState blockState2 = this.getDefaultState().with(TYPE, AlumiType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER))
-					.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
-			Direction direction = context.getFace();
-
-			return direction != Direction.DOWN && (direction == Direction.UP || context.getHitVec().y - (double)blockpos.getY() <= 0.5D) ? blockState2 : blockState2;
+		if (!itemstack.isEmpty()) { 
+			/** Double にする。クリエイティブではアイテムを消費させない **/
+			if (i == 1 && item == Items_Chinjufu.ALUMI && k == 1 && facing == EnumFacing.UP) {
+				CMEvents.Consume_1Item(playerIn, hand);
+	
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+				worldIn.setBlockState(pos, Chinjufu_Blocks.ALUMI_W.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, Integer.valueOf(1))); }
+	
+			if (i == 2 && item == Items_Chinjufu.ALUMI && k == 2 && facing == EnumFacing.UP) {
+				CMEvents.Consume_1Item(playerIn, hand);
+	
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+				worldIn.setBlockState(pos, Chinjufu_Blocks.ALUMI_W.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, Integer.valueOf(2))); }
+	
+			if (i == 3 && item == Items_Chinjufu.ALUMI && k == 3 && facing == EnumFacing.UP) {
+				CMEvents.Consume_1Item(playerIn, hand);
+	
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+				worldIn.setBlockState(pos, Chinjufu_Blocks.ALUMI_W.getDefaultState()
+						.withProperty(H_FACING, state.getValue(H_FACING))
+						.withProperty(BaseStage4_Face.STAGE_1_4, Integer.valueOf(3))); }
+			
+			if (item != Items_Chinjufu.ALUMI) { CMEvents.textNotHave(worldIn, pos, playerIn); }
+			
+			return true;
 		}
-	}
-
-	/* DOUBLE への置き換え boolean t/f */
-	@Override
-	public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-		ItemStack itemstack = useContext.getItem();
-		AlumiType slabtype = state.get(TYPE);
-
-		/** DOUBLE でない時 かつ これをアイテム(アイテムブロック)として使う時 **/
-		if (slabtype != AlumiType.DOUBLE && itemstack.getItem() == this.asItem()) {
-
-			if (useContext.replacingClickedOnBlock()) {
-				boolean flag = useContext.getHitVec().y - (double)useContext.getPos().getY() > 0.5D;
-				Direction direction = useContext.getFace();
-
-				if (slabtype == AlumiType.BOTTOM) {
-					return direction == Direction.UP || flag && direction.getAxis().isHorizontal();
-				}
-				else {
-					return false;
-				}
-			}
-			else {
-				return true;
-			}
-		}
-
-		/** それ以外 **/
-		else {
-			return false;
-		}
-	}
-
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidState) {
-		return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidState);
-	}
-
-	public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluid);
-	}
-
-	@SuppressWarnings("deprecation")
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
+		return false;
 	}
 
+
+	/*Collision*/
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		switch(type) {
-		case LAND:
-			return false;
-		case WATER:
-			return worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
-		case AIR:
-			return false;
-		default:
-			return false;
-		}
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
 	}
 
-	/* Create Blockstate */
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(H_FACING, TYPE, WATERLOGGED);
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
+	@Override
+	public boolean isTopSolid(IBlockState state) {
+		return false;
 	}
 
-	public boolean isTransparent(BlockState state) {
-		return state.get(TYPE) != AlumiType.DOUBLE;
+	/* 側面に松明などを置けるようにする */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
-	/* Collisions for each property. */
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		AlumiType slabtype = state.get(TYPE);
-		switch(slabtype) {
-		case DOUBLE:
-			return AABB_BOX;
-		default:
-			return AABB_BOTTOM;
-		}
-	}
-
-	/* 採取適正ツール */
+	/* Harvest by Pickaxe. */
 	@Nullable
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
-		return ToolType.PICKAXE;
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(IBlockState state) {
 		return 0;
 	}
 
-	/* 窒息 */
+	/*Drop Item and Clone Item.*/
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.get(TYPE) != AlumiType.DOUBLE) { return false; }
-		return true;
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+		if (i == 1) { stack.add(new ItemStack(Items_Chinjufu.ALUMINUM, 4, 0)); }
+		if (i == 2) { stack.add(new ItemStack(Items.IRON_INGOT, 4, 0)); }
+		if (i == 3) { stack.add(new ItemStack(Items.GOLD_INGOT, 4, 0)); }
+		return stack;
 	}
 
-	/* 立方体 */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
 
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
-	}
-
-	public enum AlumiType implements IStringSerializable {
-		BOTTOM("bottom"),
-		DOUBLE("double");
-
-		private final String name;
-
-		private AlumiType(String name) {
-			this.name = name;
-		}
-
-		public String toString() {
-			return this.name;
-		}
-
-		public String getName() {
-			return this.name;
-		}
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+		if (i == 2) { return new ItemStack(Items_Chinjufu.ALUMI, 1, 2); }
+		if (i == 3) { return new ItemStack(Items_Chinjufu.ALUMI, 1, 3); }
+		return new ItemStack(Items_Chinjufu.ALUMI, 1, 1);
 	}
 
 }

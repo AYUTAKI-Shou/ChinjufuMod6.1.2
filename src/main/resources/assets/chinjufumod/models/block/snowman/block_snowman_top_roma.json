@@ -1,11 +1,11 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/snow",
-		"snow": "minecraft:block/snow",
-		"black": "minecraft:block/black_wool",
-		"red": "minecraft:block/red_wool",
-		"white": "minecraft:block/white_wool",
+		"particle": "chinjufumod:blocks/snow_cm",
+		"snow": "chinjufumod:blocks/snow_cm",
+		"black": "minecraft:blocks/wool_colored_black",
+		"red": "minecraft:blocks/wool_colored_red",
+		"white": "minecraft:blocks/wool_colored_white",
 		"glasses": "chinjufumod:blocks/roma_glasses"
 	},
 	"elements": [

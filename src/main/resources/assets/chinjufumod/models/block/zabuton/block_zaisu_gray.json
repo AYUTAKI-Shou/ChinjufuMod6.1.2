@@ -5,6 +5,6 @@
 		"top": "chinjufumod:blocks/zabuton_gray_top",
 		"bot": "chinjufumod:blocks/zabuton_gray_bot",
 		"side": "chinjufumod:blocks/zabuton_gray_side",
-		"wood": "minecraft:block/oak_planks"
+		"wood": "minecraft:blocks/planks_oak"
 	}
 }

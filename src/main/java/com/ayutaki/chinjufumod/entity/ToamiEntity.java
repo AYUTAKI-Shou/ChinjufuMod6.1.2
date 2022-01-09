@@ -2,67 +2,61 @@ package com.ayutaki.chinjufumod.entity;
 
 import javax.annotation.Nonnull;
 
-import com.ayutaki.chinjufumod.handler.EntityTypes_CM;
-import com.ayutaki.chinjufumod.registry.Crop_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.entity.passive.fish.CodEntity;
-import net.minecraft.entity.passive.fish.PufferfishEntity;
-import net.minecraft.entity.passive.fish.SalmonEntity;
-import net.minecraft.entity.passive.fish.TropicalFishEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Biomes;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
 
-@OnlyIn( value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class ToamiEntity extends ThrowableEntity implements IRendersAsItem {
+public class ToamiEntity extends EntityThrowable {
 
 	private static final DataParameter<Integer> RETURN_TO = EntityDataManager.createKey(ToamiEntity.class, DataSerializers.VARINT);
-	private ItemStack stack = new ItemStack(Items_Teatime.TOAMI);
+	private ItemStack stack = ItemStack.EMPTY;
 
-	public ToamiEntity(EntityType<ToamiEntity> type, World worldIn) {
-		super(type, worldIn);
+	public ToamiEntity(World worldIn) {
+		super(worldIn);
+
+		setSize(3.0F, 3.0F);
 	}
 
-	public ToamiEntity(LivingEntity entity, World worldIn, ItemStack stack) {
-		super(EntityTypes_CM.TOAMI, entity, worldIn);
+	public ToamiEntity(World worldIn, EntityLivingBase entity, ItemStack stack) {
+		super(worldIn, entity);
 		this.stack = stack.copy();
 	}
 
-	@Override
-	protected void registerData() {
-		dataManager.register(RETURN_TO, -1);
+	public void shoot(Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
+		float f = -MathHelper.sin(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
+		float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * 0.017453292F);
+		float f2 = MathHelper.cos(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
+		this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
+		this.motionX += entityThrower.motionX;
+		this.motionZ += entityThrower.motionZ;
+
+		if (!entityThrower.onGround) { this.motionY += entityThrower.motionY; }
 	}
 	
-	/* Flying render */
-	@Nonnull
 	@Override
-	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(RETURN_TO, -1);
 	}
 
 	@Override
@@ -71,120 +65,91 @@ public class ToamiEntity extends ThrowableEntity implements IRendersAsItem {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
+	public void onUpdate() {
+		super.onUpdate();
 
+		/** Server state control **/
 		if (!world.isRemote) {
 			Entity thrower = getThrower();
 			
-			if (isReturning()) { 
+			if (isReturning()) {
 				if (thrower == null && ticksExisted > 60) { dropAndKill(); }
 				
-				if (thrower != null) { returnAndKill(); } }
-		
-			if (!isReturning()) {
-				if (thrower == null && ticksExisted > 60) { dropAndKill(); }
-				
-				if (thrower != null && ticksExisted >= 15) { setEntityToReturnTo(getEntityToReturnTo() + 1); }
+				if (thrower != null) { returnAndKill(); }
 			}
+			
+			
+			if (!isReturning()) {
+				
+				if (thrower == null && ticksExisted > 60) { dropAndKill(); }
+				
+				if (thrower != null && ticksExisted >= 15) { setEntityToReturnTo(getEntityToReturnTo() + 1); } }
 		}
 	}
 
-	/* アイテム化と Entity 削除 */
 	private void returnAndKill() {
 		Entity thrower = getThrower();
 		ItemStack stack = getItemStack();
-		ItemEntity item = new ItemEntity(world, thrower.getPosX(), thrower.getPosY(), thrower.getPosZ(), stack);
-		world.addEntity(item);
-		remove();
-	}
-
-	private void dropAndKill() {
-		ItemStack stack = getItemStack();
-		ItemEntity item = new ItemEntity(world, getPosX(), getPosY(), getPosZ(), stack);
-		world.addEntity(item);
-		remove();
+		EntityItem item = new EntityItem(world, thrower.posX, thrower.posY, thrower.posZ, stack);
+		world.spawnEntity(item);
+		setDead();
 	}
 	
-	/* stack.copy() で耐久値を反映 */
+	private void dropAndKill() {
+		ItemStack stack = getItemStack();
+		EntityItem item = new EntityItem(world, posX, posY, posZ, stack);
+		world.spawnEntity(item);
+		setDead();
+	}
+	
 	private ItemStack getItemStack() {
 		return this.stack.copy();
-	}
-
-	/* implements IRendersAsItem で必須 */
-	@Nonnull
-	@Override
-	public ItemStack getItem() {
-		return new ItemStack(Items_Teatime.TOAMI);
 	}
 
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult result) {
 
-		switch (result.getType()) {
+		switch (result.typeOfHit) {
 		case BLOCK: {
-			BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
-			BlockState blockstate = world.getBlockState(blockResult.getPos());
-			Block block = blockstate.getBlock();
+			BlockPos pos = result.getBlockPos();
+			IBlockState blockstate = world.getBlockState(pos);
 
-			if (blockstate.getMaterial().isReplaceable() || block == Blocks.KELP ||
-					block == Crop_Blocks.SHIKAKE_AMI || block == Crop_Blocks.YOUSHOKU_AMI) { return; }
+			if (blockstate.getMaterial().isReplaceable()) { return; }
 			
-			if (!blockstate.getMaterial().isReplaceable() && block != Blocks.KELP &&
-					block != Crop_Blocks.SHIKAKE_AMI && block != Crop_Blocks.YOUSHOKU_AMI) { 
-				setEntityToReturnTo(getEntityToReturnTo() + 1); }
+			if (!blockstate.getMaterial().isReplaceable()) { setEntityToReturnTo(getEntityToReturnTo() + 1); }
 			break;
 		}
 
 		case ENTITY: {
-			EntityRayTraceResult entityResult = (EntityRayTraceResult) result;
-			LivingEntity thrower = getThrower();
-
-			if (isReturning()) { return; }
+			Entity thrower = getThrower();
 			
-			if (!isReturning()) { 
-				if (!world.isRemote && entityResult.getEntity() instanceof LivingEntity) {
+			if (!world.isRemote && result.entityHit != null && result.entityHit instanceof EntityLivingBase && result.entityHit != getThrower()) {
+
+				if (result.entityHit instanceof EntitySquid) {
+					result.entityHit.playSound(SoundEvents.ITEM_BUCKET_FILL, 2.0F, 1.0F);
+					result.entityHit.setDead();
+					thrower.entityDropItem(new ItemStack(Items_Teatime.IKA, 1, 0), 1.0F);
 					
-					if (entityResult.getEntity() instanceof CodEntity) {
-						entityResult.getEntity().playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 2.0F, 1.0F);
-						entityResult.getEntity().remove();
-						thrower.entityDropItem(new ItemStack(Items.COD)); }
+					if (world.getBiome(this.getPosition()) == Biomes.RIVER || world.getBiome(this.getPosition()) == Biomes.FROZEN_OCEAN) {
+						if (world.rand.nextInt(2) == 0) { thrower.entityDropItem(new ItemStack(Items.FISH, 1, 1), 1.0F); } }
+
+					if (world.getBiome(this.getPosition()) == Biomes.OCEAN || world.getBiome(this.getPosition()) == Biomes.DEEP_OCEAN) {
+						if (world.rand.nextInt(2) == 0) { thrower.entityDropItem(new ItemStack(Items.FISH, 1, 0), 1.0F); } }
 					
-					if (entityResult.getEntity() instanceof SalmonEntity) {
-						entityResult.getEntity().playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 2.0F, 1.0F);
-						entityResult.getEntity().remove();
-						thrower.entityDropItem(new ItemStack(Items.SALMON)); }
-					
-					if (entityResult.getEntity() instanceof TropicalFishEntity) {
-						entityResult.getEntity().playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 2.0F, 1.0F);
-						entityResult.getEntity().remove();
-						thrower.entityDropItem(new ItemStack(Items.TROPICAL_FISH)); }
-					
-					if (entityResult.getEntity() instanceof PufferfishEntity) {
-						entityResult.getEntity().playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 2.0F, 1.0F);
-						entityResult.getEntity().remove();
-						thrower.entityDropItem(new ItemStack(Items.PUFFERFISH));
-						((LivingEntity) thrower).addPotionEffect(new EffectInstance(Effects.POISON, 60, 0)); }
-					
-					if (entityResult.getEntity() instanceof SquidEntity) {
-						entityResult.getEntity().playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 2.0F, 1.0F);
-						entityResult.getEntity().remove();
-						thrower.entityDropItem(new ItemStack(Items_Teatime.IKA)); }
-					
-					if (!(entityResult.getEntity() instanceof CodEntity) && !(entityResult.getEntity() instanceof SalmonEntity) &&
-							!(entityResult.getEntity() instanceof TropicalFishEntity) && !(entityResult.getEntity() instanceof PufferfishEntity) &&
-							!(entityResult.getEntity() instanceof SquidEntity)) {
-						
-						entityResult.getEntity().playSound(SoundEvents.ENTITY_GENERIC_HURT, 2.0F, 1.0F);
-						((LivingEntity) entityResult.getEntity()).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 300, 1));
-						setEntityToReturnTo(getEntityToReturnTo() + 1); }
+					if (world.getBiome(this.getPosition()) != Biomes.RIVER && world.getBiome(this.getPosition()) != Biomes.FROZEN_OCEAN &&
+							world.getBiome(this.getPosition()) != Biomes.OCEAN && world.getBiome(this.getPosition()) != Biomes.DEEP_OCEAN) { }
+				}
+
+				else {
+					result.entityHit.playSound(SoundEvents.ENTITY_GENERIC_HURT, 2.0F, 1.0F);
+					((EntityLiving) result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 1));
+					setEntityToReturnTo(getEntityToReturnTo() + 1); 
 				}
 			}
 			break;
 		}
-		
-		default:
-			break;
+
+		default: break;
 		}
 	}
 
@@ -192,7 +157,7 @@ public class ToamiEntity extends ThrowableEntity implements IRendersAsItem {
 	protected float getGravityVelocity() {
 		return 0F;
 	}
-	
+
 	/* 水による速度への影響 */
 	@Override
 	public boolean handleWaterMovement() {
@@ -203,6 +168,7 @@ public class ToamiEntity extends ThrowableEntity implements IRendersAsItem {
 		return false;
 	}
 
+	/* Renderで参照する state */
 	public boolean isReturning() {
 		return getEntityToReturnTo() > -1;
 	}
@@ -216,19 +182,15 @@ public class ToamiEntity extends ThrowableEntity implements IRendersAsItem {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
-		if (!stack.isEmpty()) {
-			compound.put("fly_stack", stack.write(new CompoundNBT()));
-		}
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setTag("fly_stack", stack.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
-		if (compound.contains("fly_stack")) {
-			stack = ItemStack.read(compound.getCompound("fly_stack"));
-		}
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		stack = new ItemStack(compound.getCompoundTag("fly_stack"));
 	}
 
 }

@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cm_schooldesk",
+
+	"pattern": [
+		"YYY",
+		"XYX",
+		"X X"
+	],
+
+	"key": {
+		"X": { "item": "minecraft:stick", "data": 0 },
+		"Y": { "type": "forge:ore_dict", "ore": "slabWoodGinkgo" }
+	},
+
+	"result": { "item": "chinjufumod:block_schooldesk_ich", "data": 0, "count": 1 }
+}

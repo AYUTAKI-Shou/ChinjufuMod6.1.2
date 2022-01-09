@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_green",
-		"tea": "minecraft:block/water_still",
+		"tea": "chinjufumod:blocks/water_still",
 		"yunomi": "chinjufumod:blocks/dish_green"
 	},
 	"elements": [
@@ -72,7 +72,7 @@
 			"from": [ 7, 1.0, 7 ],
 			"to": [ 9, 1.1, 9 ],
 			"faces": {
-				"up" : { "texture": "#tea", "tintindex": 1 }
+				"up" : { "texture": "#tea", "tintindex": 30 }
 			}
 		}
 	]

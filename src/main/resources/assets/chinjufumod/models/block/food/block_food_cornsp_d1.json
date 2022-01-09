@@ -169,7 +169,7 @@
 			"from": [ 6.5, -7.5, 6.5 ],
 			"to": [ 9.5, -7.3, 9.5 ],
 			"faces": {
-				"up" : {"uv": [ 6.5, 6.5, 9.5, 9.5 ], "texture": "#soup", "tintindex": 2 }
+				"up" : {"uv": [ 6.5, 6.5, 9.5, 9.5 ], "texture": "#soup", "tintindex": 35 }
 			}
 		},
 

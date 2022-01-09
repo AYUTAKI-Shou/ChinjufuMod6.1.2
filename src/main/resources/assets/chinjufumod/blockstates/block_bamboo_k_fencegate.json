@@ -1,23 +1,23 @@
 {
 	"variants": {
-		"facing=south,in_wall=false,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k", "uvlock": false, "y": 0 },
-		"facing=west,in_wall=false,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k", "uvlock": false, "y": 90 },
-		"facing=north,in_wall=false,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k", "uvlock": false, "y": 0 },
-		"facing=east,in_wall=false,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k", "uvlock": false, "y": 90 },
+		"facing=south,in_wall=false,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k", "uvlock": false, "y": 0 },
+		"facing=west,in_wall=false,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k", "uvlock": false, "y": 90 },
+		"facing=north,in_wall=false,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k", "uvlock": false, "y": 0 },
+		"facing=east,in_wall=false,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k", "uvlock": false, "y": 90 },
 
-		"facing=south,in_wall=false,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_open", "uvlock": false },
-		"facing=west,in_wall=false,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_open", "uvlock": false, "y": 90 },
-		"facing=north,in_wall=false,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_open_east", "uvlock": false, "y": 0 },
-		"facing=east,in_wall=false,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_open_east", "uvlock": false, "y": 90 },
+		"facing=south,in_wall=false,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_open", "uvlock": false },
+		"facing=west,in_wall=false,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_open", "uvlock": false, "y": 90 },
+		"facing=north,in_wall=false,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_open_east", "uvlock": false, "y": 0 },
+		"facing=east,in_wall=false,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_open_east", "uvlock": false, "y": 90 },
 
-		"facing=south,in_wall=true,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 0 },
-		"facing=west,in_wall=true,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 90 },
-		"facing=north,in_wall=true,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 0 },
-		"facing=east,in_wall=true,open=false": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 90 },
+		"facing=south,in_wall=true,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 0 },
+		"facing=west,in_wall=true,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 90 },
+		"facing=north,in_wall=true,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 0 },
+		"facing=east,in_wall=true,open=false": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wall", "uvlock": false, "y": 90 },
 
-		"facing=south,in_wall=true,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wallopen", "uvlock": false },
-		"facing=west,in_wall=true,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wallopen", "uvlock": false, "y": 90 },
-		"facing=north,in_wall=true,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wallopen_east", "uvlock": false, "y": 0 },
-		"facing=east,in_wall=true,open=true": { "model": "chinjufumod:block/bamboo/block_bamboofencegate_k_wallopen_east", "uvlock": false, "y": 90 }
+		"facing=south,in_wall=true,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wallopen", "uvlock": false },
+		"facing=west,in_wall=true,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wallopen", "uvlock": false, "y": 90 },
+		"facing=north,in_wall=true,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wallopen_east", "uvlock": false, "y": 0 },
+		"facing=east,in_wall=true,open=true": { "model": "chinjufumod:bamboo/block_bamboofencegate_k_wallopen_east", "uvlock": false, "y": 90 }
 	}
 }

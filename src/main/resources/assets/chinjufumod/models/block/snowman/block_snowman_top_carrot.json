@@ -1,10 +1,10 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/snow",
-		"snow": "minecraft:block/snow",
+		"particle": "chinjufumod:blocks/snow_cm",
+		"snow": "chinjufumod:blocks/snow_cm",
 		"nose": "chinjufumod:blocks/snowman_nose",
-		"black": "minecraft:block/black_wool"
+		"black": "minecraft:blocks/wool_colored_black"
 	},
 	"elements": [
 		{

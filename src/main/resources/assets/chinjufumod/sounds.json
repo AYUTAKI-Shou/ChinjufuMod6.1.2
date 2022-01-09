@@ -1,10 +1,10 @@
 {
-	"kk_propeller": {
+	"kk_propeller_12": {
 	"category": "master",
-	"subtitle": "chinjufumod.subtitle.kk_propeller",
-	"sounds": [{"name": "chinjufumod:kk_propeller",
+	"subtitle": "chinjufumod.subtitle.kk_propeller_12",
+	"sounds": [{"name": "chinjufumod:kk_propeller_12",
 	"stream": true}]},
-
+	
 	"kk_atack": {
 	"category": "block",
 	"subtitle": "chinjufumod.subtitle.kk_atack",
@@ -274,4 +274,5 @@
 	"subtitle": "chinjufumod.subtitle.error",
 	"sounds": [{"name": "chinjufumod:error",
 	"stream": true}]}
+
 }

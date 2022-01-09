@@ -5,7 +5,7 @@
 		"top": "chinjufumod:blocks/suiden_1",
 		"side": "chinjufumod:blocks/suiden_1_side",
 		"wara": "chinjufumod:blocks/suiden_7w",
-		"down": "minecraft:block/dirt"
+		"down": "minecraft:blocks/dirt"
 	},
 	"elements": [
 		{

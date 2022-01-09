@@ -1,29 +1,16 @@
 {
 	"variants": {
-		"stage=0,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_nae" },
-		"stage=1,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_1" },
-		"stage=2,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_2" },
-		"stage=3,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_3" },
-		"stage=4,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_4" },
-		"stage=5,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-		"stage=6,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-		"stage=7,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-		"stage=8,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-		"stage=9,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-		"stage=10,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-		"stage=11,half=lower": { "model": "chinjufumod:block/crop/block_wood_mikan_miki" },
-
-		"stage=0,half=upper": { "model": "minecraft:block/air" },
-		"stage=1,half=upper": { "model": "minecraft:block/air" },
-		"stage=2,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_2" },
-		"stage=3,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_3" },
-		"stage=4,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_4" },
-		"stage=5,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_5" },
-		"stage=6,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_6" },
-		"stage=7,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_7" },
-		"stage=8,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_8" },
-		"stage=9,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_9" },
-		"stage=10,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_a" },
-		"stage=11,half=upper": { "model": "chinjufumod:block/crop/block_wood_mikantop_a" }
+		"stage=0": { "model": "chinjufumod:crop/block_wood_mikan_nae" },
+		"stage=1": { "model": "chinjufumod:crop/block_wood_mikan_1" },
+		"stage=2": { "model": "chinjufumod:crop/block_wood_mikan_2" },
+		"stage=3": { "model": "chinjufumod:crop/block_wood_mikan_3" },
+		"stage=4": { "model": "chinjufumod:crop/block_wood_mikan_4" },
+		"stage=5": { "model": "chinjufumod:crop/block_wood_mikan_miki" },
+		"stage=6": { "model": "chinjufumod:crop/block_wood_mikan_miki" },
+		"stage=7": { "model": "chinjufumod:crop/block_wood_mikan_miki" },
+		"stage=8": { "model": "chinjufumod:crop/block_wood_mikan_miki" },
+		"stage=9": { "model": "chinjufumod:crop/block_wood_mikan_miki" },
+		"stage=10": { "model": "chinjufumod:crop/block_wood_mikan_miki" },
+		"stage=11": { "model": "chinjufumod:crop/block_wood_mikan_miki" }
 	}
 }

@@ -1,2 +1,2 @@
 ChinjufuMod for Minecraft Java Edition
-forge-1.15.2-31.2.57
+forge-1.12.2-14.23.5.2859

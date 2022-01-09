@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_white",
-		"tea": "minecraft:block/water_still",
+		"tea": "chinjufumod:blocks/water_still",
 		"cup": "chinjufumod:blocks/dish_white",
 		"cup2": "chinjufumod:blocks/dish_pink",
 		"scone": "chinjufumod:blocks/food_scone",
@@ -581,7 +581,7 @@
 			"from": [ 10.8, -7.3, 6.8 ],
 			"to": [ 13.2, -6.349, 9.2 ],
 			"faces": {
-				"up" : {"uv": [ 6.8, 6.8, 9.2, 9.2 ], "texture": "#tea", "tintindex": 1 }
+				"up" : {"uv": [ 6.8, 6.8, 9.2, 9.2 ], "texture": "#tea", "tintindex": 31 }
 			}
 		}
 	]

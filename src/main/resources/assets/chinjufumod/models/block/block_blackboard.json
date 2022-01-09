@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/blackboard",
 		"front": "chinjufumod:blocks/blackboard",
-		"side": "minecraft:block/oak_planks"
+		"side": "minecraft:blocks/planks_oak"
 	},
 	"elements": [
 		{

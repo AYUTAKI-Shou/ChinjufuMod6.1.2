@@ -5,6 +5,6 @@
 		"front": "chinjufumod:blocks/windowb_sakura",
 		"side": "chinjufumod:blocks/muku_sakura",
 		"totte": "chinjufumod:blocks/windowb_oak",
-		"glass": "minecraft:block/glass"
+		"glass": "minecraft:blocks/glass"
 	}
 }

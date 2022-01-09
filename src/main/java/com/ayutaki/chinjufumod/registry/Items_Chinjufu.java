@@ -1,290 +1,854 @@
 package com.ayutaki.chinjufumod.registry;
 
 import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.ItemGroups_CM;
-import com.ayutaki.chinjufumod.items.addinfo.AddInfo_Item;
-import com.ayutaki.chinjufumod.items.fuel.Chinjufu_Fuel100;
-import com.ayutaki.chinjufumod.items.fuel.Chinjufu_Fuel150;
-import com.ayutaki.chinjufumod.items.fuel.Chinjufu_Fuel200;
-import com.ayutaki.chinjufumod.items.fuel.Chinjufu_Fuel300;
-import com.ayutaki.chinjufumod.items.fuel.Chinjufu_Fuel7200;
-import com.ayutaki.chinjufumod.items.fuel.Chinjufu_noFuel;
-import com.ayutaki.chinjufumod.items.weapon.AdmiralStamp;
-import com.ayutaki.chinjufumod.items.weapon.Shouhou;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.RegisterHandler_CM;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_acacia;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_birch;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_doak;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_ichoh;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_jungle;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_kaede;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_oak;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_sakura;
+import com.ayutaki.chinjufumod.blocks.chair.Bench_spruce;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_black;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_blue;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_brown;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_cyan;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_gray;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_green;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_leather;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_lightblue;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_lightgray;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_lime;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_magenta;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_orange;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_pink;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_purple;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_red;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_white;
+import com.ayutaki.chinjufumod.blocks.chair.Sofa_yellow;
+import com.ayutaki.chinjufumod.blocks.cmblock.AdmiralStamp;
+import com.ayutaki.chinjufumod.blocks.cmblock.BauxiteOre;
+import com.ayutaki.chinjufumod.blocks.cmblock.EmptyBox;
+import com.ayutaki.chinjufumod.blocks.furnace.CStove_bot;
+import com.ayutaki.chinjufumod.blocks.furniture.HangLamp;
+import com.ayutaki.chinjufumod.blocks.furniture.MarineLamp;
+import com.ayutaki.chinjufumod.blocks.furniture.StandArm;
+import com.ayutaki.chinjufumod.blocks.furniture.StandBedroom;
+import com.ayutaki.chinjufumod.blocks.harbor.Keikai;
+import com.ayutaki.chinjufumod.blocks.school.BlackBoard;
+import com.ayutaki.chinjufumod.blocks.school.StoveChimney;
+import com.ayutaki.chinjufumod.blocks.school.StoveChimney_joint;
+import com.ayutaki.chinjufumod.blocks.school.StoveChimney_topk;
+import com.ayutaki.chinjufumod.items.chair.ItemAdmiralChair;
+import com.ayutaki.chinjufumod.items.chair.ItemCafeChair;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_acacia;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_birch;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_darkoak;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_ichoh;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_jungle;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_kaede;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_oak;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_sakura;
+import com.ayutaki.chinjufumod.items.chair.ItemDinnerChair_spruce;
+import com.ayutaki.chinjufumod.items.chair.ItemLogChair;
+import com.ayutaki.chinjufumod.items.chinjufu.ItemAdmiralStamp;
+import com.ayutaki.chinjufumod.items.chinjufu.ItemChinjufuInfo;
+import com.ayutaki.chinjufumod.items.chinjufu.ItemShouhou;
+import com.ayutaki.chinjufumod.items.cmblock.Item_AlumiBlock;
+import com.ayutaki.chinjufumod.items.cmblock.Item_AmuBauxBox;
+import com.ayutaki.chinjufumod.items.cmblock.Item_OilDrum;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel100;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel150;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel200;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel300;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_noFuel;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_a;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_b;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_d;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_ich;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_j;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_kae;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_s;
+import com.ayutaki.chinjufumod.items.furniture.ItemDressingTable_saku;
+import com.ayutaki.chinjufumod.items.lamp.ItemCandle;
+import com.ayutaki.chinjufumod.items.unitblock.ItemCafeTable;
+import com.ayutaki.chinjufumod.items.unitblock.ItemLetterTray;
+import com.ayutaki.chinjufumod.items.unitblock.ItemLowDesk;
+import com.ayutaki.chinjufumod.items.unitblock.ItemUnitDesk;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_acacia;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_birch;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_darkoak;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_ichoh;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_jungle;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_kaede;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_oak;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_sakura;
+import com.ayutaki.chinjufumod.items.window.ItemWindowB_spruce;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_acacia;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_birch;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_darkoak;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_ichoh;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_jungle;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_kaede;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_oak;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_sakura;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTallBot_spruce;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_acacia;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_birch;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_darkoak;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_ichoh;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_jungle;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_kaede;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_oak;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_sakura;
+import com.ayutaki.chinjufumod.items.window.ItemWindowTall_spruce;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_acacia;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_birch;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_darkoak;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_ichoh;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_jungle;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_kaede;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_oak;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_sakura;
+import com.ayutaki.chinjufumod.items.window.ItemWindow_spruce;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Chinjufu {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
-
-	public static Item EMBLEM_C = register("item_emblem_c", new Item(new Item.Properties()));
-	public static Item ADMIRAL_STAMP = register("item_admiralstamp", new AdmiralStamp(new Item.Properties().maxStackSize(1).maxDamage(16)));
-	public static Item ADMIRAL_STAMP_B = register("item_admiralstamp_b", new AdmiralStamp(new Item.Properties().maxStackSize(1).maxDamage(16).group(ItemGroups_CM.CHINJUFU)));
-	public static Item WORK_ORDER = register("item_workorder", new Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
-
-	public static Item SHOUHOU_empty = register("item_shouhou_empty", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
-	public static Item SHOUHOU = register("item_shouhou", new Shouhou(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
+	public static Item EMBLEM_C;
+	public static Item ADMIRAL_STAMP, ADMIRAL_STAMP_B, WORK_ORDER;
+	public static Item SHOUHOU_empty, SHOUHOU;
 	
-	public static Item BAUXITE = register("item_bauxite", new Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
-	public static Item ALUMINUM = register("item_ingot_alumi", new Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
-	public static Item SUMI = register("item_sumi_c", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
+	public static Item BAUXITE, ALUMINUM;
+	public static Item SUMI;
 
-	public static Item BAUXITE_ORE = register("block_bauxite_ore", new Chinjufu_noFuel(ChinjufuModBlocks.BAUXITE_ORE, new Item.Properties()));
+	public static Item BAUXITE_ORE;
+	public static Item OIL_DRUM;
+	public static Item EMPTY_BOX, AMUBAUX, ALUMI;
+	public static Item B_ADMIRAL_STAMP;
 
-	public static Item OIL_DRUM = register("block_fuel_can", new Chinjufu_Fuel7200(ChinjufuModBlocks.OIL_DRUM, new Item.Properties()));
-	public static Item EMPTY_BOX = register("block_empty_box", new Chinjufu_Fuel100(ChinjufuModBlocks.EMPTY_BOX, new Item.Properties()));
-	public static Item AMMOBOX = register("block_ammunition_box", new Chinjufu_noFuel(ChinjufuModBlocks.AMMOBOX, new Item.Properties()));
-	public static Item BAUXITE_BOX = register("block_bauxite_box", new Chinjufu_noFuel(ChinjufuModBlocks.BAUXITE_BOX, new Item.Properties()));
-	public static Item ALUMI_BLOCK = register("block_alumi_block", new Chinjufu_noFuel(ChinjufuModBlocks.ALUMI_BLOCK, new Item.Properties()));
-	public static Item STEEL_BLOCK = register("block_steel_block", new Chinjufu_noFuel(ChinjufuModBlocks.STEEL_BLOCK, new Item.Properties()));
-	public static Item GOLD_BLOCK = register("block_gold_block", new Chinjufu_noFuel(ChinjufuModBlocks.GOLD_BLOCK, new Item.Properties()));
-	public static Item B_ADMIRAL_STAMP = register("block_stamp_block", new Chinjufu_noFuel(ChinjufuModBlocks.B_ADMIRAL_STAMP, new Item.Properties()));
+	public static Item DRESSINGTABLE, DRESSINGTABLE_s,DRESSINGTABLE_b,
+								DRESSINGTABLE_j, DRESSINGTABLE_a, DRESSINGTABLE_d,
+								DRESSINGTABLE_saku, DRESSINGTABLE_kae, DRESSINGTABLE_ich;
+	public static Item UNITDESK, CAFETABLE;
 
-	public static Item DRESSINGTABLE = register("block_dressingtable", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE, new Item.Properties()));
-	public static Item DRESSINGTABLE_spruce = register("block_dressingtable_s", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_spruce, new Item.Properties()));
-	public static Item DRESSINGTABLE_birch = register("block_dressingtable_b", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_birch, new Item.Properties()));
-	public static Item DRESSINGTABLE_jungle = register("block_dressingtable_j", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_jungle, new Item.Properties()));
-	public static Item DRESSINGTABLE_acacia = register("block_dressingtable_a", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_acacia, new Item.Properties()));
-	public static Item DRESSINGTABLE_darkoak = register("block_dressingtable_d", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_darkoak, new Item.Properties()));
-	public static Item DRESSINGTABLE_sakura = register("block_dressingtable_saku", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_sakura, new Item.Properties()));
-	public static Item DRESSINGTABLE_kaede = register("block_dressingtable_kae", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_kaede, new Item.Properties()));
-	public static Item DRESSINGTABLE_ichoh = register("block_dressingtable_ich", new Chinjufu_noFuel(Furniture_Blocks.DRESSINGTABLE_ichoh, new Item.Properties()));
+	public static Item DININGCHAIR, DININGCHAIR_s, DININGCHAIR_b,
+								DININGCHAIR_j, DININGCHAIR_a, DININGCHAIR_d,
+								DININGCHAIR_saku, DININGCHAIR_kae, DININGCHAIR_ich;
+	public static Item LOGCHAIR, CAFECHAIR;
+	public static Item SOFA_leather, SOFA_white, SOFA_orange, SOFA_magenta, SOFA_lightb,
+								SOFA_yellow, SOFA_lime, SOFA_pink, SOFA_gray,
+								SOFA_lightg, SOFA_cyan, SOFA_purple, SOFA_blue,
+								SOFA_brown, SOFA_green, SOFA_red, SOFA_black;
+	public static Item BENCH, BENCH_spru, BENCH_bir,
+								BENCH_jun, BENCH_aca, BENCH_doak,
+								BENCH_saku, BENCH_kae, BENCH_ich;
 
-	public static Item UNITDESK = register("block_unitdesk", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK, new Item.Properties()));
-	public static Item UNITDESK_spruce = register("block_unitdesk_spruce", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_spruce, new Item.Properties()));
-	public static Item UNITDESK_birch = register("block_unitdesk_birch", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_birch, new Item.Properties()));
-	public static Item UNITDESK_jungle = register("block_unitdesk_jungle", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_jungle, new Item.Properties()));
-	public static Item UNITDESK_acacia = register("block_unitdesk_acacia", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_acacia, new Item.Properties()));
-	public static Item UNITDESK_darkoak = register("block_unitdesk_darkoak", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_darkoak, new Item.Properties()));
-	public static Item UNITDESK_sakura = register("block_unitdesk_sakura", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_sakura, new Item.Properties()));
-	public static Item UNITDESK_kaede = register("block_unitdesk_kaede", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_kaede, new Item.Properties()));
-	public static Item UNITDESK_ichoh = register("block_unitdesk_ichoh", new Chinjufu_Fuel300(Unit_Blocks.UNITDESK_ichoh, new Item.Properties()));
+	public static Item SCHOOLCHAIR, SCHOOLCHAIR_s,SCHOOLCHAIR_b,
+								SCHOOLCHAIR_j, SCHOOLCHAIR_a, SCHOOLCHAIR_d,
+								SCHOOLCHAIR_saku, SCHOOLCHAIR_kae, SCHOOLCHAIR_ich;
+	public static Item SCHOOLDESK, SCHOOLDESK_s,SCHOOLDESK_b,
+								SCHOOLDESK_j, SCHOOLDESK_a, SCHOOLDESK_d,
+								SCHOOLDESK_saku, SCHOOLDESK_kae, SCHOOLDESK_ich;
+	public static Item TEACHERDESK, TEACHERDESK_s,TEACHERDESK_b,
+								TEACHERDESK_j, TEACHERDESK_a, TEACHERDESK_d,
+								TEACHERDESK_saku, TEACHERDESK_kae, TEACHERDESK_ich;
 
-	public static Item CAFETABLE = register("block_cafetable", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE, new Item.Properties()));
-	public static Item CAFETABLE_spruce = register("block_cafetable_spruce", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_spruce, new Item.Properties()));
-	public static Item CAFETABLE_birch = register("block_cafetable_birch", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_birch, new Item.Properties()));
-	public static Item CAFETABLE_jungle = register("block_cafetable_jungle", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_jungle, new Item.Properties()));
-	public static Item CAFETABLE_acacia = register("block_cafetable_acacia", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_acacia, new Item.Properties()));
-	public static Item CAFETABLE_darkoak = register("block_cafetable_darkoak", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_darkoak, new Item.Properties()));
-	public static Item CAFETABLE_sakura = register("block_cafetable_sakura", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_sakura, new Item.Properties()));
-	public static Item CAFETABLE_kaede = register("block_cafetable_kaede", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_kaede, new Item.Properties()));
-	public static Item CAFETABLE_ichoh = register("block_cafetable_ichoh", new Chinjufu_Fuel300(Unit_Blocks.CAFETABLE_ichoh, new Item.Properties()));
+	public static Item LOWDESK, LETTERTRAY, BLACKBOARD;
 
-	public static Item DININGCHAIR = register("block_diningchair", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR, new Item.Properties()));
-	public static Item DININGCHAIR_spruce = register("block_diningchair_s", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_spruce, new Item.Properties()));
-	public static Item DININGCHAIR_birch = register("block_diningchair_b", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_birch, new Item.Properties()));
-	public static Item DININGCHAIR_jungle = register("block_diningchair_j", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_jungle, new Item.Properties()));
-	public static Item DININGCHAIR_acacia = register("block_diningchair_a", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_acacia, new Item.Properties()));
-	public static Item DININGCHAIR_darkoak = register("block_diningchair_d", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_darkoak, new Item.Properties()));
-	public static Item DININGCHAIR_sakura = register("block_diningchair_saku", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_sakura, new Item.Properties()));
-	public static Item DININGCHAIR_kaede = register("block_diningchair_kae", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_kaede, new Item.Properties()));
-	public static Item DININGCHAIR_ichoh = register("block_diningchair_ich", new Chinjufu_Fuel150(Chair_Blocks.DININGCHAIR_ichoh, new Item.Properties()));
+	public static Item WINDOW_oak, WINDOW_spruce, WINDOW_birch,
+								WINDOW_jungle, WINDOW_acacia, WINDOW_darkoak,
+								WINDOW_sakura, WINDOW_kaede, WINDOW_ichoh;
+	public static Item WINDOWB_oak, WINDOWB_spruce, WINDOWB_birch,
+								WINDOWB_jungle, WINDOWB_acacia, WINDOWB_darkoak,
+								WINDOWB_sakura, WINDOWB_kaede, WINDOWB_ichoh;
+	public static Item WINDOWTALLBOT_oak, WINDOWTALLBOT_spruce, WINDOWTALLBOT_birch,
+								WINDOWTALLBOT_jungle, WINDOWTALLBOT_acacia, WINDOWTALLBOT_darkoak,
+								WINDOWTALLBOT_sakura, WINDOWTALLBOT_kaede, WINDOWTALLBOT_ichoh;
+	public static Item WINDOWTALL_oak, WINDOWTALL_spruce, WINDOWTALL_birch,
+								WINDOWTALL_jungle, WINDOWTALL_acacia, WINDOWTALL_darkoak,
+								WINDOWTALL_sakura, WINDOWTALL_kaede, WINDOWTALL_ichoh;
 
-	public static Item LOGCHAIR = register("block_logchair", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR, new Item.Properties()));
-	public static Item LOGCHAIR_spruce = register("block_logchair_spruce", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_spruce, new Item.Properties()));
-	public static Item LOGCHAIR_birch = register("block_logchair_birch", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_birch, new Item.Properties()));
-	public static Item LOGCHAIR_jungle = register("block_logchair_jungle", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_jungle, new Item.Properties()));
-	public static Item LOGCHAIR_acacia = register("block_logchair_acacia", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_acacia, new Item.Properties()));
-	public static Item LOGCHAIR_darkoak = register("block_logchair_darkoak", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_darkoak, new Item.Properties()));
-	public static Item LOGCHAIR_sakura = register("block_logchair_sakura", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_sakura, new Item.Properties()));
-	public static Item LOGCHAIR_kaede = register("block_logchair_kaede", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_kaede, new Item.Properties()));
-	public static Item LOGCHAIR_ichoh = register("block_logchair_ichoh", new Chinjufu_Fuel150(Chair_Blocks.LOGCHAIR_ichoh, new Item.Properties()));
+	public static Item STOVECHIMNEY, STOVECHIMNEY_joint, STOVECHIMNEY_topk;
+	public static Item CSTOVE_bot;
 
-	public static Item CAFECHAIR_white = register("block_cafechair_white", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_white, new Item.Properties()));
-	public static Item CAFECHAIR_orange = register("block_cafechair_orange", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_orange, new Item.Properties()));
-	public static Item CAFECHAIR_magenta = register("block_cafechair_magenta", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_magenta, new Item.Properties()));
-	public static Item CAFECHAIR_lightb = register("block_cafechair_lightb", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_lightb, new Item.Properties()));
-	public static Item CAFECHAIR_yellow = register("block_cafechair_yellow", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_yellow, new Item.Properties()));
-	public static Item CAFECHAIR_lime = register("block_cafechair_lime", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_lime, new Item.Properties()));
-	public static Item CAFECHAIR_pink = register("block_cafechair_pink", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_pink, new Item.Properties()));
-	public static Item CAFECHAIR_gray = register("block_cafechair_gray", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_gray, new Item.Properties()));
-	public static Item CAFECHAIR_lightg = register("block_cafechair_lightg", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_lightg, new Item.Properties()));
-	public static Item CAFECHAIR_cyan = register("block_cafechair_cyan", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_cyan, new Item.Properties()));
-	public static Item CAFECHAIR_purple = register("block_cafechair_purple", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_purple, new Item.Properties()));
-	public static Item CAFECHAIR_blue = register("block_cafechair_blue", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_blue, new Item.Properties()));
-	public static Item CAFECHAIR_brown = register("block_cafechair_brown", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_brown, new Item.Properties()));
-	public static Item CAFECHAIR_green = register("block_cafechair_green", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_green, new Item.Properties()));
-	public static Item CAFECHAIR_red = register("block_cafechair_red", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_red, new Item.Properties()));
-	public static Item CAFECHAIR_black = register("block_cafechair_black", new Chinjufu_Fuel150(Chair_Blocks.CAFECHAIR_black, new Item.Properties()));
+	public static Item CANDLE;
+	public static Item LAMP, STANDARM, STAND, M_LAMP;
 
-	public static Item SOFA_leather = register("block_sofa_leather", new Chinjufu_Fuel150(Chair_Blocks.SOFA_leather, new Item.Properties()));
-	public static Item SOFA_white = register("block_sofa_white", new Chinjufu_Fuel150(Chair_Blocks.SOFA_white, new Item.Properties()));
-	public static Item SOFA_orange = register("block_sofa_orange", new Chinjufu_Fuel150(Chair_Blocks.SOFA_orange, new Item.Properties()));
-	public static Item SOFA_magenta = register("block_sofa_magenta", new Chinjufu_Fuel150(Chair_Blocks.SOFA_magenta, new Item.Properties()));
-	public static Item SOFA_lightb = register("block_sofa_lightblue", new Chinjufu_Fuel150(Chair_Blocks.SOFA_lightb, new Item.Properties()));
-	public static Item SOFA_yellow = register("block_sofa_yellow", new Chinjufu_Fuel150(Chair_Blocks.SOFA_yellow, new Item.Properties()));
-	public static Item SOFA_lime = register("block_sofa_lime", new Chinjufu_Fuel150(Chair_Blocks.SOFA_lime, new Item.Properties()));
-	public static Item SOFA_pink = register("block_sofa_pink", new Chinjufu_Fuel150(Chair_Blocks.SOFA_pink, new Item.Properties()));
-	public static Item SOFA_gray = register("block_sofa_gray", new Chinjufu_Fuel150(Chair_Blocks.SOFA_gray, new Item.Properties()));
-	public static Item SOFA_lightg = register("block_sofa_lightgray", new Chinjufu_Fuel150(Chair_Blocks.SOFA_lightg, new Item.Properties()));
-	public static Item SOFA_cyan = register("block_sofa_cyan", new Chinjufu_Fuel150(Chair_Blocks.SOFA_cyan, new Item.Properties()));
-	public static Item SOFA_purple = register("block_sofa_purple", new Chinjufu_Fuel150(Chair_Blocks.SOFA_purple, new Item.Properties()));
-	public static Item SOFA_blue = register("block_sofa_blue", new Chinjufu_Fuel150(Chair_Blocks.SOFA_blue, new Item.Properties()));
-	public static Item SOFA_brown = register("block_sofa_brown", new Chinjufu_Fuel150(Chair_Blocks.SOFA_brown, new Item.Properties()));
-	public static Item SOFA_green = register("block_sofa_green", new Chinjufu_Fuel150(Chair_Blocks.SOFA_green, new Item.Properties()));
-	public static Item SOFA_red = register("block_sofa_red", new Chinjufu_Fuel150(Chair_Blocks.SOFA_red, new Item.Properties()));
-	public static Item SOFA_black = register("block_sofa_black", new Chinjufu_Fuel150(Chair_Blocks.SOFA_black, new Item.Properties()));
+	public static Item ADMIRALCHAIR;
+	public static Item TANSU_OAK, DOAK_TANSU, SPRUCE_TANSU;
 
-	public static Item BENCH = register("block_bench", new Chinjufu_Fuel150(Chair_Blocks.BENCH, new Item.Properties()));
-	public static Item BENCH_spru = register("block_bench_spru", new Chinjufu_Fuel150(Chair_Blocks.BENCH_spruce, new Item.Properties()));
-	public static Item BENCH_bir = register("block_bench_bir", new Chinjufu_Fuel150(Chair_Blocks.BENCH_birch, new Item.Properties()));
-	public static Item BENCH_jun = register("block_bench_jun", new Chinjufu_Fuel150(Chair_Blocks.BENCH_jungle, new Item.Properties()));
-	public static Item BENCH_aca = register("block_bench_aca", new Chinjufu_Fuel150(Chair_Blocks.BENCH_acacia, new Item.Properties()));
-	public static Item BENCH_doak = register("block_bench_doak", new Chinjufu_Fuel150(Chair_Blocks.BENCH_darkoak, new Item.Properties()));
-	public static Item BENCH_sakura = register("block_bench_saku", new Chinjufu_Fuel150(Chair_Blocks.BENCH_sakura, new Item.Properties()));
-	public static Item BENCH_kaede = register("block_bench_kae", new Chinjufu_Fuel150(Chair_Blocks.BENCH_kaede, new Item.Properties()));
-	public static Item BENCH_ichoh = register("block_bench_ich", new Chinjufu_Fuel150(Chair_Blocks.BENCH_ichoh, new Item.Properties()));
+	public static Item KEIKAIBLOCK;
 
-	public static Item SCHOOLCHAIR = register("block_schoolchair", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR, new Item.Properties()));
-	public static Item SCHOOLCHAIR_spruce = register("block_schoolchair_s", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_spruce, new Item.Properties()));
-	public static Item SCHOOLCHAIR_birch = register("block_schoolchair_b", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_birch, new Item.Properties()));
-	public static Item SCHOOLCHAIR_jungle = register("block_schoolchair_j", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_jungle, new Item.Properties()));
-	public static Item SCHOOLCHAIR_acacia = register("block_schoolchair_a", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_acacia, new Item.Properties()));
-	public static Item SCHOOLCHAIR_darkoak = register("block_schoolchair_d", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_darkoak, new Item.Properties()));
-	public static Item SCHOOLCHAIR_sakura = register("block_schoolchair_saku", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_sakura, new Item.Properties()));
-	public static Item SCHOOLCHAIR_kaede = register("block_schoolchair_kae", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_kaede, new Item.Properties()));
-	public static Item SCHOOLCHAIR_ichoh = register("block_schoolchair_ich", new Chinjufu_Fuel150(School_Blocks.SCHOOLCHAIR_ichoh, new Item.Properties()));
+	public static Item KEIRYUKUI,KEIRYUKUI_b;
 
-	public static Item SCHOOLDESK = register("block_schooldesk", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK, new Item.Properties()));
-	public static Item SCHOOLDESK_spruce = register("block_schooldesk_s", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_spruce, new Item.Properties()));
-	public static Item SCHOOLDESK_birch = register("block_schooldesk_b", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_birch, new Item.Properties()));
-	public static Item SCHOOLDESK_jungle = register("block_schooldesk_j", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_jungle, new Item.Properties()));
-	public static Item SCHOOLDESK_acacia = register("block_schooldesk_a", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_acacia, new Item.Properties()));
-	public static Item SCHOOLDESK_darkoak = register("block_schooldesk_d", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_darkoak, new Item.Properties()));
-	public static Item SCHOOLDESK_sakura = register("block_schooldesk_saku", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_sakura, new Item.Properties()));
-	public static Item SCHOOLDESK_kaede = register("block_schooldesk_kae", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_kaede, new Item.Properties()));
-	public static Item SCHOOLDESK_ichoh = register("block_schooldesk_ich", new Chinjufu_Fuel200(School_Blocks.SCHOOLDESK_ichoh, new Item.Properties()));
+	public static Item TRUSS, TRUSS_white, TRUSS_orange, TRUSS_magenta,
+								TRUSS_lightb, TRUSS_yellow, TRUSS_lime, TRUSS_pink,
+								TRUSS_gray, TRUSS_cyan, TRUSS_purple, TRUSS_blue,
+								TRUSS_brown, TRUSS_green, TRUSS_red, TRUSS_black;
 
-	public static Item TEACHERDESK = register("block_teacherdesk", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK, new Item.Properties()));
-	public static Item TEACHERDESK_spruce = register("block_teacherdesk_s", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_spruce, new Item.Properties()));
-	public static Item TEACHERDESK_birch = register("block_teacherdesk_b", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_birch, new Item.Properties()));
-	public static Item TEACHERDESK_jungle = register("block_teacherdesk_j", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_jungle, new Item.Properties()));
-	public static Item TEACHERDESK_acacia = register("block_teacherdesk_a", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_acacia, new Item.Properties()));
-	public static Item TEACHERDESK_darkoak = register("block_teacherdesk_d", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_darkoak, new Item.Properties()));
-	public static Item TEACHERDESK_sakura = register("block_teacherdesk_saku", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_sakura, new Item.Properties()));
-	public static Item TEACHERDESK_kaede = register("block_teacherdesk_kae", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_kaede, new Item.Properties()));
-	public static Item TEACHERDESK_ichoh = register("block_teacherdesk_ich", new Chinjufu_Fuel300(School_Blocks.TEACHERDESK_ichoh, new Item.Properties()));
 
-	public static Item LOWDESK = register("block_lowdesk", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK, new Item.Properties()));
-	public static Item LOWDESK_spruce = register("block_lowdesk_spruce", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_spruce, new Item.Properties()));
-	public static Item LOWDESK_birch = register("block_lowdesk_birch", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_birch, new Item.Properties()));
-	public static Item LOWDESK_jungle = register("block_lowdesk_jungle", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_jungle, new Item.Properties()));
-	public static Item LOWDESK_acacia = register("block_lowdesk_acacia", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_acacia, new Item.Properties()));
-	public static Item LOWDESK_darkoak = register("block_lowdesk_darkoak", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_darkoak, new Item.Properties()));
-	public static Item LOWDESK_sakura = register("block_lowdesk_sakura", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_sakura, new Item.Properties()));
-	public static Item LOWDESK_kaede = register("block_lowdesk_kaede", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_kaede, new Item.Properties()));
-	public static Item LOWDESK_ichoh = register("block_lowdesk_ichoh", new Chinjufu_Fuel150(Unit_Blocks.LOWDESK_ichoh, new Item.Properties()));
+	/* アイテムのインスタンスを生成 Instantiate an item. */
+	public static void init() {
 
-	public static Item LETTERTRAY = register("block_lettertray_c", new Chinjufu_noFuel(Unit_Blocks.LETTERTRAY, new Item.Properties()));
-	public static Item FUDETRAY = register("block_fudetray_c", new Chinjufu_noFuel(Unit_Blocks.FUDETRAY, new Item.Properties()));
-	public static Item BLACKBOARD = register("block_blackboard", new Chinjufu_noFuel(School_Blocks.BLACKBOARD, new Item.Properties()));
+		EMBLEM_C = new Item().setRegistryName("item_emblem_c").setUnlocalizedName("item_emblem_c");
+		ADMIRAL_STAMP = new ItemAdmiralStamp("item_admiralstamp");
+		ADMIRAL_STAMP_B = new ItemAdmiralStamp("item_admiralstamp_b").setCreativeTab(ChinjufuModTabs.CHINJUFU);
+		WORK_ORDER = new ItemChinjufuInfo("item_workorder");
+		SHOUHOU_empty = new ItemChinjufuInfo("item_shouhou_empty");
+		SHOUHOU = new ItemShouhou("item_shouhou");
+		
+		BAUXITE = new ItemChinjufuInfo("item_bauxite");
+		ALUMINUM = new ItemChinjufuInfo("item_ingot_alumi");
+		SUMI = new ItemChinjufuInfo("item_sumi_c");
 
-	public static Item WINDOW_oak = register("block_window", new Chinjufu_noFuel(Window_Blocks.WINDOW_oak, new Item.Properties()));
-	public static Item WINDOW_spruce = register("block_window_spruce", new Chinjufu_noFuel(Window_Blocks.WINDOW_spruce, new Item.Properties()));
-	public static Item WINDOW_birch = register("block_window_birch", new Chinjufu_noFuel(Window_Blocks.WINDOW_birch, new Item.Properties()));
-	public static Item WINDOW_jungle = register("block_window_jungle", new Chinjufu_noFuel(Window_Blocks.WINDOW_jungle, new Item.Properties()));
-	public static Item WINDOW_acacia = register("block_window_acacia", new Chinjufu_noFuel(Window_Blocks.WINDOW_acacia, new Item.Properties()));
-	public static Item WINDOW_darkoak = register("block_window_darkoak", new Chinjufu_noFuel(Window_Blocks.WINDOW_darkoak, new Item.Properties()));
-	public static Item WINDOW_sakura = register("block_window_sakura", new Chinjufu_noFuel(Window_Blocks.WINDOW_sakura, new Item.Properties()));
-	public static Item WINDOW_kaede = register("block_window_kaede", new Chinjufu_noFuel(Window_Blocks.WINDOW_kaede, new Item.Properties()));
-	public static Item WINDOW_ichoh = register("block_window_ichoh", new Chinjufu_noFuel(Window_Blocks.WINDOW_ichoh, new Item.Properties()));
+		BAUXITE_ORE = new ItemBlock_noFuel(Chinjufu_Blocks.BAUXITE_ORE, BauxiteOre.ID);
+		OIL_DRUM = new Item_OilDrum();
+		EMPTY_BOX = new ItemBlock_Fuel100(Chinjufu_Blocks.EMPTY_BOX, EmptyBox.ID);
+		AMUBAUX = new Item_AmuBauxBox();
+		ALUMI = new Item_AlumiBlock();
+		B_ADMIRAL_STAMP = new ItemBlock_noFuel(Chinjufu_Blocks.B_ADMIRAL_STAMP, AdmiralStamp.ID);
 
-	public static Item WINDOWB_oak = register("block_windowb", new Chinjufu_noFuel(Window_Blocks.WINDOWB_oak, new Item.Properties()));
-	public static Item WINDOWB_spruce = register("block_windowb_spruce", new Chinjufu_noFuel(Window_Blocks.WINDOWB_spruce, new Item.Properties()));
-	public static Item WINDOWB_birch = register("block_windowb_birch", new Chinjufu_noFuel(Window_Blocks.WINDOWB_birch, new Item.Properties()));
-	public static Item WINDOWB_jungle = register("block_windowb_jungle", new Chinjufu_noFuel(Window_Blocks.WINDOWB_jungle, new Item.Properties()));
-	public static Item WINDOWB_acacia = register("block_windowb_acacia", new Chinjufu_noFuel(Window_Blocks.WINDOWB_acacia, new Item.Properties()));
-	public static Item WINDOWB_darkoak = register("block_windowb_darkoak", new Chinjufu_noFuel(Window_Blocks.WINDOWB_darkoak, new Item.Properties()));
-	public static Item WINDOWB_sakura = register("block_windowb_sakura", new Chinjufu_noFuel(Window_Blocks.WINDOWB_sakura, new Item.Properties()));
-	public static Item WINDOWB_kaede = register("block_windowb_kaede", new Chinjufu_noFuel(Window_Blocks.WINDOWB_kaede, new Item.Properties()));
-	public static Item WINDOWB_ichoh = register("block_windowb_ichoh", new Chinjufu_noFuel(Window_Blocks.WINDOWB_ichoh, new Item.Properties()));
+		DRESSINGTABLE = new ItemDressingTable();
+		DRESSINGTABLE_s = new ItemDressingTable_s();
+		DRESSINGTABLE_b = new ItemDressingTable_b();
+		DRESSINGTABLE_j = new ItemDressingTable_j();
+		DRESSINGTABLE_a = new ItemDressingTable_a();
+		DRESSINGTABLE_d = new ItemDressingTable_d();
+		DRESSINGTABLE_saku = new ItemDressingTable_saku();
+		DRESSINGTABLE_kae = new ItemDressingTable_kae();
+		DRESSINGTABLE_ich = new ItemDressingTable_ich();
 
-	public static Item WINDOWTALLBOT_oak = register("block_windowtallbot", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_oak, new Item.Properties()));
-	public static Item WINDOWTALLBOT_spruce = register("block_windowtallbot_spruce", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_spruce, new Item.Properties()));
-	public static Item WINDOWTALLBOT_birch = register("block_windowtallbot_birch", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_birch, new Item.Properties()));
-	public static Item WINDOWTALLBOT_jungle = register("block_windowtallbot_jungle", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_jungle, new Item.Properties()));
-	public static Item WINDOWTALLBOT_acacia = register("block_windowtallbot_acacia", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_acacia, new Item.Properties()));
-	public static Item WINDOWTALLBOT_darkoak = register("block_windowtallbot_darkoak", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_darkoak, new Item.Properties()));
-	public static Item WINDOWTALLBOT_sakura = register("block_windowtallbot_sakura", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_sakura, new Item.Properties()));
-	public static Item WINDOWTALLBOT_kaede = register("block_windowtallbot_kaede", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_kaede, new Item.Properties()));
-	public static Item WINDOWTALLBOT_ichoh = register("block_windowtallbot_ichoh", new Chinjufu_noFuel(Window_Blocks.WINDOWTALLBOT_ichoh, new Item.Properties()));
+		UNITDESK = new ItemUnitDesk();
+		CAFETABLE = new ItemCafeTable();
 
-	public static Item WINDOWTALL_oak = register("block_windowtall", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_oak, new Item.Properties()));
-	public static Item WINDOWTALL_spruce = register("block_windowtall_spruce", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_spruce, new Item.Properties()));
-	public static Item WINDOWTALL_birch = register("block_windowtall_birch", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_birch, new Item.Properties()));
-	public static Item WINDOWTALL_jungle = register("block_windowtall_jungle", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_jungle, new Item.Properties()));
-	public static Item WINDOWTALL_acacia = register("block_windowtall_acacia", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_acacia, new Item.Properties()));
-	public static Item WINDOWTALL_darkoak = register("block_windowtall_darkoak", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_darkoak, new Item.Properties()));
-	public static Item WINDOWTALL_sakura = register("block_windowtall_sakura", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_sakura, new Item.Properties()));
-	public static Item WINDOWTALL_kaede = register("block_windowtall_kaede", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_kaede, new Item.Properties()));
-	public static Item WINDOWTALL_ichoh = register("block_windowtall_ichoh", new Chinjufu_noFuel(Window_Blocks.WINDOWTALL_ichoh, new Item.Properties()));
+		DININGCHAIR = new ItemDinnerChair_oak();
+		DININGCHAIR_s = new ItemDinnerChair_spruce();
+		DININGCHAIR_b = new ItemDinnerChair_birch();
+		DININGCHAIR_j = new ItemDinnerChair_jungle();
+		DININGCHAIR_a = new ItemDinnerChair_acacia();
+		DININGCHAIR_d = new ItemDinnerChair_darkoak();
+		DININGCHAIR_saku = new ItemDinnerChair_sakura();
+		DININGCHAIR_kae = new ItemDinnerChair_kaede();
+		DININGCHAIR_ich = new ItemDinnerChair_ichoh();
 
-	public static Item STOVECHIMNEY = register("block_stovechimney", new Chinjufu_noFuel(School_Blocks.STOVECHIMNEY, new Item.Properties()));
-	public static Item STOVECHIMNEY_joint = register("block_stovechimney_joint", new Chinjufu_noFuel(School_Blocks.STOVECHIMNEY_joint, new Item.Properties()));
-	public static Item STOVECHIMNEY_topk = register("block_stovechimney_topk", new Chinjufu_noFuel(School_Blocks.STOVECHIMNEY_topk, new Item.Properties()));
-	public static Item CSTOVE_bot = register("block_cstove_bot", new Chinjufu_noFuel(School_Blocks.CSTOVE_bot, new Item.Properties()));
+		LOGCHAIR = new ItemLogChair();
+		CAFECHAIR = new ItemCafeChair();
 
-	public static Item CANDLE_white = register("block_candle_white", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_white, new Item.Properties()));
-	public static Item CANDLE_orange = register("block_candle_orange", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_orange, new Item.Properties()));
-	public static Item CANDLE_magenta = register("block_candle_magenta", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_magenta, new Item.Properties()));
-	public static Item CANDLE_lightb = register("block_candle_lightb", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_lightb, new Item.Properties()));
-	public static Item CANDLE_yellow = register("block_candle_yellow", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_yellow, new Item.Properties()));
-	public static Item CANDLE_lime = register("block_candle_lime", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_lime, new Item.Properties()));
-	public static Item CANDLE_pink = register("block_candle_pink", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_pink, new Item.Properties()));
-	public static Item CANDLE_gray = register("block_candle_gray", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_gray, new Item.Properties()));
-	public static Item CANDLE_lightg = register("block_candle_lightg", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_lightg, new Item.Properties()));
-	public static Item CANDLE_cyan = register("block_candle_cyan", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_cyan, new Item.Properties()));
-	public static Item CANDLE_purple = register("block_candle_purple", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_purple, new Item.Properties()));
-	public static Item CANDLE_blue = register("block_candle_blue", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_blue, new Item.Properties()));
-	public static Item CANDLE_brown = register("block_candle_brown", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_brown, new Item.Properties()));
-	public static Item CANDLE_green = register("block_candle_green", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_green, new Item.Properties()));
-	public static Item CANDLE_red = register("block_candle_red", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_red, new Item.Properties()));
-	public static Item CANDLE_black = register("block_candle_black", new Chinjufu_noFuel(Furniture_Blocks.CANDLE_black, new Item.Properties()));
+		SOFA_leather = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_leather, Sofa_leather.ID);
+		SOFA_white = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_white, Sofa_white.ID);
+		SOFA_orange = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_orange, Sofa_orange.ID);
+		SOFA_magenta = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_magenta, Sofa_magenta.ID);
+		SOFA_lightb = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_lightb, Sofa_lightblue.ID);
+		SOFA_yellow = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_yellow, Sofa_yellow.ID);
+		SOFA_lime = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_lime, Sofa_lime.ID);
+		SOFA_pink = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_pink, Sofa_pink.ID);
+		SOFA_gray = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_gray, Sofa_gray.ID);
+		SOFA_lightg = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_lightg, Sofa_lightgray.ID);
+		SOFA_cyan = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_cyan, Sofa_cyan.ID);
+		SOFA_purple = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_purple, Sofa_purple.ID);
+		SOFA_blue = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_blue, Sofa_blue.ID);
+		SOFA_brown = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_brown, Sofa_brown.ID);
+		SOFA_green = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_green, Sofa_green.ID);
+		SOFA_red = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_red, Sofa_red.ID);
+		SOFA_black = new ItemBlock_Fuel150(Furniture_Blocks.SOFA_black, Sofa_black.ID);
 
-	public static Item LAMP = register("block_lamp", new Chinjufu_noFuel(Furniture_Blocks.LAMP, new Item.Properties()));
-	public static Item STANDARM = register("block_standarm", new Chinjufu_noFuel(Furniture_Blocks.STANDARM, new Item.Properties()));
-	public static Item STAND = register("block_standbedroom", new Chinjufu_noFuel(Furniture_Blocks.STAND, new Item.Properties()));
-	public static Item M_LAMP = register("block_marinelamp", new Chinjufu_noFuel(Furniture_Blocks.M_LAMP, new Item.Properties()));
+		BENCH = new ItemBlock_Fuel150(Furniture_Blocks.BENCH, Bench_oak.ID);
+		BENCH_spru = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_spru, Bench_spruce.ID);
+		BENCH_bir = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_bir, Bench_birch.ID);
+		BENCH_jun = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_jun, Bench_jungle.ID);
+		BENCH_aca = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_aca, Bench_acacia.ID);
+		BENCH_doak = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_doak, Bench_doak.ID);
+		BENCH_saku = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_saku, Bench_sakura.ID);
+		BENCH_kae = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_kae, Bench_kaede.ID);
+		BENCH_ich = new ItemBlock_Fuel150(Furniture_Blocks.BENCH_ich, Bench_ichoh.ID);
 
-	public static Item ADMIRALCHAIR = register("block_admiralchair", new Chinjufu_Fuel300(Chair_Blocks.ADMIRALCHAIR, new Item.Properties()));
-	public static Item ADMIRALCHAIR_red = register("block_admiralchair_red", new Chinjufu_Fuel300(Chair_Blocks.ADMIRALCHAIR_red, new Item.Properties()));
+		SCHOOLCHAIR = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR, "block_schoolchair");
+		SCHOOLCHAIR_s = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_s, "block_schoolchair_s");
+		SCHOOLCHAIR_b = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_b, "block_schoolchair_b");
+		SCHOOLCHAIR_j = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_j, "block_schoolchair_j");
+		SCHOOLCHAIR_a = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_a, "block_schoolchair_a");
+		SCHOOLCHAIR_d = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_d, "block_schoolchair_d");
+		SCHOOLCHAIR_saku = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_saku, "block_schoolchair_saku");
+		SCHOOLCHAIR_kae = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_kae, "block_schoolchair_kae");
+		SCHOOLCHAIR_ich = new ItemBlock_Fuel150(Furniture_Blocks.SCHOOLCHAIR_ich, "block_schoolchair_ich");
 
-	public static Item TANSU_OAK = register("block_tansu_oak", new Chinjufu_Fuel300(Furniture_Blocks.TANSU_OAK, new Item.Properties()));
-	public static Item DOAK_TANSU = register("block_tansu_doak", new Chinjufu_Fuel300(Furniture_Blocks.DOAK_TANSU, new Item.Properties()));
-	public static Item SPRUCE_TANSU = register("block_tansu_spruce", new Chinjufu_Fuel300(Furniture_Blocks.SPRUCE_TANSU, new Item.Properties()));
+		SCHOOLDESK = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK, "block_schooldesk");
+		SCHOOLDESK_s = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_s, "block_schooldesk_s");
+		SCHOOLDESK_b = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_b, "block_schooldesk_b");
+		SCHOOLDESK_j = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_j, "block_schooldesk_j");
+		SCHOOLDESK_a = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_a, "block_schooldesk_a");
+		SCHOOLDESK_d = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_d, "block_schooldesk_d");
+		SCHOOLDESK_saku = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_saku, "block_schooldesk_saku");
+		SCHOOLDESK_kae = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_kae, "block_schooldesk_kae");
+		SCHOOLDESK_ich = new ItemBlock_Fuel200(Furniture_Blocks.SCHOOLDESK_ich, "block_schooldesk_ich");
 
-	public static Item KEIKAIBLOCK = register("block_keikai", new Chinjufu_noFuel(Harbor_Blocks.KEIKAIBLOCK, new Item.Properties()));
+		TEACHERDESK = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK, "block_teacherdesk");
+		TEACHERDESK_s = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_s, "block_teacherdesk_s");
+		TEACHERDESK_b = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_b, "block_teacherdesk_b");
+		TEACHERDESK_j = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_j, "block_teacherdesk_j");
+		TEACHERDESK_a = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_a, "block_teacherdesk_a");
+		TEACHERDESK_d = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_d, "block_teacherdesk_d");
+		TEACHERDESK_saku = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_saku, "block_teacherdesk_saku");
+		TEACHERDESK_kae = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_kae, "block_teacherdesk_kae");
+		TEACHERDESK_ich = new ItemBlock_Fuel300(Furniture_Blocks.TEACHERDESK_ich, "block_teacherdesk_ich");
 
-	public static Item KEIRYUKUI = register("block_keiryukui", new Chinjufu_noFuel(Harbor_Blocks.KEIRYUKUI, new Item.Properties()));
-	public static Item KEIRYUKUI_b = register("block_keiryukui_b", new Chinjufu_noFuel(Harbor_Blocks.KEIRYUKUI_b, new Item.Properties()));
+		LOWDESK = new ItemLowDesk();
+		LETTERTRAY = new ItemLetterTray();
+		BLACKBOARD = new ItemBlock_noFuel(Furniture_Blocks.BLACKBOARD, BlackBoard.ID);
 
-	public static Item TRUSS = register("block_ctruss", new Chinjufu_noFuel(Harbor_Blocks.TRUSS, new Item.Properties()));
-	public static Item TRUSS_white = register("block_ctruss_white", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_white, new Item.Properties()));
-	public static Item TRUSS_orange = register("block_ctruss_orange", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_orange, new Item.Properties()));
-	public static Item TRUSS_magenta = register("block_ctruss_magenta", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_magenta, new Item.Properties()));
-	public static Item TRUSS_lightb = register("block_ctruss_lightb", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_lightb, new Item.Properties()));
-	public static Item TRUSS_yellow = register("block_ctruss_yellow", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_yellow, new Item.Properties()));
-	public static Item TRUSS_lime = register("block_ctruss_lime", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_lime, new Item.Properties()));
-	public static Item TRUSS_pink = register("block_ctruss_pink", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_pink, new Item.Properties()));
-	public static Item TRUSS_gray = register("block_ctruss_gray", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_gray, new Item.Properties()));
-	public static Item TRUSS_cyan = register("block_ctruss_cyan", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_cyan, new Item.Properties()));
-	public static Item TRUSS_purple = register("block_ctruss_purple", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_purple, new Item.Properties()));
-	public static Item TRUSS_blue = register("block_ctruss_blue", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_blue, new Item.Properties()));
-	public static Item TRUSS_brown = register("block_ctruss_brown", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_brown, new Item.Properties()));
-	public static Item TRUSS_green = register("block_ctruss_green", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_green, new Item.Properties()));
-	public static Item TRUSS_red = register("block_ctruss_red", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_red, new Item.Properties()));
-	public static Item TRUSS_black = register("block_ctruss_black", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_black, new Item.Properties()));
+		WINDOW_oak = new ItemWindow_oak();
+		WINDOW_spruce = new ItemWindow_spruce();
+		WINDOW_birch = new ItemWindow_birch();
+		WINDOW_jungle = new ItemWindow_jungle();
+		WINDOW_acacia = new ItemWindow_acacia();
+		WINDOW_darkoak = new ItemWindow_darkoak();
+		WINDOW_sakura = new ItemWindow_sakura();
+		WINDOW_kaede = new ItemWindow_kaede();
+		WINDOW_ichoh = new ItemWindow_ichoh();
 
-	///* Register *///
-	private static Item register(String name, Item item) {
-		ITEMS.register(name, () -> item);
-		return item;
+		WINDOWB_oak = new ItemWindowB_oak();
+		WINDOWB_spruce = new ItemWindowB_spruce();
+		WINDOWB_birch = new ItemWindowB_birch();
+		WINDOWB_jungle = new ItemWindowB_jungle();
+		WINDOWB_acacia = new ItemWindowB_acacia();
+		WINDOWB_darkoak = new ItemWindowB_darkoak();
+		WINDOWB_sakura = new ItemWindowB_sakura();
+		WINDOWB_kaede = new ItemWindowB_kaede();
+		WINDOWB_ichoh = new ItemWindowB_ichoh();
+
+		WINDOWTALLBOT_oak = new ItemWindowTallBot_oak();
+		WINDOWTALLBOT_spruce = new ItemWindowTallBot_spruce();
+		WINDOWTALLBOT_birch = new ItemWindowTallBot_birch();
+		WINDOWTALLBOT_jungle = new ItemWindowTallBot_jungle();
+		WINDOWTALLBOT_acacia = new ItemWindowTallBot_acacia();
+		WINDOWTALLBOT_darkoak = new ItemWindowTallBot_darkoak();
+		WINDOWTALLBOT_sakura = new ItemWindowTallBot_sakura();
+		WINDOWTALLBOT_kaede = new ItemWindowTallBot_kaede();
+		WINDOWTALLBOT_ichoh = new ItemWindowTallBot_ichoh();
+
+		WINDOWTALL_oak = new ItemWindowTall_oak();
+		WINDOWTALL_spruce = new ItemWindowTall_spruce();
+		WINDOWTALL_birch = new ItemWindowTall_birch();
+		WINDOWTALL_jungle = new ItemWindowTall_jungle();
+		WINDOWTALL_acacia = new ItemWindowTall_acacia();
+		WINDOWTALL_darkoak = new ItemWindowTall_darkoak();
+		WINDOWTALL_sakura = new ItemWindowTall_sakura();
+		WINDOWTALL_kaede = new ItemWindowTall_kaede();
+		WINDOWTALL_ichoh = new ItemWindowTall_ichoh();
+
+		STOVECHIMNEY = new ItemBlock_noFuel(Furniture_Blocks.STOVECHIMNEY, StoveChimney.ID);
+		STOVECHIMNEY_joint = new ItemBlock_noFuel(Furniture_Blocks.STOVECHIMNEY_joint, StoveChimney_joint.ID);
+		STOVECHIMNEY_topk = new ItemBlock_noFuel(Furniture_Blocks.STOVECHIMNEY_topk, StoveChimney_topk.ID);
+		CSTOVE_bot = new ItemBlock_noFuel(Furniture_Blocks.CSTOVE_bot, CStove_bot.ID);
+
+		CANDLE = new ItemCandle();
+		LAMP = new ItemBlock_noFuel(Lamp_Blocks.LAMP, HangLamp.ID);
+		STANDARM = new ItemBlock_noFuel(Lamp_Blocks.STANDARM, StandArm.ID);
+		STAND = new ItemBlock_noFuel(Lamp_Blocks.STAND, StandBedroom.ID);
+		M_LAMP = new ItemBlock_noFuel(Lamp_Blocks.M_LAMP, MarineLamp.ID);
+
+		ADMIRALCHAIR = new ItemAdmiralChair();
+		TANSU_OAK = new ItemBlock_Fuel300(Furniture_Blocks.TANSU_OAK, "block_tansu_oak");
+		DOAK_TANSU = new ItemBlock_Fuel300(Furniture_Blocks.DOAK_TANSU, "block_tansu_doak");
+		SPRUCE_TANSU = new ItemBlock_Fuel300(Furniture_Blocks.SPRUCE_TANSU, "block_tansu_spruce");
+
+		KEIKAIBLOCK = new ItemBlock_noFuel(Harbor_Blocks.KEIKAIBLOCK, Keikai.ID);
+
+		KEIRYUKUI = new ItemBlock_noFuel(Harbor_Blocks.KEIRYUKUI, "block_keiryukui");
+		KEIRYUKUI_b = new ItemBlock_noFuel(Harbor_Blocks.KEIRYUKUI_b, "block_keiryukui_b");
+
+		TRUSS = new ItemBlock_noFuel(Harbor_Blocks.TRUSS, "block_ctruss");
+		TRUSS_white = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_white, "block_ctruss_white");
+		TRUSS_orange = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_orange, "block_ctruss_orange");
+		TRUSS_magenta = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_magenta, "block_ctruss_magenta");
+		TRUSS_lightb = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_lightb, "block_ctruss_lightb");
+		TRUSS_yellow = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_yellow, "block_ctruss_yellow");
+		TRUSS_lime = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_lime, "block_ctruss_lime");
+		TRUSS_pink = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_pink, "block_ctruss_pink");
+		TRUSS_gray = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_gray, "block_ctruss_gray");
+		TRUSS_cyan = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_cyan, "block_ctruss_cyan");
+		TRUSS_purple = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_purple, "block_ctruss_purple");
+		TRUSS_blue = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_blue, "block_ctruss_blue");
+		TRUSS_brown = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_brown, "block_ctruss_brown");
+		TRUSS_green = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_green, "block_ctruss_green");
+		TRUSS_red = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_red, "block_ctruss_red");
+		TRUSS_black = new ItemBlock_noFuel(Harbor_Blocks.TRUSS_black, "block_ctruss_black");
+
 	}
+
+
+	/* アイテムを登録する、ここから Register Items. From here. ↓*/
+	public static void register() {
+		registerItem(EMBLEM_C);
+		registerItem(ADMIRAL_STAMP);
+		registerItem(ADMIRAL_STAMP_B);
+		registerItem(WORK_ORDER);
+		registerItem(SHOUHOU_empty);
+		registerItem(SHOUHOU);
+		
+		registerItem(BAUXITE);
+		registerItem(ALUMINUM);
+		registerItem(SUMI);
+
+		registerItem(BAUXITE_ORE);
+		registerItem(OIL_DRUM);
+		registerItem(EMPTY_BOX);
+		registerItem(AMUBAUX);
+		registerItem(ALUMI);
+		registerItem(B_ADMIRAL_STAMP);
+
+		registerItem(DRESSINGTABLE);
+		registerItem(DRESSINGTABLE_s);
+		registerItem(DRESSINGTABLE_b);
+		registerItem(DRESSINGTABLE_j);
+		registerItem(DRESSINGTABLE_a);
+		registerItem(DRESSINGTABLE_d);
+		registerItem(DRESSINGTABLE_saku);
+		registerItem(DRESSINGTABLE_kae);
+		registerItem(DRESSINGTABLE_ich);
+
+		registerItem(UNITDESK);
+		registerItem(CAFETABLE);
+
+		registerItem(DININGCHAIR);
+		registerItem(DININGCHAIR_s);
+		registerItem(DININGCHAIR_b);
+		registerItem(DININGCHAIR_j);
+		registerItem(DININGCHAIR_a);
+		registerItem(DININGCHAIR_d);
+		registerItem(DININGCHAIR_saku);
+		registerItem(DININGCHAIR_kae);
+		registerItem(DININGCHAIR_ich);
+
+		registerItem(LOGCHAIR);
+		registerItem(CAFECHAIR);
+
+		registerItem(SOFA_leather);
+		registerItem(SOFA_white);
+		registerItem(SOFA_orange);
+		registerItem(SOFA_magenta);
+		registerItem(SOFA_lightb);
+		registerItem(SOFA_yellow);
+		registerItem(SOFA_lime);
+		registerItem(SOFA_pink);
+		registerItem(SOFA_gray);
+		registerItem(SOFA_lightg);
+		registerItem(SOFA_cyan);
+		registerItem(SOFA_purple);
+		registerItem(SOFA_blue);
+		registerItem(SOFA_brown);
+		registerItem(SOFA_green);
+		registerItem(SOFA_red);
+		registerItem(SOFA_black);
+
+		registerItem(BENCH);
+		registerItem(BENCH_spru);
+		registerItem(BENCH_bir);
+		registerItem(BENCH_jun);
+		registerItem(BENCH_aca);
+		registerItem(BENCH_doak);
+		registerItem(BENCH_saku);
+		registerItem(BENCH_kae);
+		registerItem(BENCH_ich);
+
+		registerItem(SCHOOLCHAIR);
+		registerItem(SCHOOLCHAIR_s);
+		registerItem(SCHOOLCHAIR_b);
+		registerItem(SCHOOLCHAIR_j);
+		registerItem(SCHOOLCHAIR_a);
+		registerItem(SCHOOLCHAIR_d);
+		registerItem(SCHOOLCHAIR_saku);
+		registerItem(SCHOOLCHAIR_kae);
+		registerItem(SCHOOLCHAIR_ich);
+
+		registerItem(SCHOOLDESK);
+		registerItem(SCHOOLDESK_s);
+		registerItem(SCHOOLDESK_b);
+		registerItem(SCHOOLDESK_j);
+		registerItem(SCHOOLDESK_a);
+		registerItem(SCHOOLDESK_d);
+		registerItem(SCHOOLDESK_saku);
+		registerItem(SCHOOLDESK_kae);
+		registerItem(SCHOOLDESK_ich);
+
+		registerItem(TEACHERDESK);
+		registerItem(TEACHERDESK_s);
+		registerItem(TEACHERDESK_b);
+		registerItem(TEACHERDESK_j);
+		registerItem(TEACHERDESK_a);
+		registerItem(TEACHERDESK_d);
+		registerItem(TEACHERDESK_saku);
+		registerItem(TEACHERDESK_kae);
+		registerItem(TEACHERDESK_ich);
+
+		registerItem(LOWDESK);
+		registerItem(LETTERTRAY);
+		registerItem(BLACKBOARD);
+
+		registerItem(WINDOW_oak);
+		registerItem(WINDOW_spruce );
+		registerItem(WINDOW_birch );
+		registerItem(WINDOW_jungle);
+		registerItem(WINDOW_acacia);
+		registerItem(WINDOW_darkoak);
+		registerItem(WINDOW_sakura);
+		registerItem(WINDOW_kaede);
+		registerItem(WINDOW_ichoh);
+
+		registerItem(WINDOWB_oak);
+		registerItem(WINDOWB_spruce );
+		registerItem(WINDOWB_birch );
+		registerItem(WINDOWB_jungle);
+		registerItem(WINDOWB_acacia);
+		registerItem(WINDOWB_darkoak);
+		registerItem(WINDOWB_sakura);
+		registerItem(WINDOWB_kaede);
+		registerItem(WINDOWB_ichoh);
+
+		registerItem(WINDOWTALLBOT_oak);
+		registerItem(WINDOWTALLBOT_spruce);
+		registerItem(WINDOWTALLBOT_birch);
+		registerItem(WINDOWTALLBOT_jungle);
+		registerItem(WINDOWTALLBOT_acacia);
+		registerItem(WINDOWTALLBOT_darkoak);
+		registerItem(WINDOWTALLBOT_sakura);
+		registerItem(WINDOWTALLBOT_kaede);
+		registerItem(WINDOWTALLBOT_ichoh);
+
+		registerItem(WINDOWTALL_oak);
+		registerItem(WINDOWTALL_spruce);
+		registerItem(WINDOWTALL_birch);
+		registerItem(WINDOWTALL_jungle);
+		registerItem(WINDOWTALL_acacia);
+		registerItem(WINDOWTALL_darkoak);
+		registerItem(WINDOWTALL_sakura);
+		registerItem(WINDOWTALL_kaede);
+		registerItem(WINDOWTALL_ichoh);
+
+		registerItem(STOVECHIMNEY);
+		registerItem(STOVECHIMNEY_joint);
+		registerItem(STOVECHIMNEY_topk);
+		registerItem(CSTOVE_bot);
+
+		registerItem(CANDLE);
+		registerItem(LAMP);
+		registerItem(STANDARM);
+		registerItem(STAND);
+		registerItem(M_LAMP);
+
+		registerItem(ADMIRALCHAIR);
+		registerItem(TANSU_OAK);
+		registerItem(DOAK_TANSU);
+		registerItem(SPRUCE_TANSU);
+
+		registerItem(KEIKAIBLOCK);
+
+		registerItem(KEIRYUKUI);
+		registerItem(KEIRYUKUI_b);
+
+		registerItem(TRUSS);
+		registerItem(TRUSS_white);
+		registerItem(TRUSS_orange);
+		registerItem(TRUSS_magenta);
+		registerItem(TRUSS_lightb);
+		registerItem(TRUSS_yellow);
+		registerItem(TRUSS_lime);
+		registerItem(TRUSS_pink);
+		registerItem(TRUSS_gray);
+		registerItem(TRUSS_cyan);
+		registerItem(TRUSS_purple);
+		registerItem(TRUSS_blue);
+		registerItem(TRUSS_brown);
+		registerItem(TRUSS_green);
+		registerItem(TRUSS_red);
+		registerItem(TRUSS_black);
+
+	}
+
+	public static void registerItem(Item item) {
+		RegisterHandler_CM.Items.ITEMS.add(item);
+	}
+	/*ここまで So far↑ */
+
+
+	/* ドロップ時やインベントリにおける、アイテムやアイテムブロックの描画を登録。ここから↓
+	* Register rendering of Items and ItemBlocks in drop and inventory. From here↓*/
+	public static void registerRenders() {
+
+		registerRender(EMBLEM_C);
+		registerRender(ADMIRAL_STAMP);
+		registerRender(ADMIRAL_STAMP_B);
+		registerRender(WORK_ORDER);
+		registerRender(SHOUHOU_empty);
+		registerRender(SHOUHOU);
+		
+		registerRender(BAUXITE);
+		registerRender(ALUMINUM);
+		registerRender(SUMI);
+
+		registerRender(BAUXITE_ORE);
+		registerRender(OIL_DRUM);
+		registerRender(EMPTY_BOX);
+		registerRenderMeta(AMUBAUX, 1, "block_ammunition_box");
+		registerRenderMeta(AMUBAUX, 2, "block_bauxite_box");
+		registerRenderMeta(ALUMI, 1, "block_alumi_block");
+		registerRenderMeta(ALUMI, 2, "block_steel_block");
+		registerRenderMeta(ALUMI, 3, "block_gold_block");
+		registerRender(B_ADMIRAL_STAMP);
+
+		registerRender(DRESSINGTABLE);
+		registerRender(DRESSINGTABLE_s);
+		registerRender(DRESSINGTABLE_b);
+		registerRender(DRESSINGTABLE_j);
+		registerRender(DRESSINGTABLE_a);
+		registerRender(DRESSINGTABLE_d);
+		registerRender(DRESSINGTABLE_saku);
+		registerRender(DRESSINGTABLE_kae);
+		registerRender(DRESSINGTABLE_ich);
+
+		registerRenderMeta(UNITDESK, 0, "block_unitdesk");
+		registerRenderMeta(UNITDESK, 1, "block_unitdesk_spruce");
+		registerRenderMeta(UNITDESK, 2, "block_unitdesk_birch");
+		registerRenderMeta(UNITDESK, 3, "block_unitdesk_jungle");
+		registerRenderMeta(UNITDESK, 4, "block_unitdesk_acacia");
+		registerRenderMeta(UNITDESK, 5, "block_unitdesk_darkoak");
+		registerRenderMeta(UNITDESK, 6, "block_unitdesk_sakura");
+		registerRenderMeta(UNITDESK, 7, "block_unitdesk_kaede");
+		registerRenderMeta(UNITDESK, 8, "block_unitdesk_ichoh");
+
+		registerRenderMeta(CAFETABLE, 0, "block_cafetable");
+		registerRenderMeta(CAFETABLE, 1, "block_cafetable_spruce");
+		registerRenderMeta(CAFETABLE, 2, "block_cafetable_birch");
+		registerRenderMeta(CAFETABLE, 3, "block_cafetable_jungle");
+		registerRenderMeta(CAFETABLE, 4, "block_cafetable_acacia");
+		registerRenderMeta(CAFETABLE, 5, "block_cafetable_darkoak");
+		registerRenderMeta(CAFETABLE, 6, "block_cafetable_sakura");
+		registerRenderMeta(CAFETABLE, 7, "block_cafetable_kaede");
+		registerRenderMeta(CAFETABLE, 8, "block_cafetable_ichoh");
+
+		registerRender(DININGCHAIR);
+		registerRender(DININGCHAIR_s);
+		registerRender(DININGCHAIR_b);
+		registerRender(DININGCHAIR_j);
+		registerRender(DININGCHAIR_a);
+		registerRender(DININGCHAIR_d);
+		registerRender(DININGCHAIR_saku);
+		registerRender(DININGCHAIR_kae);
+		registerRender(DININGCHAIR_ich);
+
+		registerRenderMeta(LOGCHAIR, 0, "block_logchair");
+		registerRenderMeta(LOGCHAIR, 1, "block_logchair_spruce");
+		registerRenderMeta(LOGCHAIR, 2, "block_logchair_birch");
+		registerRenderMeta(LOGCHAIR, 3, "block_logchair_jungle");
+		registerRenderMeta(LOGCHAIR, 4, "block_logchair_acacia");
+		registerRenderMeta(LOGCHAIR, 5, "block_logchair_darkoak");
+		registerRenderMeta(LOGCHAIR, 6, "block_logchair_sakura");
+		registerRenderMeta(LOGCHAIR, 7, "block_logchair_kaede");
+		registerRenderMeta(LOGCHAIR, 8, "block_logchair_ichoh");
+
+		registerRenderMeta(CAFECHAIR, 0, "block_cafechair_white");
+		registerRenderMeta(CAFECHAIR, 1, "block_cafechair_orange");
+		registerRenderMeta(CAFECHAIR, 2, "block_cafechair_magenta");
+		registerRenderMeta(CAFECHAIR, 3, "block_cafechair_lightb");
+		registerRenderMeta(CAFECHAIR, 4, "block_cafechair_yellow");
+		registerRenderMeta(CAFECHAIR, 5, "block_cafechair_lime");
+		registerRenderMeta(CAFECHAIR, 6, "block_cafechair_pink");
+		registerRenderMeta(CAFECHAIR, 7, "block_cafechair_gray");
+		registerRenderMeta(CAFECHAIR, 8, "block_cafechair_lightg");
+		registerRenderMeta(CAFECHAIR, 9, "block_cafechair_cyan");
+		registerRenderMeta(CAFECHAIR, 10, "block_cafechair_purple");
+		registerRenderMeta(CAFECHAIR, 11, "block_cafechair_blue");
+		registerRenderMeta(CAFECHAIR, 12, "block_cafechair_brown");
+		registerRenderMeta(CAFECHAIR, 13, "block_cafechair_green");
+		registerRenderMeta(CAFECHAIR, 14, "block_cafechair_red");
+		registerRenderMeta(CAFECHAIR, 15, "block_cafechair_black");
+
+		registerRender(SOFA_leather);
+		registerRender(SOFA_white);
+		registerRender(SOFA_orange);
+		registerRender(SOFA_magenta);
+		registerRender(SOFA_lightb);
+		registerRender(SOFA_yellow);
+		registerRender(SOFA_lime);
+		registerRender(SOFA_pink);
+		registerRender(SOFA_gray);
+		registerRender(SOFA_lightg);
+		registerRender(SOFA_cyan);
+		registerRender(SOFA_purple);
+		registerRender(SOFA_blue);
+		registerRender(SOFA_brown);
+		registerRender(SOFA_green);
+		registerRender(SOFA_red);
+		registerRender(SOFA_black);
+
+		registerRender(BENCH);
+		registerRender(BENCH_spru);
+		registerRender(BENCH_bir);
+		registerRender(BENCH_jun);
+		registerRender(BENCH_aca);
+		registerRender(BENCH_doak);
+		registerRender(BENCH_saku);
+		registerRender(BENCH_kae);
+		registerRender(BENCH_ich);
+
+		registerRender(SCHOOLCHAIR);
+		registerRender(SCHOOLCHAIR_s);
+		registerRender(SCHOOLCHAIR_b);
+		registerRender(SCHOOLCHAIR_j);
+		registerRender(SCHOOLCHAIR_a);
+		registerRender(SCHOOLCHAIR_d);
+		registerRender(SCHOOLCHAIR_saku);
+		registerRender(SCHOOLCHAIR_kae);
+		registerRender(SCHOOLCHAIR_ich);
+
+		registerRender(SCHOOLDESK);
+		registerRender(SCHOOLDESK_s);
+		registerRender(SCHOOLDESK_b);
+		registerRender(SCHOOLDESK_j);
+		registerRender(SCHOOLDESK_a);
+		registerRender(SCHOOLDESK_d);
+		registerRender(SCHOOLDESK_saku);
+		registerRender(SCHOOLDESK_kae);
+		registerRender(SCHOOLDESK_ich);
+
+		registerRender(TEACHERDESK);
+		registerRender(TEACHERDESK_s);
+		registerRender(TEACHERDESK_b);
+		registerRender(TEACHERDESK_j);
+		registerRender(TEACHERDESK_a);
+		registerRender(TEACHERDESK_d);
+		registerRender(TEACHERDESK_saku);
+		registerRender(TEACHERDESK_kae);
+		registerRender(TEACHERDESK_ich);
+
+		registerRenderMeta(LOWDESK, 0, "block_lowdesk");
+		registerRenderMeta(LOWDESK, 1, "block_lowdesk_spruce");
+		registerRenderMeta(LOWDESK, 2, "block_lowdesk_birch");
+		registerRenderMeta(LOWDESK, 3, "block_lowdesk_jungle");
+		registerRenderMeta(LOWDESK, 4, "block_lowdesk_acacia");
+		registerRenderMeta(LOWDESK, 5, "block_lowdesk_darkoak");
+		registerRenderMeta(LOWDESK, 6, "block_lowdesk_sakura");
+		registerRenderMeta(LOWDESK, 7, "block_lowdesk_kaede");
+		registerRenderMeta(LOWDESK, 8, "block_lowdesk_ichoh");
+
+		registerRenderMeta(LETTERTRAY, 1, "block_lettertray_c");
+		registerRenderMeta(LETTERTRAY, 2, "block_fudetray_c");
+		registerRender(BLACKBOARD);
+
+		registerRender(WINDOW_oak);
+		registerRender(WINDOW_spruce );
+		registerRender(WINDOW_birch );
+		registerRender(WINDOW_jungle);
+		registerRender(WINDOW_acacia);
+		registerRender(WINDOW_darkoak);
+		registerRender(WINDOW_sakura);
+		registerRender(WINDOW_kaede);
+		registerRender(WINDOW_ichoh);
+
+		registerRender(WINDOWB_oak);
+		registerRender(WINDOWB_spruce );
+		registerRender(WINDOWB_birch );
+		registerRender(WINDOWB_jungle);
+		registerRender(WINDOWB_acacia);
+		registerRender(WINDOWB_darkoak);
+		registerRender(WINDOWB_sakura);
+		registerRender(WINDOWB_kaede);
+		registerRender(WINDOWB_ichoh);
+
+		registerRender(WINDOWTALLBOT_oak);
+		registerRender(WINDOWTALLBOT_spruce);
+		registerRender(WINDOWTALLBOT_birch);
+		registerRender(WINDOWTALLBOT_jungle);
+		registerRender(WINDOWTALLBOT_acacia);
+		registerRender(WINDOWTALLBOT_darkoak);
+		registerRender(WINDOWTALLBOT_sakura);
+		registerRender(WINDOWTALLBOT_kaede);
+		registerRender(WINDOWTALLBOT_ichoh);
+
+		registerRender(WINDOWTALL_oak);
+		registerRender(WINDOWTALL_spruce);
+		registerRender(WINDOWTALL_birch);
+		registerRender(WINDOWTALL_jungle);
+		registerRender(WINDOWTALL_acacia);
+		registerRender(WINDOWTALL_darkoak);
+		registerRender(WINDOWTALL_sakura);
+		registerRender(WINDOWTALL_kaede);
+		registerRender(WINDOWTALL_ichoh);
+
+		registerRender(STOVECHIMNEY);
+		registerRender(STOVECHIMNEY_joint);
+		registerRender(STOVECHIMNEY_topk);
+		registerRender(CSTOVE_bot);
+
+		registerRenderMeta(CANDLE, 0, "block_candle_white");
+		registerRenderMeta(CANDLE, 1, "block_candle_orange");
+		registerRenderMeta(CANDLE, 2, "block_candle_magenta");
+		registerRenderMeta(CANDLE, 3, "block_candle_lightb");
+		registerRenderMeta(CANDLE, 4, "block_candle_yellow");
+		registerRenderMeta(CANDLE, 5, "block_candle_lime");
+		registerRenderMeta(CANDLE, 6, "block_candle_pink");
+		registerRenderMeta(CANDLE, 7, "block_candle_gray");
+		registerRenderMeta(CANDLE, 8, "block_candle_lightg");
+		registerRenderMeta(CANDLE, 9, "block_candle_cyan");
+		registerRenderMeta(CANDLE, 10, "block_candle_purple");
+		registerRenderMeta(CANDLE, 11, "block_candle_blue");
+		registerRenderMeta(CANDLE, 12, "block_candle_brown");
+		registerRenderMeta(CANDLE, 13, "block_candle_green");
+		registerRenderMeta(CANDLE, 14, "block_candle_red");
+		registerRenderMeta(CANDLE, 15, "block_candle_black");
+
+		registerRender(LAMP);
+		registerRender(STANDARM);
+		registerRender(STAND);
+		registerRender(M_LAMP);
+
+		registerRenderMeta(ADMIRALCHAIR, 1, "block_admiralchair");
+		registerRenderMeta(ADMIRALCHAIR, 2, "block_admiralchair_red");
+		registerRender(TANSU_OAK);
+		registerRender(DOAK_TANSU);
+		registerRender(SPRUCE_TANSU);
+
+		registerRender(KEIKAIBLOCK);
+
+		registerRender(KEIRYUKUI);
+		registerRender(KEIRYUKUI_b);
+
+		registerRender(TRUSS);
+		registerRender(TRUSS_white);
+		registerRender(TRUSS_orange);
+		registerRender(TRUSS_magenta);
+		registerRender(TRUSS_lightb);
+		registerRender(TRUSS_yellow);
+		registerRender(TRUSS_lime);
+		registerRender(TRUSS_pink);
+		registerRender(TRUSS_gray);
+		registerRender(TRUSS_cyan);
+		registerRender(TRUSS_purple);
+		registerRender(TRUSS_blue);
+		registerRender(TRUSS_brown);
+		registerRender(TRUSS_green);
+		registerRender(TRUSS_red);
+		registerRender(TRUSS_black);
+
+	}
+
+	private static void registerRender(Item item) {
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
+	}
+
+	private static void registerRenderMeta(Item item, int meta, String fileName) {
+		ModelLoader.setCustomModelResourceLocation(item, meta,
+				new ModelResourceLocation(new ResourceLocation(ChinjufuMod.MOD_ID, fileName), "inventory"));
+	}
+	/*ここまで So far↑ */
 
 }

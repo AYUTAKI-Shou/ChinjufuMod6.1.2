@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"elements": [
-		{ "from": [ 5, 0, 6 ],
+		{  "from": [ 5, 0, 6 ],
 			"to": [ 11, 1, 10 ],
 			"faces": {
 				"down": { "uv": [ 5, 6, 11, 10 ], "texture": "#inside", "cullface": "down" },

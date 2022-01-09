@@ -1,9 +1,0 @@
-{
-	"replace": false,
-	"values": [
-		"#forge:dusts/salt",
-		"#forge:dusts/glowstone",
-		"#forge:dusts/prismarine",
-		"#forge:dusts/redstone"
-	]
-}

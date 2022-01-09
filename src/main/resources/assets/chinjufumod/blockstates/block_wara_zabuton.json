@@ -1,5 +1,5 @@
 {
 	"variants": {
-		"": { "model": "chinjufumod:block/zabuton/block_wara_zabuton" }
+		"normal": { "model": "chinjufumod:zabuton/block_wara_zabuton" }
 	}
 }

@@ -1,23 +1,156 @@
 package com.ayutaki.chinjufumod.blocks.kamoislab;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseStage4_Face;
+import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
+import com.ayutaki.chinjufumod.registry.Items_Wablock;
+import com.ayutaki.chinjufumod.registry.KamoiShikkui_Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class KamoiPlaster_Kaede extends Base_KamoiPlaster {
+public class KamoiPlaster_Kaede extends BaseStage4_Face {
 
-	public KamoiPlaster_Kaede(Block.Properties properties) {
-		super(properties);
+	public static final PropertyDirection H_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyInteger STAGE_1_4 = PropertyInteger.create("stage", 1, 4);
+
+	public KamoiPlaster_Kaede(Material material, String unlocalizedName) {
+		super(material);
+		setUnlocalizedName(unlocalizedName);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, unlocalizedName));
+
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(10.0F);
 	}
 
-	/* Clone Item in Creative. */
+	/* RightClick Action */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Seasonal.PILLARSLAB_kae);
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		
+		if (itemstack.isEmpty()) {
+			if (playerIn.isSneaking()) {
+				CMEvents.soundStonePlace(worldIn, pos);
+				worldIn.setBlockState(pos, state.cycleProperty(STAGE_1_4), 2); }
+			
+			if (!playerIn.isSneaking()) {
+				CMEvents.textNotSneak(worldIn, pos, playerIn); }
+			return true;
+		}
+		return false;
+	}
+
+	/* Harvest by Pickaxe. */
+	@Nullable
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return "pickaxe";
+	}
+
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		return 0;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		if (this == KamoiShikkui_Blocks.KAMOI_white_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_white, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_orange_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_orange, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_magenta_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_magenta, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_lightb_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_lightb, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_yellow_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_yellow, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_lime_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_lime, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_pink_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_pink, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_gray_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_gray, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_lightg_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_lightg, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_cyan_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_cyan, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_purple_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_purple, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_blue_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_blue, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_brown_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_brown, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_green_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_green, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_red_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_red, 1, 0)); }
+
+		if (this == KamoiShikkui_Blocks.KAMOI_black_kae) {
+			stack.add(new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0));
+			stack.add(new ItemStack(Items_Wablock.SHIKKUI_SH_black, 1, 0)); }
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Seasonal.PILLARSLAB_kae, 1, 0);
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.ayutaki.chinjufumod.registry;
 
-import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.RegisterHandler_CM;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Acacia;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Birch;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_DarkOak;
@@ -12,150 +12,222 @@ import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Sakura;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Spruce;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KamoiPlanks_Blocks {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	public static Block KAMOI_oak_oak, KAMOI_spru_oak, KAMOI_bir_oak, KAMOI_jun_oak, KAMOI_aca_oak,
+								KAMOI_doak_oak, KAMOI_saku_oak, KAMOI_kae_oak, KAMOI_ich_oak;
+	public static Block KAMOI_oak_spru, KAMOI_spru_spru, KAMOI_bir_spru, KAMOI_jun_spru, KAMOI_aca_spru,
+								KAMOI_doak_spru, KAMOI_saku_spru, KAMOI_kae_spru, KAMOI_ich_spru;
+	public static Block KAMOI_oak_bir, KAMOI_spru_bir, KAMOI_bir_bir, KAMOI_jun_bir, KAMOI_aca_bir,
+								KAMOI_doak_bir, KAMOI_saku_bir, KAMOI_kae_bir, KAMOI_ich_bir;
+	public static Block KAMOI_oak_jun, KAMOI_spru_jun, KAMOI_bir_jun, KAMOI_jun_jun, KAMOI_aca_jun,
+								KAMOI_doak_jun, KAMOI_saku_jun, KAMOI_kae_jun, KAMOI_ich_jun;
+	public static Block KAMOI_oak_aca, KAMOI_spru_aca, KAMOI_bir_aca, KAMOI_jun_aca, KAMOI_aca_aca,
+								KAMOI_doak_aca, KAMOI_saku_aca, KAMOI_kae_aca, KAMOI_ich_aca;
+	public static Block KAMOI_oak_doak, KAMOI_spru_doak, KAMOI_bir_doak, KAMOI_jun_doak, KAMOI_aca_doak,
+								KAMOI_doak_doak, KAMOI_saku_doak, KAMOI_kae_doak, KAMOI_ich_doak;
 
-	public static Block KAMOI_oak_oak = register("block_ka_oak_oak", kamoiOak());
-	public static Block KAMOI_spru_oak = register("block_ka_spru_oak", kamoiOak());
-	public static Block KAMOI_bir_oak = register("block_ka_bir_oak", kamoiOak());
-	public static Block KAMOI_jun_oak = register("block_ka_jun_oak", kamoiOak());
-	public static Block KAMOI_aca_oak = register("block_ka_aca_oak", kamoiOak());
-	public static Block KAMOI_doak_oak = register("block_ka_doak_oak", kamoiOak());
-	public static Block KAMOI_saku_oak = register("block_ka_saku_oak", kamoiOak());
-	public static Block KAMOI_kae_oak = register("block_ka_kae_oak", kamoiOak());
-	public static Block KAMOI_ich_oak = register("block_ka_ich_oak", kamoiOak());
+	public static Block KAMOI_oak_saku, KAMOI_spru_saku, KAMOI_bir_saku, KAMOI_jun_saku, KAMOI_aca_saku,
+								KAMOI_doak_saku, KAMOI_saku_saku, KAMOI_kae_saku, KAMOI_ich_saku;
+	public static Block KAMOI_oak_kae, KAMOI_spru_kae, KAMOI_bir_kae, KAMOI_jun_kae, KAMOI_aca_kae,
+								KAMOI_doak_kae, KAMOI_saku_kae, KAMOI_kae_kae, KAMOI_ich_kae;
+	public static Block KAMOI_oak_ich, KAMOI_spru_ich, KAMOI_bir_ich, KAMOI_jun_ich, KAMOI_aca_ich,
+								KAMOI_doak_ich, KAMOI_saku_ich, KAMOI_kae_ich, KAMOI_ich_ich;
 
-	public static Block KAMOI_oak_spru = register("block_ka_oak_spru", kamoiSpruce());
-	public static Block KAMOI_spru_spru = register("block_ka_spru_spru", kamoiSpruce());
-	public static Block KAMOI_bir_spru = register("block_ka_bir_spru", kamoiSpruce());
-	public static Block KAMOI_jun_spru = register("block_ka_jun_spru", kamoiSpruce());
-	public static Block KAMOI_aca_spru = register("block_ka_aca_spru", kamoiSpruce());
-	public static Block KAMOI_doak_spru = register("block_ka_doak_spru", kamoiSpruce());
-	public static Block KAMOI_saku_spru = register("block_ka_saku_spru", kamoiSpruce());
-	public static Block KAMOI_kae_spru = register("block_ka_kae_spru", kamoiSpruce());
-	public static Block KAMOI_ich_spru = register("block_ka_ich_spru", kamoiSpruce());
 
-	public static Block KAMOI_oak_bir = register("block_ka_oak_bir", kamoiBirch());
-	public static Block KAMOI_spru_bir = register("block_ka_spru_bir", kamoiBirch());
-	public static Block KAMOI_bir_bir = register("block_ka_bir_bir", kamoiBirch());
-	public static Block KAMOI_jun_bir = register("block_ka_jun_bir", kamoiBirch());
-	public static Block KAMOI_aca_bir = register("block_ka_aca_bir", kamoiBirch());
-	public static Block KAMOI_doak_bir = register("block_ka_doak_bir", kamoiBirch());
-	public static Block KAMOI_saku_bir = register("block_ka_saku_bir", kamoiBirch());
-	public static Block KAMOI_kae_bir = register("block_ka_kae_bir", kamoiBirch());
-	public static Block KAMOI_ich_bir = register("block_ka_ich_bir", kamoiBirch());
+	public static void init() {
 
-	public static Block KAMOI_oak_jun = register("block_ka_oak_jun", kamoiJungle());
-	public static Block KAMOI_spru_jun = register("block_ka_spru_jun", kamoiJungle());
-	public static Block KAMOI_bir_jun = register("block_ka_bir_jun", kamoiJungle());
-	public static Block KAMOI_jun_jun = register("block_ka_jun_jun", kamoiJungle());
-	public static Block KAMOI_aca_jun = register("block_ka_aca_jun", kamoiJungle());
-	public static Block KAMOI_doak_jun = register("block_ka_doak_jun", kamoiJungle());
-	public static Block KAMOI_saku_jun = register("block_ka_saku_jun", kamoiJungle());
-	public static Block KAMOI_kae_jun = register("block_ka_kae_jun", kamoiJungle());
-	public static Block KAMOI_ich_jun = register("block_ka_ich_jun", kamoiJungle());
+		/** ハーフ-柱 **/
+		KAMOI_oak_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_oak_oak");
+		KAMOI_spru_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_spru_oak");
+		KAMOI_bir_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_bir_oak");
+		KAMOI_jun_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_jun_oak");
+		KAMOI_aca_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_aca_oak");
+		KAMOI_doak_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_doak_oak");
+		KAMOI_saku_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_saku_oak");
+		KAMOI_kae_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_kae_oak");
+		KAMOI_ich_oak = new KamoiPlanks_Oak(Material.WOOD, "block_ka_ich_oak");
 
-	public static Block KAMOI_oak_aca = register("block_ka_oak_aca", kamoiAcacia());
-	public static Block KAMOI_spru_aca = register("block_ka_spru_aca", kamoiAcacia());
-	public static Block KAMOI_bir_aca = register("block_ka_bir_aca", kamoiAcacia());
-	public static Block KAMOI_jun_aca = register("block_ka_jun_aca", kamoiAcacia());
-	public static Block KAMOI_aca_aca = register("block_ka_aca_aca", kamoiAcacia());
-	public static Block KAMOI_doak_aca = register("block_ka_doak_aca", kamoiAcacia());
-	public static Block KAMOI_saku_aca = register("block_ka_saku_aca", kamoiAcacia());
-	public static Block KAMOI_kae_aca = register("block_ka_kae_aca", kamoiAcacia());
-	public static Block KAMOI_ich_aca = register("block_ka_ich_aca", kamoiAcacia());
+		KAMOI_oak_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_oak_spru");
+		KAMOI_spru_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_spru_spru");
+		KAMOI_bir_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_bir_spru");
+		KAMOI_jun_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_jun_spru");
+		KAMOI_aca_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_aca_spru");
+		KAMOI_doak_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_doak_spru");
+		KAMOI_saku_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_saku_spru");
+		KAMOI_kae_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_kae_spru");
+		KAMOI_ich_spru = new KamoiPlanks_Spruce(Material.WOOD, "block_ka_ich_spru");
 
-	public static Block KAMOI_oak_doak = register("block_ka_oak_doak", kamoiDarkOak());
-	public static Block KAMOI_spru_doak = register("block_ka_spru_doak", kamoiDarkOak());
-	public static Block KAMOI_bir_doak = register("block_ka_bir_doak", kamoiDarkOak());
-	public static Block KAMOI_jun_doak = register("block_ka_jun_doak", kamoiDarkOak());
-	public static Block KAMOI_aca_doak = register("block_ka_aca_doak", kamoiDarkOak());
-	public static Block KAMOI_doak_doak = register("block_ka_doak_doak", kamoiDarkOak());
-	public static Block KAMOI_saku_doak = register("block_ka_saku_doak", kamoiDarkOak());
-	public static Block KAMOI_kae_doak = register("block_ka_kae_doak", kamoiDarkOak());
-	public static Block KAMOI_ich_doak = register("block_ka_ich_doak", kamoiDarkOak());
+		KAMOI_oak_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_oak_bir");
+		KAMOI_spru_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_spru_bir");
+		KAMOI_bir_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_bir_bir");
+		KAMOI_jun_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_jun_bir");
+		KAMOI_aca_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_aca_bir");
+		KAMOI_doak_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_doak_bir");
+		KAMOI_saku_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_saku_bir");
+		KAMOI_kae_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_kae_bir");
+		KAMOI_ich_bir = new KamoiPlanks_Birch(Material.WOOD, "block_ka_ich_bir");
 
-	public static Block KAMOI_oak_sakura = register("block_ka_oak_saku", kamoiSakura());
-	public static Block KAMOI_spru_sakura = register("block_ka_spru_saku", kamoiSakura());
-	public static Block KAMOI_bir_sakura = register("block_ka_bir_saku", kamoiSakura());
-	public static Block KAMOI_jun_sakura = register("block_ka_jun_saku", kamoiSakura());
-	public static Block KAMOI_aca_sakura = register("block_ka_aca_saku", kamoiSakura());
-	public static Block KAMOI_doak_sakura = register("block_ka_doak_saku", kamoiSakura());
-	public static Block KAMOI_saku_sakura = register("block_ka_saku_saku", kamoiSakura());
-	public static Block KAMOI_kae_sakura = register("block_ka_kae_saku", kamoiSakura());
-	public static Block KAMOI_ich_sakura = register("block_ka_ich_saku", kamoiSakura());
+		KAMOI_oak_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_oak_jun");
+		KAMOI_spru_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_spru_jun");
+		KAMOI_bir_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_bir_jun");
+		KAMOI_jun_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_jun_jun");
+		KAMOI_aca_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_aca_jun");
+		KAMOI_doak_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_doak_jun");
+		KAMOI_saku_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_saku_jun");
+		KAMOI_kae_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_kae_jun");
+		KAMOI_ich_jun = new KamoiPlanks_Jungle(Material.WOOD, "block_ka_ich_jun");
 
-	public static Block KAMOI_oak_kaede = register("block_ka_oak_kae", kamoiKaede());
-	public static Block KAMOI_spru_kaede = register("block_ka_spru_kae", kamoiKaede());
-	public static Block KAMOI_bir_kaede = register("block_ka_bir_kae", kamoiKaede());
-	public static Block KAMOI_jun_kaede = register("block_ka_jun_kae", kamoiKaede());
-	public static Block KAMOI_aca_kaede = register("block_ka_aca_kae", kamoiKaede());
-	public static Block KAMOI_doak_kaede = register("block_ka_doak_kae", kamoiKaede());
-	public static Block KAMOI_saku_kaede = register("block_ka_saku_kae", kamoiKaede());
-	public static Block KAMOI_kae_kaede = register("block_ka_kae_kae", kamoiKaede());
-	public static Block KAMOI_ich_kaede = register("block_ka_ich_kae", kamoiKaede());
+		KAMOI_oak_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_oak_aca");
+		KAMOI_spru_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_spru_aca");
+		KAMOI_bir_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_bir_aca");
+		KAMOI_jun_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_jun_aca");
+		KAMOI_aca_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_aca_aca");
+		KAMOI_doak_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_doak_aca");
+		KAMOI_saku_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_saku_aca");
+		KAMOI_kae_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_kae_aca");
+		KAMOI_ich_aca = new KamoiPlanks_Acacia(Material.WOOD, "block_ka_ich_aca");
 
-	public static Block KAMOI_oak_ichoh = register("block_ka_oak_ich", kamoiIchoh());
-	public static Block KAMOI_spru_ichoh = register("block_ka_spru_ich", kamoiIchoh());
-	public static Block KAMOI_bir_ichoh = register("block_ka_bir_ich", kamoiIchoh());
-	public static Block KAMOI_jun_ichoh = register("block_ka_jun_ich", kamoiIchoh());
-	public static Block KAMOI_aca_ichoh = register("block_ka_aca_ich", kamoiIchoh());
-	public static Block KAMOI_doak_ichoh = register("block_ka_doak_ich", kamoiIchoh());
-	public static Block KAMOI_saku_ichoh = register("block_ka_saku_ich", kamoiIchoh());
-	public static Block KAMOI_kae_ichoh = register("block_ka_kae_ich", kamoiIchoh());
-	public static Block KAMOI_ich_ichoh = register("block_ka_ich_ich", kamoiIchoh());
+		KAMOI_oak_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_oak_doak");
+		KAMOI_spru_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_spru_doak");
+		KAMOI_bir_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_bir_doak");
+		KAMOI_jun_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_jun_doak");
+		KAMOI_aca_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_aca_doak");
+		KAMOI_doak_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_doak_doak");
+		KAMOI_saku_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_saku_doak");
+		KAMOI_kae_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_kae_doak");
+		KAMOI_ich_doak = new KamoiPlanks_DarkOak(Material.WOOD, "block_ka_ich_doak");
 
-	/* Share variables */
-	private static KamoiPlanks_Oak kamoiOak() {
-		return new KamoiPlanks_Oak(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
+		KAMOI_oak_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_oak_saku");
+		KAMOI_spru_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_spru_saku");
+		KAMOI_bir_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_bir_saku");
+		KAMOI_jun_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_jun_saku");
+		KAMOI_aca_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_aca_saku");
+		KAMOI_doak_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_doak_saku");
+		KAMOI_saku_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_saku_saku");
+		KAMOI_kae_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_kae_saku");
+		KAMOI_ich_saku = new KamoiPlanks_Sakura(Material.WOOD, "block_ka_ich_saku");
 
-	private static KamoiPlanks_Spruce kamoiSpruce() {
-		return new KamoiPlanks_Spruce(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
+		KAMOI_oak_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_oak_kae");
+		KAMOI_spru_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_spru_kae");
+		KAMOI_bir_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_bir_kae");
+		KAMOI_jun_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_jun_kae");
+		KAMOI_aca_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_aca_kae");
+		KAMOI_doak_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_doak_kae");
+		KAMOI_saku_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_saku_kae");
+		KAMOI_kae_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_kae_kae");
+		KAMOI_ich_kae = new KamoiPlanks_Kaede(Material.WOOD, "block_ka_ich_kae");
 
-	private static KamoiPlanks_Birch kamoiBirch() {
-		return new KamoiPlanks_Birch(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
+		KAMOI_oak_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_oak_ich");
+		KAMOI_spru_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_spru_ich");
+		KAMOI_bir_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_bir_ich");
+		KAMOI_jun_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_jun_ich");
+		KAMOI_aca_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_aca_ich");
+		KAMOI_doak_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_doak_ich");
+		KAMOI_saku_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_saku_ich");
+		KAMOI_kae_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_kae_ich");
+		KAMOI_ich_ich = new KamoiPlanks_Ichoh(Material.WOOD, "block_ka_ich_ich");
 
-	private static KamoiPlanks_Jungle kamoiJungle() {
-		return new KamoiPlanks_Jungle(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
-
-	private static KamoiPlanks_Acacia kamoiAcacia() {
-		return new KamoiPlanks_Acacia(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
-
-	private static KamoiPlanks_DarkOak kamoiDarkOak() {
-		return new KamoiPlanks_DarkOak(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
-
-	private static KamoiPlanks_Sakura kamoiSakura() {
-		return new KamoiPlanks_Sakura(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
-
-	private static KamoiPlanks_Kaede kamoiKaede() {
-		return new KamoiPlanks_Kaede(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
-	}
-
-	private static KamoiPlanks_Ichoh kamoiIchoh() {
-		return new KamoiPlanks_Ichoh(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 
-	///* Register *///
-	private static Block register(String name, Block block) {
-		BLOCKS.register(name, () -> block);
-		return block;
+	public static void register() {
+		registerBlock(KAMOI_oak_oak);
+		registerBlock(KAMOI_spru_oak);
+		registerBlock(KAMOI_bir_oak);
+		registerBlock(KAMOI_jun_oak);
+		registerBlock(KAMOI_aca_oak);
+		registerBlock(KAMOI_doak_oak);
+		registerBlock(KAMOI_saku_oak);
+		registerBlock(KAMOI_kae_oak);
+		registerBlock(KAMOI_ich_oak);
+
+		registerBlock(KAMOI_oak_spru);
+		registerBlock(KAMOI_spru_spru);
+		registerBlock(KAMOI_bir_spru);
+		registerBlock(KAMOI_jun_spru);
+		registerBlock(KAMOI_aca_spru);
+		registerBlock(KAMOI_doak_spru);
+		registerBlock(KAMOI_saku_spru);
+		registerBlock(KAMOI_kae_spru);
+		registerBlock(KAMOI_ich_spru);
+
+		registerBlock(KAMOI_oak_bir);
+		registerBlock(KAMOI_spru_bir);
+		registerBlock(KAMOI_bir_bir);
+		registerBlock(KAMOI_jun_bir);
+		registerBlock(KAMOI_aca_bir);
+		registerBlock(KAMOI_doak_bir);
+		registerBlock(KAMOI_saku_bir);
+		registerBlock(KAMOI_kae_bir);
+		registerBlock(KAMOI_ich_bir);
+
+		registerBlock(KAMOI_oak_jun);
+		registerBlock(KAMOI_spru_jun);
+		registerBlock(KAMOI_bir_jun);
+		registerBlock(KAMOI_jun_jun);
+		registerBlock(KAMOI_aca_jun);
+		registerBlock(KAMOI_doak_jun);
+		registerBlock(KAMOI_saku_jun);
+		registerBlock(KAMOI_kae_jun);
+		registerBlock(KAMOI_ich_jun);
+
+		registerBlock(KAMOI_oak_aca);
+		registerBlock(KAMOI_spru_aca);
+		registerBlock(KAMOI_bir_aca);
+		registerBlock(KAMOI_jun_aca);
+		registerBlock(KAMOI_aca_aca);
+		registerBlock(KAMOI_doak_aca);
+		registerBlock(KAMOI_saku_aca);
+		registerBlock(KAMOI_kae_aca);
+		registerBlock(KAMOI_ich_aca);
+
+		registerBlock(KAMOI_oak_doak);
+		registerBlock(KAMOI_spru_doak);
+		registerBlock(KAMOI_bir_doak);
+		registerBlock(KAMOI_jun_doak);
+		registerBlock(KAMOI_aca_doak);
+		registerBlock(KAMOI_doak_doak);
+		registerBlock(KAMOI_saku_doak);
+		registerBlock(KAMOI_kae_doak);
+		registerBlock(KAMOI_ich_doak);
+
+		registerBlock(KAMOI_oak_saku);
+		registerBlock(KAMOI_spru_saku);
+		registerBlock(KAMOI_bir_saku);
+		registerBlock(KAMOI_jun_saku);
+		registerBlock(KAMOI_aca_saku);
+		registerBlock(KAMOI_doak_saku);
+		registerBlock(KAMOI_saku_saku);
+		registerBlock(KAMOI_kae_saku);
+		registerBlock(KAMOI_ich_saku);
+
+		registerBlock(KAMOI_oak_kae);
+		registerBlock(KAMOI_spru_kae);
+		registerBlock(KAMOI_bir_kae);
+		registerBlock(KAMOI_jun_kae);
+		registerBlock(KAMOI_aca_kae);
+		registerBlock(KAMOI_doak_kae);
+		registerBlock(KAMOI_saku_kae);
+		registerBlock(KAMOI_kae_kae);
+		registerBlock(KAMOI_ich_kae);
+
+		registerBlock(KAMOI_oak_ich);
+		registerBlock(KAMOI_spru_ich);
+		registerBlock(KAMOI_bir_ich);
+		registerBlock(KAMOI_jun_ich);
+		registerBlock(KAMOI_aca_ich);
+		registerBlock(KAMOI_doak_ich);
+		registerBlock(KAMOI_saku_ich);
+		registerBlock(KAMOI_kae_ich);
+		registerBlock(KAMOI_ich_ich);
+
+	}
+
+	public static void registerBlock(Block block) {
+		RegisterHandler_CM.Blocks.BLOCKS.add(block);
 	}
 
 }

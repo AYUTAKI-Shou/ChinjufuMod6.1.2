@@ -1,7 +1,7 @@
 {
 	"parent": "chinjufumod:block/base/base_niwaishi_8",
 	"textures": {
-		"particle": "minecraft:block/polished_diorite",
-		"rock": "minecraft:block/polished_diorite"
+		"particle": "minecraft:blocks/stone_diorite_smooth",
+		"rock": "minecraft:blocks/stone_diorite_smooth"
 	}
 }

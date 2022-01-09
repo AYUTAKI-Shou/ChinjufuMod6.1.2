@@ -1,47 +1,58 @@
 package com.ayutaki.chinjufumod.blocks.garden;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ayutaki.chinjufumod.registry.Garden_Blocks;
+import com.ayutaki.chinjufumod.registry.Items_WallPane;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class Niwaishi_Slab extends Base_Niwaishi {
-
-	/* Collision */
-	protected static final VoxelShape AABB_0 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 12.0D);
-	protected static final VoxelShape AABB_1 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_2 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 14.0D, 12.0D);
-	protected static final VoxelShape AABB_3 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 14.0D, 16.0D);
-	protected static final VoxelShape AABB_4 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 12.0D, 12.0D);
-	protected static final VoxelShape AABB_5 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 12.0D, 16.0D);
-	protected static final VoxelShape AABB_6 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 10.0D, 12.0D);
-	protected static final VoxelShape AABB_7 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 10.0D, 16.0D);
-	protected static final VoxelShape AABB_8 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 8.0D, 12.0D);
-	protected static final VoxelShape AABB_9 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 8.0D, 16.0D);
-	protected static final VoxelShape AABB_10 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 6.0D, 12.0D);
-	protected static final VoxelShape AABB_11 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 6.0D, 16.0D);
-	protected static final VoxelShape AABB_12 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 4.0D, 12.0D);
-	protected static final VoxelShape AABB_13 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 4.0D, 16.0D);
-	protected static final VoxelShape AABB_14 = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 2.0D, 12.0D);
-	protected static final VoxelShape AABB_15 = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 2.0D, 16.0D);
+public class Niwaishi_slab extends Base_Niwaishi {
 	
+	protected static final AxisAlignedBB AABB_0 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 1.0, 0.75);
+	protected static final AxisAlignedBB AABB_1 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
+	protected static final AxisAlignedBB AABB_2 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.875, 0.75);
+	protected static final AxisAlignedBB AABB_3 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.875, 1.0);
+	protected static final AxisAlignedBB AABB_4 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.75, 0.75);
+	protected static final AxisAlignedBB AABB_5 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.75, 1.0);
+	protected static final AxisAlignedBB AABB_6 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.625, 0.75);
+	protected static final AxisAlignedBB AABB_7 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.625, 1.0);
+	protected static final AxisAlignedBB AABB_8 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.5, 0.75);
+	protected static final AxisAlignedBB AABB_9 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.5, 1.0);
+	protected static final AxisAlignedBB AABB_10 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.375, 0.75);
+	protected static final AxisAlignedBB AABB_11 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.375, 1.0);
+	protected static final AxisAlignedBB AABB_12 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.25, 0.75);
+	protected static final AxisAlignedBB AABB_13 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.25, 1.0);
+	protected static final AxisAlignedBB AABB_14 = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 0.125, 0.75);
+	protected static final AxisAlignedBB AABB_15 = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 0.125, 1.0);
 
-	public Niwaishi_Slab(Block.Properties properties) {
-		super(properties);
+	public Niwaishi_slab() {
+		super();
+
+		setHardness(2.0F);
+		setResistance(10.0F);
+		setSoundType(SoundType.STONE);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(2);
 	}
 
+	/* Collision */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int i = state.get(STAGE_0_15);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
 
 		switch (i) {
-		case 0 :
+		case 0 : 
 		default : return AABB_0;
 		case 1 : return AABB_1;
 		case 2 : return AABB_2;
@@ -61,14 +72,32 @@ public class Niwaishi_Slab extends Base_Niwaishi {
 		} // switch
 	}
 
-	/* Clone Item in Creative. */
+	/* 上面に植木鉢やレッドストーンを置けるようにする */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public boolean isTopSolid(IBlockState state) {
+		int i = ((Integer)state.getValue(STAGE_0_15)).intValue();
+		return (i == 0 || i == 1)? true : false;
+	}
 
-		if (this == Garden_Blocks.NIWAISHI_slab_and) { return new ItemStack(Items.ANDESITE_SLAB); }
-		if (this == Garden_Blocks.NIWAISHI_slab_dio) { return new ItemStack(Items.DIORITE_SLAB); }
-		if (this == Garden_Blocks.NIWAISHI_slab_gra) { return new ItemStack(Items.GRANITE_SLAB); }
-		return new ItemStack(Items.STONE_SLAB);
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+
+		if (this == Garden_Blocks.NIWAISHI_slab) { stack.add(new ItemStack(Blocks.STONE_SLAB, 1, 0)); }
+		if (this == Garden_Blocks.NIWAISHI_slab_gra) { stack.add(new ItemStack(Items_WallPane.RGRA_slabhalf, 1, 0)); }
+		if (this == Garden_Blocks.NIWAISHI_slab_dio) { stack.add(new ItemStack(Items_WallPane.RDIO_slabhalf, 1, 0)); }
+		if (this == Garden_Blocks.NIWAISHI_slab_and) { stack.add(new ItemStack(Items_WallPane.RAND_slabhalf, 1, 0)); }
+
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+
+		if (this == Garden_Blocks.NIWAISHI_slab_gra) { return new ItemStack(Items_WallPane.RGRA_slabhalf, 0); }
+		if (this == Garden_Blocks.NIWAISHI_slab_dio) { return new ItemStack(Items_WallPane.RDIO_slabhalf, 0); }
+		if (this == Garden_Blocks.NIWAISHI_slab_and) { return new ItemStack(Items_WallPane.RAND_slabhalf, 0); }
+		return new ItemStack(Blocks.STONE_SLAB, 1, 0);
 	}
 
 }

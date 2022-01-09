@@ -22,7 +22,7 @@
 		{
 			"name": "atama",
 			"from": [ 3, 6, 7 ],
-			"to": [ 13, 11, 12 ],
+			 "to": [ 13, 11, 12 ],
 			"faces": {
 				"down": { "texture": "#top" },
 				"up": { "texture": "#top" },

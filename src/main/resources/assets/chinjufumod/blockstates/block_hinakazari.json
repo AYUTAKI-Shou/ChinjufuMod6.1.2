@@ -1,23 +1,23 @@
 {
- "variants": {
-	"facing=north,stage=1": { "model": "chinjufumod:block/season/block_hina_1l", "y": 180 },
-	"facing=south,stage=1": { "model": "chinjufumod:block/season/block_hina_1l" },
-	"facing=west,stage=1": { "model": "chinjufumod:block/season/block_hina_1l", "y": 90 },
-	"facing=east,stage=1": { "model": "chinjufumod:block/season/block_hina_1l", "y": 270 },
+  "variants": {
+	"facing=north,stage=1": { "model": "chinjufumod:season/block_hina_1l", "y": 180 },
+	"facing=south,stage=1": { "model": "chinjufumod:season/block_hina_1l" },
+	"facing=west,stage=1":  { "model": "chinjufumod:season/block_hina_1l", "y": 90 },
+	"facing=east,stage=1":  { "model": "chinjufumod:season/block_hina_1l", "y": 270 },
 
-	"facing=north,stage=2": { "model": "chinjufumod:block/season/block_hina_1r", "y": 180 },
-	"facing=south,stage=2": { "model": "chinjufumod:block/season/block_hina_1r" },
-	"facing=west,stage=2": { "model": "chinjufumod:block/season/block_hina_1r", "y": 90 },
-	"facing=east,stage=2": { "model": "chinjufumod:block/season/block_hina_1r", "y": 270 },
+	"facing=north,stage=2": { "model": "chinjufumod:season/block_hina_1r", "y": 180 },
+	"facing=south,stage=2": { "model": "chinjufumod:season/block_hina_1r" },
+	"facing=west,stage=2":  { "model": "chinjufumod:season/block_hina_1r", "y": 90 },
+	"facing=east,stage=2":  { "model": "chinjufumod:season/block_hina_1r", "y": 270 },
 
-	"facing=north,stage=3": { "model": "chinjufumod:block/season/block_hina_2l", "y": 180 },
-	"facing=south,stage=3": { "model": "chinjufumod:block/season/block_hina_2l" },
-	"facing=west,stage=3": { "model": "chinjufumod:block/season/block_hina_2l", "y": 90 },
-	"facing=east,stage=3": { "model": "chinjufumod:block/season/block_hina_2l", "y": 270 },
+	"facing=north,stage=3": { "model": "chinjufumod:season/block_hina_2l", "y": 180 },
+	"facing=south,stage=3": { "model": "chinjufumod:season/block_hina_2l" },
+	"facing=west,stage=3":  { "model": "chinjufumod:season/block_hina_2l", "y": 90 },
+	"facing=east,stage=3":  { "model": "chinjufumod:season/block_hina_2l", "y": 270 },
 
-	"facing=north,stage=4": { "model": "chinjufumod:block/season/block_hina_2r", "y": 180 },
-	"facing=south,stage=4": { "model": "chinjufumod:block/season/block_hina_2r" },
-	"facing=west,stage=4": { "model": "chinjufumod:block/season/block_hina_2r", "y": 90 },
-	"facing=east,stage=4": { "model": "chinjufumod:block/season/block_hina_2r", "y": 270 }
- }
+	"facing=north,stage=4": { "model": "chinjufumod:season/block_hina_2r", "y": 180 },
+	"facing=south,stage=4": { "model": "chinjufumod:season/block_hina_2r" },
+	"facing=west,stage=4":  { "model": "chinjufumod:season/block_hina_2r", "y": 90 },
+	"facing=east,stage=4":  { "model": "chinjufumod:season/block_hina_2r", "y": 270 }
+  }
 }

@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/fall_leaf_top",
-		"dirt": "minecraft:block/dirt",
+		"dirt": "minecraft:blocks/dirt",
 		"top": "chinjufumod:blocks/grass_kare_top",
 		"side": "chinjufumod:blocks/grass_kare_side",
 		"ha": "chinjufumod:blocks/fall_leaf_top"

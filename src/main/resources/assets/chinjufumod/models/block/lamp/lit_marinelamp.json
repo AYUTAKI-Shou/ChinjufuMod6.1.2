@@ -4,7 +4,7 @@
 		"particle": "chinjufumod:blocks/lamp",
 		"frame": "chinjufumod:blocks/lamp_frame",
 		"lamp": "chinjufumod:blocks/lit_lamp",
-		"glass": "minecraft:block/white_stained_glass"
+		"glass": "minecraft:blocks/glass_white"
 	},
 	"elements": [
 		{

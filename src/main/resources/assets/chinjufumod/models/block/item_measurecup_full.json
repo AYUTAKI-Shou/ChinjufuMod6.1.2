@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_lightb",
 		"glass": "chinjufumod:blocks/dish_lightb",
- 		"mizu": "minecraft:block/water_still"
+ 		"mizu": "chinjufumod:blocks/water_still"
 	},
 	"elements": [
 		{
@@ -11,7 +11,7 @@
 			"from": [ 7, 0, 6.6 ],
 			"to": [ 9, 2.2, 9 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1 }
+				"up" : { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
 		{

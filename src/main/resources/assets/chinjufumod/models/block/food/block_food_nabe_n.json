@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_usuki",
- 		"mizu": "minecraft:block/water_still",
+ 		"mizu": "chinjufumod:blocks/water_still",
  		"niku": "chinjufumod:blocks/food_tori",
  		"kinoko": "chinjufumod:blocks/food_shiitake",
  		"kinoko_w": "chinjufumod:blocks/food_shiitake_w",
@@ -444,7 +444,7 @@
 			"from": [ 4, 2.5, 4 ],
 			"to": [ 12, 3.3, 12 ],
 			"faces": {
-				"up" : { "texture": "#mizu", "tintindex": 1 }
+				"up" : { "texture": "#mizu", "tintindex": 20 }
 			}
 		},
 

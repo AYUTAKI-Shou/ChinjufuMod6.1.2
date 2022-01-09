@@ -1,13 +1,23 @@
 {
 	"variants": {
-		"facing=north,type=bottom": { "model": "chinjufumod:block/block_alumi_block" },
-		"facing=south,type=bottom": { "model": "chinjufumod:block/block_alumi_block", "y": 180 },
-		"facing=west,type=bottom": { "model": "chinjufumod:block/block_alumi_block", "y": 270 },
-		"facing=east,type=bottom": { "model": "chinjufumod:block/block_alumi_block", "y": 90 },
+		"facing=north,stage=1": { "model": "chinjufumod:block_alumi_block" },
+		"facing=south,stage=1": { "model": "chinjufumod:block_alumi_block", "y": 180 },
+		"facing=west,stage=1": { "model": "chinjufumod:block_alumi_block", "y": 270 },
+		"facing=east,stage=1": { "model": "chinjufumod:block_alumi_block", "y": 90 },
 
-		"facing=north,type=double": { "model": "chinjufumod:block/block_alumiw_block" },
-		"facing=south,type=double": { "model": "chinjufumod:block/block_alumiw_block", "y": 180 },
-		"facing=west,type=double": { "model": "chinjufumod:block/block_alumiw_block", "y": 270 },
-		"facing=east,type=double": { "model": "chinjufumod:block/block_alumiw_block", "y": 90 }
+		"facing=north,stage=2": { "model": "chinjufumod:block_steel_block" },
+		"facing=south,stage=2": { "model": "chinjufumod:block_steel_block", "y": 180 },
+		"facing=west,stage=2": { "model": "chinjufumod:block_steel_block", "y": 270 },
+		"facing=east,stage=2": { "model": "chinjufumod:block_steel_block", "y": 90 },
+
+		"facing=north,stage=3": { "model": "chinjufumod:block_gold_block" },
+		"facing=south,stage=3": { "model": "chinjufumod:block_gold_block", "y": 180 },
+		"facing=west,stage=3": { "model": "chinjufumod:block_gold_block", "y": 270 },
+		"facing=east,stage=3": { "model": "chinjufumod:block_gold_block", "y": 90 },
+
+		"facing=north,stage=4": { "model": "minecraft:stone" },
+		"facing=south,stage=4": { "model": "minecraft:stone", "y": 180 },
+		"facing=west,stage=4": { "model": "minecraft:stone", "y": 270 },
+		"facing=east,stage=4": { "model": "minecraft:stone", "y": 90 }
 	}
 }

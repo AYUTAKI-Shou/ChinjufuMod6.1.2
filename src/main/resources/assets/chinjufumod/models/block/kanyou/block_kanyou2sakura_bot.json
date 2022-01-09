@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "chinjufumod:blocks/log_sakura",
+		"particle": "chinjufumod:blocks/flower_sakura",
 		"miki": "chinjufumod:blocks/log_sakura",
 		"miki_top": "chinjufumod:blocks/log_sakura_top",
 		"ha": "chinjufumod:blocks/flower_sakura"

@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/water_still",
+		"particle": "chinjufumod:blocks/water_still",
 		"shikki": "chinjufumod:blocks/dish_black",
 		"shikki2": "chinjufumod:blocks/dish_red",
 		"miso": "chinjufumod:blocks/soup_still_n"
@@ -73,7 +73,7 @@
 			"from": [ 6.7, 1, 6.7 ],
 			"to": [ 9.3, 1.5, 9.3 ],
 			"faces": {
-				"up" : {"uv": [ 6.7, 6.7, 9.3, 9.3 ], "texture": "#miso", "tintindex": 2 }
+				"up" : {"uv": [ 6.7, 6.7, 9.3, 9.3 ], "texture": "#miso", "tintindex": 32 }
 			}
 		}
 	]

@@ -1,186 +1,137 @@
 package com.ayutaki.chinjufumod.blocks.dish;
 
-import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlab_Water;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabWType2;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 import com.ayutaki.chinjufumod.blocks.furnace.Irori;
 import com.ayutaki.chinjufumod.blocks.furnace.Kitchen_Oven;
-import com.ayutaki.chinjufumod.blocks.furnace.Kitchen_Oven_B;
-import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cooktop;
+import com.ayutaki.chinjufumod.blocks.furnace.Lit_Irori;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cooktop_aida;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cooktop_off;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cooktop_on;
 import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai;
+import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai_sub;
 import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu;
+import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu_sub;
 import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk;
-import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
+import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk_sub;
+import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FurnaceBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.BlockFurnace;
+import net.minecraft.block.BlockHalfStoneSlab;
+import net.minecraft.block.BlockHalfStoneSlabNew;
+import net.minecraft.block.BlockHalfWoodSlab;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class Nabe_kara extends Block implements IWaterLoggable {
+public class Nabe_kara extends BaseStage4_FaceDown2 {
 
-	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final IntegerProperty STAGE_1_4 = IntegerProperty.create("stage", 1, 4);
-	public static final BooleanProperty COOK = BooleanProperty.create("cook");
-	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final String ID = "block_food_karanabe";
 
-	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
-	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
-	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
-	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
+	private static final AxisAlignedBB AABB_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+	private static final AxisAlignedBB AABB_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+	private static final AxisAlignedBB AABB_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+	private static final AxisAlignedBB AABB_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
 
-	protected static final VoxelShape MISO_SOUTH = Block.makeCuboidShape(1.5D, 0.0D, 3.5D, 10.5D, 4.5D, 12.5D);
-	protected static final VoxelShape MISO_WEST = Block.makeCuboidShape(3.5D, 0.0D, 1.5D, 12.5D, 4.5D, 10.5D);
-	protected static final VoxelShape MISO_NORTH = Block.makeCuboidShape(5.5D, 0.0D, 3.5D, 14.5D, 4.5D, 12.5D);
-	protected static final VoxelShape MISO_EAST = Block.makeCuboidShape(3.5D, 0.0D, 5.5D, 12.5D, 4.5D, 14.5D);
+	private static final AxisAlignedBB AABB_MISO_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.21875, 0.0, 0.34375, 0.78125, 0.28125, 0.90625);
+	private static final AxisAlignedBB AABB_MISO_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.21875, 0.0, 0.34375, 0.78125, 0.28125, 0.90625);
+	private static final AxisAlignedBB AABB_MISO_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.21875, 0.0, 0.34375, 0.78125, 0.28125, 0.90625);
+	private static final AxisAlignedBB AABB_MISO_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.21875, 0.0, 0.34375, 0.78125, 0.28125, 0.90625);
 
-	protected static final VoxelShape DOWN_SOUTH = Block.makeCuboidShape(1.5D, -8.0D, 3.5D, 10.5D, 0.1D, 12.5D);
-	protected static final VoxelShape DOWN_WEST = Block.makeCuboidShape(3.5D, -8.0D, 1.5D, 12.5D, 0.1D, 10.5D);
-	protected static final VoxelShape DOWN_NORTH = Block.makeCuboidShape(5.5D, -8.0D, 3.5D, 14.5D, 0.1D, 12.5D);
-	protected static final VoxelShape DOWN_EAST = Block.makeCuboidShape(3.5D, -8.0D, 5.5D, 12.5D, 0.1D, 14.5D);
+	private static final AxisAlignedBB AABB_MISOD_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+	private static final AxisAlignedBB AABB_MISOD_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+	private static final AxisAlignedBB AABB_MISOD_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+	private static final AxisAlignedBB AABB_MISOD_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.21875, 0.0, 0.21875, 0.78125, 0.25, 0.78125);
+
+	private static final AxisAlignedBB AABB_MISODK_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.21875, -0.5, 0.34375, 0.78125, 0.01, 0.90625);
+	private static final AxisAlignedBB AABB_MISODK_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.21875, -0.5, 0.34375, 0.78125, 0.01, 0.90625);
+	private static final AxisAlignedBB AABB_MISODK_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.21875, -0.5, 0.34375, 0.78125, 0.01, 0.90625);
+	private static final AxisAlignedBB AABB_MISODK_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.21875, -0.5, 0.34375, 0.78125, 0.01, 0.90625);
 
 	/** 1=鍋空、2=味噌鍋空、3=ご飯鍋空、4＝塩鍋空 **/
-	public Nabe_kara(Block.Properties properties) {
-		super(properties);
+	public Nabe_kara() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(STAGE_1_4, Integer.valueOf(1))
-				.with(COOK, Boolean.valueOf(false))
-				.with(DOWN, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
+		/*鍋・皿*/
+		setSoundType(SoundType.STONE);
+		setHardness(1.0F);
+		setResistance(5.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(1);
 	}
 
-
-	/* Gives a value when placed. +180 .getOpposite() */
+	/* getOppositeでプレイヤーの向きを取得 */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader worldIn = context.getWorld();
-		BlockPos pos = context.getPos();
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
-				.with(COOK, this.connectCook(worldIn, pos, Direction.DOWN))
-				.with(DOWN, this.connectHalf(worldIn, pos, Direction.DOWN))
-				.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
+			float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(H_FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-	/* Connect the blocks. */
-	protected boolean connectCook(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
-		Block block = state.getBlock();
-
-		return (block instanceof FurnaceBlock || block instanceof Kitchen_Oven || block instanceof Kitchen_Oven_B ||
-				block instanceof Irori || block instanceof Kit_Cooktop);
-	}
-
-	protected boolean connectHalf(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
-		Block block = state.getBlock();
-
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				block instanceof LowDesk || block instanceof Chabudai || block instanceof Kotatsu);
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	/* Update BlockState. */
+	/* IBlockStateからItemStackのmetadataを生成。ドロップ時とテクスチャ・モデル参照時に呼ばれる */
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-
-		boolean cook = connectCook(worldIn, pos, Direction.DOWN);
-		boolean down = connectHalf(worldIn, pos, Direction.DOWN);
-		return state.with(COOK, cook).with(DOWN, down);
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i = i | ((EnumFacing)state.getValue(H_FACING)).getHorizontalIndex();
+		i = i | ((Integer)state.getValue(STAGE_1_4)).intValue() - 1 << 2;
+		return i;
 	}
 
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(H_FACING, rot.rotate((EnumFacing)state.getValue(H_FACING)));
 	}
 
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(H_FACING)));
 	}
 
-	/* Create Blockstate */
+	/* ItemStackのmetadataからIBlockStateを生成。設置時に呼ばれる */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(COOK, DOWN, H_FACING, STAGE_1_4, WATERLOGGED);
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(H_FACING, EnumFacing.getHorizontal(meta))
+				.withProperty(STAGE_1_4, Integer.valueOf(1 + (meta >> 2)));
 	}
 
-	/* 窒息 */
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (4 - ((Integer)blockState.getValue(STAGE_1_4)).intValue()) * 2;
 	}
 
-	/* 立方体 */
+	/* Collision */
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
-	}
-
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-
-		Direction direction = state.get(H_FACING);
-		boolean flag= !((Boolean)state.get(COOK)).booleanValue();
-		boolean flag2= !((Boolean)state.get(DOWN)).booleanValue();
-
-		int i = state.get(STAGE_1_4);
+		state = state.getActualState(source, pos);
+		EnumFacing direction = (EnumFacing)state.getValue(H_FACING);
+		boolean flag = !((Boolean)state.getValue(DOWN)).booleanValue();
+		boolean flag2 = !((Boolean)state.getValue(DOWN2)).booleanValue();
 		/** 1=鍋空、2=味噌鍋空、3=ご飯鍋空、4＝塩鍋空 **/
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
-		if (i == 1 || i == 4) {
-			switch(direction) {
+		if (i == 1) {
+			switch (direction) {
 			case SOUTH:
 				return AABB_SOUTH;
 
@@ -196,30 +147,109 @@ public class Nabe_kara extends Block implements IWaterLoggable {
 			}
 		}
 
-		else {
-			switch(direction) {
+		if (i == 4) {
+			switch (direction) {
 			case SOUTH:
-				return flag? (flag2? MISO_SOUTH : DOWN_SOUTH) : AABB_SOUTH;
+				return AABB_MISOD_SOUTH;
 
 			case EAST:
-				return flag? (flag2? MISO_EAST : DOWN_EAST) : AABB_EAST;
+				return AABB_MISOD_EAST;
 
 			case WEST:
-				return flag? (flag2? MISO_WEST : DOWN_WEST) : AABB_WEST;
+				return AABB_MISOD_WEST;
+
+			case NORTH:
+			default:
+				return AABB_MISOD_NORTH;
+			}
+		}
+
+		else {
+			switch (direction) {
+			case SOUTH:
+				return flag? (flag2? AABB_MISO_SOUTH : AABB_MISODK_SOUTH): AABB_MISOD_SOUTH;
+
+			case EAST:
+				return flag? (flag2? AABB_MISO_EAST : AABB_MISODK_EAST): AABB_MISOD_EAST;
+
+			case WEST:
+				return flag? (flag2? AABB_MISO_WEST : AABB_MISODK_WEST): AABB_MISOD_WEST;
 
 			case NORTH:
 			default:
 				/** !down= true : false **/
-				return flag? (flag2? MISO_NORTH : DOWN_NORTH) : AABB_NORTH;
+				return flag? (flag2? AABB_MISO_NORTH : AABB_MISODK_NORTH): AABB_MISOD_NORTH;
 			}
 		}
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_food_karanabe")).applyTextStyle(TextFormatting.GRAY));
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* 直下ブロックに対する返し */
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getBlock() instanceof Kitchen_Oven || worldIn
+				.getBlockState(pos).getBlock() instanceof Irori || worldIn
+				.getBlockState(pos).getBlock() instanceof Lit_Irori || worldIn
+				.getBlockState(pos).getBlock() instanceof Kit_Cooktop_on || worldIn
+				.getBlockState(pos).getBlock() instanceof Kit_Cooktop_off || worldIn
+				.getBlockState(pos).getBlock() instanceof Kit_Cooktop_aida || worldIn
+				.getBlockState(pos).getBlock() instanceof BlockFurnace;
+	}
+
+	/* 直下ブロックに対する返し */
+	public boolean canConnectTo2(IBlockAccess worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos);
+		Block block = state.getBlock();
+
+		return block instanceof Chabudai || block instanceof LowDesk || block instanceof Kotatsu ||
+					block instanceof Chabudai_sub || block instanceof LowDesk_sub || block instanceof Kotatsu_sub ||
+					(block instanceof BaseFacingSlabW && state.getValue(BaseFacingSlabW.HALF) == BaseFacingSlabW.SlabHalf.BOTTOM && state.getValue(BaseFacingSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabW && state.getValue(BaseSlabW.HALF) == BaseSlabW.SlabHalf.BOTTOM && state.getValue(BaseSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabWType2 && state.getValue(BaseSlabWType2.HALF) == BaseSlabWType2.SlabHalf.BOTTOM && state.getValue(BaseSlabWType2.DOUBLE) == false) ||
+					(block instanceof BlockHalfWoodSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlabNew && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM);
+	}
+
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, this.canConnectTo(worldIn, pos.down()))
+				.withProperty(DOWN2, this.canConnectTo2(worldIn, pos.down()));
+	}
+
+	/* 描画の設定 */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return new ItemStack(Items_Teatime.NABE_kara).getItem();
+	}
+
+	@Override
+	public int quantityDropped(Random rand) {
+		return 1;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.NABE_kara);
 	}
 
 }

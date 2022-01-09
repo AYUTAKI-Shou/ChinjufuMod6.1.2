@@ -1,15 +1,13 @@
 {
 	"variants": {
-		"facing=north,type=bottom": { "model": "chinjufumod:block/bamboo/block_bamboo_st", "y": 270, "uvlock": false },
-		"facing=south,type=bottom": { "model": "chinjufumod:block/bamboo/block_bamboo_st_west", "y": 270, "uvlock": false },
-		"facing=west,type=bottom": { "model": "chinjufumod:block/bamboo/block_bamboo_st_west", "y": 0, "uvlock": false },
-		"facing=east,type=bottom": { "model": "chinjufumod:block/bamboo/block_bamboo_st", "y": 0, "uvlock": false },
+		"facing=north,type=bottom": { "model": "chinjufumod:bamboo/block_bamboo_st", "y": 270, "uvlock": false },
+		"facing=south,type=bottom": { "model": "chinjufumod:bamboo/block_bamboo_st_west", "y": 270, "uvlock": false },
+		"facing=west,type=bottom": { "model": "chinjufumod:bamboo/block_bamboo_st_west", "y": 0, "uvlock": false },
+		"facing=east,type=bottom": { "model": "chinjufumod:bamboo/block_bamboo_st", "y": 0, "uvlock": false },
 
-		"facing=north,type=top": { "model": "chinjufumod:block/bamboo/block_bamboo_st2", "y": 270, "uvlock": false },
-		"facing=south,type=top": { "model": "chinjufumod:block/bamboo/block_bamboo_st_west2", "y": 270, "uvlock": false },
-		"facing=west,type=top": { "model": "chinjufumod:block/bamboo/block_bamboo_st_west2", "y": 0, "uvlock": false },
-		"facing=east,type=top": { "model": "chinjufumod:block/bamboo/block_bamboo_st2", "y": 0, "uvlock": false }
+		"facing=north,type=top": { "model": "chinjufumod:bamboo/block_bamboo_st2", "y": 270, "uvlock": false },
+		"facing=south,type=top": { "model": "chinjufumod:bamboo/block_bamboo_st_west2", "y": 270, "uvlock": false },
+		"facing=west,type=top": { "model": "chinjufumod:bamboo/block_bamboo_st_west2", "y": 0, "uvlock": false },
+		"facing=east,type=top": { "model": "chinjufumod:bamboo/block_bamboo_st2", "y": 0, "uvlock": false }
 	}
 }
-
-

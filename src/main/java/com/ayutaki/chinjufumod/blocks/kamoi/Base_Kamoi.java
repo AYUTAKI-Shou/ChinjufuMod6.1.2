@@ -4,133 +4,146 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.registry.JP_Blocks;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Base_Kamoi extends Block implements IWaterLoggable {
+public class Base_Kamoi extends Block {
 
 	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final IntegerProperty STAGE_1_4 = IntegerProperty.create("stage", 1, 4);
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	public static final PropertyInteger STAGE_1_4 = PropertyInteger.create("stage", 1, 4);
+	public static final PropertyDirection H_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+
+	private static final AxisAlignedBB BOTTOM = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+	private static final AxisAlignedBB TOP = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
+	private static final AxisAlignedBB FULL = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	private static final AxisAlignedBB SOUTH_2 = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
+	private static final AxisAlignedBB NORTH_2 = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
+	private static final AxisAlignedBB WEST_2 = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
+	private static final AxisAlignedBB EAST_2 = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
+
+	public Base_Kamoi(Material materialIn) {
+		super(materialIn);
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(5.0F);
+
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(H_FACING, EnumFacing.NORTH)
+				.withProperty(STAGE_1_4, Integer.valueOf(1)));
+	}
 
 	/* Collision */
-	protected static final VoxelShape BOTTOM = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
-	protected static final VoxelShape TOP = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape SOUTH_2 = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 8.0D);
-	protected static final VoxelShape WEST_2 = Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape NORTH_2 = Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape EAST_2 = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D);
-	protected static final VoxelShape SOUTH_3 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 8.0D),
-																		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
-	protected static final VoxelShape WEST_3 = VoxelShapes.or(Block.makeCuboidShape(8.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-																		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
-	protected static final VoxelShape NORTH_3 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D),
-																		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
-	protected static final VoxelShape EAST_3 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 8.0D, 16.0D, 16.0D),
-																		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
-
-	public Base_Kamoi(Block.Properties properties) {
-		super(properties);
-
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(STAGE_1_4, Integer.valueOf(1))
-				.with(WATERLOGGED, Boolean.valueOf(false)));
-	}
-
-	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
-				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
-	}
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
-	}
+		state = state.getActualState(source, pos);
+		EnumFacing direction = (EnumFacing)state.getValue(H_FACING);
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
-	}
+		switch (direction) {
 
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
+			case SOUTH:
+				return (i == 1)? BOTTOM : ((i == 2)? SOUTH_2 : ((i == 3)? FULL : TOP));
 
-	@SuppressWarnings("deprecation")
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-		
-		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
+			case EAST:
+				return (i == 1)? BOTTOM : ((i == 2)? EAST_2 : ((i == 3)? FULL : TOP));
 
-	/* Collisions for each property. */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+			case WEST:
+				return (i == 1)? BOTTOM : ((i == 2)? WEST_2 : ((i == 3)? FULL : TOP));
 
-		Direction direction = state.get(H_FACING);
-		int i = state.get(STAGE_1_4);
-
-		switch(direction) {
-		case SOUTH:
-			return (i == 1)? BOTTOM : ((i == 2)? SOUTH_2 : ((i == 3)? SOUTH_3 : TOP));
-		case WEST:
-			return (i == 1)? BOTTOM : ((i == 2)? WEST_2 : ((i == 3)? WEST_3 : TOP));
-		default:
-		case NORTH:
-			return (i == 1)? BOTTOM : ((i == 2)? NORTH_2 : ((i == 3)? NORTH_3 : TOP));
-		case EAST:
-			return (i == 1)? BOTTOM : ((i == 2)? EAST_2 : ((i == 3)? EAST_3 : TOP));
+			case NORTH:
+			default:
+				return (i == 1)? BOTTOM : ((i == 2)? NORTH_2 : ((i == 3)? FULL : TOP));
 		}
 	}
 
-	/* Create Blockstate */
+	/* getOppositeでプレイヤーの向きを取得 */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(H_FACING, STAGE_1_4, WATERLOGGED);
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
+			float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(H_FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		if (this != JP_Blocks.DIRTWALL) {
-			tooltip.add((new TranslationTextComponent("tips.wp_stage4")).applyTextStyle(TextFormatting.GRAY)); }
+	/* IBlockStateからItemStackのmetadataを生成。ドロップ時とテクスチャ・モデル参照時に呼ばれる */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i = i | ((EnumFacing)state.getValue(H_FACING)).getHorizontalIndex();
+		i = i | ((Integer)state.getValue(STAGE_1_4)).intValue() - 1 << 2;
+		return i;
+	}
+
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(H_FACING, rot.rotate((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	/* ItemStackのmetadataからIBlockStateを生成。設置時に呼ばれる */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(H_FACING, EnumFacing.getHorizontal(meta))
+				.withProperty(STAGE_1_4, Integer.valueOf(1 + (meta >> 2)));
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (4 - ((Integer)blockState.getValue(STAGE_1_4)).intValue()) * 2;
+	}
+
+	/* 初期BlockStateContainerの生成 */
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { H_FACING, STAGE_1_4 });
+	}
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.wp_stage4", meta));
 	}
 
 }

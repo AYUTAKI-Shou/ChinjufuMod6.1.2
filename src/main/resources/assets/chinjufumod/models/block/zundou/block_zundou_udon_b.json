@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "chinjufumod:blocks/dish_lightg",
-		"mizu": "minecraft:block/water_flow",
+		"mizu": "chinjufumod:blocks/water_flow",
 		"udon": "chinjufumod:blocks/udon_boil_flow",
 		"nabe": "chinjufumod:blocks/dish_lightg",
 		"otama": "chinjufumod:blocks/dish_gray",

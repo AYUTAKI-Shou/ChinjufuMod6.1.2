@@ -6,13 +6,13 @@
 		"front": "chinjufumod:blocks/kitchen_front",
 		"side": "chinjufumod:blocks/kitchen_side",
 		"stove": "chinjufumod:blocks/kitchen_stove",
-		"netherrack": "minecraft:block/netherrack",
-		"stone": "minecraft:block/stone",
-		"torch_off": "minecraft:block/redstone_torch_off",
-		"torch_on": "minecraft:block/redstone_torch",
+		"netherrack": "minecraft:blocks/netherrack",
+		"stone": "minecraft:blocks/stone",
+		"torch_off": "minecraft:blocks/redstone_torch_off",
+		"torch_on": "minecraft:blocks/redstone_torch_on",
 		"redstone": "chinjufumod:blocks/redstone_circuit_off",
-		"jiku": "minecraft:block/iron_block",
-		"fire": "minecraft:block/fire_0"
+		"jiku": "minecraft:blocks/iron_block",
+		"fire": "minecraft:blocks/fire_layer_0"
 	},
 	"elements": [
 

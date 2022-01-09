@@ -4,6 +4,6 @@
 		"particle": "chinjufumod:blocks/wrapping_red",
 		"hako": "chinjufumod:blocks/wrapping_red",
 		"ribbon": "chinjufumod:blocks/ribbon_blue",
-		"nakami": "minecraft:item/lapis_lazuli"
+		"nakami": "minecraft:items/dye_powder_blue"
 	}
 }

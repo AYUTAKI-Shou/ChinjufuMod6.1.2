@@ -2,7 +2,7 @@
 	"parent": "chinjufumod:block/base/base_amado_bot",
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_spruce",
-		"fuchi": "minecraft:block/spruce_planks",
+		"fuchi": "minecraft:blocks/planks_spruce",
 		"amado": "chinjufumod:blocks/muku_spruce"
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"parent": "chinjufumod:block/base/base_niwaishi_slab_6",
 	"textures": {
-		"particle": "minecraft:block/stone",
-		"rock": "minecraft:block/stone"
+		"particle": "minecraft:blocks/stone",
+		"rock": "minecraft:blocks/stone"
 	}
 }

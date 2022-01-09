@@ -1,5 +1,5 @@
 {
 	"variants": {
-		"": { "model": "chinjufumod:block/block_bauxiteore" }
+		"normal": { "model": "chinjufumod:block_bauxiteore" }
 	}
 }

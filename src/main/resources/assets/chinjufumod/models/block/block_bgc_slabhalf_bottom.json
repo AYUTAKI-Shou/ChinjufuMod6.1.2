@@ -1,5 +1,5 @@
 {
-	"parent": "block/slab",
+	"parent": "block/half_slab",
 	"textures": {
 		"bottom": "chinjufumod:blocks/stonebrick_gra",
 		"top": "chinjufumod:blocks/stonebrick_gra",

@@ -4,7 +4,7 @@
 		"particle": "chinjufumod:blocks/suiden_1",
 		"top": "chinjufumod:blocks/suiden_1",
 		"side": "chinjufumod:blocks/suiden_1_side",
-		"down": "minecraft:block/dirt"
+		"down": "minecraft:blocks/dirt"
 	},
 	"elements": [
 		{

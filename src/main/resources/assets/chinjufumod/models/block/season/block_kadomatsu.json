@@ -8,7 +8,7 @@
 		"ume_re": "chinjufumod:blocks/ume_re",
 		"hachi": "chinjufumod:blocks/makiwara",
 		"nawa": "chinjufumod:blocks/makiwara._long",
-		"tuchi": "minecraft:block/dirt",
+		"tuchi": "minecraft:blocks/dirt",
 		"particle": "chinjufumod:blocks/bamboo_side"
 	},
 	"elements": [

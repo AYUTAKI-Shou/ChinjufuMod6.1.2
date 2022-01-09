@@ -1,438 +1,1308 @@
 package com.ayutaki.chinjufumod.registry;
 
 import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.ItemGroups_CM;
-import com.ayutaki.chinjufumod.items.addinfo.AddInfo_Item;
-import com.ayutaki.chinjufumod.items.dish.Curry_Item;
-import com.ayutaki.chinjufumod.items.dish.Dish_addItem;
-import com.ayutaki.chinjufumod.items.dish.Dish_always;
-import com.ayutaki.chinjufumod.items.dish.DonabeKara_Item;
-import com.ayutaki.chinjufumod.items.dish.TeaCup_Item;
-import com.ayutaki.chinjufumod.items.dish.ZundouKara_Item;
-import com.ayutaki.chinjufumod.items.foods.FoodBuilders;
-import com.ayutaki.chinjufumod.items.foods.Food_addItem;
-import com.ayutaki.chinjufumod.items.foods.Kushiyaki_Item;
-import com.ayutaki.chinjufumod.items.fuel.Teatime_Fuel100;
-import com.ayutaki.chinjufumod.items.fuel.Teatime_Fuel150;
-import com.ayutaki.chinjufumod.items.fuel.Teatime_Fuel200;
-import com.ayutaki.chinjufumod.items.fuel.Teatime_Fuel300;
-import com.ayutaki.chinjufumod.items.fuel.Teatime_noFuel;
-import com.ayutaki.chinjufumod.items.hakkou.HakkouItem_Tips;
-import com.ayutaki.chinjufumod.items.hakkou.MizuokeMilk_Item;
-import com.ayutaki.chinjufumod.items.hakkou.Mizuoke_Item;
-import com.ayutaki.chinjufumod.items.hakkou.SakeGlass;
-import com.ayutaki.chinjufumod.items.teatime.AmiShikake_Item;
-import com.ayutaki.chinjufumod.items.teatime.AmiYoushoku_Item;
-import com.ayutaki.chinjufumod.items.teatime.Match_Item;
-import com.ayutaki.chinjufumod.items.teatime.Toami_Item;
+import com.ayutaki.chinjufumod.RegisterHandler_CM;
+import com.ayutaki.chinjufumod.blocks.crop.NoriAmi;
+import com.ayutaki.chinjufumod.blocks.crop.Toami_Wide;
+import com.ayutaki.chinjufumod.blocks.dish.Frypan_KinokoAmaKara;
+import com.ayutaki.chinjufumod.blocks.furnace.Irori;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_Cider;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_CiderJuku;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_Mead;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_MeadJuku;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_SakeJuku;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_SakeNama;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_SakeShin;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_Wine;
+import com.ayutaki.chinjufumod.blocks.hakkou.Bottle_WineJuku;
+import com.ayutaki.chinjufumod.blocks.hakkou.NabeAmazake_cooked;
+import com.ayutaki.chinjufumod.blocks.hakkou.TaruY_Budoushu;
+import com.ayutaki.chinjufumod.blocks.hakkou.TaruY_Hachimitsushu;
+import com.ayutaki.chinjufumod.blocks.hakkou.TaruY_Ringoshu;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cheese_Tana;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Cooktop_off;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Tana;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_Tana2;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_board;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_duct;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_ductend;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kit_kanki_off;
+import com.ayutaki.chinjufumod.blocks.kitchen.Kitchen;
+import com.ayutaki.chinjufumod.blocks.pantry.CanTea;
+import com.ayutaki.chinjufumod.blocks.pantry.Chadutsu;
+import com.ayutaki.chinjufumod.blocks.pantry.Tawara;
+import com.ayutaki.chinjufumod.items.crops.ItemBoxSeeds;
+import com.ayutaki.chinjufumod.items.crops.ItemChanoki_nae;
+import com.ayutaki.chinjufumod.items.crops.ItemEnden;
+import com.ayutaki.chinjufumod.items.crops.ItemGrape_nae;
+import com.ayutaki.chinjufumod.items.crops.ItemHodaGi_Bot;
+import com.ayutaki.chinjufumod.items.crops.ItemInagi_Bot;
+import com.ayutaki.chinjufumod.items.crops.ItemMikan_nae;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedCabbage;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedCherry;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedCorn;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedHakusai;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedOnion;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedRice;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedSoy;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedSpinach;
+import com.ayutaki.chinjufumod.items.crops.ItemSeedTomato;
+import com.ayutaki.chinjufumod.items.dish.ItemChicken_large;
+import com.ayutaki.chinjufumod.items.dish.ItemChicken_small;
+import com.ayutaki.chinjufumod.items.dish.ItemCornSoup_small;
+import com.ayutaki.chinjufumod.items.dish.ItemCurry;
+import com.ayutaki.chinjufumod.items.dish.ItemCurryNabe;
+import com.ayutaki.chinjufumod.items.dish.ItemCurrySet;
+import com.ayutaki.chinjufumod.items.dish.ItemDon_Gyu;
+import com.ayutaki.chinjufumod.items.dish.ItemDon_Kaisen;
+import com.ayutaki.chinjufumod.items.dish.ItemDon_Katsu;
+import com.ayutaki.chinjufumod.items.dish.ItemDon_Meshi;
+import com.ayutaki.chinjufumod.items.dish.ItemDon_Oyako;
+import com.ayutaki.chinjufumod.items.dish.ItemEggburgSet;
+import com.ayutaki.chinjufumod.items.dish.ItemEggburg_small;
+import com.ayutaki.chinjufumod.items.dish.ItemFish_boiled;
+import com.ayutaki.chinjufumod.items.dish.ItemFryPan_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemFrypan_Bake_1;
+import com.ayutaki.chinjufumod.items.dish.ItemFrypan_Bake_2;
+import com.ayutaki.chinjufumod.items.dish.ItemFrypan_Nama_1;
+import com.ayutaki.chinjufumod.items.dish.ItemFrypan_Nama_2;
+import com.ayutaki.chinjufumod.items.dish.ItemGohan_small;
+import com.ayutaki.chinjufumod.items.dish.ItemHakusaiduke;
+import com.ayutaki.chinjufumod.items.dish.ItemIcecream;
+import com.ayutaki.chinjufumod.items.dish.ItemJPChaUke;
+import com.ayutaki.chinjufumod.items.dish.ItemJPTeaCup;
+import com.ayutaki.chinjufumod.items.dish.ItemJPTeaSet;
+import com.ayutaki.chinjufumod.items.dish.ItemKeiryoCup;
+import com.ayutaki.chinjufumod.items.dish.ItemKeiryoCup_full;
+import com.ayutaki.chinjufumod.items.dish.ItemKettle_boil;
+import com.ayutaki.chinjufumod.items.dish.ItemKettle_full;
+import com.ayutaki.chinjufumod.items.dish.ItemKettle_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemKyusu;
+import com.ayutaki.chinjufumod.items.dish.ItemKyusu_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemMisoSoup_small;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeCooked_SNT;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeCornSoup;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeGohan;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeKaisui;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeMiso;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeNama_1;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeNama_2;
+import com.ayutaki.chinjufumod.items.dish.ItemNabeTori;
+import com.ayutaki.chinjufumod.items.dish.ItemNabe_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemPastaCheese;
+import com.ayutaki.chinjufumod.items.dish.ItemPastaKinoko;
+import com.ayutaki.chinjufumod.items.dish.ItemPastaTomato;
+import com.ayutaki.chinjufumod.items.dish.ItemPizza_coocked;
+import com.ayutaki.chinjufumod.items.dish.ItemRice_small;
+import com.ayutaki.chinjufumod.items.dish.ItemSconeSet_1;
+import com.ayutaki.chinjufumod.items.dish.ItemSconeSet_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemShouyuSara;
+import com.ayutaki.chinjufumod.items.dish.ItemStew;
+import com.ayutaki.chinjufumod.items.dish.ItemStewNabe;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiGeta_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiMeshi;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiOkeFull_1;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiOke_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiSet_4shoku;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiSet_Beef;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiSet_Fish;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiSet_Salmon;
+import com.ayutaki.chinjufumod.items.dish.ItemSushiSet_Tamago;
+import com.ayutaki.chinjufumod.items.dish.ItemTamagoyakiSet;
+import com.ayutaki.chinjufumod.items.dish.ItemTamagoyaki_small;
+import com.ayutaki.chinjufumod.items.dish.ItemTeaCup;
+import com.ayutaki.chinjufumod.items.dish.ItemTeaPot;
+import com.ayutaki.chinjufumod.items.dish.ItemTeaPot_kara;
+import com.ayutaki.chinjufumod.items.dish.ItemTeaSet;
+import com.ayutaki.chinjufumod.items.dish.ItemTonsui_small;
+import com.ayutaki.chinjufumod.items.dish.ItemUdon_Niku;
+import com.ayutaki.chinjufumod.items.dish.ItemUdon_Su;
+import com.ayutaki.chinjufumod.items.dish.ItemUdon_Tsukimi;
+import com.ayutaki.chinjufumod.items.dish.ItemYakijyakeSet;
+import com.ayutaki.chinjufumod.items.dish.ItemYakizakanaSet;
+import com.ayutaki.chinjufumod.items.dish.ItemZundou;
+import com.ayutaki.chinjufumod.items.dish.ItemZundou_Dashi;
+import com.ayutaki.chinjufumod.items.dish.ItemZundou_Milk;
+import com.ayutaki.chinjufumod.items.dish.ItemZundou_Mizu;
+import com.ayutaki.chinjufumod.items.dish.ItemZundou_Nama;
+import com.ayutaki.chinjufumod.items.dish.ItemZundou_ShioMizu;
+import com.ayutaki.chinjufumod.items.food.ItemFoodCheese;
+import com.ayutaki.chinjufumod.items.food.ItemFoodCherry;
+import com.ayutaki.chinjufumod.items.food.ItemFoodKirimi;
+import com.ayutaki.chinjufumod.items.food.ItemFoodKushiSakana;
+import com.ayutaki.chinjufumod.items.food.ItemFoodOnigiri;
+import com.ayutaki.chinjufumod.items.food.ItemFoodPizza;
+import com.ayutaki.chinjufumod.items.food.ItemFoodSushi;
+import com.ayutaki.chinjufumod.items.food.ItemFoodSushi_Shouyu;
+import com.ayutaki.chinjufumod.items.food.ItemModFood;
+import com.ayutaki.chinjufumod.items.food.ItemSenbei;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel100;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel150;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel200;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_Fuel300;
+import com.ayutaki.chinjufumod.items.fuel.ItemBlock_noFuel;
+import com.ayutaki.chinjufumod.items.hakkou.ItemBinKoubo;
+import com.ayutaki.chinjufumod.items.hakkou.ItemBinKoubo_full;
+import com.ayutaki.chinjufumod.items.hakkou.ItemBinNyusan;
+import com.ayutaki.chinjufumod.items.hakkou.ItemBinNyusan_full;
+import com.ayutaki.chinjufumod.items.hakkou.ItemCheese_block;
+import com.ayutaki.chinjufumod.items.hakkou.ItemCheese_curd;
+import com.ayutaki.chinjufumod.items.hakkou.ItemDashi_bot_1;
+import com.ayutaki.chinjufumod.items.hakkou.ItemDashi_bot_2;
+import com.ayutaki.chinjufumod.items.hakkou.ItemDashi_bot_3;
+import com.ayutaki.chinjufumod.items.hakkou.ItemDashi_bot_4;
+import com.ayutaki.chinjufumod.items.hakkou.ItemGlass_Sake;
+import com.ayutaki.chinjufumod.items.hakkou.ItemGlass_Wine;
+import com.ayutaki.chinjufumod.items.hakkou.ItemHakkouTaru;
+import com.ayutaki.chinjufumod.items.hakkou.ItemHakkouTaru_Hakusai;
+import com.ayutaki.chinjufumod.items.hakkou.ItemHakkouTaru_Shouyu;
+import com.ayutaki.chinjufumod.items.hakkou.ItemKomezu_bot_1;
+import com.ayutaki.chinjufumod.items.hakkou.ItemKomezu_bot_2;
+import com.ayutaki.chinjufumod.items.hakkou.ItemMizuoke_full;
+import com.ayutaki.chinjufumod.items.hakkou.ItemMizuoke_kara;
+import com.ayutaki.chinjufumod.items.hakkou.ItemMizuoke_milk;
+import com.ayutaki.chinjufumod.items.hakkou.ItemMoromi;
+import com.ayutaki.chinjufumod.items.hakkou.ItemMushigome;
+import com.ayutaki.chinjufumod.items.hakkou.ItemNabeAmazake_nama;
+import com.ayutaki.chinjufumod.items.hakkou.ItemNimame;
+import com.ayutaki.chinjufumod.items.hakkou.ItemSakekasu;
+import com.ayutaki.chinjufumod.items.hakkou.ItemShouyu_bot_1;
+import com.ayutaki.chinjufumod.items.hakkou.ItemShouyu_bot_2;
+import com.ayutaki.chinjufumod.items.hakkou.ItemShouyu_bot_3;
+import com.ayutaki.chinjufumod.items.hakkou.ItemShouyu_bot_4;
+import com.ayutaki.chinjufumod.items.hakkou.ItemShubo;
+import com.ayutaki.chinjufumod.items.kitchen.ItemKit_sink;
+import com.ayutaki.chinjufumod.items.teatime.ItemChaba;
+import com.ayutaki.chinjufumod.items.teatime.ItemDishes;
+import com.ayutaki.chinjufumod.items.teatime.ItemDishes_Clay;
+import com.ayutaki.chinjufumod.items.teatime.ItemIkaRaw;
+import com.ayutaki.chinjufumod.items.teatime.ItemIne;
+import com.ayutaki.chinjufumod.items.teatime.ItemKinokoAmakara;
+import com.ayutaki.chinjufumod.items.teatime.ItemKomugi;
+import com.ayutaki.chinjufumod.items.teatime.ItemMatch;
+import com.ayutaki.chinjufumod.items.teatime.ItemPasta;
+import com.ayutaki.chinjufumod.items.teatime.ItemShio;
+import com.ayutaki.chinjufumod.items.teatime.ItemTTimeInfo;
+import com.ayutaki.chinjufumod.items.teatime.ItemToami;
+import com.ayutaki.chinjufumod.items.teatime.ItemToami_Wide;
+import com.ayutaki.chinjufumod.items.unitblock.ItemTeaTable;
 
-import net.minecraft.fluid.Fluids;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Teatime {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
+	/* 種・作物 */
+	public static Item SEEDSBOX;
+	public static Item SEEDS_CABBAGE, SEEDS_HAKUSAI, SEEDS_CORN,
+								SEEDS_ONION, SEEDS_RICE, SEEDS_SOY,
+								SEEDS_SPINACH, SEEDS_TOMATO, SEEDS_CHERRY;
+	public static Item CHANOKI, BUDOUNOKI, MIKAN;
+	public static Item HODAGI_BOT;
 
-	/* SEEDS・CROPS */
-	public static Item SEEDSBOX = register("block_seedsbox", new Teatime_noFuel(Crop_Blocks.SEEDSBOX, new Item.Properties()));
+	public static Item CHABA;
+	public static Item INAGI, INEWARA, INE, KOME, SAYA, SOY;
 
-	public static Item SEEDS_CABBAGE = register("item_seeds_cabbage", new Teatime_noFuel(Crop_Blocks.CABBAGE, new Item.Properties()));
-	public static Item SEEDS_HAKUSAI = register("item_seeds_hakusai", new Teatime_noFuel(Crop_Blocks.HAKUSAI, new Item.Properties()));
-	public static Item SEEDS_CORN = register("item_seeds_corn", new Teatime_noFuel(Crop_Blocks.CORN, new Item.Properties()));
-	public static Item SEEDS_ONION = register("item_seeds_onion", new Teatime_noFuel(Crop_Blocks.ONION, new Item.Properties()));
-	public static Item SEEDS_RICE = register("item_seeds_rice", new Teatime_noFuel(Crop_Blocks.RICE, new Item.Properties()));
-	public static Item SEEDS_SOY = register("item_seeds_soy", new Teatime_noFuel(Crop_Blocks.SOY, new Item.Properties()));
-	public static Item SEEDS_SPINACH = register("item_seeds_spinach", new Teatime_noFuel(Crop_Blocks.SPINACH, new Item.Properties()));
-	public static Item SEEDS_TOMATO = register("item_seeds_tomato", new Teatime_noFuel(Crop_Blocks.TOMATO, new Item.Properties()));
-	public static Item SEEDS_CHERRY = register("item_seeds_cherry", new Teatime_noFuel(Crop_Blocks.SAKURA, new Item.Properties()));
+	public static Item FOOD_CABBAGE, FOOD_HAKUSAI, FOOD_CORN,
+								FOOD_ONION, FOOD_SPINACH, FOOD_TOMATO,
+								FOOD_GRAPE, FOOD_CHERRY, FOOD_MIKAN, FOOD_CORN_B;
 
-	public static Item CHANOKI = register("block_wood_chanoki_nae", new Teatime_noFuel(Crop_Blocks.CHANOKI, new Item.Properties()));
-	public static Item BUDOUNOKI = register("block_wood_grape_nae", new Teatime_noFuel(Crop_Blocks.BUDOUNOKI, new Item.Properties()));
-	public static Item MIKAN = register("block_wood_mikan", new Teatime_noFuel(Crop_Blocks.MIKAN, new Item.Properties()));
-	public static Item HODAGI = register("block_hodagi_a_bot", new Teatime_noFuel(Crop_Blocks.HODAGI_A_BOT, new Item.Properties()));
+	public static Item BOX_H_EMPTY, BOX_H_APPLE, BOX_H_BEEF,
+								BOX_H_BEETROOT, BOX_H_BREAD, BOX_H_CARROT,
+								BOX_H_CHICKEN, BOX_H_CHORUS, BOX_H_COCO,
+								BOX_H_EGG, BOX_H_FISH, BOX_H_FLOUR,
+								BOX_H_MUTTON, BOX_H_PORK, BOX_H_POTATO,
+								BOX_H_RABBIT, BOX_H_SALMON;
 
-	public static Item CHABA = register("item_chaba", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CHABA_GREEN = register("item_chaba_green", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CHABA_RED = register("item_chaba_red", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item BOX_H_CABBAGE, BOX_H_HAKUSAI, BOX_H_CHERRY,
+								BOX_H_CITRUS, BOX_H_CORN, BOX_H_GRAPE,
+								BOX_H_ONION, BOX_H_RICE, BOX_H_SOY,
+								BOX_H_SPINACH, BOX_H_TOMATO, BOX_H_TGREEN, BOX_H_TRED;
 
-	public static Item INAGI = register("block_inagi", new Teatime_noFuel(Crop_Blocks.INAGI, new Item.Properties()));
-	public static Item INEWARA = register("item_inewara", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item INE = register("item_ine", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.INEWARA)));
-	public static Item INE_D = register("item_ine_dry", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.INEWARA)));
-	public static Item KOME = register("item_kome", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item CHADUTSU, CANTEA, TAWARA;
 
-	public static Item SAYA = register("item_saya", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item SOY = register("item_soy", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	/* 発酵 */
+	public static Item KOUBOBOT_full, NYUSANBOT_full;
+	public static Item KOUBO, NYUSAN;
 
-	public static Item FOOD_CABBAGE = register("item_food_cabbage", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.CABBAGE)));
-	public static Item FOOD_HAKUSAI = register("item_food_hakusai", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.HAKUSAI)));
-	public static Item FOOD_CHERRY = register("item_food_cherry", new Food_addItem(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item FOOD_MIKAN = register("item_food_mikan", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.MIKAN)));
-	public static Item FOOD_CORN = register("item_food_corn", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.CORN)));
-	public static Item FOOD_GRAPE = register("item_food_grape", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.GRAPE)));
-	public static Item FOOD_ONION = register("item_food_onion", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.ONION)));
-	public static Item FOOD_SPINACH = register("item_food_spinach", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SPINACH)));
-	public static Item FOOD_TOMATO = register("item_food_tomato", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.TOMATO)));
+	public static Item MIZUOKE, MIZUOKE_full, MIZUOKE_Milk;
+	public static Item HAKKOUTARU;
+	public static Item RINGOSHU_TARU, BUDOUSHU_TARU, HACHIMITSUSHU_TARU;
+	public static Item NAMASAKEBOT, SHINSAKEBOT, JUKUSAKEBOT;
+	public static Item NABEAMAZAKE_nama, NABEAMAZAKE;
+	public static Item CIDERBOT, JUKUCIDERBOT;
+	public static Item WINEBOT, JUKUWINEBOT;
+	public static Item MEADBOT, JUKUMEADBOT;
 
-	public static Item FOOD_CORN_B = register("item_food_cornb", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.CORN_B)));
+	public static Item SAKEGLASS, WINEGLASS;
+	public static Item WINE_TANA;
 
-	public static Item BOX_H_EMPTY = register("block_boxh_empty", new Teatime_noFuel(Pantry_Blocks.BOX_H_EMPTY, new Item.Properties()));
-	public static Item BOX_H_APPLE = register("block_boxh_apple", new Teatime_Fuel100(Pantry_Blocks.BOX_H_APPLE, new Item.Properties()));
-	public static Item BOX_H_BEEF = register("block_boxh_beef", new Teatime_Fuel100(Pantry_Blocks.BOX_H_BEEF, new Item.Properties()));
-	public static Item BOX_H_BEETROOT = register("block_boxh_beetroot", new Teatime_Fuel100(Pantry_Blocks.BOX_H_BEETROOT, new Item.Properties()));
-	public static Item BOX_H_BREAD = register("block_boxh_bread", new Teatime_Fuel100(Pantry_Blocks.BOX_H_BREAD, new Item.Properties()));
-	public static Item BOX_H_CARROT = register("block_boxh_carrot", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CARROT, new Item.Properties()));
-	public static Item BOX_H_CHICKEN = register("block_boxh_chicken", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CHICKEN, new Item.Properties()));
-	public static Item BOX_H_CHORUS = register("block_boxh_chorus", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CHORUS, new Item.Properties()));
-	public static Item BOX_H_COCO = register("block_boxh_coco", new Teatime_Fuel100(Pantry_Blocks.BOX_H_COCO, new Item.Properties()));
-	public static Item BOX_H_COD = register("block_boxh_cod", new Teatime_Fuel100(Pantry_Blocks.BOX_H_COD, new Item.Properties()));
-	public static Item BOX_H_EGG = register("block_boxh_egg", new Teatime_Fuel100(Pantry_Blocks.BOX_H_EGG, new Item.Properties()));
-	public static Item BOX_H_FISH = register("block_boxh_fish", new Teatime_Fuel100(Pantry_Blocks.BOX_H_FISH, new Item.Properties()));
-	public static Item BOX_H_FLOUR = register("block_boxh_flour", new Teatime_Fuel100(Pantry_Blocks.BOX_H_FLOUR, new Item.Properties()));
-	public static Item BOX_H_MUTTON = register("block_boxh_mutton", new Teatime_Fuel100(Pantry_Blocks.BOX_H_MUTTON, new Item.Properties()));
-	public static Item BOX_H_PORK = register("block_boxh_pork", new Teatime_Fuel100(Pantry_Blocks.BOX_H_PORK, new Item.Properties()));
-	public static Item BOX_H_POTATO = register("block_boxh_potato", new Teatime_Fuel100(Pantry_Blocks.BOX_H_POTATO, new Item.Properties()));
-	public static Item BOX_H_RABBIT = register("block_boxh_rabbit", new Teatime_Fuel100(Pantry_Blocks.BOX_H_RABBIT, new Item.Properties()));
-	public static Item BOX_H_SALMON = register("block_boxh_salmon", new Teatime_Fuel100(Pantry_Blocks.BOX_H_SALMON, new Item.Properties()));
-	public static Item BOX_H_SWBERRY = register("block_boxh_swberry", new Teatime_Fuel100(Pantry_Blocks.BOX_H_SWBERRY, new Item.Properties()));
+	public static Item HAKUSAI_TARU, SHOUYU_TARU;
 
-	public static Item BOX_H_CABBAGE = register("block_boxh_cabbage", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CABBAGE, new Item.Properties()));
-	public static Item BOX_H_HAKUSAI = register("block_boxh_hakusai", new Teatime_Fuel100(Pantry_Blocks.BOX_H_HAKUSAI, new Item.Properties()));
-	public static Item BOX_H_CHERRY = register("block_boxh_cherry", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CHERRY, new Item.Properties()));
-	public static Item BOX_H_CITRUS = register("block_boxh_citrus", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CITRUS, new Item.Properties()));
-	public static Item BOX_H_CORN = register("block_boxh_corn", new Teatime_Fuel100(Pantry_Blocks.BOX_H_CORN, new Item.Properties()));
-	public static Item BOX_H_GRAPE = register("block_boxh_grape", new Teatime_Fuel100(Pantry_Blocks.BOX_H_GRAPE, new Item.Properties()));
-	public static Item BOX_H_ONION = register("block_boxh_onion", new Teatime_Fuel100(Pantry_Blocks.BOX_H_ONION, new Item.Properties()));
-	public static Item BOX_H_RICE = register("block_boxh_rice", new Teatime_Fuel100(Pantry_Blocks.BOX_H_RICE, new Item.Properties()));
-	public static Item BOX_H_SOY = register("block_boxh_soy", new Teatime_Fuel100(Pantry_Blocks.BOX_H_SOY, new Item.Properties()));
-	public static Item BOX_H_SPINACH = register("block_boxh_spinach", new Teatime_Fuel100(Pantry_Blocks.BOX_H_SPINACH, new Item.Properties()));
-	public static Item BOX_H_TOMATO = register("block_boxh_tomato", new Teatime_Fuel100(Pantry_Blocks.BOX_H_TOMATO, new Item.Properties()));
-	public static Item BOX_H_TGREEN = register("block_boxh_tgreen", new Teatime_Fuel100(Pantry_Blocks.BOX_H_TGREEN, new Item.Properties()));
-	public static Item BOX_H_TRED = register("block_boxh_tred", new Teatime_Fuel100(Pantry_Blocks.BOX_H_TRED, new Item.Properties()));
-	public static Item CHADUTSU = register("block_tea_chadutsu", new Teatime_noFuel(Pantry_Blocks.CHADUTSU, new Item.Properties()));
-	public static Item CANTEA = register("block_tea_can", new Teatime_noFuel(Pantry_Blocks.CANTEA, new Item.Properties()));
-	public static Item TAWARA = register("block_tawara_cm", new Teatime_Fuel200(Pantry_Blocks.TAWARA, new Item.Properties()));
+	public static Item SHOUYU_bot_1, SHOUYU_bot_2, SHOUYU_bot_3, SHOUYU_bot_4;
+	public static Item KOMEZU_bot_1, KOMEZU_bot_2;
+	public static Item DASHI_bot_1, DASHI_bot_2, DASHI_bot_3, DASHI_bot_4;
 
-	/* Barrel */
-	public static Item KOUBOBOT_full = register("block_bin_koubo_f", new Teatime_noFuel(Hakkou_Blocks.KOUBOBOT_full, new Item.Properties()));
-	public static Item NYUSANBOT_full = register("block_bin_nyusan_f", new Teatime_noFuel(Hakkou_Blocks.NYUSANBOT_full, new Item.Properties()));
-	public static Item KOUBO = register("item_koubo", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items.GLASS_BOTTLE)));
-	public static Item NYUSAN = register("item_nyusan", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items.GLASS_BOTTLE)));
+	/* 食器 */
+	public static Item Item_MATCH;
+	public static Item Item_SARA, Item_DISH, CLAY_DISH;
 
-	public static Item MIZUOKE = register("block_mizuoke", new Mizuoke_Item(Fluids.EMPTY, Hakkou_Blocks.MIZUOKE, new Item.Properties()));
-	public static Item MIZUOKE_full = register("block_mizuoke_full", new Mizuoke_Item(Fluids.WATER, Hakkou_Blocks.MIZUOKE_full, new Item.Properties().containerItem(Items_Teatime.MIZUOKE)));
-	public static Item MIZUOKE_Milk = register("item_mizuoke_milk", new MizuokeMilk_Item(new Item.Properties().containerItem(Items_Teatime.MIZUOKE)));
+	/* 中間素材 */
+	public static Item SHIO;
+	public static Item MUSHIGOME, KOMEKOUJI, SHUBO, MORO, SAKEKASU;
+	public static Item NIMAME, MISO;
+	public static Item KOMUGI, PASTA;
 
-	public static Item HAKKOU_TARU = register("block_taru_hakkou", new Teatime_noFuel(Hakkou_Blocks.HAKKOU_TARU, new Item.Properties()));
-	public static Item KOUJI_TARU = register("block_taru_kouji_f", new Teatime_noFuel(Hakkou_Blocks.KOUJI_TARU, new Item.Properties()));
-	public static Item SHUBO_TARU = register("block_taru_shubo_f", new Teatime_noFuel(Hakkou_Blocks.SHUBO_TARU, new Item.Properties()));
-	public static Item MOROMI_TARU = register("block_taru_moromi_f", new Teatime_noFuel(Hakkou_Blocks.MOROMI_TARU, new Item.Properties()));
-	public static Item JUKUSEI_TARU = register("block_taru_jukusei_f", new Teatime_noFuel(Hakkou_Blocks.JUKUSEI_TARU, new Item.Properties()));
-	public static Item RINGOSHU_TARU = register("block_taru_ringoshu_f", new Teatime_noFuel(Hakkou_Blocks.RINGOSHU_TARU, new Item.Properties()));
-	public static Item BUDOUSHU_TARU = register("block_taru_budoushu_f", new Teatime_noFuel(Hakkou_Blocks.BUDOUSHU_TARU, new Item.Properties()));
-	public static Item HACHIMITSU_TARU = register("block_taru_hachimitsushu_f", new Teatime_noFuel(Hakkou_Blocks.HACHIMITSU_TARU, new Item.Properties()));
+	/* 調理済み 寸胴→鍋→フライパン */
+	public static Item ZUNDOU, ZUNDOU_NAMA, ZUNDOUMIZU, ZUNDOUMILK, ZUNDOUSHIO;
+	public static Item CURRYNABE, STEWNABE, DASHINABE;
 
-	/* Bottle */
-	public static Item NAMASAKEBOT = register("block_bot_sakenama_1", new Teatime_noFuel(Hakkou_Blocks.NAMASAKEBOT, new Item.Properties()));
-	public static Item SAKEBOT = register("block_bot_sake_1", new Teatime_noFuel(Hakkou_Blocks.SAKEBOT, new Item.Properties()));
-	public static Item JUKUSAKEBOT = register("block_bot_sakejuku_1", new Teatime_noFuel(Hakkou_Blocks.JUKUSAKEBOT, new Item.Properties()));
-	public static Item NABEAMAZAKE_nama = register("block_food_nabeaz_n", new Teatime_noFuel(Hakkou_Blocks.NABEAMAZAKE_nama, new Item.Properties()));
-	public static Item NABEAMAZAKE = register("block_food_nabeaz_1", new Teatime_noFuel(Hakkou_Blocks.NABEAMAZAKE, new Item.Properties()));
-	public static Item CIDERBOT = register("block_bot_cider_1", new Teatime_noFuel(Hakkou_Blocks.CIDERBOT, new Item.Properties()));
-	public static Item JUKUCIDERBOT = register("block_bot_ciderjuku_1", new Teatime_noFuel(Hakkou_Blocks.JUKUCIDERBOT, new Item.Properties()));
-	public static Item WINEBOT = register("block_bot_wine_1", new Teatime_noFuel(Hakkou_Blocks.WINEBOT, new Item.Properties()));
-	public static Item JUKUWINEBOT = register("block_bot_winejuku_1", new Teatime_noFuel(Hakkou_Blocks.JUKUWINEBOT, new Item.Properties()));
-	public static Item MEADBOT = register("block_bot_mead_1", new Teatime_noFuel(Hakkou_Blocks.MEADBOT, new Item.Properties()));
-	public static Item JUKUMEADBOT = register("block_bot_meadjuku_1", new Teatime_noFuel(Hakkou_Blocks.JUKUMEADBOT, new Item.Properties()));
+	public static Item NABE_kara, NABE_NAMA_1, NABE_KAISUI, NABE_NAMA_2;
+	public static Item NABETORI, NABEMISO, NABEGOHAN, NABECORNSOUP, NABE_SNT;
 
-	/* Glass */
-	public static Item NAMASAKEGLASS = register("block_glass_sakenama", new SakeGlass(Hakkou_Blocks.NAMASAKEGLASS, new Item.Properties()));
-	public static Item SAKEGLASS = register("block_glass_sake", new SakeGlass(Hakkou_Blocks.SAKEGLASS, new Item.Properties()));
-	public static Item JUKUSAKEGLASS = register("block_glass_sakejuku", new SakeGlass(Hakkou_Blocks.JUKUSAKEGLASS, new Item.Properties()));
-	public static Item AMAZAKEGLASS = register("block_glass_amazake", new SakeGlass(Hakkou_Blocks.AMAZAKEGLASS, new Item.Properties()));
-	public static Item CIDERGLASS = register("block_glass_cider", new SakeGlass(Hakkou_Blocks.CIDERGLASS, new Item.Properties()));
-	public static Item JUKUCIDERGLASS = register("block_glass_ciderjuku", new SakeGlass(Hakkou_Blocks.JUKUCIDERGLASS, new Item.Properties()));
-	public static Item WINEGLASS = register("block_glass_wine", new SakeGlass(Hakkou_Blocks.WINEGLASS, new Item.Properties()));
-	public static Item JUKUWINEGLASS = register("block_glass_winejuku", new SakeGlass(Hakkou_Blocks.JUKUWINEGLASS, new Item.Properties()));
-	public static Item MEADGLASS = register("block_glass_mead", new SakeGlass(Hakkou_Blocks.MEADGLASS, new Item.Properties()));
-	public static Item JUKUMEADGLASS = register("block_glass_meadjuku", new SakeGlass(Hakkou_Blocks.JUKUMEADGLASS, new Item.Properties()));
+	public static Item KEIRYO_CUP, KEIRYO_CUP_F;
 
-	public static Item WINE_TANA = register("block_kit2_tana", new Teatime_Fuel150(Kitchen_Blocks.WINE_TANA, new Item.Properties()));
+	public static Item FRYPAN_kara, FRYPAN_NAMA_1, FRYPAN_NAMA_2, FPKINOKOAK_nama;
+	public static Item FRYPAN_BAKE_1, FRYPAN_BAKE_2, FPKINOKOAK;
 
-	public static Item MISO_TARU = register("block_taru_miso_f", new Teatime_noFuel(Hakkou_Blocks.MISO_TARU, new Item.Properties()));
-	public static Item HAKUSAI_TARU1 = register("block_taru_hakusai_f", new Teatime_noFuel(Hakkou_Blocks.HAKUSAI_TARU1, new Item.Properties()));
-	public static Item HAKUSAI_TARU2 = register("block_taru_hakusai_f2", new Teatime_noFuel(Hakkou_Blocks.HAKUSAI_TARU2, new Item.Properties()));
-	public static Item SHOUYU_TARU = register("block_taru_shouyu_f", new Teatime_noFuel(Hakkou_Blocks.SHOUYU_TARU, new Item.Properties()));
-	public static Item KOMEZU_TARU = register("block_taru_komezu_f", new Teatime_noFuel(Hakkou_Blocks.KOMEZU_TARU, new Item.Properties()));
-	public static Item KINOKO_TARU = register("block_taru_kinoko_f", new Teatime_noFuel(Hakkou_Blocks.KINOKO_TARU, new Item.Properties()));
-	public static Item KONBU_TARU = register("block_taru_konbu_f", new Teatime_noFuel(Hakkou_Blocks.KONBU_TARU, new Item.Properties()));
-	public static Item NORI_TARU = register("block_taru_nori_f", new Teatime_noFuel(Hakkou_Blocks.NORI_TARU, new Item.Properties()));
-	public static Item KOUCHA_TARU = register("block_taru_koucha_f", new Teatime_noFuel(Hakkou_Blocks.KOUCHA_TARU, new Item.Properties()));
+	public static Item NIBOSHI;
+	public static Item CURRY, CURRYSET, STEW;
+	public static Item UDON_SU, UDON_NIKU, UDON_TSUKIMI;
+	public static Item TONSUITORI, MISOSOUP, GOHAN, RICE;
 
-	public static Item SHOUYU_bot_4 = register("block_shouyu_bot_4", new HakkouItem_Tips(Hakkou_Blocks.SHOUYU_bot_4, new Item.Properties().containerItem(Items.GLASS_BOTTLE)));
-	public static Item SHOUYU_bot_3 = register("block_shouyu_bot_3", new HakkouItem_Tips(Hakkou_Blocks.SHOUYU_bot_3, new Item.Properties().containerItem(Items_Teatime.SHOUYU_bot_4)));
-	public static Item SHOUYU_bot_2 = register("block_shouyu_bot_2", new HakkouItem_Tips(Hakkou_Blocks.SHOUYU_bot_2, new Item.Properties().containerItem(Items_Teatime.SHOUYU_bot_3)));
-	public static Item SHOUYU_bot_1 = register("block_shouyu_bot", new HakkouItem_Tips(Hakkou_Blocks.SHOUYU_bot_1, new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.SHOUYU_bot_2)));
-	public static Item KOMEZU_bot_2 = register("block_komezu_bot_2", new HakkouItem_Tips(Hakkou_Blocks.KOMEZU_bot_2, new Item.Properties().containerItem(Items.GLASS_BOTTLE)));
-	public static Item KOMEZU_bot_1 = register("block_komezu_bot", new HakkouItem_Tips(Hakkou_Blocks.KOMEZU_bot_1, new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.KOMEZU_bot_2)));
-	public static Item DASHI_bot_4 = register("block_dashi_bot_4", new HakkouItem_Tips(Hakkou_Blocks.DASHI_bot_4, new Item.Properties().containerItem(Items.GLASS_BOTTLE)));
-	public static Item DASHI_bot_3 = register("block_dashi_bot_3", new HakkouItem_Tips(Hakkou_Blocks.DASHI_bot_3, new Item.Properties().containerItem(Items_Teatime.DASHI_bot_4)));
-	public static Item DASHI_bot_2 = register("block_dashi_bot_2", new HakkouItem_Tips(Hakkou_Blocks.DASHI_bot_2, new Item.Properties().containerItem(Items_Teatime.DASHI_bot_3)));
-	public static Item DASHI_bot_1 = register("block_dashi_bot", new HakkouItem_Tips(Hakkou_Blocks.DASHI_bot_1, new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.DASHI_bot_2)));
+	public static Item DONBURI_MESHI, DONBURI_GYU, DONBURI_OYAKO, DONBURI_KATSU, DONBURI_KAISEN;
 
-	public static Item MATCH = register("item_match_cm", new Match_Item(new Item.Properties()));
+	public static Item FOOD_HAKUSAI2, HAKUSAIDUKE;
+	public static Item TAMAGOYAKI, TAMAGOYAKITEI ,YAKIZAKANATEI, YAKIJYAKETEI;
+	public static Item CORNSOUP, EGGBURG, EGGBURGSET;
 
-	public static Item SARA = register("item_food_sara", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item YUNOMI = register("item_food_yunomi", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item TCUP_kara = register("item_food_teacup", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CHAWAN = register("item_food_chawan", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item SHIKKI = register("item_food_shikki", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item TONSUI = register("item_food_tonsui", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item DONBURI = register("item_food_donburi", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item DRINKGLASS = register("item_food_driglass", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item SAKEBOTTLE = register("item_food_sakebot", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item PASTATOMATO, PASTACHEESE, PASTAKINOKO;
+	public static Item PIZZA, PC_PIZZA, CHICKEN, CHICKEN_small;
 
-	public static Item CLAY_SARA = register("item_clay_sara", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_YUNOMI = register("item_clay_yunomi", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_KYUSU = register("item_clay_kyusu", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_TCUP = register("item_clay_teacup", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_TPOT = register("item_clay_teapot", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_CHAWAN = register("item_clay_chawan", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_NABE = register("item_clay_nabe", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_TONSUI = register("item_clay_tonsui", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item CLAY_DONBURI = register("item_clay_donburi", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item SUSHIMESHI;
+	public static Item SUSHIGETA_kara, SUSHISET_salmon, SUSHISET_fish, SUSHISET_beef, SUSHISET_tamago, SUSHISET_4shoku;
+	public static Item SUSHIOKE, SUSHISET_1;
+	public static Item SHOUYUSARA;
 
-	/* Salt */
-	public static Item SHIO = register("item_salt", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item NIGARI = register("item_nigari", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item RENNET = register("item_rennet", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item Item_YAKAN_kara, KETTLE_full, Item_YAKAN_boil;
+	public static Item KYUSU_kara, KYUSU, JPTEACUP, JPTEASET, JPCHAUKE;
+	public static Item TEAPOT_kara, TEAPOT, TEACUP, TEASET;
+	public static Item SCONESET_kara, SCONESET_1;
 
-	public static Item MUSHIGOME = register("item_mushigome", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items.BOWL)));
-	public static Item KOMEKOUJI = register("item_komekouji", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item SHUBO = register("item_shubo", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items.BOWL)));
-	public static Item SAKEKASU = register("item_sakekasu", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items.BOWL)));
-	public static Item MOROMI = register("item_moromi", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.SAKEKASU)));
+	public static Item ICECREAM;
+	public static Item CHEESE_CURD, CHEESE;
+	public static Item FRESH_CHEESE, PIECE_CHEESE;
+	public static Item CHEESE_TANA;
 
-	public static Item NIMAME = register("item_nimame", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items.BOWL)));
-	public static Item MISO = register("item_miso", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item CAKE, BUN, SCONE, SENBEI, TOUFU;
+	public static Item CHICKENSAND, EGGSAND;
+	public static Item KIRIMI, SUSHI, SHOUYUSUSHI;
 
-	public static Item KOMUGI = register("item_flour", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item BUTTER = register("item_butter", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KIJI_BUN = register("item_kiji_bun", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KIJI_BURG = register("item_kiji_burg", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KIJI_SCONE= register("item_kiji_scone", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KIJI_SENBEI = register("item_kiji_senbei", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KIJI_PIZA = register("item_kiji_pizza", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item PIZZA_nama = register("item_food_pizza_n", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item NORIAMI, NORI_N, NORI_I, ONIGIRI;
+	public static Item KUSHI_SAKANA, KUSHI_SAKANA_C;
 
-	public static Item PASTA_nama = register("item_food_pasta_n", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item PASTA_sara = register("item_food_pasta_s", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item UDON_nama = register("item_food_udon_n", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item SHOUYU_donburi = register("item_food_shouyu_don", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item TSUYU_donburi = register("item_food_tsuyu_don", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+	public static Item KIT_TANA;
+	public static Item KITCHEN, KIT_BOARD, KIT_SINK1, KIT_STOVE, KIT_OVEN, KIT_OVEN_B, IRORI;
+	public static Item KIT_KANKI_1, KIT_HAIKIDUCT, KIT_DUCTEND_1;
 
-	/* Cooking */
-	public static Item ZUNDOU = register("block_food_zundou", new ZundouKara_Item(Dish_Blocks.ZUNDOU, new Item.Properties()));
-	public static Item ZUNDOU_MIZU = register("block_zundou_mizu", new Teatime_noFuel(Dish_Blocks.ZUNDOU_MIZU, new Item.Properties()));
-	public static Item ZUNDOU_SHIO = register("block_zundou_shiomizu", new Teatime_noFuel(Dish_Blocks.ZUNDOU_SHIO, new Item.Properties()));
-	public static Item ZUNDOU_MILK = register("block_zundou_milk", new Teatime_noFuel(Dish_Blocks.ZUNDOU_MILK, new Item.Properties()));
+	public static Item TEATABLE;
+	public static Item ENDEN;
 
-	public static Item ZUNDOU_NCURRY = register("block_food_cunabe_n", new Teatime_noFuel(Dish_Blocks.ZUNDOU_NCURRY, new Item.Properties()));
-	public static Item ZUNDOU_CURRY = register("block_food_cunabe_1", new Teatime_noFuel(Dish_Blocks.ZUNDOU_CURRY, new Item.Properties()));
-	public static Item ZUNDOU_NSTEW = register("block_food_stewnabe_n", new Teatime_noFuel(Dish_Blocks.ZUNDOU_NSTEW, new Item.Properties()));
-	public static Item ZUNDOU_STEW = register("block_food_stewnabe_1", new Teatime_noFuel(Dish_Blocks.ZUNDOU_STEW, new Item.Properties()));
-	public static Item ZUNDOU_DASHI = register("block_food_dashinabe_1", new Teatime_noFuel(Dish_Blocks.ZUNDOU_DASHI, new Item.Properties()));
+	public static Item TOAMI, TOAMI_W;
+	public static Item CUT_IKA, COOKED_IKA, IKA;	
 
-	public static Item NABE_kara = register("block_food_karanabe", new DonabeKara_Item(Fluids.EMPTY, Dish_Blocks.NABE_kara, new Item.Properties()));
-	public static Item NABETORI_nama = register("block_food_nabe_n", new Teatime_noFuel(Dish_Blocks.NABETORI_nama, new Item.Properties()));
-	public static Item NABEMISO_nama = register("block_food_nabemiso_n", new Teatime_noFuel(Dish_Blocks.NABEMISO_nama, new Item.Properties()));
-	public static Item NABEGOHAN_nama = register("block_food_nabegohan_n", new Teatime_noFuel(Dish_Blocks.NABEGOHAN_nama, new Item.Properties()));
-	public static Item NABECORN_nama = register("block_food_nabecorns_n", new Teatime_noFuel(Dish_Blocks.NABECORN_nama, new Item.Properties()));
-	public static Item NABESHIO_nama = register("block_food_nabeshio_n", new Teatime_noFuel(Dish_Blocks.NABESHIO_nama, new Item.Properties()));
-	public static Item NABENIMAME_nama = register("block_food_nabenimame_n", new Teatime_noFuel(Dish_Blocks.NABENIMAME_nama, new Item.Properties()));
-	public static Item NABETOUFU_nama = register("block_food_nabetoufu_n", new Teatime_noFuel(Dish_Blocks.NABETOUFU_nama, new Item.Properties()));
-
-	public static Item NABETORI = register("block_food_nabe_1", new Teatime_noFuel(Dish_Blocks.NABETORI, new Item.Properties()));
-	public static Item NABEMISO = register("block_food_nabemiso_1", new Teatime_noFuel(Dish_Blocks.NABEMISO, new Item.Properties()));
-	public static Item NABEGOHAN = register("block_food_nabegohan_1", new Teatime_noFuel(Dish_Blocks.NABEGOHAN, new Item.Properties()));
-	public static Item NABECORN = register("block_food_nabecorns_1", new Teatime_noFuel(Dish_Blocks.NABECORN, new Item.Properties()));
-
-	public static Item KEIRYO_CUP = register("block_measurecup", new Teatime_noFuel(Dish_Blocks.KEIRYO_CUP, new Item.Properties()));
-	public static Item KEIRYO_CUP_full = register("item_measurecup_full", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.KEIRYO_CUP)));
-
-	public static Item FRYPAN_kara = register("block_food_frypan", new Teatime_noFuel(Dish_Blocks.FRYPAN_kara, new Item.Properties()));
-	public static Item FPTAMAGO_nama = register("block_food_frypan_n_tamago", new Teatime_noFuel(Dish_Blocks.FPTAMAGO_nama, new Item.Properties()));
-	public static Item FPGYUDON_nama = register("block_food_frypan_n_gyudon", new Teatime_noFuel(Dish_Blocks.FPGYUDON_nama, new Item.Properties()));
-	public static Item FPOYAKODON_nama = register("block_food_frypan_n_oyakodon", new Teatime_noFuel(Dish_Blocks.FPOYAKODON_nama, new Item.Properties()));
-	public static Item FPKATSU_nama = register("block_food_frypan_n_katsu", new Teatime_noFuel(Dish_Blocks.FPKATSU_nama, new Item.Properties()));
-	public static Item FPKATSU_bake = register("block_food_frypan_b_katsu", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item FPKATSUDON_nama = register("block_food_frypan_n_katsudon", new Teatime_noFuel(Dish_Blocks.FPKATSUDON_nama, new Item.Properties()));
-	public static Item FPEGGBURG_nama = register("block_food_frypan_n_eggb", new Teatime_noFuel(Dish_Blocks.FPEGGBURG_nama, new Item.Properties()));
-	public static Item FPTOMATO_nama = register("block_food_frypan_n_tomatos", new Teatime_noFuel(Dish_Blocks.FPTOMATO_nama, new Item.Properties()));
-	public static Item FPKINOKO_nama = register("block_food_frypan_n_kinokos", new Teatime_noFuel(Dish_Blocks.FPKINOKO_nama, new Item.Properties()));
-	public static Item FPKINOKOAK_nama = register("block_food_frypan_n_kinokoak", new Teatime_noFuel(Dish_Blocks.FPKINOKOAK_nama, new Item.Properties()));
-	public static Item FPKINOKOAK = register("item_food_frypan_b_kinokoak", new AddInfo_Item(new Item.Properties().containerItem(Items_Teatime.FRYPAN_kara).group(ItemGroups_CM.TEATIME)));
-
-	public static Item NIBOSHI = register("block_niboshi", new Teatime_noFuel(Dish_Blocks.NIBOSHI, new Item.Properties()));
-
-	public static Item CURRY = register("block_food_curry_1", new Curry_Item(Dish_Blocks.CURRY, new Item.Properties()));
-	public static Item CURRYSET = register("block_food_curryset_1", new Teatime_noFuel(Dish_Blocks.CURRYSET, new Item.Properties()));
-
-	public static Item STEW = register("block_food_stew_1", new Dish_addItem(Dish_Blocks.STEW, new Item.Properties()));
-	public static Item UDON_SU = register("block_food_udonsu_1", new Dish_addItem(Dish_Blocks.UDON_SU, new Item.Properties()));
-	public static Item UDON_NIKU = register("block_food_udonniku_1", new Dish_addItem(Dish_Blocks.UDON_NIKU, new Item.Properties()));
-	public static Item UDON_TSUKIMI = register("block_food_udontsukimi_1", new Dish_addItem(Dish_Blocks.UDON_TSUKIMI, new Item.Properties()));
-
-	public static Item TONSUITORI = register("block_food_tonsui_1", new Dish_addItem(Dish_Blocks.TONSUITORI, new Item.Properties()));
-	public static Item MISOSOUP = register("block_food_misosp_1", new Dish_addItem(Dish_Blocks.MISOSOUP, new Item.Properties()));
-	public static Item GOHAN = register("block_food_gohan_1", new Dish_addItem(Dish_Blocks.GOHAN, new Item.Properties()));
-	public static Item RICE = register("block_food_rice_1", new Dish_addItem(Dish_Blocks.RICE, new Item.Properties()));
-	public static Item DONBURI_MESHI = register("block_food_donmeshi_1", new Dish_addItem(Dish_Blocks.DONBURI_MESHI, new Item.Properties()));
-
-	public static Item DONBURI_GYU = register("block_food_dongyu_1", new Dish_addItem(Dish_Blocks.DONBURI_GYU, new Item.Properties()));
-	public static Item DONBURI_OYAKO = register("block_food_donoyako_1", new Dish_addItem(Dish_Blocks.DONBURI_OYAKO, new Item.Properties()));
-	public static Item DONBURI_KATSU = register("block_food_donkatsu_1", new Dish_addItem(Dish_Blocks.DONBURI_KATSU, new Item.Properties()));
-	public static Item DONBURI_KAISEN = register("block_food_donkaisen_1", new Dish_addItem(Dish_Blocks.DONBURI_KAISEN, new Item.Properties()));
 	
-	public static Item FOOD_HAKUSAI2 = register("item_food_hakusai2", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.HAKUSAI2)));
-	public static Item HAKUSAIDUKE = register("block_food_hsd_1", new Dish_addItem(Dish_Blocks.HAKUSAIDUKE, new Item.Properties()));
-	public static Item TAMAGOYAKI = register("block_food_tgy_1", new Dish_addItem(Dish_Blocks.TAMAGOYAKI, (new Item.Properties()).containerItem(Items_Teatime.SARA)));
+	/* アイテムのインスタンスを生成 Instantiate items. */
+	public static void init() {
 
-	public static Item TAMAGOYAKITEI = register("block_food_tgytei_1", new Teatime_noFuel(Dish_Blocks.TAMAGOYAKITEI, new Item.Properties()));
-	public static Item YAKIZAKANATEI = register("block_food_yakizakanatei_1", new Teatime_noFuel(Dish_Blocks.YAKIZAKANATEI, new Item.Properties()));
-	public static Item YAKIJYAKETEI = register("block_food_yakijyaketei_1", new Teatime_noFuel(Dish_Blocks.YAKIJYAKETEI, new Item.Properties()));
+		/* 種・作物 */
+		SEEDSBOX = new ItemBoxSeeds();
+		SEEDS_CABBAGE = new ItemSeedCabbage();
+		SEEDS_HAKUSAI = new ItemSeedHakusai();
+		SEEDS_CORN = new ItemSeedCorn();
+		SEEDS_ONION = new ItemSeedOnion();
+		SEEDS_RICE = new ItemSeedRice();
+		SEEDS_SOY = new ItemSeedSoy();
+		SEEDS_SPINACH = new ItemSeedSpinach();
+		SEEDS_TOMATO = new ItemSeedTomato();
+		SEEDS_CHERRY = new ItemSeedCherry();
+		CHANOKI = new ItemChanoki_nae();
+		BUDOUNOKI = new ItemGrape_nae();
+		MIKAN = new ItemMikan_nae();
+		HODAGI_BOT = new ItemHodaGi_Bot();
 
-	public static Item CORNSOUP = register("block_food_cornsp_1", new Dish_addItem(Dish_Blocks.CORNSOUP, new Item.Properties()));
+		CHABA = new ItemChaba("item_chaba");
 
-	public static Item EGGBURG = register("block_food_egb_1", new Dish_addItem(Dish_Blocks.EGGBURG, new Item.Properties()));
-	public static Item EGGBURGSET = register("block_food_egbset_1", new Teatime_noFuel(Dish_Blocks.EGGBURGSET, new Item.Properties()));
+		INAGI = new ItemInagi_Bot();
+		INEWARA = new ItemTTimeInfo("item_inewara");
+		INE = new ItemIne("item_ine");
+		KOME = new ItemTTimeInfo("item_kome");
+		SAYA = new ItemTTimeInfo("item_saya");
+		SOY = new ItemTTimeInfo("item_soy");
 
-	public static Item PASTATOMATO = register("block_food_pastatoma_1", new Dish_addItem(Dish_Blocks.PASTATOMATO, new Item.Properties()));
-	public static Item PASTACHEESE = register("block_food_pastacheese_1", new Dish_addItem(Dish_Blocks.PASTACHEESE, new Item.Properties()));
-	public static Item PASTAKINOKO = register("block_food_pastakinoko_1", new Dish_addItem(Dish_Blocks.PASTAKINOKO, new Item.Properties()));
+		FOOD_CABBAGE = new ItemModFood("item_food_cabbage", 2, 0.3F, false);
+		FOOD_HAKUSAI = new ItemModFood("item_food_hakusai", 2, 0.3F, false);
+		FOOD_CORN = new ItemModFood("item_food_corn", 1, 0.3F, false);
+		FOOD_GRAPE = new ItemModFood("item_food_grape", 1, 0.3F, false);
+		FOOD_ONION = new ItemModFood("item_food_onion", 1, 0.3F, false);
+		FOOD_SPINACH = new ItemModFood("item_food_spinach", 1, 0.3F, false);
+		FOOD_TOMATO = new ItemModFood("item_food_tomato", 1, 0.3F, false);
+		FOOD_CHERRY = new ItemFoodCherry("item_food_cherry", 1, 0.3F, false);
+		FOOD_MIKAN = new ItemModFood("item_food_mikan", 1, 0.3F, false);
+		FOOD_CORN_B = new ItemModFood("item_food_cornb", 5, 0.6F, false);
 
-	public static Item PIZZA = register("block_food_pizza_1", new Teatime_noFuel(Dish_Blocks.PIZZA, new Item.Properties()));
-	public static Item PC_PIZZA = register("item_food_pizza", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.PC_PIZZA)));
+		BOX_H_EMPTY = new ItemBlock_noFuel(Kitchen_Blocks.BOX_H_EMPTY, "block_boxh_empty");
+		BOX_H_APPLE = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_APPLE, "block_boxh_apple");
+		BOX_H_BEEF = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_BEEF, "block_boxh_beef");
+		BOX_H_BEETROOT = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_BEETROOT, "block_boxh_beetroot");
+		BOX_H_BREAD = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_BREAD, "block_boxh_bread");
+		BOX_H_CARROT = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CARROT, "block_boxh_carrot");
+		BOX_H_CHICKEN = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CHICKEN, "block_boxh_chicken");
+		BOX_H_CHORUS = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CHORUS, "block_boxh_chorus");
+		BOX_H_COCO = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_COCO, "block_boxh_coco");
+		BOX_H_EGG = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_EGG, "block_boxh_egg");
+		BOX_H_FISH = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_FISH, "block_boxh_fish");
+		BOX_H_FLOUR = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_FLOUR, "block_boxh_flour");
+		BOX_H_MUTTON = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_MUTTON, "block_boxh_mutton");
+		BOX_H_PORK = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_PORK, "block_boxh_pork");
+		BOX_H_POTATO = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_POTATO, "block_boxh_potato");
+		BOX_H_RABBIT = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_RABBIT, "block_boxh_rabbit");
+		BOX_H_SALMON = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_SALMON, "block_boxh_salmon");
 
-	public static Item CHICKEN = register("block_food_roastchicken_1", new Teatime_noFuel(Dish_Blocks.CHICKEN, new Item.Properties()));
-	public static Item CHICKEN_small = register("block_food_chickenb_1", new Dish_addItem(Dish_Blocks.CHICKEN_small, new Item.Properties()));
+		BOX_H_CABBAGE = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CABBAGE, "block_boxh_cabbage");
+		BOX_H_HAKUSAI = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_HAKUSAI, "block_boxh_hakusai");
+		BOX_H_CHERRY = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CHERRY, "block_boxh_cherry");
+		BOX_H_CITRUS = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CITRUS, "block_boxh_citrus");
+		BOX_H_CORN = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_CORN, "block_boxh_corn");
+		BOX_H_GRAPE = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_GRAPE, "block_boxh_grape");
+		BOX_H_ONION = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_ONION, "block_boxh_onion");
+		BOX_H_RICE = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_RICE, "block_boxh_rice");
+		BOX_H_SOY = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_SOY, "block_boxh_soy");
+		BOX_H_SPINACH = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_SPINACH, "block_boxh_spinach");
+		BOX_H_TOMATO = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_TOMATO, "block_boxh_tomato");
+		BOX_H_TGREEN = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_TGREEN, "block_boxh_tgreen");
+		BOX_H_TRED = new ItemBlock_Fuel100(Kitchen_Blocks.BOX_H_TRED, "block_boxh_tred");
 
-	public static Item SUSHIMESHI = register("block_food_sushimeshi", new Teatime_noFuel(Dish_Blocks.SUSHIMESHI, (new Item.Properties()).containerItem(Items.BOWL)));
-	public static Item SUSHIGETA_kara = register("block_food_sushigeta_kara", new Teatime_noFuel(Dish_Blocks.SUSHIGETA_kara, new Item.Properties()));
+		CHADUTSU = new ItemBlock_noFuel(Kitchen_Blocks.CHADUTSU, Chadutsu.ID);
+		CANTEA = new ItemBlock_noFuel(Kitchen_Blocks.CANTEA, CanTea.ID);
+		TAWARA = new ItemBlock_Fuel200(Kitchen_Blocks.TAWARA, Tawara.ID);
 
-	public static Item SUSHISET_salmon = register("block_food_sushiset_salmon", new Teatime_noFuel(Dish_Blocks.SUSHISET_salmon, new Item.Properties()));
-	public static Item SUSHISET_fish = register("block_food_sushiset_fish", new Teatime_noFuel(Dish_Blocks.SUSHISET_fish, new Item.Properties()));
-	public static Item SUSHISET_beef = register("block_food_sushiset_beef", new Teatime_noFuel(Dish_Blocks.SUSHISET_beef, new Item.Properties()));
-	public static Item SUSHISET_tamago = register("block_food_sushiset_tamago", new Teatime_noFuel(Dish_Blocks.SUSHISET_tamago, new Item.Properties()));
-	public static Item SUSHISET_4shoku = register("block_food_sushiset_4shoku", new Teatime_noFuel(Dish_Blocks.SUSHISET_4shoku, new Item.Properties()));
+		/* 発酵 */
+		KOUBOBOT_full = new ItemBinKoubo_full();
+		NYUSANBOT_full = new ItemBinNyusan_full();
+		KOUBO = new ItemBinKoubo();
+		NYUSAN = new ItemBinNyusan();
 
-	public static Item SUSHIOKE = register("block_food_sushioke_kara", new Teatime_noFuel(Dish_Blocks.SUSHIOKE, new Item.Properties()));
-	public static Item SUSHIOKE_FULL_1 = register("block_food_sushiokefull_1", new Teatime_noFuel(Dish_Blocks.SUSHIOKE_FULL_1, new Item.Properties()));
-	public static Item SHOUYUSARA_1 = register("block_food_shouyusara_1", new Teatime_noFuel(Dish_Blocks.SHOUYUSARA_1, new Item.Properties()));
+		MIZUOKE = new ItemMizuoke_kara(Blocks.AIR);
+		MIZUOKE_full = new ItemMizuoke_full();
+		MIZUOKE_Milk = new ItemMizuoke_milk("item_mizuoke_milk");
 
-	public static Item KETTLE_kara = register("item_kettle_kara", new Teatime_noFuel(Dish_Blocks.KETTLE_kara, new Item.Properties()));
-	public static Item KETTLE_full = register("block_kettle_full", new Teatime_noFuel(Dish_Blocks.KETTLE_full, new Item.Properties()));
-	public static Item KETTLE_boil = register("item_kettle_boil", new Item(new Item.Properties().containerItem(Items_Teatime.KETTLE_kara).group(ItemGroups_CM.TEATIME)));
+		HAKKOUTARU = new ItemHakkouTaru();
+		RINGOSHU_TARU = new ItemBlock_noFuel(Hakkou_Blocks.RINGOSHU_TARU, TaruY_Ringoshu.ID);
+		BUDOUSHU_TARU = new ItemBlock_noFuel(Hakkou_Blocks.BUDOUSHU_TARU, TaruY_Budoushu.ID);
+		HACHIMITSUSHU_TARU = new ItemBlock_noFuel(Hakkou_Blocks.HACHIMITSUSHU_TARU, TaruY_Hachimitsushu.ID);
 
-	public static Item KYUSU_kara = register("block_food_kyusu", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KYUSU = register("block_food_kyusu_1", new Teatime_noFuel(Dish_Blocks.KYUSU, new Item.Properties()));
-	public static Item JPTEACUP = register("block_food_jpteacup_1", new Dish_always(Dish_Blocks.JPTEACUP, new Item.Properties().group(ItemGroups_CM.TEATIME)));
+		NAMASAKEBOT = new ItemBlock_noFuel(Hakkou_Blocks.NAMASAKEBOT, Bottle_SakeNama.ID);
+		SHINSAKEBOT = new ItemBlock_noFuel(Hakkou_Blocks.SHINSAKEBOT, Bottle_SakeShin.ID);
+		JUKUSAKEBOT = new ItemBlock_noFuel(Hakkou_Blocks.JUKUSAKEBOT, Bottle_SakeJuku.ID);
+		NABEAMAZAKE_nama = new ItemNabeAmazake_nama();
+		NABEAMAZAKE = new ItemBlock_noFuel(Hakkou_Blocks.NABEAMAZAKE, NabeAmazake_cooked.ID);
+		CIDERBOT = new ItemBlock_noFuel(Hakkou_Blocks.CIDERBOT, Bottle_Cider.ID);
+		JUKUCIDERBOT = new ItemBlock_noFuel(Hakkou_Blocks.JUKUCIDERBOT, Bottle_CiderJuku.ID);
+		WINEBOT = new ItemBlock_noFuel(Hakkou_Blocks.WINEBOT, Bottle_Wine.ID);
+		JUKUWINEBOT = new ItemBlock_noFuel(Hakkou_Blocks.JUKUWINEBOT, Bottle_WineJuku.ID);
+		MEADBOT = new ItemBlock_noFuel(Hakkou_Blocks.MEADBOT, Bottle_Mead.ID);
+		JUKUMEADBOT = new ItemBlock_noFuel(Hakkou_Blocks.JUKUMEADBOT, Bottle_MeadJuku.ID);
 
-	public static Item JPTEASET = register("block_food_jpteaset_1", new Teatime_noFuel(Dish_Blocks.JPTEASET, new Item.Properties()));
-	public static Item CHAUKE_SENBEI = register("block_food_senbei", new Teatime_noFuel(Dish_Blocks.CHAUKE_SENBEI, new Item.Properties()));
-	public static Item CHAUKE_MIKAN = register("block_food_mikan", new Teatime_noFuel(Dish_Blocks.CHAUKE_MIKAN, new Item.Properties()));
+		SAKEGLASS = new ItemGlass_Sake();
+		WINEGLASS = new ItemGlass_Wine();
+		WINE_TANA = new ItemBlock_Fuel300(Kitchen_Blocks.WINE_TANA, Kit_Tana2.ID);
+		HAKUSAI_TARU = new ItemHakkouTaru_Hakusai();
+		SHOUYU_TARU = new ItemHakkouTaru_Shouyu();
 
-	public static Item TEAPOT_kara = register("block_food_teapot", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item TEAPOT = register("block_food_teapot_1", new Teatime_noFuel(Dish_Blocks.TEAPOT, new Item.Properties()));
-	public static Item TEACUP = register("block_food_teacup_1", new TeaCup_Item(Dish_Blocks.TEACUP, new Item.Properties()));
+		SHOUYU_bot_1 = new ItemShouyu_bot_1();
+		SHOUYU_bot_2 = new ItemShouyu_bot_2();
+		SHOUYU_bot_3 = new ItemShouyu_bot_3();
+		SHOUYU_bot_4 = new ItemShouyu_bot_4();
 
-	public static Item TEASET = register("block_food_teaset_1", new Teatime_noFuel(Dish_Blocks.TEASET, new Item.Properties()));
-	public static Item CHAUKE_SCONE = register("block_food_scone", new Teatime_noFuel(Dish_Blocks.CHAUKE_SCONE, new Item.Properties()));
+		KOMEZU_bot_1 = new ItemKomezu_bot_1();
+		KOMEZU_bot_2 = new ItemKomezu_bot_2();
 
-	public static Item SCONESET_kara = register("block_food_teastand", new Teatime_noFuel(Dish_Blocks.SCONESET_kara, new Item.Properties()));
-	public static Item SCONESET_1 = register("block_food_sconeset_1", new Teatime_noFuel(Dish_Blocks.SCONESET_1, new Item.Properties()));
+		DASHI_bot_1 = new ItemDashi_bot_1();
+		DASHI_bot_2 = new ItemDashi_bot_2();
+		DASHI_bot_3 = new ItemDashi_bot_3();
+		DASHI_bot_4 = new ItemDashi_bot_4();
 
-	public static Item ICECREAM = register("block_food_icecream_1", new Dish_always(Dish_Blocks.ICECREAM, (new Item.Properties()).group(ItemGroups_CM.TEATIME)));
+		/* 食器 */
+		Item_MATCH = new ItemMatch("item_match_cm");
+		Item_SARA = new ItemTTimeInfo("item_food_sara");
+		Item_DISH = new ItemDishes().setRegistryName("item_food_dish");
+		CLAY_DISH = new ItemDishes_Clay().setRegistryName("item_clay_dish");
 
-	public static Item CHEESE_CURD = register("block_food_cheesecurd", new Teatime_noFuel(Hakkou_Blocks.CHEESE_CURD, new Item.Properties()));
-	public static Item CHEESE = register("block_food_cheese_1", new Teatime_noFuel(Hakkou_Blocks.CHEESE, new Item.Properties()));
-	public static Item FCHEESE = register("item_food_cheesef", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.FCHEESE)));
-	public static Item PC_CHEESE = register("item_food_cheese", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.PC_CHEESE)));
-	public static Item CHEESE_TANA = register("block_kit_cheese_tana", new Teatime_Fuel150(Kitchen_Blocks.CHEESE_TANA, new Item.Properties()));
+		/* 中間素材 */
+		SHIO = new ItemShio("item_salt");
 
-	/* FOOD */
-	public static Item CAKE = register("item_food_cake", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.CAKE)));
-	public static Item BUN = register("item_food_bun", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.BUN)));
-	public static Item SCONE = register("item_food_scone", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SCONE)));
-	public static Item SENBEI = register("item_food_senbei", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SENBEI)));
-	public static Item TOUFU = register("item_food_toufu", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.TOUFU)));
+		MUSHIGOME = new ItemMushigome("item_mushigome");
+		KOMEKOUJI = new ItemTTimeInfo("item_komekouji");
+		SHUBO = new ItemShubo("item_shubo");
+		MORO = new ItemMoromi("item_moromi");
+		SAKEKASU = new ItemSakekasu("item_sakekasu");
 
-	public static Item CHICKENSAND = register("item_food_chickensand", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.CHICKENSAND)));
-	public static Item EGGSAND = register("item_food_eggsand", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.EGGSAND)));
+		NIMAME = new ItemNimame("item_nimame");
+		MISO = new ItemTTimeInfo("item_miso");
 
-	public static Item KIRIMI_S = register("item_food_kirimi_salmon", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.KIRIMI)));
-	public static Item KIRIMI_F = register("item_food_kirimi_fish", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.KIRIMI)));
-	public static Item KIRIMI_B = register("item_food_kirimi_beef", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.KIRIMI)));
-	public static Item KIRIMI_T = register("item_food_kirimi_tamago", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.KIRIMI)));
+		KOMUGI = new ItemKomugi("item_komugi");
+		PASTA = new ItemPasta("item_pasta");
 
-	public static Item SUSHI_S = register("item_food_sushi_salmon", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SUSHI)));
-	public static Item SUSHI_F = register("item_food_sushi_fish", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SUSHI)));
-	public static Item SUSHI_B = register("item_food_sushi_beef", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SUSHI)));
-	public static Item SUSHI_T = register("item_food_sushi_tamago", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SUSHI)));
+		/* 調理済み 寸胴→鍋→フライパン */
+		ZUNDOU = new ItemZundou();
+		ZUNDOU_NAMA = new ItemZundou_Nama();
+		ZUNDOUMIZU = new ItemZundou_Mizu();
+		ZUNDOUMILK = new ItemZundou_Milk();
+		ZUNDOUSHIO = new ItemZundou_ShioMizu();
+		CURRYNABE = new ItemCurryNabe();
+		STEWNABE = new ItemStewNabe();
+		DASHINABE = new ItemZundou_Dashi();
 
-	public static Item SHOUYUSUSHI_S = register("item_food_sushishouyu_salmon", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SHOUYUSUSHI_S)));
-	public static Item SHOUYUSUSHI_F = register("item_food_sushishouyu_fish", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SHOUYUSUSHI_F)));
-	public static Item SHOUYUSUSHI_B = register("item_food_sushishouyu_beef", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SHOUYUSUSHI_B)));
-	public static Item SHOUYUSUSHI_T = register("item_food_sushishouyu_tamago", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.SHOUYUSUSHI_T)));
+		NABE_kara = new ItemNabe_kara(Blocks.AIR);
+		NABE_NAMA_1 = new ItemNabeNama_1();
+		NABE_KAISUI = new ItemNabeKaisui();
+		NABE_NAMA_2 = new ItemNabeNama_2();
+		NABETORI = new ItemNabeTori();
+		NABEMISO = new ItemNabeMiso();
+		NABEGOHAN = new ItemNabeGohan();
+		NABECORNSOUP = new ItemNabeCornSoup();
+		NABE_SNT = new ItemNabeCooked_SNT();
 
-	public static Item NORIAMI = register("block_noriami", new Teatime_noFuel(Crop_Blocks.NORIAMI, new Item.Properties()));
-	public static Item NORI_N = register("item_food_norinama", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item NORI_I = register("item_food_noriita", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.NORI_I)));
-	public static Item ONIGIRI = register("item_food_onigiri", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.ONIGIRI)));
-	public static Item ONIGIRI_SHAKE = register("item_food_onigirishake", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.ONIGIRISHAKE)));
-	public static Item FUTOMAKI = register("item_food_futomaki", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.FUTOMAKI)));
+		KEIRYO_CUP = new ItemKeiryoCup();
+		KEIRYO_CUP_F = new ItemKeiryoCup_full();
 
-	public static Item KUSHI_SAKANA = register("item_kushi_sakana", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
-	public static Item KUSHI_SAKANA_C = register("item_kushi_sakana_c", new Kushiyaki_Item(new Item.Properties().group(ItemGroups_CM.TEATIME)));
+		FRYPAN_kara = new ItemFryPan_kara();
+		FRYPAN_NAMA_1 = new ItemFrypan_Nama_1();
+		FRYPAN_NAMA_2 = new ItemFrypan_Nama_2();
+		FPKINOKOAK_nama = new ItemBlock_noFuel(Dish_Blocks.FPKINOKOAK_nama, Frypan_KinokoAmaKara.ID);
+		FRYPAN_BAKE_1 = new ItemFrypan_Bake_1();
+		FRYPAN_BAKE_2 = new ItemFrypan_Bake_2();
+		FPKINOKOAK = new ItemKinokoAmakara("item_food_frypan_b_kinokoak");
 
-	public static Item ROTTEN_FOOD = register("item_rotten_food", new AddInfo_Item(new Item.Properties().food(FoodBuilders.ROTTEN_FOOD)));
+		NIBOSHI = new ItemFish_boiled();
+		CURRY = new ItemCurry(10, 1.0F, false);
+		CURRYSET = new ItemCurrySet();
+		STEW = new ItemStew(8, 0.6F, false);
 
-	/* Kitchen */
-	public static Item KIT_TANA = register("block_kit_tana", new Teatime_Fuel150(Kitchen_Blocks.KIT_TANA, new Item.Properties()));
-	public static Item KITCHEN = register("block_kitchen", new Teatime_Fuel150(Kitchen_Blocks.KITCHEN, new Item.Properties()));
+		UDON_SU = new ItemUdon_Su(5, 0.6F, false);
+		UDON_NIKU = new ItemUdon_Niku(10, 0.8F, false);
+		UDON_TSUKIMI = new ItemUdon_Tsukimi(10, 0.8F, false);
 
-	public static Item KIT_BOARD = register("block_kit_board", new Teatime_Fuel300(Kitchen_Blocks.KIT_BOARD, new Item.Properties()));
-	public static Item KIT_SINK = register("block_kit_sink", new Teatime_noFuel(Kitchen_Blocks.KIT_SINK, new Item.Properties()));
+		TONSUITORI = new ItemTonsui_small(2, 0.5F, false);
+		MISOSOUP = new ItemMisoSoup_small(2, 0.3F, false);
+		GOHAN = new ItemGohan_small(3, 0.6F, false);
+		RICE = new ItemRice_small(3, 0.6F, false);
 
-	public static Item KIT_COOKTOP = register("block_kit_stove", new Teatime_noFuel(Kitchen_Blocks.KIT_COOKTOP, new Item.Properties()));
-	public static Item KIT_OVEN = register("block_kit_oven", new Teatime_noFuel(Kitchen_Blocks.KIT_OVEN, new Item.Properties()));
-	public static Item KIT_OVEN_B = register("block_kit_oven_black", new Teatime_noFuel(Kitchen_Blocks.KIT_OVEN_B, new Item.Properties()));
-	public static Item IRORI = register("block_irori", new Teatime_noFuel(Kitchen_Blocks.IRORI, new Item.Properties()));
+		DONBURI_MESHI = new ItemDon_Meshi(5, 0.6F, false);
+		DONBURI_GYU = new ItemDon_Gyu(10, 0.8F, false);
+		DONBURI_OYAKO = new ItemDon_Oyako(10, 0.8F, false);
+		DONBURI_KATSU = new ItemDon_Katsu(10, 1.0F, false);
+		DONBURI_KAISEN = new ItemDon_Kaisen(10, 0.8F, false);
+		
+		FOOD_HAKUSAI2 = new ItemModFood("item_food_hakusai2", 2, 0.6F, false);
+		HAKUSAIDUKE = new ItemHakusaiduke(1, 0.2F, false);
 
-	public static Item KIT_KANKI_1 = register("block_kit_kanki", new Teatime_noFuel(Kitchen_Blocks.KIT_KANKI_1, new Item.Properties()));
-	public static Item KIT_HAIKIDUCT = register("block_kit_duct", new Teatime_noFuel(Kitchen_Blocks.KIT_HAIKIDUCT, new Item.Properties()));
-	public static Item KIT_DUCTEND_1 = register("block_kit_ductend", new Teatime_noFuel(Kitchen_Blocks.KIT_DUCTEND_1, new Item.Properties()));
+		TAMAGOYAKI = new ItemTamagoyaki_small(3, 0.5F, false);
+		TAMAGOYAKITEI = new ItemTamagoyakiSet();
+		YAKIZAKANATEI = new ItemYakizakanaSet();
+		YAKIJYAKETEI = new ItemYakijyakeSet();
 
-	public static Item TEATABLE = register("block_teatable", new Teatime_Fuel300(Unit_Blocks.TEATABLE, new Item.Properties()));
-	public static Item ENDEN = register("block_enden", new Teatime_noFuel(Crop_Blocks.ENDEN, new Item.Properties()));
-	public static Item TOAMI = register("item_toami", new Toami_Item(Crop_Blocks.TOAMI, new Item.Properties().maxStackSize(1).maxDamage(32).group(ItemGroups_CM.TEATIME)));
-	public static Item SHIKAKE_AMI = register("block_ami_shikake", new AmiShikake_Item(Crop_Blocks.SHIKAKE_AMI, new Item.Properties().maxStackSize(1).maxDamage(12)));
-	public static Item YOUSHOKU_AMI = register("block_ami_youshoku", new AmiYoushoku_Item(Crop_Blocks.YOUSHOKU_AMI, new Item.Properties().maxStackSize(1).maxDamage(12)));
-	
-	public static Item CUT_IKA = register("item_squid_cut", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.CUT_IKA)));
-	public static Item COOKED_IKA = register("item_squid_cooked", new Item(new Item.Properties().group(ItemGroups_CM.TEATIME).food(FoodBuilders.COOKED_IKA)));
-	public static Item IKA = register("item_squid_raw", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.TEATIME).containerItem(Items_Teatime.CUT_IKA)));	
-	
-	///* Register *///
-	private static Item register(String name, Item item) {
-		ITEMS.register(name, () -> item);
-		return item;
+		CORNSOUP = new ItemCornSoup_small(2, 0.3F, false);
+		EGGBURG = new ItemEggburg_small(5, 0.6F, false);
+		EGGBURGSET = new ItemEggburgSet();
+
+		PASTATOMATO = new ItemPastaTomato(10, 0.8F, false);
+		PASTACHEESE = new ItemPastaCheese(10, 0.8F, false);
+		PASTAKINOKO = new ItemPastaKinoko(10, 0.8F, false);
+
+		PIZZA = new ItemPizza_coocked();
+		PC_PIZZA = new ItemFoodPizza("item_food_pizza", 6, 0.6F, false);
+		CHICKEN = new ItemChicken_large();
+		CHICKEN_small = new ItemChicken_small(3, 0.5F, false);
+
+		SUSHIMESHI = new ItemSushiMeshi();
+		SUSHIGETA_kara = new ItemSushiGeta_kara();
+		SUSHISET_salmon = new ItemSushiSet_Salmon();
+		SUSHISET_fish = new ItemSushiSet_Fish();
+		SUSHISET_beef = new ItemSushiSet_Beef();
+		SUSHISET_tamago = new ItemSushiSet_Tamago();
+		SUSHISET_4shoku = new ItemSushiSet_4shoku();
+		SUSHIOKE = new ItemSushiOke_kara();
+		SUSHISET_1 = new ItemSushiOkeFull_1();
+		SHOUYUSARA = new ItemShouyuSara();
+
+		Item_YAKAN_kara = new ItemKettle_kara();
+		KETTLE_full = new ItemKettle_full();
+		Item_YAKAN_boil = new ItemKettle_boil();
+		KYUSU_kara = new ItemKyusu_kara();
+		KYUSU = new ItemKyusu();
+		JPTEACUP = new ItemJPTeaCup(); //drink
+		JPTEASET = new ItemJPTeaSet();
+		JPCHAUKE = new ItemJPChaUke();
+
+		TEAPOT_kara = new ItemTeaPot_kara();
+		TEAPOT = new ItemTeaPot();
+		TEACUP = new ItemTeaCup(); //drink
+		TEASET = new ItemTeaSet();
+		SCONESET_kara = new ItemSconeSet_kara();
+		SCONESET_1 = new ItemSconeSet_1();
+
+		ICECREAM = new ItemIcecream(0, 0.0F, false);
+
+		CHEESE_CURD = new ItemCheese_curd();
+		CHEESE = new ItemCheese_block();
+
+		/*バニラの食料
+		registerItem(260, "apple", (new ItemFood(4, 0.3F, false)).setUnlocalizedName("apple"));
+		registerItem(391, "carrot", (new ItemSeedFood(3, 0.6F, Blocks.CARROTS, Blocks.FARMLAND)).setUnlocalizedName("carrots"));
+
+		registerItem(392, "potato", (new ItemSeedFood(1, 0.3F, Blocks.POTATOES, Blocks.FARMLAND)).setUnlocalizedName("potato"));
+		registerItem(393, "baked_potato", (new ItemFood(5, 0.6F, false)).setUnlocalizedName("potatoBaked"));
+
+		registerItem(297, "bread", (new ItemFood(5, 0.6F, false)).setUnlocalizedName("bread"));
+		5＝肉メモリ2.5個分
+		registerItem(364, "cooked_beef", (new ItemFood(8, 0.8F, true)).setUnlocalizedName("beefCooked"));
+		registerItem(366, "cooked_chicken", (new ItemFood(6, 0.6F, true)).setUnlocalizedName("chickenCooked"));*/
+
+		FRESH_CHEESE = new ItemModFood("item_food_cheesef", 1, 0.3F, false);
+		PIECE_CHEESE = new ItemFoodCheese("item_food_cheese", 1, 0.3F, false);
+		CHEESE_TANA = new ItemBlock_Fuel150(Kitchen_Blocks.CHEESE_TANA, Kit_Cheese_Tana.ID);
+
+		CAKE = new ItemModFood("item_food_cake", 5, 0.4F, false);
+		BUN = new ItemModFood("item_food_bun", 6, 0.4F, false);
+		SCONE = new ItemModFood("item_food_scone", 4, 0.3F, false);
+		SENBEI = new ItemSenbei("item_food_senbei", 4, 0.3F, false);
+		TOUFU = new ItemModFood("item_food_toufu", 4, 0.3F, false);
+
+		CHICKENSAND = new ItemModFood("item_food_chickensand", 6, 0.6F, false);
+		EGGSAND = new ItemModFood("item_food_eggsand", 6, 0.6F, false);
+		KIRIMI = new ItemFoodKirimi("item_food_kirimi", 1, 0.1F, false);
+		SUSHI = new ItemFoodSushi("item_food_sushi", 4, 0.6F, false);
+		SHOUYUSUSHI = new ItemFoodSushi_Shouyu("item_food_sushishouyu", 5, 0.8F, false);
+
+		NORIAMI = new ItemBlock_noFuel(Crop_Blocks.NORIAMI, NoriAmi.ID);
+		NORI_N = new ItemTTimeInfo("item_food_norinama");
+		NORI_I = new ItemModFood("item_food_noriita", 1, 0.1F, false);
+		ONIGIRI = new ItemFoodOnigiri("item_food_onigiri", 4, 0.6F, false);
+
+		KUSHI_SAKANA = new ItemTTimeInfo("item_kushi_sakana");
+		KUSHI_SAKANA_C = new ItemFoodKushiSakana("item_kushi_sakana_c", 5, 0.8F, false);
+
+		KIT_TANA = new ItemBlock_Fuel150(Kitchen_Blocks.KIT_TANA, Kit_Tana.ID);
+		KITCHEN = new ItemBlock_Fuel150(Kitchen_Blocks.KITCHEN, Kitchen.ID);
+
+		KIT_BOARD = new ItemBlock_Fuel300(Kitchen_Blocks.KIT_BOARD, Kit_board.ID);
+		KIT_SINK1 = new ItemKit_sink();
+
+		KIT_STOVE = new ItemBlock_noFuel(Kitchen_Blocks.KIT_STOVE, Kit_Cooktop_off.ID);
+		KIT_OVEN = new ItemBlock_noFuel(Kitchen_Blocks.KIT_OVEN, "block_kit_oven");
+		KIT_OVEN_B = new ItemBlock_noFuel(Kitchen_Blocks.KIT_OVEN_B, "block_kit_oven_black");
+		IRORI = new ItemBlock_noFuel(Kitchen_Blocks.IRORI, Irori.ID);
+
+		KIT_KANKI_1 = new ItemBlock_noFuel(Kitchen_Blocks.KIT_KANKI_1, Kit_kanki_off.ID);
+		KIT_HAIKIDUCT = new ItemBlock_noFuel(Kitchen_Blocks.KIT_HAIKIDUCT, Kit_duct.ID);
+		KIT_DUCTEND_1 = new ItemBlock_noFuel(Kitchen_Blocks.KIT_DUCTEND_1, Kit_ductend.ID);
+
+		TEATABLE = new ItemTeaTable();
+		ENDEN = new ItemEnden();
+		
+		TOAMI = new ItemToami("item_toami");
+		TOAMI_W = new ItemToami_Wide(Crop_Blocks.TOAMI_W, Toami_Wide.ID);
+		CUT_IKA = new ItemModFood("item_squid_cut", 2, 0.1F, false);
+		COOKED_IKA = new ItemModFood("item_squid_cooked", 6, 0.8F, false);
+		IKA = new ItemIkaRaw("item_squid_raw");
+
 	}
+
+	/* アイテムを登録する、ここから Register Items. From here. ↓*/
+	public static void register() {
+
+		registerItem(SEEDSBOX);
+		registerItem(SEEDS_CABBAGE);
+		registerItem(SEEDS_HAKUSAI);
+		registerItem(SEEDS_CORN);
+		registerItem(SEEDS_ONION);
+		registerItem(SEEDS_RICE);
+		registerItem(SEEDS_SOY);
+		registerItem(SEEDS_SPINACH);
+		registerItem(SEEDS_TOMATO);
+		registerItem(SEEDS_CHERRY);
+		registerItem(CHANOKI);
+		registerItem(BUDOUNOKI);
+		registerItem(MIKAN);
+		registerItem(HODAGI_BOT);
+
+		registerItem(CHABA);
+		registerItem(INAGI);
+		registerItem(INEWARA);
+		registerItem(INE);
+		registerItem(KOME);
+		registerItem(SAYA);
+		registerItem(SOY);
+
+		registerItem(FOOD_CABBAGE);
+		registerItem(FOOD_HAKUSAI);
+		registerItem(FOOD_CORN);
+		registerItem(FOOD_ONION);
+		registerItem(FOOD_SPINACH);
+		registerItem(FOOD_TOMATO);
+		registerItem(FOOD_GRAPE);
+		registerItem(FOOD_CHERRY);
+		registerItem(FOOD_MIKAN);
+		registerItem(FOOD_CORN_B);
+
+		registerItem(BOX_H_EMPTY);
+		registerItem(BOX_H_APPLE);
+		registerItem(BOX_H_BEEF);
+		registerItem(BOX_H_BEETROOT);
+		registerItem(BOX_H_BREAD);
+		registerItem(BOX_H_CARROT);
+		registerItem(BOX_H_CHICKEN);
+		registerItem(BOX_H_CHORUS);
+		registerItem(BOX_H_COCO);
+		registerItem(BOX_H_EGG);
+		registerItem(BOX_H_FISH);
+		registerItem(BOX_H_FLOUR);
+		registerItem(BOX_H_MUTTON);
+		registerItem(BOX_H_PORK);
+		registerItem(BOX_H_POTATO);
+		registerItem(BOX_H_RABBIT);
+		registerItem(BOX_H_SALMON);
+
+		registerItem(BOX_H_CABBAGE);
+		registerItem(BOX_H_HAKUSAI);
+		registerItem(BOX_H_CHERRY);
+		registerItem(BOX_H_CITRUS);
+		registerItem(BOX_H_CORN);
+		registerItem(BOX_H_GRAPE);
+		registerItem(BOX_H_ONION);
+		registerItem(BOX_H_RICE);
+		registerItem(BOX_H_SOY);
+		registerItem(BOX_H_SPINACH);
+		registerItem(BOX_H_TOMATO);
+		registerItem(BOX_H_TGREEN);
+		registerItem(BOX_H_TRED);
+
+		registerItem(CHADUTSU);
+		registerItem(CANTEA);
+		registerItem(TAWARA);
+
+		registerItem(KOUBOBOT_full);
+		registerItem(NYUSANBOT_full);
+		registerItem(KOUBO);
+		registerItem(NYUSAN);
+
+		registerItem(MIZUOKE);
+		registerItem(MIZUOKE_full);
+		registerItem(MIZUOKE_Milk);
+
+		registerItem(HAKKOUTARU);
+		registerItem(RINGOSHU_TARU);
+		registerItem(BUDOUSHU_TARU);
+		registerItem(HACHIMITSUSHU_TARU);
+
+		registerItem(NAMASAKEBOT);
+		registerItem(SHINSAKEBOT);
+		registerItem(JUKUSAKEBOT);
+		registerItem(NABEAMAZAKE_nama);
+		registerItem(NABEAMAZAKE);
+		registerItem(CIDERBOT);
+		registerItem(JUKUCIDERBOT);
+		registerItem(WINEBOT);
+		registerItem(JUKUWINEBOT);
+		registerItem(MEADBOT);
+		registerItem(JUKUMEADBOT);
+
+		registerItem(SAKEGLASS);
+		registerItem(WINEGLASS);
+		registerItem(WINE_TANA);
+
+		registerItem(HAKUSAI_TARU);
+		registerItem(SHOUYU_TARU);
+
+		registerItem(SHOUYU_bot_1);
+		registerItem(SHOUYU_bot_2);
+		registerItem(SHOUYU_bot_3);
+		registerItem(SHOUYU_bot_4);
+
+		registerItem(KOMEZU_bot_1);
+		registerItem(KOMEZU_bot_2);
+
+		registerItem(DASHI_bot_1);
+		registerItem(DASHI_bot_2);
+		registerItem(DASHI_bot_3);
+		registerItem(DASHI_bot_4);
+
+		registerItem(Item_MATCH);
+		registerItem(Item_SARA);
+		registerItem(Item_DISH);
+		registerItem(CLAY_DISH);
+
+		registerItem(SHIO);
+
+		registerItem(MUSHIGOME);
+		registerItem(KOMEKOUJI);
+		registerItem(SHUBO);
+		registerItem(MORO);
+		registerItem(SAKEKASU);
+
+		registerItem(NIMAME);
+		registerItem(MISO);
+
+		registerItem(KOMUGI);
+		registerItem(PASTA);
+
+		registerItem(ZUNDOU);
+		registerItem(ZUNDOU_NAMA);
+		registerItem(ZUNDOUMIZU);
+		registerItem(ZUNDOUMILK);
+		registerItem(ZUNDOUSHIO);
+		registerItem(CURRYNABE);
+		registerItem(STEWNABE);
+		registerItem(DASHINABE);
+
+		registerItem(NABE_kara);
+		registerItem(NABE_NAMA_1);
+		registerItem(NABE_KAISUI);
+		registerItem(NABE_NAMA_2);
+		registerItem(NABETORI);
+		registerItem(NABEMISO);
+		registerItem(NABEGOHAN);
+		registerItem(NABECORNSOUP);
+		registerItem(NABE_SNT);
+
+		registerItem(KEIRYO_CUP);
+		registerItem(KEIRYO_CUP_F);
+
+		registerItem(FRYPAN_kara);
+		registerItem(FRYPAN_NAMA_1);
+		registerItem(FRYPAN_NAMA_2);
+		registerItem(FPKINOKOAK_nama);
+		registerItem(FRYPAN_BAKE_1);
+		registerItem(FRYPAN_BAKE_2);
+		registerItem(FPKINOKOAK);
+
+		registerItem(NIBOSHI);
+		registerItem(CURRY);
+		registerItem(CURRYSET);
+		registerItem(STEW);
+
+		registerItem(UDON_SU);
+		registerItem(UDON_NIKU);
+		registerItem(UDON_TSUKIMI);
+
+		registerItem(TONSUITORI);
+		registerItem(MISOSOUP);
+		registerItem(GOHAN);
+		registerItem(RICE);
+
+		registerItem(DONBURI_MESHI);
+		registerItem(DONBURI_GYU);
+		registerItem(DONBURI_OYAKO);
+		registerItem(DONBURI_KATSU);
+		registerItem(DONBURI_KAISEN);
+		
+		registerItem(FOOD_HAKUSAI2);
+		registerItem(HAKUSAIDUKE);
+
+		registerItem(TAMAGOYAKI);
+		registerItem(TAMAGOYAKITEI);
+		registerItem(YAKIZAKANATEI);
+		registerItem(YAKIJYAKETEI);
+
+		registerItem(CORNSOUP);
+		registerItem(EGGBURG);
+		registerItem(EGGBURGSET);
+
+		registerItem(PASTATOMATO);
+		registerItem(PASTACHEESE);
+		registerItem(PASTAKINOKO);
+
+		registerItem(PIZZA);
+		registerItem(PC_PIZZA);
+		registerItem(CHICKEN);
+		registerItem(CHICKEN_small);
+
+		registerItem(SUSHIMESHI);
+		registerItem(SUSHIGETA_kara);
+		registerItem(SUSHISET_salmon);
+		registerItem(SUSHISET_fish);
+		registerItem(SUSHISET_beef);
+		registerItem(SUSHISET_tamago);
+		registerItem(SUSHISET_4shoku);
+		registerItem(SUSHIOKE);
+		registerItem(SUSHISET_1);
+		registerItem(SHOUYUSARA);
+
+		registerItem(Item_YAKAN_kara);
+		registerItem(KETTLE_full);
+		registerItem(Item_YAKAN_boil);
+		registerItem(KYUSU_kara);
+		registerItem(KYUSU);
+		registerItem(JPTEACUP);
+		registerItem(JPTEASET);
+		registerItem(JPCHAUKE);
+
+		registerItem(TEAPOT_kara);
+		registerItem(TEAPOT);
+		registerItem(TEACUP);
+		registerItem(TEASET);
+		registerItem(SCONESET_kara);
+		registerItem(SCONESET_1);
+
+		registerItem(ICECREAM);
+
+		registerItem(CHEESE_CURD);
+		registerItem(CHEESE);
+		registerItem(FRESH_CHEESE);
+		registerItem(PIECE_CHEESE);
+		registerItem(CHEESE_TANA);
+
+		registerItem(CAKE);
+		registerItem(BUN);
+		registerItem(SCONE);
+		registerItem(SENBEI);
+		registerItem(TOUFU);
+		registerItem(CHICKENSAND);
+		registerItem(EGGSAND);
+		registerItem(KIRIMI);
+		registerItem(SUSHI);
+		registerItem(SHOUYUSUSHI);
+
+		registerItem(NORIAMI);
+		registerItem(NORI_N);
+		registerItem(NORI_I);
+		registerItem(ONIGIRI);
+
+		registerItem(KUSHI_SAKANA);
+		registerItem(KUSHI_SAKANA_C);
+
+		registerItem(KIT_TANA);
+		registerItem(KITCHEN);
+		registerItem(KIT_BOARD);
+		registerItem(KIT_SINK1);
+		registerItem(KIT_STOVE);
+		registerItem(KIT_OVEN);
+		registerItem(KIT_OVEN_B);
+		registerItem(IRORI);
+		registerItem(KIT_KANKI_1);
+		registerItem(KIT_HAIKIDUCT);
+		registerItem(KIT_DUCTEND_1);
+
+		registerItem(TEATABLE);
+		registerItem(ENDEN);
+		
+		registerItem(TOAMI);
+		registerItem(TOAMI_W);
+		registerItem(CUT_IKA);
+		registerItem(COOKED_IKA);
+		registerItem(IKA);
+		
+		/** registerItem の順番に沿って、registerRenders が表示される **/
+	}
+
+	public static void registerItem(Item item) {
+		RegisterHandler_CM.Items.ITEMS.add(item);
+	}
+	/*ここまで So far↑ */
+
+
+	/* ドロップ時やインベントリにおける、アイテムの描画を登録。ここから↓
+	* Register rendering of Items in drop and inventory. From here↓*/
+	public static void registerRenders() {
+		registerRender(SEEDSBOX);
+		registerRender(SEEDS_CABBAGE);
+		registerRender(SEEDS_HAKUSAI);
+		registerRender(SEEDS_CORN);
+		registerRender(SEEDS_ONION);
+		registerRender(SEEDS_RICE);
+		registerRender(SEEDS_SOY);
+		registerRender(SEEDS_SPINACH);
+		registerRender(SEEDS_TOMATO);
+		registerRender(SEEDS_CHERRY);
+		registerRender(CHANOKI);
+		registerRender(BUDOUNOKI);
+		registerRender(MIKAN);
+		registerRender(HODAGI_BOT);
+
+		registerRenderMeta(CHABA, 0, "item_chaba");
+		registerRenderMeta(CHABA, 1, "item_chaba_green");
+		registerRenderMeta(CHABA, 2, "item_chaba_red");
+		registerRender(INAGI);
+		registerRender(INEWARA);
+		registerRenderMeta(INE, 0, "item_ine");
+		registerRenderMeta(INE, 1, "item_ine_dry");
+		registerRender(KOME);
+		registerRender(SAYA);
+		registerRender(SOY);
+
+		registerRender(FOOD_CABBAGE);
+		registerRender(FOOD_HAKUSAI);
+		registerRender(FOOD_CORN);
+		registerRender(FOOD_ONION);
+		registerRender(FOOD_SPINACH);
+		registerRender(FOOD_TOMATO);
+		registerRender(FOOD_GRAPE);
+		registerRender(FOOD_CHERRY);
+		registerRender(FOOD_MIKAN);
+		registerRender(FOOD_CORN_B);
+
+		registerRender(BOX_H_EMPTY);
+		registerRender(BOX_H_APPLE);
+		registerRender(BOX_H_BEEF);
+		registerRender(BOX_H_BEETROOT);
+		registerRender(BOX_H_BREAD);
+		registerRender(BOX_H_CARROT);
+		registerRender(BOX_H_CHICKEN);
+		registerRender(BOX_H_CHORUS);
+		registerRender(BOX_H_COCO);
+		registerRender(BOX_H_EGG);
+		registerRender(BOX_H_FISH);
+		registerRender(BOX_H_FLOUR);
+		registerRender(BOX_H_MUTTON);
+		registerRender(BOX_H_PORK);
+		registerRender(BOX_H_POTATO);
+		registerRender(BOX_H_RABBIT);
+		registerRender(BOX_H_SALMON);
+
+		registerRender(BOX_H_CABBAGE);
+		registerRender(BOX_H_HAKUSAI);
+		registerRender(BOX_H_CHERRY);
+		registerRender(BOX_H_CITRUS);
+		registerRender(BOX_H_CORN);
+		registerRender(BOX_H_GRAPE);
+		registerRender(BOX_H_ONION);
+		registerRender(BOX_H_RICE);
+		registerRender(BOX_H_SOY);
+		registerRender(BOX_H_SPINACH);
+		registerRender(BOX_H_TOMATO);
+		registerRender(BOX_H_TGREEN);
+		registerRender(BOX_H_TRED);
+
+		registerRender(CHADUTSU);
+		registerRender(CANTEA);
+		registerRender(TAWARA);
+
+		registerRender(KOUBOBOT_full);
+		registerRender(NYUSANBOT_full);
+		registerRender(KOUBO);
+		registerRender(NYUSAN);
+
+		registerRender(MIZUOKE);
+		registerRender(MIZUOKE_full);
+		registerRender(MIZUOKE_Milk);
+
+		registerRenderMeta(HAKKOUTARU, 0, "block_taru_hakkou");
+		registerRenderMeta(HAKKOUTARU, 1, "block_taru_kouji_f");
+		registerRenderMeta(HAKKOUTARU, 2, "block_taru_shubo_f");
+		registerRenderMeta(HAKKOUTARU, 3, "block_taru_moromi_f");
+		registerRenderMeta(HAKKOUTARU, 4, "block_taru_jukusei_f");
+		registerRender(RINGOSHU_TARU);
+		registerRender(BUDOUSHU_TARU);
+		registerRender(HACHIMITSUSHU_TARU);
+
+		registerRender(NAMASAKEBOT);
+		registerRender(SHINSAKEBOT);
+		registerRender(JUKUSAKEBOT);
+		registerRender(NABEAMAZAKE_nama);
+		registerRender(NABEAMAZAKE);
+		registerRender(CIDERBOT);
+		registerRender(JUKUCIDERBOT);
+		registerRender(WINEBOT);
+		registerRender(JUKUWINEBOT);
+		registerRender(MEADBOT);
+		registerRender(JUKUMEADBOT);
+
+		registerRenderMeta(SAKEGLASS, 1, "block_glass_sakenama");
+		registerRenderMeta(SAKEGLASS, 2, "block_glass_sake");
+		registerRenderMeta(SAKEGLASS, 3, "block_glass_sakejuku");
+		registerRenderMeta(SAKEGLASS, 4, "block_glass_amazake");
+		registerRenderMeta(WINEGLASS, 1, "block_glass_wine");
+		registerRenderMeta(WINEGLASS, 2, "block_glass_winejuku");
+		registerRenderMeta(WINEGLASS, 3, "block_glass_cider");
+		registerRenderMeta(WINEGLASS, 4, "block_glass_ciderjuku");
+		registerRenderMeta(WINEGLASS, 5, "block_glass_mead");
+		registerRenderMeta(WINEGLASS, 6, "block_glass_meadjuku");
+		registerRender(WINE_TANA);
+
+		registerRenderMeta(HAKKOUTARU, 5, "block_taru_miso_f");
+		registerRenderMeta(HAKUSAI_TARU, 1, "block_taru_hakusai_f");
+		registerRenderMeta(HAKUSAI_TARU, 2, "block_taru_hakusai_f2");
+
+		registerRenderMeta(SHOUYU_TARU, 1, "block_taru_shouyu_f");
+		registerRenderMeta(SHOUYU_TARU, 2, "block_taru_komezu_f");
+		registerRenderMeta(SHOUYU_TARU, 3, "block_taru_kinoko_f");
+		registerRenderMeta(SHOUYU_TARU, 4, "block_taru_nori_f");
+		registerRenderMeta(HAKKOUTARU, 6, "block_taru_koucha_f");
+
+		registerRender(SHOUYU_bot_1);
+		registerRender(SHOUYU_bot_2);
+		registerRender(SHOUYU_bot_3);
+		registerRender(SHOUYU_bot_4);
+
+		registerRender(KOMEZU_bot_1);
+		registerRender(KOMEZU_bot_2);
+
+		registerRender(DASHI_bot_1);
+		registerRender(DASHI_bot_2);
+		registerRender(DASHI_bot_3);
+		registerRender(DASHI_bot_4);
+
+		registerRender(Item_MATCH);
+		registerRender(Item_SARA);
+		registerRenderMeta(Item_DISH, 1, "item_food_yunomi");
+		registerRenderMeta(Item_DISH, 2, "item_food_teacup");
+		registerRenderMeta(Item_DISH, 3, "item_food_chawan");
+		registerRenderMeta(Item_DISH, 4, "item_food_shikki");
+		registerRenderMeta(Item_DISH, 5, "item_food_tonsui");
+		registerRenderMeta(Item_DISH, 6, "item_food_donburi");
+		registerRenderMeta(Item_DISH, 7, "item_food_driglass");
+		registerRenderMeta(Item_DISH, 8, "item_food_sakebot");
+
+		registerRenderMeta(CLAY_DISH, 1, "item_clay_sara");
+		registerRenderMeta(CLAY_DISH, 2, "item_clay_yunomi");
+		registerRenderMeta(CLAY_DISH, 3, "item_clay_kyusu");
+		registerRenderMeta(CLAY_DISH, 4, "item_clay_teacup");
+		registerRenderMeta(CLAY_DISH, 5, "item_clay_teapot");
+		registerRenderMeta(CLAY_DISH, 6, "item_clay_chawan");
+		registerRenderMeta(CLAY_DISH, 7, "item_clay_nabe");
+		registerRenderMeta(CLAY_DISH, 8, "item_clay_tonsui");
+		registerRenderMeta(CLAY_DISH, 9, "item_clay_donburi");
+
+		registerRenderMeta(SHIO, 0, "item_salt");
+		registerRenderMeta(SHIO, 1, "item_nigari");
+		registerRenderMeta(SHIO, 2, "item_rennet");
+
+		registerRender(MUSHIGOME);
+		registerRender(KOMEKOUJI);
+		registerRender(SHUBO);
+		registerRender(MORO);
+		registerRender(SAKEKASU);
+
+		registerRender(NIMAME);
+		registerRender(MISO);
+
+		registerRenderMeta(KOMUGI, 1, "item_flour");
+		registerRenderMeta(KOMUGI, 2, "item_butter");
+		registerRenderMeta(KOMUGI, 3, "item_kiji_bun");
+		registerRenderMeta(KOMUGI, 4, "item_kiji_burg");
+		registerRenderMeta(KOMUGI, 5, "item_kiji_scone");
+		registerRenderMeta(KOMUGI, 6, "item_kiji_senbei");
+		registerRenderMeta(KOMUGI, 7, "item_kiji_pizza");
+		registerRenderMeta(KOMUGI, 8, "item_food_pizza_n");
+
+		registerRenderMeta(PASTA, 1, "item_food_pasta_n");
+		registerRenderMeta(PASTA, 2, "item_food_pasta_s");
+		registerRenderMeta(PASTA, 3, "item_food_udon_n");
+		registerRenderMeta(PASTA, 4, "item_food_shouyu_don");
+		registerRenderMeta(PASTA, 5, "item_food_tsuyu_don");
+
+		registerRender(ZUNDOU);
+		registerRenderMeta(ZUNDOU_NAMA, 2, "block_food_cunabe_n");
+		registerRenderMeta(ZUNDOU_NAMA, 3, "block_food_stewnabe_n");
+		registerRender(ZUNDOUMIZU);
+		registerRender(ZUNDOUMILK);
+		registerRender(ZUNDOUSHIO);
+		registerRender(CURRYNABE);
+		registerRender(STEWNABE);
+		registerRender(DASHINABE);
+
+		registerRender(NABE_kara);
+		registerRenderMeta(NABE_NAMA_1, 1, "block_food_nabe_n");
+		registerRenderMeta(NABE_NAMA_1, 2, "block_food_nabemiso_n");
+		registerRenderMeta(NABE_NAMA_1, 3, "block_food_nabegohan_n");
+		registerRenderMeta(NABE_NAMA_1, 4, "block_food_nabecorns_n");
+
+		registerRender(NABE_KAISUI);
+		registerRenderMeta(NABE_NAMA_2, 2, "block_food_nabenimame_n");
+		registerRenderMeta(NABE_NAMA_2, 3, "block_food_nabetoufu_n");
+
+		registerRender(NABETORI);
+		registerRender(NABEMISO);
+		registerRender(NABEGOHAN);
+		registerRender(NABECORNSOUP);
+
+		registerRenderMeta(NABE_SNT, 1, "block_food_nabeshio_b");
+		registerRenderMeta(NABE_SNT, 2, "block_food_nabenimame_b");
+		registerRenderMeta(NABE_SNT, 3, "block_food_nabetoufu_b");
+
+		registerRender(KEIRYO_CUP);
+		registerRender(KEIRYO_CUP_F);
+
+		registerRender(FRYPAN_kara);
+		registerRenderMeta(FRYPAN_NAMA_1, 1, "block_food_frypan_n_tamago");
+		registerRenderMeta(FRYPAN_NAMA_1, 2, "block_food_frypan_n_eggb");
+		registerRenderMeta(FRYPAN_NAMA_1, 3, "block_food_frypan_n_tomatos");
+		registerRenderMeta(FRYPAN_NAMA_1, 4, "block_food_frypan_n_kinokos");
+
+		registerRenderMeta(FRYPAN_NAMA_2, 1, "block_food_frypan_n_gyudon");
+		registerRenderMeta(FRYPAN_NAMA_2, 2, "block_food_frypan_n_oyakodon");
+		registerRenderMeta(FRYPAN_NAMA_2, 3, "block_food_frypan_n_katsu");
+		registerRenderMeta(FRYPAN_NAMA_2, 4, "block_food_frypan_n_katsudon");
+		registerRender(FPKINOKOAK_nama);
+
+		registerRenderMeta(FRYPAN_BAKE_1, 1, "block_food_frypan_b_tamago");
+		registerRenderMeta(FRYPAN_BAKE_1, 2, "block_food_frypan_b_eggb");
+		registerRenderMeta(FRYPAN_BAKE_1, 3, "block_food_frypan_b_tomatos");
+		registerRenderMeta(FRYPAN_BAKE_1, 4, "block_food_frypan_b_kinokos");
+
+		registerRenderMeta(FRYPAN_BAKE_2, 1, "block_food_frypan_b_gyudon");
+		registerRenderMeta(FRYPAN_BAKE_2, 2, "block_food_frypan_b_oyakodon");
+		registerRenderMeta(FRYPAN_BAKE_2, 3, "block_food_frypan_b_katsu");
+		registerRenderMeta(FRYPAN_BAKE_2, 4, "block_food_frypan_b_katsudon");
+		registerRender(FPKINOKOAK);
+
+		registerRender(NIBOSHI);
+		registerRender(CURRY);
+		registerRender(CURRYSET);
+		registerRender(STEW);
+
+		registerRender(UDON_SU);
+		registerRender(UDON_NIKU);
+		registerRender(UDON_TSUKIMI);
+
+		registerRender(TONSUITORI);
+		registerRender(MISOSOUP);
+		registerRender(GOHAN);
+		registerRender(RICE);
+
+		registerRender(DONBURI_MESHI);
+		registerRender(DONBURI_GYU);
+		registerRender(DONBURI_OYAKO);
+		registerRender(DONBURI_KATSU);
+		registerRender(DONBURI_KAISEN);
+		
+		registerRender(FOOD_HAKUSAI2);
+		registerRender(HAKUSAIDUKE);
+
+		registerRender(TAMAGOYAKI);
+		registerRender(TAMAGOYAKITEI);
+		registerRender(YAKIZAKANATEI);
+		registerRender(YAKIJYAKETEI);
+
+		registerRender(CORNSOUP);
+		registerRender(EGGBURG);
+		registerRender(EGGBURGSET);
+
+		registerRender(PASTATOMATO);
+		registerRender(PASTACHEESE);
+		registerRender(PASTAKINOKO);
+
+		registerRender(PIZZA);
+		registerRender(PC_PIZZA);
+		registerRender(CHICKEN);
+		registerRender(CHICKEN_small);
+
+		registerRender(SUSHIMESHI);
+		registerRender(SUSHIGETA_kara);
+		registerRender(SUSHISET_salmon);
+		registerRender(SUSHISET_fish);
+		registerRender(SUSHISET_beef);
+		registerRender(SUSHISET_tamago);
+		registerRender(SUSHISET_4shoku);
+		registerRender(SUSHIOKE);
+		registerRender(SUSHISET_1);
+		registerRender(SHOUYUSARA);
+
+		registerRender(Item_YAKAN_kara);
+		registerRender(KETTLE_full);
+		registerRender(Item_YAKAN_boil);
+		registerRender(KYUSU_kara);
+		registerRender(KYUSU);
+		registerRender(JPTEACUP);
+		registerRender(JPTEASET);
+		registerRenderMeta(JPCHAUKE, 0, "block_food_senbei");
+		registerRenderMeta(JPCHAUKE, 1, "block_food_mikan");
+		registerRenderMeta(JPCHAUKE, 2, "block_food_scone");
+
+		registerRender(TEAPOT_kara);
+		registerRender(TEAPOT);
+		registerRender(TEACUP);
+		registerRender(TEASET);
+		registerRender(SCONESET_kara);
+		registerRender(SCONESET_1);
+
+		registerRender(ICECREAM);
+
+		registerRender(CHEESE_CURD);
+		registerRender(CHEESE);
+		registerRender(FRESH_CHEESE);
+		registerRender(PIECE_CHEESE);
+		registerRender(CHEESE_TANA);
+
+		registerRender(CAKE);
+		registerRender(BUN);
+		registerRender(SCONE);
+		registerRender(SENBEI);
+		registerRender(TOUFU);
+		registerRender(CHICKENSAND);
+		registerRender(EGGSAND);
+		registerRenderMeta(KIRIMI, 1, "item_food_kirimi_salmon");
+		registerRenderMeta(KIRIMI, 2, "item_food_kirimi_fish");
+		registerRenderMeta(KIRIMI, 3, "item_food_kirimi_beef");
+		registerRenderMeta(KIRIMI, 4, "item_food_kirimi_tamago");
+
+		registerRenderMeta(SUSHI, 1, "item_food_sushi_salmon");
+		registerRenderMeta(SUSHI, 2, "item_food_sushi_fish");
+		registerRenderMeta(SUSHI, 3, "item_food_sushi_beef");
+		registerRenderMeta(SUSHI, 4, "item_food_sushi_tamago");
+
+		registerRenderMeta(SHOUYUSUSHI, 1, "item_food_sushishouyu_salmon");
+		registerRenderMeta(SHOUYUSUSHI, 2, "item_food_sushishouyu_fish");
+		registerRenderMeta(SHOUYUSUSHI, 3, "item_food_sushishouyu_beef");
+		registerRenderMeta(SHOUYUSUSHI, 4, "item_food_sushishouyu_tamago");
+
+		registerRender(NORIAMI);
+		registerRender(NORI_N);
+		registerRender(NORI_I);
+		registerRenderMeta(ONIGIRI, 0, "item_food_onigiri");
+		registerRenderMeta(ONIGIRI, 1, "item_food_onigirishake");
+		registerRenderMeta(ONIGIRI, 2, "item_food_futomaki");
+
+		registerRender(KUSHI_SAKANA);
+		registerRender(KUSHI_SAKANA_C);
+
+		registerRender(KIT_TANA);
+		registerRender(KITCHEN);
+		registerRender(KIT_BOARD);
+		registerRender(KIT_SINK1);
+
+		registerRender(KIT_STOVE);
+		registerRender(KIT_OVEN);
+		registerRender(KIT_OVEN_B);
+		registerRender(IRORI);
+		registerRender(KIT_KANKI_1);
+		registerRender(KIT_HAIKIDUCT);
+		registerRender(KIT_DUCTEND_1);
+
+		registerRender(TEATABLE);
+		registerRender(ENDEN);
+		
+		registerRender(TOAMI);
+		registerRender(TOAMI_W);
+		registerRender(CUT_IKA);
+		registerRender(COOKED_IKA);
+		registerRender(IKA);
+	}
+
+	private static void registerRender(Item item) {
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
+	}
+
+	private static void registerRenderMeta(Item item, int meta, String fileName) {
+		ModelLoader.setCustomModelResourceLocation(item, meta,
+				new ModelResourceLocation(new ResourceLocation(ChinjufuMod.MOD_ID, fileName), "inventory"));
+	}
+
+	/*ここまで So far↑ */
 
 }

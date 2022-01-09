@@ -10,12 +10,12 @@
 			"from": [ 0.01, 0.01, 0.01 ],
 			"to": [ 15.99, 15.99, 15.99 ],
 			"faces": {
-				"up": { "texture": "#ha", "tintindex": 1 },
-				"down" : { "texture": "#ha", "tintindex": 1 },
-				"north": { "texture": "#ha", "tintindex": 1 },
-				"south": { "texture": "#ha", "tintindex": 1 },
-				"west" : { "texture": "#ha", "tintindex": 1 },
-				"east" : { "texture": "#ha", "tintindex": 1 }
+				"up": { "texture": "#ha", "tintindex": 8 },
+				"down" : { "texture": "#ha", "tintindex": 8 },
+				"north": { "texture": "#ha", "tintindex": 8 },
+				"south": { "texture": "#ha", "tintindex": 8 },
+				"west" : { "texture": "#ha", "tintindex": 8 },
+				"east" : { "texture": "#ha", "tintindex": 8 }
 			}
 		}
 	]

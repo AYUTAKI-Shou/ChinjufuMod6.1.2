@@ -1,5 +1,13 @@
 {
 	"variants": {
-		"": { "model": "chinjufumod:block/logchair/block_logchair" }
+		"stage=0": { "model": "chinjufumod:logchair/block_logchair" },
+		"stage=1": { "model": "chinjufumod:logchair/block_logchair_spruce" },
+		"stage=2": { "model": "chinjufumod:logchair/block_logchair_birch" },
+		"stage=3": { "model": "chinjufumod:logchair/block_logchair_jungle" },
+		"stage=4": { "model": "chinjufumod:logchair/block_logchair_acacia" },
+		"stage=5": { "model": "chinjufumod:logchair/block_logchair_darkoak" },
+		"stage=6": { "model": "chinjufumod:logchair/block_logchair_sakura" },
+		"stage=7": { "model": "chinjufumod:logchair/block_logchair_kaede" },
+		"stage=8": { "model": "chinjufumod:logchair/block_logchair_ichoh" }
 	}
 }

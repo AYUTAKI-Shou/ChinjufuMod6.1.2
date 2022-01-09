@@ -6,8 +6,8 @@
 		"front": "chinjufumod:blocks/kitchen_front",
 		"side": "chinjufumod:blocks/kitchen_side",
 		"sink": "chinjufumod:blocks/kitchen_sink",
-		"water": "minecraft:block/water_still",
-		"flow": "minecraft:block/water_flow"
+		"water": "chinjufumod:blocks/water_still",
+		"flow": "chinjufumod:blocks/water_flow"
 	},
 	"elements": [
 		{
@@ -15,10 +15,10 @@
 			"from": [ 7.7, 0.0, 7.2 ],
 			"to": [ 8.3, 5.0, 7.8 ],
 			"faces": {
-				"north": { "uv": [ 7.7, 11.0, 8.3, 16.0 ], "texture": "#flow", "tintindex": 1 },
-				"south": { "uv": [ 7.7, 11.0, 8.3, 16.0 ], "texture": "#flow", "tintindex": 1 },
-	 			"west" : { "uv": [ 7.2, 11.0, 7.8, 16.0 ], "texture": "#flow", "tintindex": 1 },
-				"east" : { "uv": [ 7.2, 11.0, 7.8, 16.0 ], "texture": "#flow", "tintindex": 1 }
+				"north": { "uv": [ 7.7, 11.0, 8.3, 16.0 ], "texture": "#flow", "tintindex": 20 },
+				"south": { "uv": [ 7.7, 11.0, 8.3, 16.0 ], "texture": "#flow", "tintindex": 20 },
+	 			"west" : { "uv": [ 7.2, 11.0, 7.8, 16.0 ], "texture": "#flow", "tintindex": 20 },
+				"east" : { "uv": [ 7.2, 11.0, 7.8, 16.0 ], "texture": "#flow", "tintindex": 20 }
 			}
 		},
 

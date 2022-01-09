@@ -1,5 +1,5 @@
 {
-	"parent": "block/slab",
+	"parent": "block/half_slab",
 	"textures": {
 		"bottom": "chinjufumod:blocks/namakowall_b_magenta",
 		"top": "chinjufumod:blocks/namakowall_b_magenta",

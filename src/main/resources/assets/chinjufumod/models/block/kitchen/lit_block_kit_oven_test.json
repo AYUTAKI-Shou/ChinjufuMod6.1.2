@@ -7,10 +7,10 @@
 		"side": "chinjufumod:blocks/kitchen_side",
 		"stove": "chinjufumod:blocks/kitchen_stove",
 		"stove_l": "chinjufumod:blocks/kitchen_stove_l",
-		"netherrack": "minecraft:block/netherrack",
-		"ami": "minecraft:block/iron_block",
-		"mado": "minecraft:block/black_stained_glass",
-		"fire": "minecraft:block/fire_0"
+		"netherrack": "minecraft:blocks/netherrack",
+		"ami": "minecraft:blocks/iron_block",
+		"mado": "minecraft:blocks/glass_black",
+		"fire": "minecraft:blocks/fire_layer_0"
 	},
 	"elements": [
 		{

@@ -4,6 +4,6 @@
 		"particle": "chinjufumod:blocks/wrapping_pink",
 		"hako": "chinjufumod:blocks/wrapping_pink",
 		"ribbon": "chinjufumod:blocks/ribbon_red",
-		"nakami": "minecraft:item/blaze_rod"
+		"nakami": "minecraft:items/blaze_rod"
 	}
 }

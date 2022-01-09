@@ -8,396 +8,255 @@ import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Items_Wadeco;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
-import com.ayutaki.chinjufumod.registry.Wood_Blocks;
+import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.FoliageColors;
-import net.minecraft.world.biome.BiomeColors;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.Item;
+import net.minecraft.world.ColorizerFoliage;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
-@OnlyIn(Dist.CLIENT)
 public class TintColors_CM {
 
-	/* TintIndex によるブロック色 0は使わずに1以降から */
-	public static void registerBlockColors() {
-		/** 20 Water=1, 35 CornSoup=2 **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? BiomeColors.getWaterColor(worldIn, pos) : ((tint == 2)? 16441700 : -1); },
-				Garden_Blocks.CHOUZUBACHI,
-				Garden_Blocks.CHOUZUBACHI_gra,
-				Garden_Blocks.CHOUZUBACHI_dio,
-				Garden_Blocks.CHOUZUBACHI_and,
-				Garden_Blocks.SHISHIODOSHI,
-				Garden_Blocks.SHISHIODOSHI2,
-				Kitchen_Blocks.KIT_SINK,
-				Wood_Blocks.SUIDEN,
+	public static void registerColorHandlers() {
 
-				Hakkou_Blocks.MIZUOKE,
-				Hakkou_Blocks.MIZUOKE_full,
-				Hakkou_Blocks.HAKUSAI_TARU1,
-				Hakkou_Blocks.HAKUSAI_TARU2,
-				
-				Dish_Blocks.KEIRYO_CUP,
-				Dish_Blocks.CURRY,
-				Dish_Blocks.CURRYSET,
-				Dish_Blocks.KETTLE_full,
-				Dish_Blocks.ZUNDOU_MIZU,
-				Dish_Blocks.ZUNDOU_SHIO,
-				Dish_Blocks.ZUNDOU_NCURRY, 
-				Dish_Blocks.ZUNDOU_FISH,
-				Dish_Blocks.ZUNDOU_UDON,
-				Dish_Blocks.ZUNDOU_PASTA,
-				Dish_Blocks.NABEGOHAN_nama,
-				Dish_Blocks.NABESHIO_nama,
-				Dish_Blocks.NABENIMAME_nama,
-				
-				Dish_Blocks.NABECORN_nama,
-				Dish_Blocks.NABECORN,
-				Dish_Blocks.CORNSOUP,
-				Dish_Blocks.EGGBURGSET );
-		
-		/** 21 Raw_Sake **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 12509680 : -1; },
-				Hakkou_Blocks.NAMASAKEGLASS );
-		
-		/** 22 Sake **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 9223890 : -1; },
-				Hakkou_Blocks.SAKEGLASS );
-		
-		/** 23 Aged_Sake **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 11164250 : -1; },
-				Hakkou_Blocks.JUKUSAKEGLASS );
-		
-		/** 24 Cider **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 15127945 : -1; },
-				Hakkou_Blocks.CIDERGLASS );
-		
-		/** 25 Aged_Cider **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 14588001 : -1; },
-				Hakkou_Blocks.JUKUCIDERGLASS );
-		
-		/** 26 Wine **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 8398655 : -1; },
-				Hakkou_Blocks.WINEGLASS );
-		
-		/** 27 Aged_Wine **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 5715258 : -1; },
-				Hakkou_Blocks.JUKUWINEGLASS );
-		
-		/** 28 Mead **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 13821640 : -1; },
-				Hakkou_Blocks.MEADGLASS );
-		
-		/** 29 Aged_Mead **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 13808770 : -1; },
-				Hakkou_Blocks.JUKUMEADGLASS );
-		
-		/** 30 Green_Tea=1, 32 MisoSoup=2 **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { 
-			return (tint == 1)? 16775010 : ((tint == 2)? 15772230 : -1); },
-				Dish_Blocks.KYUSU, 
-				Dish_Blocks.JPTEACUP,
-				Dish_Blocks.JPTEASET,
-				Dish_Blocks.SUSHISET_salmon,
-				Dish_Blocks.SUSHISET_fish,
-				Dish_Blocks.SUSHISET_beef,
-				Dish_Blocks.SUSHISET_tamago,
-				Dish_Blocks.SUSHISET_4shoku,
-				
-				Dish_Blocks.NABETORI_nama,
-				Dish_Blocks.NABETORI,
-				Dish_Blocks.NABEMISO_nama,
-				Dish_Blocks.NABEMISO,
-				Dish_Blocks.TONSUITORI,
-				Dish_Blocks.MISOSOUP,
-				
-				Dish_Blocks.TAMAGOYAKITEI,
-				Dish_Blocks.YAKIZAKANATEI,
-				Dish_Blocks.YAKIJYAKETEI );
-		
-		/** 31 Black_Tea **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 14493736 : -1; },
-				Dish_Blocks.TEAPOT, 
-				Dish_Blocks.TEACUP,
-				Dish_Blocks.TEASET );
+		/* 木の葉 */
+		IItemColor leafItemColor = (stack, tint) -> {
+			/** 1=オーク, 2=マツ, 3=シラカバ, 4=ジャングル, 5=アカシア, 6=ダークオーク
+			 * 7=楓 226,66,31=14828063, 8=枯れオーク 175,105,15=11495695, #7cbd6b=7060860**/
+			return (tint == 1)? ColorizerFoliage.getFoliageColor(0.7F, 0.6F) :
+						((tint == 2)? ColorizerFoliage.getFoliageColorPine() :
+						((tint == 3)? ColorizerFoliage.getFoliageColorBirch() :
+						((tint == 4)? ColorizerFoliage.getFoliageColor(0.9F, 0.9F) :
+						((tint == 5)? ColorizerFoliage.getFoliageColor(0.9F, 0.0F) :
+						((tint == 6)? ColorizerFoliage.getFoliageColor(0.7F, 0.8F) :
+						((tint == 7)? 14828063 :
+						((tint == 8)? 11495695 : -1)))))));
+			};
 
-		/** 33 Aku **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 3297410 : -1; },
-				Dish_Blocks.ZUNDOU_AKU,
-				Dish_Blocks.ZUNDOU_ORIITO );
+			registerColorHandlerForItem(Items_Wadeco.BONSAI_oak, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.BONSAI_spru, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.BONSAI_bir, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.BONSAI_jun, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.BONSAI_doak, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.BONSAI_aca, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.KANYOU_BOT, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.IKEGAKILONG_BOT, leafItemColor);
+			registerColorHandlerForItem(Items_Wadeco.IKEGAKI, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.SKANYOU_BOT, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.SIKEGAKI, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.SIKEGAKILONG_BOT, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.KAEDE_leaf, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.OAKKARE_leaf, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.BONSAI_kaede, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.BONSAI_kare, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.KAEDE_carpet, leafItemColor);
+			registerColorHandlerForItem(Items_Seasonal.OCHIBA_carpet, leafItemColor);
 
-		/** 20 Water=1, 34 AMAZAKE=2 **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { 
-			return (tint == 1)? BiomeColors.getWaterColor(worldIn, pos) : ((tint == 2)? 16443100 : -1); },
-				Hakkou_Blocks.NABEAMAZAKE_nama,
-				Hakkou_Blocks.NABEAMAZAKE,
-				Hakkou_Blocks.AMAZAKEGLASS );
-		
-		/** 40 ENDEN=1, 41 ENDEN=2 **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { 
-			return (tint == 1)? 6587090 : ((tint == 2)? 8560880 : -1); },
-				Crop_Blocks.ENDEN );
-		
-		/* BiomeColors.class 設置場所の色を拾う BiomeColors.getFoliageColor(worldIn, pos) */
-		/* Biome.class 気温と降雨量から色指定 FoliageColors.get(Temperature, Downfall) 1.0F以上はクラッシュする */
-		/** 1 Oak **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.7F, 0.6F) : -1; },
-				Garden_Blocks.BONSAI_oak,
-				Garden_Blocks.KANYOU,
-				Garden_Blocks.IKEGAKILONG,
-				Garden_Blocks.IKEGAKI );
-		
-		/** 2 Spruce **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.getSpruce() : -1; },
-				Garden_Blocks.BONSAI_spru,
-				Garden_Blocks.KANYOU_spruce,
-				Garden_Blocks.IKEGAKILONG_spruce,
-				Garden_Blocks.IKEGAKI_spruce );
-		
-		/** 3 Birch **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.getBirch() : -1; },
-				Garden_Blocks.BONSAI_bir,
-				Garden_Blocks.KANYOU_birch,
-				Garden_Blocks.IKEGAKILONG_birch,
-				Garden_Blocks.IKEGAKI_birch );
-		
-		/** 4 Jungle **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.9F, 0.9F) : -1; }, //緑
-				Garden_Blocks.BONSAI_jun,
-				Garden_Blocks.KANYOU_jungle,
-				Garden_Blocks.IKEGAKILONG_jungle,
-				Garden_Blocks.IKEGAKI_jungle );
-		
-		/** 5 Acacia **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.9F, 0.0F) : -1; },
-				Garden_Blocks.BONSAI_aca,
-				Garden_Blocks.KANYOU_acacia,
-				Garden_Blocks.IKEGAKILONG_acacia,
-				Garden_Blocks.IKEGAKI_acacia );
-		
-		/** 6 DarkOak **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.7F, 0.8F) : -1; }, //黒
-				Garden_Blocks.BONSAI_doak,
-				Garden_Blocks.KANYOU_darkoak,
-				Garden_Blocks.IKEGAKILONG_darkoak,
-				Garden_Blocks.IKEGAKI_darkoak );
-		
-		/** 7 Acer **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? 14828063 : -1; },
-				Garden_Blocks.BONSAI_kaede,
-				Garden_Blocks.KANYOU_kaede,
-				Garden_Blocks.IKEGAKILONG_kaede,
-				Garden_Blocks.IKEGAKI_kaede,
-				Wood_Blocks.KAEDE_leaf,
-				Wood_Blocks.KAEDE_carpet );
-		
-		/** 8 Autumn_Oak **/
-		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? 11495695 : -1; },
-				Garden_Blocks.BONSAI_kare,
-				Garden_Blocks.KANYOU_kare,
-				Garden_Blocks.IKEGAKILONG_kare,
-				Garden_Blocks.IKEGAKI_kare,
-				Wood_Blocks.OAKKARE_leaf,
-				Wood_Blocks.OCHIBA_carpet );
+
+		IBlockColor leafBlockColor = (state, worldIn, pos, tint) -> {
+			/** BiomeColors.class 設置場所の色を拾う BiomeColors.getFoliageColor(worldIn, pos)
+			 ** Biome.class 気温と降雨量から色指定 FoliageColors.get(Temperature, Downfall) 1.0F以上はクラッシュする **/
+			return (tint == 1)? ColorizerFoliage.getFoliageColor(0.7F, 0.6F) :
+						((tint == 2)? ColorizerFoliage.getFoliageColorPine() :
+						((tint == 3)? ColorizerFoliage.getFoliageColorBirch() :
+						((tint == 4)? ColorizerFoliage.getFoliageColor(0.9F, 0.9F) :
+						((tint == 5)? ColorizerFoliage.getFoliageColor(0.9F, 0.0F) :
+						((tint == 6)? ColorizerFoliage.getFoliageColor(0.7F, 0.8F) :
+						((tint == 7)? 14828063 :
+						((tint == 8)? 11495695 : -1)))))));
+			};
+
+			registerColorHandlerForBlock(Garden_Blocks.BONSAI_oak, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.BONSAI_spru, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.BONSAI_bir, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.BONSAI_jun, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.BONSAI_doak, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.BONSAI_aca, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.KANYOU_TOP, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.KANYOU_BOT, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.KANYOU2_TOP, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.KANYOU2_BOT, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.IKEGAKI_L_TOP, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.IKEGAKI_L_BOT, leafBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.IKEGAKI_S, leafBlockColor);
+			registerColorHandlerForBlock(Seasonal_Blocks.KAEDE_leaf, leafBlockColor);
+			registerColorHandlerForBlock(Seasonal_Blocks.OAKKARE_leaf, leafBlockColor);
+			registerColorHandlerForBlock(Seasonal_Blocks.BONSAI_kaede, leafBlockColor);
+			registerColorHandlerForBlock(Seasonal_Blocks.BONSAI_kare, leafBlockColor);
+			registerColorHandlerForBlock(Seasonal_Blocks.KAEDE_carpet, leafBlockColor);
+			registerColorHandlerForBlock(Seasonal_Blocks.OCHIBA_carpet, leafBlockColor);
+
+
+		/* 水と紅茶 -30,-30,-30 */
+		IItemColor soupItemColor = (stack, tint) -> {
+			return (tint == 20)? 2185414 :
+						((tint == 21)? 9217455 :
+						((tint == 22)? 6589590 :
+						((tint == 23)? 8208705 :
+						((tint == 24)? 10852705 :
+						((tint == 25)? 10645571 :
+						((tint == 26)? 6102315 :
+						((tint == 27)? 4072747 :
+						((tint == 28)? 9874065 :
+						((tint == 29)? 9863775 :
+
+						((tint == 30)? 16777053 :
+						((tint == 31)? 13505566 :
+						((tint == 32)? 11174450 :
+						((tint == 33)? 3297410 :
+						((tint == 34)? 13806240 :
+						((tint == 35)? 11838790 :
+						((tint == 40)? 6587090 : -1))))))))))))))));
+			};
+
+			registerColorHandlerForItem(Items_Teatime.ENDEN, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.MIZUOKE_full, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.ZUNDOUMIZU, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.ZUNDOUSHIO, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.ZUNDOU, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.ZUNDOU_NAMA, soupItemColor); //カレー生・シチュー生
+			registerColorHandlerForItem(Items_Teatime.DASHINABE, soupItemColor);
+
+			registerColorHandlerForItem(Items_Teatime.CURRY, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.CURRYSET, soupItemColor);
+
+			registerColorHandlerForItem(Items_Teatime.NABETORI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.NABEMISO, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.NABE_NAMA_1, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.NABECORNSOUP, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.NABE_KAISUI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.NABE_NAMA_2, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.KEIRYO_CUP_F, soupItemColor);
+
+			registerColorHandlerForItem(Items_Teatime.UDON_SU, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.UDON_NIKU, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.UDON_TSUKIMI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.TONSUITORI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.MISOSOUP, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.TAMAGOYAKITEI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.YAKIZAKANATEI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.YAKIJYAKETEI, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.CORNSOUP, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.EGGBURGSET, soupItemColor);
+
+			registerColorHandlerForItem(Items_Teatime.SUSHISET_salmon, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.SUSHISET_fish, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.SUSHISET_beef, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.SUSHISET_tamago, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.SUSHISET_4shoku, soupItemColor);
+
+			registerColorHandlerForItem(Items_Teatime.KETTLE_full, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.Item_YAKAN_boil, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.KYUSU, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.JPTEACUP, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.JPTEASET, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.TEAPOT, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.TEACUP, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.TEASET, soupItemColor);
+
+			registerColorHandlerForItem(Items_Teatime.NABEAMAZAKE, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.SAKEGLASS, soupItemColor);
+			registerColorHandlerForItem(Items_Teatime.WINEGLASS, soupItemColor);
+
+			registerColorHandlerForItem(Items_Seasonal.FALL_LEAF, soupItemColor);
+			registerColorHandlerForItem(Items_Seasonal.AKUNABE, soupItemColor);
+			registerColorHandlerForItem(Items_Seasonal.SUIDEN, soupItemColor);
+
+		IBlockColor soupBlockColor = (state, worldIn, pos, tint) -> {
+			return (tint == 20)? 4159204 :
+						((tint == 21)? 12509680 :
+						((tint == 22)? 9223890 :
+						((tint == 23)? 11164250 :
+						((tint == 24)? 15127945 :
+						((tint == 25)? 14588001 :
+						((tint == 26)? 8398655 :
+						((tint == 27)? 5715258 :
+						((tint == 28)? 13821640 :
+						((tint == 29)? 13808770 :
+
+						((tint == 30)? 16775010 :
+						((tint == 31)? 14493736 :
+						((tint == 32)? 15772230 :
+						((tint == 33)? 3297410 :
+						((tint == 34)? 16443100 :
+						((tint == 35)? 16441700 :
+						((tint == 40)? 6587090 :
+						((tint == 41)? 8560880 : -1)))))))))))))))));
+			};
+			registerColorHandlerForBlock(Crop_Blocks.ENDEN, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.MIZUMILKNABE, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.ZUNDOU, soupBlockColor); //カレー生・シチュー生
+			registerColorHandlerForBlock(Dish_Blocks.FISH_ZUNDOU, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.DASHINABE, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.UDONNABE, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.PASTANABE, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.SHIOAKUNABE, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.ORIITONABE, soupBlockColor);
+
+			registerColorHandlerForBlock(Dish_Blocks.CURRY, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.CURRYSET, soupBlockColor);
+
+			registerColorHandlerForBlock(Dish_Blocks.NABETORI, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.NABEMISO, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.NABE_nama, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.NABECORNSOUP, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.NABE_nama_2, soupBlockColor);
+
+			registerColorHandlerForBlock(Dish_Blocks.UDON_SU, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.UDON_NIKU, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.UDON_TSUKIMI, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.TONSUITORI, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.MISOSOUP, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.TAMAGOYAKITEI, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.YAKIZAKANATEI, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.YAKIJYAKETEI, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.CORNSOUP, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.EGGBURGSET, soupBlockColor);
+
+			registerColorHandlerForBlock(Dish_Blocks.SUSHISET_salmon, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.SUSHISET_fish, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.SUSHISET_beef, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.SUSHISET_tamago, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.SUSHISET_4shoku, soupBlockColor);
+
+			registerColorHandlerForBlock(Dish_Blocks.KETTLE_full, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.KYUSU, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.JPTEACUP, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.JPTEASET, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.TEAPOT, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.TEACUP, soupBlockColor);
+			registerColorHandlerForBlock(Dish_Blocks.TEASET, soupBlockColor);
+
+			registerColorHandlerForBlock(Hakkou_Blocks.HAKUSAITARU, soupBlockColor);
+			registerColorHandlerForBlock(Hakkou_Blocks.MIZUOKE, soupBlockColor);
+			registerColorHandlerForBlock(Hakkou_Blocks.MIZUOKE_full, soupBlockColor);
+			registerColorHandlerForBlock(Hakkou_Blocks.NABEAMAZAKE, soupBlockColor);
+			registerColorHandlerForBlock(Hakkou_Blocks.SAKEGLASS, soupBlockColor);
+			registerColorHandlerForBlock(Hakkou_Blocks.WINEGLASS, soupBlockColor);
+
+			registerColorHandlerForBlock(Garden_Blocks.CHOUZUBACHI, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHI, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHI2, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHIB, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHIB2, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHI_T, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHI_T2, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHI_TB, soupBlockColor);
+			registerColorHandlerForBlock(Garden_Blocks.SHISHIODOSHI_TB2, soupBlockColor);
+
+			registerColorHandlerForBlock(Kitchen_Blocks.KIT_SINK_TOP, soupBlockColor);
+			registerColorHandlerForBlock(Kitchen_Blocks.KIT_SINK_BOT, soupBlockColor);
+
 	}
 
-	/* TintIndex によるアイテム色 */
-	public static void registerItemColors() {
-		
-		/** 20 Water waterColor(4159204) from Biome=1, 35 CornSoup=2 **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? 4159204 : ((tint == 2)? 16441700 : -1); },
-				Garden_Blocks.CHOUZUBACHI,
-				Garden_Blocks.CHOUZUBACHI_gra,
-				Garden_Blocks.CHOUZUBACHI_dio,
-				Garden_Blocks.CHOUZUBACHI_and,
-				Garden_Blocks.SHISHIODOSHI,
-				Garden_Blocks.SHISHIODOSHI2,
-				Kitchen_Blocks.KIT_SINK,
-				Items_Seasonal.SUIDEN,
+	public static void registerColorHandlerForBlock(Block block, IBlockColor blockColor) {
+		FMLClientHandler.instance().getClient().getBlockColors().registerBlockColorHandler(blockColor, block);
+	}
 
-				Items_Teatime.MIZUOKE_full,
-				Items_Teatime.HAKUSAI_TARU1,
-				Items_Teatime.HAKUSAI_TARU2,
-
-				Items_Teatime.KEIRYO_CUP_full,
-				Items_Teatime.CURRY,
-				Items_Teatime.CURRYSET,
-				Items_Teatime.KETTLE_full,
-				Items_Teatime.KETTLE_boil,
-				Items_Teatime.ZUNDOU_MIZU,
-				Items_Teatime.ZUNDOU_SHIO,
-				Items_Teatime.ZUNDOU_NCURRY,
-				Dish_Blocks.ZUNDOU_FISH,
-				Dish_Blocks.ZUNDOU_UDON,
-				Dish_Blocks.ZUNDOU_PASTA,
-				Dish_Blocks.NABEGOHAN_nama,
-				Items_Teatime.NABESHIO_nama,
-				Items_Teatime.NABENIMAME_nama,
-				
-				Items_Teatime.NABECORN_nama,
-				Items_Teatime.NABECORN,
-				Items_Teatime.CORNSOUP,
-				Items_Teatime.EGGBURGSET );
-		
-		/** 21 Raw_Sake **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 12509680 : -1; },
-				Items_Teatime.NAMASAKEGLASS );
-		
-		/** 22 Sake **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 9223890 : -1; },
-				Items_Teatime.SAKEGLASS );
-		
-		/** 23 Aged_Sake **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 11164250 : -1; },
-				Items_Teatime.JUKUSAKEGLASS );
-		
-		/** 24 Cider **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 15127945 : -1; },
-				Items_Teatime.CIDERGLASS );
-		
-		/** 25 Aged_Cider **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 14588001 : -1; },
-				Items_Teatime.JUKUCIDERGLASS );
-		
-		/** 26 Wine **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 8398655 : -1; },
-				Items_Teatime.WINEGLASS );
-		
-		/** 27 Aged_Wine **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 5715258 : -1; },
-				Items_Teatime.JUKUWINEGLASS );
-		
-		/** 28 Mead **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 13821640 : -1; },
-				Items_Teatime.MEADGLASS );
-		
-		/** 29 Aged_Mead **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 13808770 : -1; },
-				Items_Teatime.JUKUMEADGLASS );
-		
-		/** 30 Green_Tea=1, 32 MisoSoup=2 **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { 
-			return (tint == 1)? 16775010 : ((tint == 2)? 15772230 : -1); },
-				Items_Teatime.KYUSU,
-				Items_Teatime.JPTEACUP,
-				Items_Teatime.JPTEASET,
-				Items_Teatime.SUSHISET_salmon,
-				Items_Teatime.SUSHISET_fish,
-				Items_Teatime.SUSHISET_beef,
-				Items_Teatime.SUSHISET_tamago,
-				Items_Teatime.SUSHISET_4shoku,
-				
-				Items_Teatime.NABETORI_nama,
-				Items_Teatime.NABETORI,
-				Items_Teatime.NABEMISO_nama,
-				Items_Teatime.NABEMISO,
-				Items_Teatime.TONSUITORI,
-				Items_Teatime.MISOSOUP,
-				
-				Items_Teatime.TAMAGOYAKITEI,
-				Items_Teatime.YAKIZAKANATEI,
-				Items_Teatime.YAKIJYAKETEI );
-		
-		/** 31 Black_Tea **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 14493736 : -1; },
-				Items_Teatime.TEAPOT,
-				Items_Teatime.TEACUP,
-				Items_Teatime.TEASET );
-
-		/** 33 Aku **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 3297410 : -1; },
-				Items_Seasonal.ZUNDOU_AKU );
-
-		/** 20 Water=1, 34 AMAZAKE=2 **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { 
-			return (tint == 1)? 4159204 : ((tint == 2)? 16443100 : -1); },
-				Items_Teatime.NABEAMAZAKE_nama,
-				Items_Teatime.NABEAMAZAKE,
-				Items_Teatime.AMAZAKEGLASS );
-		
-		/** 40 ENDEN=1, 41 ENDEN=2 **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> { 
-			return (tint == 1)? 6587090 : ((tint == 2)? 8560880 : -1); },
-				Items_Teatime.ENDEN );
-		
-		
-		/** 1 Oak **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.7F, 0.6F) : -1; },
-				Items_Wadeco.BONSAI_oak,
-				Items_Wadeco.KANYOU,
-				Items_Wadeco.IKEGAKILONG,
-				Items_Wadeco.IKEGAKI );
-		
-		/** 2 Spruce **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.getSpruce() : -1; },
-				Items_Wadeco.BONSAI_spru,
-				Items_Wadeco.KANYOU_spruce,
-				Items_Wadeco.IKEGAKILONG_spruce,
-				Items_Wadeco.IKEGAKI_spruce );
-
-		/** 3 Birch **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.getBirch() : -1; },
-				Items_Wadeco.BONSAI_bir,
-				Items_Wadeco.KANYOU_birch,
-				Items_Wadeco.IKEGAKILONG_birch,
-				Items_Wadeco.IKEGAKI_birch );
-		
-		/** 4 Jungle **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.9F, 0.9F) : -1; }, //緑
-				Items_Wadeco.BONSAI_jun,
-				Items_Wadeco.KANYOU_jungle,
-				Items_Wadeco.IKEGAKILONG_jungle,
-				Items_Wadeco.IKEGAKI_jungle );
-		
-		/** 5 Acacia **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.9F, 0.0F) : -1; },
-				Items_Wadeco.BONSAI_aca,
-				Items_Wadeco.KANYOU_acacia,
-				Items_Wadeco.IKEGAKILONG_acacia,
-				Items_Wadeco.IKEGAKI_acacia );
-		
-		/** 6 DarkOak **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.get(0.7F, 0.8F) : -1; }, //黒
-				Items_Wadeco.BONSAI_doak,
-				Items_Wadeco.KANYOU_darkoak,
-				Items_Wadeco.IKEGAKILONG_darkoak,
-				Items_Wadeco.IKEGAKI_darkoak );
-		
-		/** 7 Acer **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? 14828063 : -1; },
-				Items_Seasonal.BONSAI_kaede,
-				Items_Seasonal.KANYOU_kaede,
-				Items_Seasonal.IKEGAKILONG_kaede,
-				Items_Seasonal.IKEGAKI_kaede,
-				Items_Seasonal.KAEDE_leaf,
-				Items_Seasonal.KAEDE_carpet );
-		
-		/** 8 Autumn_Oak **/
-		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? 11495695 : -1; },
-				Items_Seasonal.BONSAI_kare,
-				Items_Seasonal.KANYOU_kare,
-				Items_Seasonal.IKEGAKILONG_kare,
-				Items_Seasonal.IKEGAKI_kare,
-				Items_Seasonal.OAKKARE_leaf,
-				Items_Seasonal.OCHIBA_carpet );
+	public static void registerColorHandlerForItem(Item item, IItemColor itemColor) {
+		FMLClientHandler.instance().getClient().getItemColors().registerItemColorHandler(itemColor, item);
 	}
 
 }

@@ -1,10 +1,10 @@
 {
 	"variants": {
-		"": [
-			{ "model": "chinjufumod:block/wooden/block_carpet_ichoh" },
-			{ "model": "chinjufumod:block/wooden/block_carpet_ichoh", "y": 90 },
-			{ "model": "chinjufumod:block/wooden/block_carpet_ichoh", "y": 180 },
-			{ "model": "chinjufumod:block/wooden/block_carpet_ichoh", "y": 270 }
+		"normal": [
+			{ "model": "chinjufumod:wooden/block_carpet_ichoh" },
+			{ "model": "chinjufumod:wooden/block_carpet_ichoh", "y": 90 },
+			{ "model": "chinjufumod:wooden/block_carpet_ichoh", "y": 180 },
+			{ "model": "chinjufumod:wooden/block_carpet_ichoh", "y": 270 }
 		]
 	}
 }

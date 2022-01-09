@@ -1,13 +1,23 @@
 {
- "variants": {
-		"facing=north,half=upper": { "model": "chinjufumod:block/season/block_kadomatsu_top", "y": 180 },
-		"facing=south,half=upper": { "model": "chinjufumod:block/season/block_kadomatsu_top" },
-		"facing=west,half=upper": { "model": "chinjufumod:block/season/block_kadomatsu_top", "y": 90 },
-		"facing=east,half=upper": { "model": "chinjufumod:block/season/block_kadomatsu_top", "y": 270 },
+  "variants": {
+		"facing=north,stage=1": { "model": "chinjufumod:season/block_kadomatsu_bot", "y": 180 },
+		"facing=south,stage=1": { "model": "chinjufumod:season/block_kadomatsu_bot" },
+		"facing=west,stage=1":  { "model": "chinjufumod:season/block_kadomatsu_bot", "y": 90 },
+		"facing=east,stage=1":  { "model": "chinjufumod:season/block_kadomatsu_bot", "y": 270 },
 
-		"facing=north,half=lower": { "model": "chinjufumod:block/season/block_kadomatsu_bot", "y": 180 },
-		"facing=south,half=lower": { "model": "chinjufumod:block/season/block_kadomatsu_bot" },
-		"facing=west,half=lower": { "model": "chinjufumod:block/season/block_kadomatsu_bot", "y": 90 },
-		"facing=east,half=lower": { "model": "chinjufumod:block/season/block_kadomatsu_bot", "y": 270 }
- }
+		"facing=north,stage=2": { "model": "chinjufumod:season/block_kagamimochi", "y": 180 },
+		"facing=south,stage=2": { "model": "chinjufumod:season/block_kagamimochi" },
+		"facing=west,stage=2":  { "model": "chinjufumod:season/block_kagamimochi", "y": 90 },
+		"facing=east,stage=2":  { "model": "chinjufumod:season/block_kagamimochi", "y": 270 },
+
+		"facing=north,stage=3": { "model": "chinjufumod:season/block_xmastree_bot", "y": 0 },
+		"facing=south,stage=3": { "model": "chinjufumod:season/block_xmastree_bot", "y": 180 },
+		"facing=west,stage=3":  { "model": "chinjufumod:season/block_xmastree_bot", "y": 270 },
+		"facing=east,stage=3":  { "model": "chinjufumod:season/block_xmastree_bot", "y": 90 },
+
+		"facing=north,stage=4": { "model": "chinjufumod:season/block_xmastreew_bot", "y": 0 },
+		"facing=south,stage=4": { "model": "chinjufumod:season/block_xmastreew_bot", "y": 180 },
+		"facing=west,stage=4":  { "model": "chinjufumod:season/block_xmastreew_bot", "y": 270 },
+		"facing=east,stage=4":  { "model": "chinjufumod:season/block_xmastreew_bot", "y": 90 }
+  }
 }

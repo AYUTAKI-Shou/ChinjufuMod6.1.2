@@ -1,142 +1,133 @@
 package com.ayutaki.chinjufumod.blocks.crop;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class NoriAmi extends Block implements IGrowable {
+public class NoriAmi extends Block {
 
-	/* Property */
-	public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 7);
+	public static final String ID = "block_noriami";
 
-	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.0D, -5.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
 
-	public NoriAmi(Block.Properties properties) {
-		super(properties);
-		setDefaultState(this.stateContainer.getBaseState().with(AGE, Integer.valueOf(0)));
+	public NoriAmi() {
+		super(Material.WOOD);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+		setCreativeTab(ChinjufuModTabs.TEATIME);
+
+		setSoundType(SoundType.WOOD);
+		setHardness(1.0F);
+		setResistance(1.0F);
+		/** ハーフ・机=2, 障子・椅子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+		setTickRandomly(true);
+
+		setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack itemstack = playerIn.getHeldItem(hand);
-		int i = state.get(AGE);
+
+		int i = ((Integer)state.getValue(AGE)).intValue();
 
 		/** Too early to collect **/
 		if (i < 5) {
-			if (!itemstack.isEmpty()) { return ActionResultType.PASS; }
+			if (!itemstack.isEmpty()) { return false; }
 			
 			if (itemstack.isEmpty()) {
 				CMEvents.textEarlyCollect(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
+				return true; }
 		}
 		
 		/** Can harvest **/
 		if (i >= 5) {
 			if (itemstack.isEmpty()) {
+				CMEvents.soundTake_Pick(worldIn, pos);
 				
-				CMEvents.soundTake_Pick(worldIn, pos);				
-				if (i == 5 || i == 6) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NORI_N, 1)); }
-				if (i == 7) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NORI_N, 2)); }
-		
-				worldIn.setBlockState(pos, state.with(AGE, Integer.valueOf(0)), 3); }
+				if (i == 5 || i == 6) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NORI_N, 1, 0)); }
+				if (i == 7) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NORI_N, 2, 0)); }
+				
+				worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(0))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
-			
-			return ActionResultType.SUCCESS;
+			return true;
 		}
-		
-		/* 側面に置きたいから PASS */
-		return ActionResultType.PASS;
-	}
 
-	/* 設置制限 */
-	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return state.getBlock() == Blocks.WATER;
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		return facing == Direction.DOWN && !state.isValidPosition(worldIn, pos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
-	}
-
-	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos downpos = pos.down();
-		if (worldIn.getLightSubtracted(pos, 0) >= 8 || worldIn.canSeeSky(pos)) {
-			return this.isValidGround(worldIn.getBlockState(downpos), worldIn, downpos);
-		}
+		/** 側面で設置可能にするため false **/
 		return false;
 	}
 
-	/* Collisions for each property. */
+	/* 成長 */
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return AABB_BOX;
-	}
-
-	/* TickRandom */
-	@Override
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		int i = state.get(AGE);
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
 		if (!worldIn.isAreaLoaded(pos, 2)) { return; }
 
-		if (i < 7 && worldIn.getLightSubtracted(pos, 0) >= 9 && rand.nextInt(6) == 0) {
-			worldIn.setBlockState(pos, state.with(AGE, Integer.valueOf(i + 1))); }
+		int i = ((Integer)state.getValue(AGE)).intValue();
+
+		if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.WATER) {
+			if (i != 7 && worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(6) == 0) {
+				worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(i + 1))); } }
 
 		else { }
 	}
 
-	/* Clone Item in Creative. */
+	/* 土指定 */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Teatime.NORIAMI);
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block neighborBlock, BlockPos fromPos) {
+
+		if (worldIn.getBlockState(pos.down()).getBlock() != Blocks.WATER) {
+			this.dropBlockAsItem(worldIn, pos, state, 0);
+			worldIn.setBlockToAir(pos); }
+
+		else { }
 	}
 
-	/* Create Blockstate */
+	/* 設置制限 */
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(AGE);
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos.down()).getBlock() == Blocks.WATER;
 	}
 
-	/* 骨粉を使う */
-	public IntegerProperty getAgeProperty() {
+	/* Data value */
+	protected PropertyInteger getAgeProperty() {
 		return AGE;
 	}
 
@@ -144,45 +135,90 @@ public class NoriAmi extends Block implements IGrowable {
 		return 7;
 	}
 
-	protected int getAge(BlockState state) {
-		return state.get(this.getAgeProperty());
+	protected int getAge(IBlockState state) {
+		return ((Integer)state.getValue(this.getAgeProperty())).intValue();
 	}
 
-	public BlockState withAge(int age) {
-		return this.getDefaultState().with(this.getAgeProperty(), Integer.valueOf(age));
+	public IBlockState withAge(int age) {
+		return this.getDefaultState().withProperty(this.getAgeProperty(), Integer.valueOf(age));
 	}
 
-	public boolean isMaxAge(BlockState state) {
-		return state.get(this.getAgeProperty()) >= this.getMaxAge();
+	public boolean isMaxAge(IBlockState state) {
+		return ((Integer)state.getValue(this.getAgeProperty())).intValue() >= this.getMaxAge();
 	}
 
-	public void grow(World worldIn, BlockPos pos, BlockState state) {
-		int i = this.getAge(state);
-		int j = this.getMaxAge();
-		if (i > j) {
-			i = j;
-		}
-		worldIn.setBlockState(pos, this.withAge(i), 2);
+	public IBlockState getStateFromMeta(int meta) {
+		return this.withAge(meta);
 	}
 
-
-	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-		return !this.isMaxAge(state);
+	public int getMetaFromState(IBlockState state) {
+		return this.getAge(state);
 	}
 
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { AGE });
+	}
+
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (7 - ((Integer)blockState.getValue(AGE)).intValue()) * 2;
+	}
+
+	/* Collision */
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0D, -5.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* 描写指定 */
+	@Override
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
-	public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
-		this.grow(worldIn, pos, state);
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 
-	/* ToolTip */
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.addInformation(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_noriami")).applyTextStyle(TextFormatting.GRAY));
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
+		return false;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> stack = new ArrayList<ItemStack>();
+		stack.add(new ItemStack(Items_Teatime.NORIAMI, 1, 0));
+		return stack;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items_Teatime.NORIAMI, 1, 0);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		int meta = stack.getMetadata();
+		tooltip.add(I18n.format("tips.block_noriami", meta));
+	}
+
+	/* フェンスとの接続拒否 */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 }

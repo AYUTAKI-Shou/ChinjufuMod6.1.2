@@ -1,8 +1,9 @@
 {
 	"variants": {
-		"type=bottom": { "model": "chinjufumod:block/block_bgc_slabhalf_bottom" },
-		"type=top": { "model": "chinjufumod:block/block_bgc_slabhalf_top" },
+		"double=false,half=bottom": { "model": "chinjufumod:block_bgc_slabhalf_bottom" },
+		"double=false,half=top": { "model": "chinjufumod:block_bgc_slabhalf_top" },
 
-		"type=double": { "model": "chinjufumod:block/block_brick_gra_c" }
+		"double=true,half=top": { "model": "chinjufumod:block_brick_gra_c" },
+		"double=true,half=bottom": { "model": "chinjufumod:block_brick_gra_c" }
 	}
 }

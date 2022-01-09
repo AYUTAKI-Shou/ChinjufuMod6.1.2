@@ -1,9 +1,9 @@
 {
 	"parent": "chinjufumod:block/base/base_wallpanel_wide",
 	"textures": {
-		"particle": "minecraft:block/purpur_block",
-		"front": "minecraft:block/purpur_block",
-		"back": "minecraft:block/purpur_block",
-		"side": "minecraft:block/purpur_block"
+		"particle": "blocks/purpur_block",
+		"front": "blocks/purpur_block",
+		"back": "blocks/purpur_block",
+		"side": "blocks/purpur_block"
 	}
 }

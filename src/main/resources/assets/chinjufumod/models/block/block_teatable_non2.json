@@ -1,9 +1,9 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "minecraft:block/oak_planks",
+		"particle": "minecraft:blocks/planks_oak",
 		"leg": "chinjufumod:blocks/muku_oak",
-		"top": "minecraft:block/oak_planks",
+		"top": "minecraft:blocks/planks_oak",
 		"cloth_top": "chinjufumod:blocks/ttablecloth_top",
 		"cloth_side": "chinjufumod:blocks/ttablecloth_side"
 	},

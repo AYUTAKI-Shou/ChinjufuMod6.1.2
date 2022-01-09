@@ -187,7 +187,7 @@
 			"from": [ 4.6, 1, 1.6 ],
 			"to": [ 6.8, 1.5, 3.8 ],
 			"faces": {
-				"up" : { "texture": "#soup", "tintindex": 2 }
+				"up" : { "texture": "#soup", "tintindex": 35 }
 			}
 		},
 

@@ -4,77 +4,94 @@ import com.ayutaki.chinjufumod.ChinjufuMod;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-@Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SoundEvents_CM {
 
-	@SuppressWarnings("deprecation")
-	public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, ChinjufuMod.MOD_ID);
+	public static SoundEvent AM_CARTRIDGE, AM_FIRE, AM_IMPACT;
+	public static SoundEvent KK_ATACK, KK_BREAK, KK_IMPACT, KK_PROPELLER, KK_STOP, GYORAI;
+	public static SoundEvent WATER_WAKE, WATER_SPLASH;
 
-	public static SoundEvent AM_CARTRIDGE = register("am_cartridge");
-	public static SoundEvent AM_FIRE = register("am_fire");
-	public static SoundEvent AM_IMPACT = register("am_impact");
+	public static SoundEvent JUU, GUTSUGUTSU, TEA, SAKE, SHOUYU, PAKU, GOKU,
+										WATER_START, WATER_STOP, KITCHEN_CUT;
 
-	public static SoundEvent KK_ATACK = register("kk_atack");
-	public static SoundEvent KK_BREAK = register("kk_break");
-	public static SoundEvent KK_IMPACT = register("kk_impact");
-	public static SoundEvent KK_PROPELLER = register("kk_propeller");
-	public static SoundEvent KK_STOP = register("kk_stop");
-	public static SoundEvent GYORAI = register("gyorai");
+	public static SoundEvent TANSU_OPEN, TANSU_CLOSE, WINDOW_OPEN, WINDOW_CLOSE, WINDOW_UD,
+										FUSUMA, FUSUMA_SHORT, AMADO_CANCEL, HIKIDO, HIKIDO_SHORT,
+										KINUZURE, SIT_CHAIR, SHISHIODOSHI,
+										GATE_WOOD, GATE_IRON_OPEN, GATE_IRON_CLOSE, PAINT;
 
-	public static SoundEvent WATER_WAKE = register("wake_water");
-	public static SoundEvent WATER_SPLASH = register("water_splash");
+	public static SoundEvent WADAIKO_TOP, WADAIKO_SIDE;
 
-	public static SoundEvent JUU = register("juu");
-	public static SoundEvent GUTSUGUTSU = register("gutsugutsu");
-	public static SoundEvent TEA = register("tea");
-	public static SoundEvent SAKE = register("sake");
-	public static SoundEvent SHOUYU = register("shouyu");
-	public static SoundEvent PAKU = register("paku");
-	public static SoundEvent GOKU = register("goku");
-	public static SoundEvent WATER_START = register("water_start");
-	public static SoundEvent WATER_STOP = register("water_stop");
-	public static SoundEvent KITCHEN_CUT = register("kitchen_cut");
-
-	public static SoundEvent TANSU_OPEN = register("tansu_open");
-	public static SoundEvent TANSU_CLOSE = register("tansu_close");
-
-	public static SoundEvent WINDOW_OPEN = register("window_open");
-	public static SoundEvent WINDOW_CLOSE = register("window_close");
-	public static SoundEvent WINDOW_UD = register("window_updown");
-	public static SoundEvent FUSUMA = register("fusuma");
-	public static SoundEvent FUSUMA_SHORT = register("fusuma_short");
-	public static SoundEvent AMADO_CANCEL = register("amado_cancel");
-
-	public static SoundEvent HIKIDO = register("hikido");
-	public static SoundEvent HIKIDO_SHORT = register("hikido_short");
-	public static SoundEvent KINUZURE = register("kinuzure");
-	public static SoundEvent SIT_CHAIR = register("sit_chair");
-
-	public static SoundEvent SHISHIODOSHI = register("shishiodoshi");
-
-	public static SoundEvent GATE_WOOD = register("gate_wood");
-	public static SoundEvent GATE_IRON_OPEN = register("gate_iron_open");
-	public static SoundEvent GATE_IRON_CLOSE = register("gate_iron_close");
-	public static SoundEvent PAINT = register("paint");
-
-	public static SoundEvent WADAIKO_TOP = register("wadaiko_top");
-	public static SoundEvent WADAIKO_SIDE = register("wadaiko_side");
-
-	public static SoundEvent WRITE_REPORT = register("write_report");
-	public static SoundEvent OPEN = register("open");
-	public static SoundEvent OPEN_OVEN = register("open_oven");
-	public static SoundEvent TOUCH_BLOCK = register("touch_block");
-	public static SoundEvent THROW = register("throw");
-	public static SoundEvent ERROR = register("error");
+	public static SoundEvent WRITE_REPORT, OPEN, OPEN_OVEN, TOUCH_BLOCK, THROW, ERROR;
 	
-	private static SoundEvent register(String name) {
+	public static void registerSounds() {
+
+		AM_CARTRIDGE = registerSound("am_cartridge");
+		AM_FIRE = registerSound("am_fire");
+		AM_IMPACT = registerSound("am_impact");
+
+		KK_ATACK = registerSound("kk_atack");
+		KK_BREAK = registerSound("kk_break");
+		KK_IMPACT = registerSound("kk_impact");
+		KK_PROPELLER = registerSound("kk_propeller_12");
+		KK_STOP = registerSound("kk_stop");
+		GYORAI = registerSound("gyorai");
+
+		WATER_WAKE = registerSound("wake_water");
+		WATER_SPLASH = registerSound("water_splash");
+
+		JUU = registerSound("juu");
+		GUTSUGUTSU = registerSound("gutsugutsu");
+		TEA = registerSound("tea");
+		SAKE = registerSound("sake");
+		SHOUYU = registerSound("shouyu");
+		PAKU = registerSound("paku");
+		GOKU = registerSound("goku");
+		WATER_START = registerSound("water_start");
+		WATER_STOP = registerSound("water_stop");
+		KITCHEN_CUT = registerSound("kitchen_cut");
+
+		TANSU_OPEN = registerSound("tansu_open");
+		TANSU_CLOSE = registerSound("tansu_close");
+
+		WINDOW_OPEN = registerSound("window_open");
+		WINDOW_CLOSE = registerSound("window_close");
+		WINDOW_UD = registerSound("window_updown");
+		FUSUMA = registerSound("fusuma");
+		FUSUMA_SHORT = registerSound("fusuma_short");
+		AMADO_CANCEL = registerSound("amado_cancel");
+
+		HIKIDO = registerSound("hikido");
+		HIKIDO_SHORT = registerSound("hikido_short");
+		KINUZURE = registerSound("kinuzure");
+		SIT_CHAIR = registerSound("sit_chair");
+
+		SHISHIODOSHI = registerSound("shishiodoshi");
+
+		GATE_WOOD = registerSound("gate_wood");
+		GATE_IRON_OPEN = registerSound("gate_iron_open");
+		GATE_IRON_CLOSE = registerSound("gate_iron_close");
+
+		PAINT = registerSound("paint");
+
+		WADAIKO_TOP = registerSound("wadaiko_top");
+		WADAIKO_SIDE = registerSound("wadaiko_side");
+
+		WRITE_REPORT = registerSound("write_report");
+		OPEN = registerSound("open");
+		OPEN_OVEN = registerSound("open_oven");
+		TOUCH_BLOCK = registerSound("touch_block");
+		THROW = registerSound("throw");
+		ERROR = registerSound("error");
+		
+	}
+
+	private static SoundEvent registerSound(String name) {
+
 		ResourceLocation location = new ResourceLocation(ChinjufuMod.MOD_ID, name);
 		SoundEvent event = new SoundEvent(location);
-		SOUNDS.register(name, () -> event);
+		event.setRegistryName(name);
+		ForgeRegistries.SOUND_EVENTS.register(event);
 		return event;
 	}
 

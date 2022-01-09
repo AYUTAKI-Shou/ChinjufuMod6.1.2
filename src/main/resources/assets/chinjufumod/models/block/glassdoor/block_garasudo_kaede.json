@@ -2,7 +2,7 @@
 	"parent": "chinjufumod:block/base/base_garasudo_right",
 	"textures": {
 		"particle": "chinjufumod:blocks/muku_kaede",
-		"ji": "minecraft:block/glass",
+		"ji": "minecraft:blocks/glass",
 		"ita": "chinjufumod:blocks/planks_kaede",
 		"waku": "chinjufumod:blocks/muku_kaede",
 		"totte": "chinjufumod:blocks/muku_bigoak",

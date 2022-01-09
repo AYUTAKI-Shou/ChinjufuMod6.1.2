@@ -1,6 +1,6 @@
 {
 	"variants": {
-		"stage=0": { "model": "chinjufumod:block/tree/block_tree_oakkare_nae" },
-		"stage=1": { "model": "chinjufumod:block/tree/block_tree_oakkare_nae" }
+		"stage=0": { "model": "chinjufumod:tree/block_tree_oakkare_nae" },
+		"stage=1": { "model": "chinjufumod:tree/block_tree_oakkare_nae" }
 	}
 }

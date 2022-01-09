@@ -101,7 +101,7 @@
 				"down": { "uv": [ 11.0, 13.75, 5.0, 2.25 ], "texture":"#side", "rotation": 270 },
 				"north": { "uv": [ 13.75, 12.75, 2.25, 13.75 ], "texture":"#inside" },
 				"south": { "uv": [ 2.25, 12.75, 13.75, 13.75 ], "texture":"#inside" },
-				"west" : { "uv": [ 11.0, 3.25, 5.0, 2.25 ], "texture":"#side" },
+				"west" : { "uv": [ 11.0, 3.25, 5.0, 2.25  ], "texture":"#side" },
 				"east" : { "uv": [ 5.0, 12.75, 11.0, 13.75 ], "texture":"#side" }
 			}
 		},

@@ -5,7 +5,7 @@
 		"inner": "chinjufumod:blocks/haiki_duct",
 		"omote": "chinjufumod:blocks/kankisen_on",
 		"ura": "chinjufumod:blocks/kankisen_re_on",
-		"red": "minecraft:block/repeater_on"
+		"red": "minecraft:blocks/repeater_on"
 	},
 	"elements": [
 		{

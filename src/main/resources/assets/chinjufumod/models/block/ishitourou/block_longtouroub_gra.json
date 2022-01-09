@@ -1,7 +1,7 @@
 {
 	"parent": "chinjufumod:block/base/base_longtourou_bot",
 	"textures": {
-		"particle": "minecraft:block/polished_granite",
-		"ishi": "minecraft:block/polished_granite"
+		"particle": "minecraft:blocks/stone_granite_smooth",
+		"ishi": "minecraft:blocks/stone_granite_smooth"
 	}
 }

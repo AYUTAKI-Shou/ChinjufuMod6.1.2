@@ -1,227 +1,261 @@
 package com.ayutaki.chinjufumod.blocks.unitblock;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlab_Water;
-import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
+import com.ayutaki.chinjufumod.ChinjufuMod;
+import com.ayutaki.chinjufumod.ChinjufuModTabs;
+import com.ayutaki.chinjufumod.blocks.base.BaseFacingSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabW;
+import com.ayutaki.chinjufumod.blocks.base.BaseSlabWType2;
+import com.ayutaki.chinjufumod.blocks.base.CollisionHelper;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.block.BlockHalfStoneSlab;
+import net.minecraft.block.BlockHalfStoneSlabNew;
+import net.minecraft.block.BlockHalfWoodSlab;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 
-public class WrittenMakimono extends Block implements IWaterLoggable {
+public class WrittenMakimono extends Block {
 
+	public static final String ID = "block_written_makimono";
 	/* Property */
-	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final IntegerProperty STAGE_1_5 = IntegerProperty.create("stage", 1, 5);
-	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
-	public static final BooleanProperty LOST = BooleanProperty.create("lost");
-	
-	/* Collision */
-	protected static final VoxelShape AABB_1S = Block.makeCuboidShape(6.75D, 0.0D, 4.0D, 9.25D, 2.5D, 12.0D);
-	protected static final VoxelShape AABB_1W = Block.makeCuboidShape(4.0D, 0.0D, 6.75D, 12.0D, 2.5D, 9.25D);
-	protected static final VoxelShape AABB_1N = Block.makeCuboidShape(6.75D, 0.0D, 4.0D, 9.25D, 2.5D, 12.0D);
-	protected static final VoxelShape AABB_1E = Block.makeCuboidShape(4.0D, 0.0D, 6.75D, 12.0D, 2.5D, 9.25D);
-	
-	protected static final VoxelShape AABB_2S = Block.makeCuboidShape(4.25D, 0.0D, 4.0D, 9.25D, 2.5D, 12.0D);
-	protected static final VoxelShape AABB_2W = Block.makeCuboidShape(4.0D, 0.0D, 4.25D, 12.0D, 2.5D, 9.25D);
-	protected static final VoxelShape AABB_2N = Block.makeCuboidShape(6.75D, 0.0D, 4.0D, 11.75D, 2.5D, 12.0D);
-	protected static final VoxelShape AABB_2E = Block.makeCuboidShape(4.0D, 0.0D, 6.75D, 12.0D, 2.5D, 11.75D);
-	
-	protected static final VoxelShape AABB_3S = Block.makeCuboidShape(4.25D, 0.0D, 4.0D, 11.75D, 2.5D, 12.0D);
-	protected static final VoxelShape AABB_3W = Block.makeCuboidShape(4.0D, 0.0D, 4.25D, 12.0D, 2.5D, 11.75D);
-	protected static final VoxelShape AABB_3N = Block.makeCuboidShape(4.25D, 0.0D, 4.0D, 11.75D, 2.5D, 12.0D);
-	protected static final VoxelShape AABB_3E = Block.makeCuboidShape(4.0D, 0.0D, 4.25D, 12.0D, 2.5D, 11.75D);
-	
-	protected static final VoxelShape AABB_4S = Block.makeCuboidShape(4.25D, 0.0D, 4.0D, 11.75D, 5.0D, 12.0D);
-	protected static final VoxelShape AABB_4W = Block.makeCuboidShape(4.0D, 0.0D, 4.25D, 12.0D, 5.0D, 11.75D);
-	protected static final VoxelShape AABB_4N = Block.makeCuboidShape(4.25D, 0.0D, 4.0D, 11.75D, 5.0D, 12.0D);
-	protected static final VoxelShape AABB_4E = Block.makeCuboidShape(4.0D, 0.0D, 4.25D, 12.0D, 5.0D, 11.75D);
+	public static final PropertyInteger STAGE_1_4 = PropertyInteger.create("stage", 1, 4);
+	public static final PropertyDirection H_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool DOWN = PropertyBool.create("down");
 
-	protected static final VoxelShape DOWN_SOUTH = Block.makeCuboidShape(4.25D, -8.0D, 4.0D, 11.75D, 0.1D, 12.0D);
-	protected static final VoxelShape DOWN_WEST = Block.makeCuboidShape(4.0D, -8.0D, 4.25D, 12.0D, 0.1D, 11.75D);
-	protected static final VoxelShape DOWN_NORTH = Block.makeCuboidShape(4.25D, -8.0D, 4.0D, 11.75D, 0.1D, 12.0D);
-	protected static final VoxelShape DOWN_EAST = Block.makeCuboidShape(4.0D, -8.0D, 4.25D, 12.0D, 0.1D, 11.75D);
+	private static final AxisAlignedBB AABB_1S = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.578125);
+	private static final AxisAlignedBB AABB_1W = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.578125);
+	private static final AxisAlignedBB AABB_1N = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.578125);
+	private static final AxisAlignedBB AABB_1E = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.578125);
 
-	public WrittenMakimono(Block.Properties properties) {
-		super(properties);
+	private static final AxisAlignedBB AABB_2S = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.734375);
+	private static final AxisAlignedBB AABB_2W = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.734375);
+	private static final AxisAlignedBB AABB_2N = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.734375);
+	private static final AxisAlignedBB AABB_2E = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, 0.0, 0.421875, 0.75, 0.15625, 0.734375);
+	
+	private static final AxisAlignedBB AABB_3S = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, 0.0, 0.265625, 0.75, 0.15625, 0.734375);
+	private static final AxisAlignedBB AABB_3W = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, 0.0, 0.265625, 0.75, 0.15625, 0.734375);
+	private static final AxisAlignedBB AABB_3N = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, 0.0, 0.265625, 0.75, 0.15625, 0.734375);
+	private static final AxisAlignedBB AABB_3E = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, 0.0, 0.265625, 0.75, 0.15625, 0.734375);
+	
+	private static final AxisAlignedBB AABB_4S = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, 0.0, 0.265625, 0.75, 0.3125, 0.734375);
+	private static final AxisAlignedBB AABB_4W = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, 0.0, 0.265625, 0.75, 0.3125, 0.734375);
+	private static final AxisAlignedBB AABB_4N = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, 0.0, 0.265625, 0.75, 0.3125, 0.734375);
+	private static final AxisAlignedBB AABB_4E = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, 0.0, 0.265625, 0.75, 0.3125, 0.734375);
+	
+	private static final AxisAlignedBB DOWN_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 0.25, -0.5, 0.265625, 0.75, 0.01, 0.734375);
+	private static final AxisAlignedBB DOWN_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 0.25, -0.5, 0.265625, 0.75, 0.01, 0.734375);
+	private static final AxisAlignedBB DOWN_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.25, -0.5, 0.265625, 0.75, 0.01, 0.734375);
+	private static final AxisAlignedBB DOWN_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.25, -0.5, 0.265625, 0.75, 0.01, 0.734375);
 
-		/** Default blockstate **/
-		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
-				.with(STAGE_1_5, Integer.valueOf(1))
-				.with(DOWN, Boolean.valueOf(false))
-				.with(WATERLOGGED, Boolean.valueOf(false))
-				.with(LOST, Boolean.valueOf(false)));
+	
+	public WrittenMakimono() {
+		super(Material.WOOD);
+		setCreativeTab(ChinjufuModTabs.WADECO);
+		setRegistryName(new ResourceLocation(ChinjufuMod.MOD_ID, ID));
+		setUnlocalizedName(ID);
+
+		setSoundType(SoundType.WOOD);
+		setHardness(0.5F);
+		setResistance(0.5F);
+		/** ハーフ・椅子・机=2, 障子=1, ガラス戸・窓=0, web=1, ice=3 **/
+		setLightOpacity(0);
+		
+		setDefaultState(this.blockState.getBaseState()
+				.withProperty(H_FACING, EnumFacing.NORTH)
+				.withProperty(STAGE_1_4, Integer.valueOf(1))
+				.withProperty(DOWN, Boolean.valueOf(false)));
 	}
 
-	/* Gives a value when placed. +180 .getOpposite() */
+	/* getOppositeでプレイヤーの向きを取得 */
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader worldIn = context.getWorld();
-		BlockPos pos = context.getPos();
-		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
-
-		if (context.getFace() == Direction.UP) {
-			return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
-					.with(DOWN, this.connectHalf(worldIn, pos, Direction.DOWN))
-					.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER); }
-
-		/** それ以外の時 **/
-		else { return null; }
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
+			float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(H_FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-	/* Connect the blocks. */
-	protected boolean connectHalf(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(H_FACING, rot.rotate((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(H_FACING)));
+	}
+
+	/* IBlockStateからItemStackのmetadataを生成。ドロップ時とテクスチャ・モデル参照時に呼ばれる */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i = i | ((EnumFacing)state.getValue(H_FACING)).getHorizontalIndex();
+		i = i | ((Integer)state.getValue(STAGE_1_4)).intValue() - 1 << 2;
+		return i;
+	}
+
+	/* ItemStackのmetadataからIBlockStateを生成。設置時に呼ばれる */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(H_FACING, EnumFacing.getHorizontal(meta))
+				.withProperty(STAGE_1_4, Integer.valueOf(1 + (meta >> 2)));
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (4 - ((Integer)blockState.getValue(STAGE_1_4)).intValue()) * 2;
+	}
+
+	/*Collision*/
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		/** Have no collision. **/
+		return NULL_AABB;
+	}
+
+	/* 直下ブロックに対する返し */
+	public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos);
 		Block block = state.getBlock();
 
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				block instanceof LowDesk || block instanceof Chabudai || block instanceof Kotatsu);
+		return block instanceof Chabudai || block instanceof LowDesk || block instanceof Kotatsu ||
+					block instanceof Chabudai_sub || block instanceof LowDesk_sub || block instanceof Kotatsu_sub ||
+					(block instanceof BaseFacingSlabW && state.getValue(BaseFacingSlabW.HALF) == BaseFacingSlabW.SlabHalf.BOTTOM && state.getValue(BaseFacingSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabW && state.getValue(BaseSlabW.HALF) == BaseSlabW.SlabHalf.BOTTOM && state.getValue(BaseSlabW.DOUBLE) == false) ||
+					(block instanceof BaseSlabWType2 && state.getValue(BaseSlabWType2.HALF) == BaseSlabWType2.SlabHalf.BOTTOM && state.getValue(BaseSlabWType2.DOUBLE) == false) ||
+					(block instanceof BlockHalfWoodSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlab && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM) ||
+					(block instanceof BlockHalfStoneSlabNew && state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.BOTTOM);
 	}
-	
-	protected boolean connectWater(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.offset(face);
-		BlockState state = worldIn.getBlockState(newPos);
-		Block block = state.getBlock();
 
-		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM && state.get(SlabBlock.WATERLOGGED)) ||
-				(block instanceof LowDesk && state.get(LowDesk.WATERLOGGED)) ||
-				(block instanceof Chabudai && state.get(Chabudai.WATERLOGGED)) ||
-				(block instanceof Kotatsu && state.get(Kotatsu.WATERLOGGED)));
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.withProperty(DOWN, Boolean.valueOf(this.canConnectTo(worldIn, pos.down())));
 	}
-	
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+
+	/*初期BlockStateContainerの生成 */
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { DOWN, H_FACING, STAGE_1_4 });
 	}
-	
-	/* Distinguish LOST from WATERLOGGED. */
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.get(WATERLOGGED) || connectWater(worldIn, pos, Direction.DOWN)) { return true; }
+
+	/* Rendering */
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	/* フェンスとの接続拒否 */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	/*Drop Item and Clone Item.*/
+	public boolean canSilkHarvest(World worldIn, EntityPlayer playerIn, int x, int y, int z, int metadata) {
 		return false;
 	}
 	
-	/* Update BlockState. */
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
-
-		if (connectWater(worldIn, pos, Direction.DOWN)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, Fluids.WATER.getTickRate(worldIn)); }
-
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 300); }
+	public int damageDropped(IBlockState state) {
+		return ((Integer)state.getValue(STAGE_1_4)).intValue();
+	}
+	 
+	@Override
+	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		return true;
+	}
+	
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
 		
-		boolean down = connectHalf(worldIn, pos, Direction.DOWN);
-		return state.with(DOWN, down);
-	}
-
-	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, 300);
-	}
-	
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-	
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 300);
-			worldIn.setBlockState(pos, state.with(LOST, Boolean.valueOf(true)), 3); }
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
 		
-		if (!inWater(state, worldIn, pos)) { }
-	}
-	
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(H_FACING)));
-	}
-
-	/* Create Blockstate */
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(DOWN, H_FACING, STAGE_1_5, WATERLOGGED, LOST);
-	}
-
-	/* Collisions that change with properties */
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-
-		Direction direction = state.get(H_FACING);
-		int i = state.get(STAGE_1_5);
-		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
-
-		switch(direction) {
-		case SOUTH:
-			return flag? ((i == 1)? AABB_1S : ((i == 2)? AABB_2S : ((i == 3)? AABB_3S : AABB_4S))) : DOWN_SOUTH;
-		case WEST:
-			return flag? ((i == 1)? AABB_1W : ((i == 2)? AABB_2W : ((i == 3)? AABB_3W : AABB_4W))) : DOWN_WEST;
-		case NORTH:
-		default:
-			return flag? ((i == 1)? AABB_1N : ((i == 2)? AABB_2N : ((i == 3)? AABB_3N : AABB_4N))) : DOWN_NORTH;
-		case EAST:
-			return flag? ((i == 1)? AABB_1E : ((i == 2)? AABB_2E : ((i == 3)? AABB_3E : AABB_4E))) : DOWN_EAST;
+		if (worldIn instanceof World) {
+			LootTable table = null;
+			switch (i) {
+			case 1 :
+				table = ((World) worldIn).getLootTableManager()
+						.getLootTableFromLocation(new ResourceLocation(ChinjufuMod.MOD_ID, "blocks/block_written_book")); 
+				break;
+				
+			case 2 :
+				table = ((World) worldIn).getLootTableManager()
+						.getLootTableFromLocation(new ResourceLocation(ChinjufuMod.MOD_ID, "blocks/block_written_book2")); 
+				break;
+				
+			case 3 :
+				table = ((World) worldIn).getLootTableManager()
+						.getLootTableFromLocation(new ResourceLocation(ChinjufuMod.MOD_ID, "blocks/block_written_book3")); 
+				break;
+				
+			case 4 :
+				table = ((World) worldIn).getLootTableManager()
+						.getLootTableFromLocation(new ResourceLocation(ChinjufuMod.MOD_ID, "blocks/block_written_book4")); 
+				break;
+				
+			default : return; } // switch
+			
+			LootContext context = new LootContext.Builder(((WorldServer) worldIn)).build();
+			drops.addAll(table.generateLootForPools(((World) worldIn).rand, context));
 		}
 	}
-
-	/* Clone Item in Creative. */
+	
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items.BOOK);
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		return new ItemStack(Items.BOOK, 1, 0);
 	}
 	
-	/* 窒息 */
+	/* Collision */
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-	/* 立方体 */
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
+		state = state.getActualState(source, pos);
+		EnumFacing direction = (EnumFacing)state.getValue(H_FACING);
+		int i = ((Integer)state.getValue(STAGE_1_4)).intValue();
+		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
 
-	/* モブ湧き */
-	@Override
-	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-		return false;
+		switch (direction) {
+			case SOUTH:
+				return flag? ((i == 1)? AABB_1S : ((i == 2)? AABB_2S : ((i == 3)? AABB_3S : AABB_4S))) : DOWN_SOUTH;
+			case WEST:
+				return flag? ((i == 1)? AABB_1W : ((i == 2)? AABB_2W : ((i == 3)? AABB_3W : AABB_4W))) : DOWN_WEST;
+			case NORTH:
+			default:
+				return flag? ((i == 1)? AABB_1N : ((i == 2)? AABB_2N : ((i == 3)? AABB_3N : AABB_4N))) : DOWN_NORTH;
+			case EAST:
+				return flag? ((i == 1)? AABB_1E : ((i == 2)? AABB_2E : ((i == 3)? AABB_3E : AABB_4E))) : DOWN_EAST;
+		}
 	}
 	
 }

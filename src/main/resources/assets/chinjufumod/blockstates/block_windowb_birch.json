@@ -1,23 +1,23 @@
 {
 	"variants": {
-		"facing=north,stage=1": { "model": "chinjufumod:block/window/block_windowb_cl_birch", "y": 180 },
-		"facing=south,stage=1": { "model": "chinjufumod:block/window/block_windowb_cl_birch" },
-		"facing=west,stage=1": { "model": "chinjufumod:block/window/block_windowb_cl_birch", "y": 90 },
-		"facing=east,stage=1": { "model": "chinjufumod:block/window/block_windowb_cl_birch", "y": 270 },
+		"facing=north,stage=1": { "model": "chinjufumod:window/block_windowb_cl_birch", "y": 180 },
+		"facing=south,stage=1": { "model": "chinjufumod:window/block_windowb_cl_birch" },
+		"facing=west,stage=1": { "model": "chinjufumod:window/block_windowb_cl_birch", "y": 90 },
+		"facing=east,stage=1": { "model": "chinjufumod:window/block_windowb_cl_birch", "y": 270 },
 
-		"facing=north,stage=2": { "model": "chinjufumod:block/window/block_windowb_ol_birch", "y": 180 },
-		"facing=south,stage=2": { "model": "chinjufumod:block/window/block_windowb_ol_birch" },
-		"facing=west,stage=2": { "model": "chinjufumod:block/window/block_windowb_ol_birch", "y": 90 },
-		"facing=east,stage=2": { "model": "chinjufumod:block/window/block_windowb_ol_birch", "y": 270 },
+		"facing=north,stage=2": { "model": "chinjufumod:window/block_windowb_ol_birch", "y": 180 },
+		"facing=south,stage=2": { "model": "chinjufumod:window/block_windowb_ol_birch" },
+		"facing=west,stage=2": { "model": "chinjufumod:window/block_windowb_ol_birch", "y": 90 },
+		"facing=east,stage=2": { "model": "chinjufumod:window/block_windowb_ol_birch", "y": 270 },
 
-		"facing=north,stage=3": { "model": "chinjufumod:block/window/block_windowb_or_birch", "y": 180 },
-		"facing=south,stage=3": { "model": "chinjufumod:block/window/block_windowb_or_birch" },
-		"facing=west,stage=3": { "model": "chinjufumod:block/window/block_windowb_or_birch", "y": 90 },
-		"facing=east,stage=3": { "model": "chinjufumod:block/window/block_windowb_or_birch", "y": 270 },
+		"facing=north,stage=3": { "model": "chinjufumod:window/block_windowb_or_birch", "y": 180 },
+		"facing=south,stage=3": { "model": "chinjufumod:window/block_windowb_or_birch" },
+		"facing=west,stage=3": { "model": "chinjufumod:window/block_windowb_or_birch", "y": 90 },
+		"facing=east,stage=3": { "model": "chinjufumod:window/block_windowb_or_birch", "y": 270 },
 
-		"facing=north,stage=4": { "model": "chinjufumod:block/window/block_windowb_oo_birch", "y": 180 },
-		"facing=south,stage=4": { "model": "chinjufumod:block/window/block_windowb_oo_birch" },
-		"facing=west,stage=4": { "model": "chinjufumod:block/window/block_windowb_oo_birch", "y": 90 },
-		"facing=east,stage=4": { "model": "chinjufumod:block/window/block_windowb_oo_birch", "y": 270 }
+		"facing=north,stage=4": { "model": "chinjufumod:window/block_windowb_oo_birch", "y": 180 },
+		"facing=south,stage=4": { "model": "chinjufumod:window/block_windowb_oo_birch" },
+		"facing=west,stage=4": { "model": "chinjufumod:window/block_windowb_oo_birch", "y": 90 },
+		"facing=east,stage=4": { "model": "chinjufumod:window/block_windowb_oo_birch", "y": 270 }
 	}
 }

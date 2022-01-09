@@ -490,7 +490,7 @@
 			}
 		},
 		{
-			"name": "tamanegi",
+			 "name": "tamanegi",
 			"from": [ 7.0, 4.45, 8.5 ],
 			"to": [ 8.0, 5.45, 9.5 ],
 			"faces": {
