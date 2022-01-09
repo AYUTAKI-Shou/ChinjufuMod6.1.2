@@ -2,18 +2,18 @@ package com.ayutaki.chinjufumod.blocks.wallpane;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraftforge.common.ToolType;
 
 public class BrickPillar_CM extends RotatedPillarBlock {
 
-	public BrickPillar_CM(AbstractBlock.Properties properties) {
+	public BrickPillar_CM(Block.Properties properties) {
 		super(properties);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

@@ -34,7 +34,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Wadeco {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
 
 	public static Item GARASUDO = register("block_garasudo", new Wadeco_noFuel(Slidedoor_Blocks.GARASUDO, new Item.Properties()));
 	public static Item GARASUDO_SPRU = register("block_garasudo_spruce", new Wadeco_noFuel(Slidedoor_Blocks.GARASUDO_SPRU, new Item.Properties()));
@@ -216,105 +217,105 @@ public class Items_Wadeco {
 	public static Item ZAISU_red = register("block_zaisu_red", new Wadeco_Fuel150(JPChair_Blocks.ZAISU_red, new Item.Properties()));
 	public static Item ZAISU_black = register("block_zaisu_black", new Wadeco_Fuel150(JPChair_Blocks.ZAISU_black, new Item.Properties()));
 
-	public static Item TATAMI_H = register("block_tatamih", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H, new Item.Properties()));
-	public static Item TATAMI_H_white = register("block_tatamih_white", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_white, new Item.Properties()));
-	public static Item TATAMI_H_orange = register("block_tatamih_orange", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_orange, new Item.Properties()));
-	public static Item TATAMI_H_magenta = register("block_tatamih_magenta", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_magenta, new Item.Properties()));
-	public static Item TATAMI_H_lightb = register("block_tatamih_lightb", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_lightb, new Item.Properties()));
-	public static Item TATAMI_H_yellow = register("block_tatamih_yellow", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_yellow, new Item.Properties()));
-	public static Item TATAMI_H_lime = register("block_tatamih_lime", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_lime, new Item.Properties()));
-	public static Item TATAMI_H_pink = register("block_tatamih_pink", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_pink, new Item.Properties()));
-	public static Item TATAMI_H_gray = register("block_tatamih_gray", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_gray, new Item.Properties()));
-	public static Item TATAMI_H_lightg = register("block_tatamih_lightg", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_lightg, new Item.Properties()));
-	public static Item TATAMI_H_cyan = register("block_tatamih_cyan", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_cyan, new Item.Properties()));
-	public static Item TATAMI_H_purple = register("block_tatamih_purple", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_purple, new Item.Properties()));
-	public static Item TATAMI_H_blue = register("block_tatamih_blue", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_blue, new Item.Properties()));
-	public static Item TATAMI_H_brown = register("block_tatamih_brown", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_brown, new Item.Properties()));
-	public static Item TATAMI_H_green = register("block_tatamih_green", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_green, new Item.Properties()));
-	public static Item TATAMI_H_red = register("block_tatamih_red", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_red, new Item.Properties()));
-	public static Item TATAMI_H_black = register("block_tatamih_black", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_H_black, new Item.Properties()));
+	public static Item TATAMI_H = register("block_tatamih", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H, new Item.Properties()));
+	public static Item TATAMI_H_white = register("block_tatamih_white", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_white, new Item.Properties()));
+	public static Item TATAMI_H_orange = register("block_tatamih_orange", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_orange, new Item.Properties()));
+	public static Item TATAMI_H_magenta = register("block_tatamih_magenta", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_magenta, new Item.Properties()));
+	public static Item TATAMI_H_lightb = register("block_tatamih_lightb", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_lightb, new Item.Properties()));
+	public static Item TATAMI_H_yellow = register("block_tatamih_yellow", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_yellow, new Item.Properties()));
+	public static Item TATAMI_H_lime = register("block_tatamih_lime", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_lime, new Item.Properties()));
+	public static Item TATAMI_H_pink = register("block_tatamih_pink", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_pink, new Item.Properties()));
+	public static Item TATAMI_H_gray = register("block_tatamih_gray", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_gray, new Item.Properties()));
+	public static Item TATAMI_H_lightg = register("block_tatamih_lightg", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_lightg, new Item.Properties()));
+	public static Item TATAMI_H_cyan = register("block_tatamih_cyan", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_cyan, new Item.Properties()));
+	public static Item TATAMI_H_purple = register("block_tatamih_purple", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_purple, new Item.Properties()));
+	public static Item TATAMI_H_blue = register("block_tatamih_blue", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_blue, new Item.Properties()));
+	public static Item TATAMI_H_brown = register("block_tatamih_brown", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_brown, new Item.Properties()));
+	public static Item TATAMI_H_green = register("block_tatamih_green", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_green, new Item.Properties()));
+	public static Item TATAMI_H_red = register("block_tatamih_red", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_red, new Item.Properties()));
+	public static Item TATAMI_H_black = register("block_tatamih_black", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_H_black, new Item.Properties()));
 
-	public static Item TATAMI_HY = register("block_tatamih_y", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY, new Item.Properties()));
-	public static Item TATAMI_HY_white = register("block_tatamih_y_white", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_white, new Item.Properties()));
-	public static Item TATAMI_HY_orange = register("block_tatamih_y_orange", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_orange, new Item.Properties()));
-	public static Item TATAMI_HY_magenta = register("block_tatamih_y_magenta", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_magenta, new Item.Properties()));
-	public static Item TATAMI_HY_lightb = register("block_tatamih_y_lightb", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_lightb, new Item.Properties()));
-	public static Item TATAMI_HY_yellow = register("block_tatamih_y_yellow", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_yellow, new Item.Properties()));
-	public static Item TATAMI_HY_lime = register("block_tatamih_y_lime", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_lime, new Item.Properties()));
-	public static Item TATAMI_HY_pink = register("block_tatamih_y_pink", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_pink, new Item.Properties()));
-	public static Item TATAMI_HY_gray = register("block_tatamih_y_gray", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_gray, new Item.Properties()));
-	public static Item TATAMI_HY_lightg = register("block_tatamih_y_lightg", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_lightg, new Item.Properties()));
-	public static Item TATAMI_HY_cyan = register("block_tatamih_y_cyan", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_cyan, new Item.Properties()));
-	public static Item TATAMI_HY_purple = register("block_tatamih_y_purple", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_purple, new Item.Properties()));
-	public static Item TATAMI_HY_blue = register("block_tatamih_y_blue", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_blue, new Item.Properties()));
-	public static Item TATAMI_HY_brown = register("block_tatamih_y_brown", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_brown, new Item.Properties()));
-	public static Item TATAMI_HY_green = register("block_tatamih_y_green", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_green, new Item.Properties()));
-	public static Item TATAMI_HY_red = register("block_tatamih_y_red", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_red, new Item.Properties()));
-	public static Item TATAMI_HY_black = register("block_tatamih_y_black", new Wadeco_Fuel150(JPDeco_Blocks.TATAMI_HY_black, new Item.Properties()));
+	public static Item TATAMI_HY = register("block_tatamih_y", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY, new Item.Properties()));
+	public static Item TATAMI_HY_white = register("block_tatamih_y_white", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_white, new Item.Properties()));
+	public static Item TATAMI_HY_orange = register("block_tatamih_y_orange", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_orange, new Item.Properties()));
+	public static Item TATAMI_HY_magenta = register("block_tatamih_y_magenta", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_magenta, new Item.Properties()));
+	public static Item TATAMI_HY_lightb = register("block_tatamih_y_lightb", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_lightb, new Item.Properties()));
+	public static Item TATAMI_HY_yellow = register("block_tatamih_y_yellow", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_yellow, new Item.Properties()));
+	public static Item TATAMI_HY_lime = register("block_tatamih_y_lime", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_lime, new Item.Properties()));
+	public static Item TATAMI_HY_pink = register("block_tatamih_y_pink", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_pink, new Item.Properties()));
+	public static Item TATAMI_HY_gray = register("block_tatamih_y_gray", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_gray, new Item.Properties()));
+	public static Item TATAMI_HY_lightg = register("block_tatamih_y_lightg", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_lightg, new Item.Properties()));
+	public static Item TATAMI_HY_cyan = register("block_tatamih_y_cyan", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_cyan, new Item.Properties()));
+	public static Item TATAMI_HY_purple = register("block_tatamih_y_purple", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_purple, new Item.Properties()));
+	public static Item TATAMI_HY_blue = register("block_tatamih_y_blue", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_blue, new Item.Properties()));
+	public static Item TATAMI_HY_brown = register("block_tatamih_y_brown", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_brown, new Item.Properties()));
+	public static Item TATAMI_HY_green = register("block_tatamih_y_green", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_green, new Item.Properties()));
+	public static Item TATAMI_HY_red = register("block_tatamih_y_red", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_red, new Item.Properties()));
+	public static Item TATAMI_HY_black = register("block_tatamih_y_black", new Wadeco_Fuel150(JPdeco_Blocks.TATAMI_HY_black, new Item.Properties()));
 
-	public static Item TAKECUBE = register("block_bamboo_cube", new Wadeco_Fuel200(JPDeco_Blocks.TAKECUBE, new Item.Properties()));
-	public static Item TAKECUBE_Y = register("block_bamboo_y_cube", new Wadeco_Fuel200(JPDeco_Blocks.TAKECUBE_Y, new Item.Properties()));
-	public static Item TAKECUBE_K = register("block_bamboo_k_cube", new Wadeco_Fuel200(JPDeco_Blocks.TAKECUBE_K, new Item.Properties()));
-	public static Item TAKE_ST = register("block_bamboo_stairs", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_ST, new Item.Properties()));
-	public static Item TAKE_STY = register("block_bamboo_y_stairs", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_STY, new Item.Properties()));
-	public static Item TAKE_STK = register("block_bamboo_k_stairs", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_STK, new Item.Properties()));
-	public static Item TAKE_SH = register("block_bamboo_slab", new Wadeco_Fuel100(JPDeco_Blocks.TAKE_SH, new Item.Properties()));
-	public static Item TAKE_SHY = register("block_bamboo_y_slab", new Wadeco_Fuel100(JPDeco_Blocks.TAKE_SHY, new Item.Properties()));
-	public static Item TAKE_SHK = register("block_bamboo_k_slab", new Wadeco_Fuel100(JPDeco_Blocks.TAKE_SHK, new Item.Properties()));
+	public static Item TAKECUBE = register("block_bamboo_cube", new Wadeco_Fuel200(JPdeco_Blocks.TAKECUBE, new Item.Properties()));
+	public static Item TAKECUBE_Y = register("block_bamboo_y_cube", new Wadeco_Fuel200(JPdeco_Blocks.TAKECUBE_Y, new Item.Properties()));
+	public static Item TAKECUBE_K = register("block_bamboo_k_cube", new Wadeco_Fuel200(JPdeco_Blocks.TAKECUBE_K, new Item.Properties()));
+	public static Item TAKE_ST = register("block_bamboo_stairs", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_ST, new Item.Properties()));
+	public static Item TAKE_STY = register("block_bamboo_y_stairs", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_STY, new Item.Properties()));
+	public static Item TAKE_STK = register("block_bamboo_k_stairs", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_STK, new Item.Properties()));
+	public static Item TAKE_SH = register("block_bamboo_slab", new Wadeco_Fuel100(JPdeco_Blocks.TAKE_SH, new Item.Properties()));
+	public static Item TAKE_SHY = register("block_bamboo_y_slab", new Wadeco_Fuel100(JPdeco_Blocks.TAKE_SHY, new Item.Properties()));
+	public static Item TAKE_SHK = register("block_bamboo_k_slab", new Wadeco_Fuel100(JPdeco_Blocks.TAKE_SHK, new Item.Properties()));
 
-	public static Item TAKEFENCE = register("block_bamboo_fence", new Wadeco_Fuel150(JPDeco_Blocks.TAKEFENCE, new Item.Properties()));
-	public static Item TAKEFENCE_Y = register("block_bamboo_y_fence", new Wadeco_Fuel150(JPDeco_Blocks.TAKEFENCE_Y, new Item.Properties()));
-	public static Item TAKEFENCE_K = register("block_bamboo_k_fence", new Wadeco_Fuel150(JPDeco_Blocks.TAKEFENCE_K, new Item.Properties()));
-	public static Item TAKEFENCEGATE = register("block_bamboo_fencegate", new Wadeco_Fuel150(JPDeco_Blocks.TAKEFENCEGATE, new Item.Properties()));
-	public static Item TAKEFENCEGATE_Y = register("block_bamboo_y_fencegate", new Wadeco_Fuel150(JPDeco_Blocks.TAKEFENCEGATE_Y, new Item.Properties()));
-	public static Item TAKEFENCEGATE_K = register("block_bamboo_k_fencegate", new Wadeco_Fuel150(JPDeco_Blocks.TAKEFENCEGATE_K, new Item.Properties()));
-	public static Item TAKEDOOR = register("block_bamboo_door", new Wadeco_Fuel150(JPDeco_Blocks.TAKEDOOR, new Item.Properties()));
-	public static Item TAKEDOOR_Y = register("block_bamboo_y_door", new Wadeco_Fuel150(JPDeco_Blocks.TAKEDOOR_Y, new Item.Properties()));
-	public static Item TAKEDOOR_K = register("block_bamboo_k_door", new Wadeco_Fuel150(JPDeco_Blocks.TAKEDOOR_K, new Item.Properties()));
+	public static Item TAKEFENCE = register("block_bamboo_fence", new Wadeco_Fuel150(JPdeco_Blocks.TAKEFENCE, new Item.Properties()));
+	public static Item TAKEFENCE_Y = register("block_bamboo_y_fence", new Wadeco_Fuel150(JPdeco_Blocks.TAKEFENCE_Y, new Item.Properties()));
+	public static Item TAKEFENCE_K = register("block_bamboo_k_fence", new Wadeco_Fuel150(JPdeco_Blocks.TAKEFENCE_K, new Item.Properties()));
+	public static Item TAKEFENCEGATE = register("block_bamboo_fencegate", new Wadeco_Fuel150(JPdeco_Blocks.TAKEFENCEGATE, new Item.Properties()));
+	public static Item TAKEFENCEGATE_Y = register("block_bamboo_y_fencegate", new Wadeco_Fuel150(JPdeco_Blocks.TAKEFENCEGATE_Y, new Item.Properties()));
+	public static Item TAKEFENCEGATE_K = register("block_bamboo_k_fencegate", new Wadeco_Fuel150(JPdeco_Blocks.TAKEFENCEGATE_K, new Item.Properties()));
+	public static Item TAKEDOOR = register("block_bamboo_door", new Wadeco_Fuel150(JPdeco_Blocks.TAKEDOOR, new Item.Properties()));
+	public static Item TAKEDOOR_Y = register("block_bamboo_y_door", new Wadeco_Fuel150(JPdeco_Blocks.TAKEDOOR_Y, new Item.Properties()));
+	public static Item TAKEDOOR_K = register("block_bamboo_k_door", new Wadeco_Fuel150(JPdeco_Blocks.TAKEDOOR_K, new Item.Properties()));
 
-	public static Item TAKE_TRAPDOOR = register("block_bamboo_trapdoor", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_TRAPDOOR, new Item.Properties()));
-	public static Item TAKE_TRAPDOOR_Y = register("block_bamboo_y_trapdoor", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_TRAPDOOR_Y, new Item.Properties()));
-	public static Item TAKE_TRAPDOOR_K = register("block_bamboo_k_trapdoor", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_TRAPDOOR_K, new Item.Properties()));
-	public static Item TAKE_PLATE = register("block_bamboo_plate", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_PLATE, new Item.Properties()));
-	public static Item TAKE_PLATE_Y = register("block_bamboo_y_plate", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_PLATE_Y, new Item.Properties()));
-	public static Item TAKE_PLATE_K = register("block_bamboo_k_plate", new Wadeco_Fuel150(JPDeco_Blocks.TAKE_PLATE_K, new Item.Properties()));
-	public static Item TAKE_BUTTON = register("block_bamboo_button", new Wadeco_Fuel100(JPDeco_Blocks.TAKE_BUTTON, new Item.Properties()));
-	public static Item TAKE_BUTTON_Y = register("block_bamboo_y_button", new Wadeco_Fuel100(JPDeco_Blocks.TAKE_BUTTON_Y, new Item.Properties()));
-	public static Item TAKE_BUTTON_K = register("block_bamboo_k_button", new Wadeco_Fuel100(JPDeco_Blocks.TAKE_BUTTON_K, new Item.Properties()));
+	public static Item TAKE_TRAPDOOR = register("block_bamboo_trapdoor", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_TRAPDOOR, new Item.Properties()));
+	public static Item TAKE_TRAPDOOR_Y = register("block_bamboo_y_trapdoor", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_TRAPDOOR_Y, new Item.Properties()));
+	public static Item TAKE_TRAPDOOR_K = register("block_bamboo_k_trapdoor", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_TRAPDOOR_K, new Item.Properties()));
+	public static Item TAKE_PLATE = register("block_bamboo_plate", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_PLATE, new Item.Properties()));
+	public static Item TAKE_PLATE_Y = register("block_bamboo_y_plate", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_PLATE_Y, new Item.Properties()));
+	public static Item TAKE_PLATE_K = register("block_bamboo_k_plate", new Wadeco_Fuel150(JPdeco_Blocks.TAKE_PLATE_K, new Item.Properties()));
+	public static Item TAKE_BUTTON = register("block_bamboo_button", new Wadeco_Fuel100(JPdeco_Blocks.TAKE_BUTTON, new Item.Properties()));
+	public static Item TAKE_BUTTON_Y = register("block_bamboo_y_button", new Wadeco_Fuel100(JPdeco_Blocks.TAKE_BUTTON_Y, new Item.Properties()));
+	public static Item TAKE_BUTTON_K = register("block_bamboo_k_button", new Wadeco_Fuel100(JPdeco_Blocks.TAKE_BUTTON_K, new Item.Properties()));
 
-	public static Item FUTON_white = register("block_futon_c_white", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_white, new Item.Properties()));
-	public static Item FUTON_orange = register("block_futon_c_orange", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_orange, new Item.Properties()));
-	public static Item FUTON_magenta = register("block_futon_c_magenta", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_magenta, new Item.Properties()));
-	public static Item FUTON_lightb = register("block_futon_c_lightb", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_lightb, new Item.Properties()));
-	public static Item FUTON_yellow = register("block_futon_c_yellow", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_yellow, new Item.Properties()));
-	public static Item FUTON_lime = register("block_futon_c_lime", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_lime, new Item.Properties()));
-	public static Item FUTON_pink = register("block_futon_c_pink", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_pink, new Item.Properties()));
-	public static Item FUTON_gray = register("block_futon_c_gray", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_gray, new Item.Properties()));
-	public static Item FUTON_lightg = register("block_futon_c_lightg", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_lightg, new Item.Properties()));
-	public static Item FUTON_cyan = register("block_futon_c_cyan", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_cyan, new Item.Properties()));
-	public static Item FUTON_purple = register("block_futon_c_purple", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_purple, new Item.Properties()));
-	public static Item FUTON_blue = register("block_futon_c_blue", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_blue, new Item.Properties()));
-	public static Item FUTON_brown = register("block_futon_c_brown", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_brown, new Item.Properties()));
-	public static Item FUTON_green = register("block_futon_c_green", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_green, new Item.Properties()));
-	public static Item FUTON_red = register("block_futon_c_red", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_red, new Item.Properties()));
-	public static Item FUTON_black = register("block_futon_c_black", new Wadeco_Fuel150(JPDeco_Blocks.FUTON_black, new Item.Properties()));
+	public static Item FUTON_white = register("block_futon_c_white", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_white, new Item.Properties()));
+	public static Item FUTON_orange = register("block_futon_c_orange", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_orange, new Item.Properties()));
+	public static Item FUTON_magenta = register("block_futon_c_magenta", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_magenta, new Item.Properties()));
+	public static Item FUTON_lightb = register("block_futon_c_lightb", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_lightb, new Item.Properties()));
+	public static Item FUTON_yellow = register("block_futon_c_yellow", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_yellow, new Item.Properties()));
+	public static Item FUTON_lime = register("block_futon_c_lime", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_lime, new Item.Properties()));
+	public static Item FUTON_pink = register("block_futon_c_pink", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_pink, new Item.Properties()));
+	public static Item FUTON_gray = register("block_futon_c_gray", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_gray, new Item.Properties()));
+	public static Item FUTON_lightg = register("block_futon_c_lightg", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_lightg, new Item.Properties()));
+	public static Item FUTON_cyan = register("block_futon_c_cyan", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_cyan, new Item.Properties()));
+	public static Item FUTON_purple = register("block_futon_c_purple", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_purple, new Item.Properties()));
+	public static Item FUTON_blue = register("block_futon_c_blue", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_blue, new Item.Properties()));
+	public static Item FUTON_brown = register("block_futon_c_brown", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_brown, new Item.Properties()));
+	public static Item FUTON_green = register("block_futon_c_green", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_green, new Item.Properties()));
+	public static Item FUTON_red = register("block_futon_c_red", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_red, new Item.Properties()));
+	public static Item FUTON_black = register("block_futon_c_black", new Wadeco_Fuel150(JPdeco_Blocks.FUTON_black, new Item.Properties()));
 
-	public static Item ANDON_white = register("block_andon_white", new Wadeco_noFuel(JPDeco_Blocks.ANDON_white, new Item.Properties()));
-	public static Item ANDON_orange = register("block_andon_orange", new Wadeco_noFuel(JPDeco_Blocks.ANDON_orange, new Item.Properties()));
-	public static Item ANDON_magenta = register("block_andon_magenta", new Wadeco_noFuel(JPDeco_Blocks.ANDON_magenta, new Item.Properties()));
-	public static Item ANDON_lightb = register("block_andon_lightb", new Wadeco_noFuel(JPDeco_Blocks.ANDON_lightb, new Item.Properties()));
-	public static Item ANDON_yellow = register("block_andon_yellow", new Wadeco_noFuel(JPDeco_Blocks.ANDON_yellow, new Item.Properties()));
-	public static Item ANDON_lime = register("block_andon_lime", new Wadeco_noFuel(JPDeco_Blocks.ANDON_lime, new Item.Properties()));
-	public static Item ANDON_pink = register("block_andon_pink", new Wadeco_noFuel(JPDeco_Blocks.ANDON_pink, new Item.Properties()));
-	public static Item ANDON_gray = register("block_andon_gray", new Wadeco_noFuel(JPDeco_Blocks.ANDON_gray, new Item.Properties()));
-	public static Item ANDON_lightg = register("block_andon_lightg", new Wadeco_noFuel(JPDeco_Blocks.ANDON_lightg, new Item.Properties()));
-	public static Item ANDON_cyan = register("block_andon_cyan", new Wadeco_noFuel(JPDeco_Blocks.ANDON_cyan, new Item.Properties()));
-	public static Item ANDON_purple = register("block_andon_purple", new Wadeco_noFuel(JPDeco_Blocks.ANDON_purple, new Item.Properties()));
-	public static Item ANDON_blue = register("block_andon_blue", new Wadeco_noFuel(JPDeco_Blocks.ANDON_blue, new Item.Properties()));
-	public static Item ANDON_brown = register("block_andon_brown", new Wadeco_noFuel(JPDeco_Blocks.ANDON_brown, new Item.Properties()));
-	public static Item ANDON_green = register("block_andon_green", new Wadeco_noFuel(JPDeco_Blocks.ANDON_green, new Item.Properties()));
-	public static Item ANDON_red = register("block_andon_red", new Wadeco_noFuel(JPDeco_Blocks.ANDON_red, new Item.Properties()));
-	public static Item ANDON_black = register("block_andon_black", new Wadeco_noFuel(JPDeco_Blocks.ANDON_black, new Item.Properties()));
+	public static Item ANDON_white = register("block_andon_white", new Wadeco_noFuel(JPdeco_Blocks.ANDON_white, new Item.Properties()));
+	public static Item ANDON_orange = register("block_andon_orange", new Wadeco_noFuel(JPdeco_Blocks.ANDON_orange, new Item.Properties()));
+	public static Item ANDON_magenta = register("block_andon_magenta", new Wadeco_noFuel(JPdeco_Blocks.ANDON_magenta, new Item.Properties()));
+	public static Item ANDON_lightb = register("block_andon_lightb", new Wadeco_noFuel(JPdeco_Blocks.ANDON_lightb, new Item.Properties()));
+	public static Item ANDON_yellow = register("block_andon_yellow", new Wadeco_noFuel(JPdeco_Blocks.ANDON_yellow, new Item.Properties()));
+	public static Item ANDON_lime = register("block_andon_lime", new Wadeco_noFuel(JPdeco_Blocks.ANDON_lime, new Item.Properties()));
+	public static Item ANDON_pink = register("block_andon_pink", new Wadeco_noFuel(JPdeco_Blocks.ANDON_pink, new Item.Properties()));
+	public static Item ANDON_gray = register("block_andon_gray", new Wadeco_noFuel(JPdeco_Blocks.ANDON_gray, new Item.Properties()));
+	public static Item ANDON_lightg = register("block_andon_lightg", new Wadeco_noFuel(JPdeco_Blocks.ANDON_lightg, new Item.Properties()));
+	public static Item ANDON_cyan = register("block_andon_cyan", new Wadeco_noFuel(JPdeco_Blocks.ANDON_cyan, new Item.Properties()));
+	public static Item ANDON_purple = register("block_andon_purple", new Wadeco_noFuel(JPdeco_Blocks.ANDON_purple, new Item.Properties()));
+	public static Item ANDON_blue = register("block_andon_blue", new Wadeco_noFuel(JPdeco_Blocks.ANDON_blue, new Item.Properties()));
+	public static Item ANDON_brown = register("block_andon_brown", new Wadeco_noFuel(JPdeco_Blocks.ANDON_brown, new Item.Properties()));
+	public static Item ANDON_green = register("block_andon_green", new Wadeco_noFuel(JPdeco_Blocks.ANDON_green, new Item.Properties()));
+	public static Item ANDON_red = register("block_andon_red", new Wadeco_noFuel(JPdeco_Blocks.ANDON_red, new Item.Properties()));
+	public static Item ANDON_black = register("block_andon_black", new Wadeco_noFuel(JPdeco_Blocks.ANDON_black, new Item.Properties()));
 
 	public static Item KASA_white = register("block_mkasa_white", new Wadeco_noFuel(Unit_Blocks.KASA_white, new Item.Properties()));
 	public static Item KASA_orange = register("block_mkasa_orange", new Wadeco_noFuel(Unit_Blocks.KASA_orange, new Item.Properties()));
@@ -383,8 +384,8 @@ public class Items_Wadeco {
 	public static Item LONGTOUROU_and = register("block_longtourou_and", new Wadeco_noFuel(Garden_Blocks.LONGTOUROU_and, new Item.Properties()));
 	public static Item TAKEAKARI = register("block_takeakari", new Wadeco_Fuel100(Garden_Blocks.TAKEAKARI, new Item.Properties()));
 
-	public static Item WADAIKO = register("block_wadaiko", new Wadeco_Fuel300(JPDeco_Blocks.WADAIKO, new Item.Properties()));
-	public static Item WADAIKO_small = register("block_wadaiko_small", new Wadeco_Fuel150(JPDeco_Blocks.WADAIKO_small, new Item.Properties()));
+	public static Item WADAIKO = register("block_wadaiko", new Wadeco_Fuel300(JPdeco_Blocks.WADAIKO, new Item.Properties()));
+	public static Item WADAIKO_small = register("block_wadaiko_small", new Wadeco_Fuel150(JPdeco_Blocks.WADAIKO_small, new Item.Properties()));
 
 	public static Item ENDAI = register("block_mendai", new Wadeco_Fuel300(Unit_Blocks.ENDAI, new Item.Properties()));
 	public static Item ENDAI_r = register("block_mendai_red", new Wadeco_Fuel300(Unit_Blocks.ENDAI_r, new Item.Properties()));
@@ -395,7 +396,7 @@ public class Items_Wadeco {
 	public static Item GATE_IRONGRILL = register("block_gate_irongrill", new Wadeco_noFuel(Gate_Blocks.GATE_IRONGRILL, new Item.Properties()));
 	public static Item TETSUSAKU_BOT = register("block_ironfence_bot", new Wadeco_noFuel(Garden_Blocks.TETSUSAKU_BOT, new Item.Properties()));
 
-	public static Item HAKE = register("item_hake", new Item(new Item.Properties().tab(ItemGroups_CM.WADECO)));
+	public static Item HAKE = register("item_hake", new Item(new Item.Properties().group(ItemGroups_CM.WADECO)));
 	public static Item HAKE_white = register("item_hake_white", new ItemHake_White(new Item.Properties()));
 	public static Item HAKE_orange = register("item_hake_orange", new ItemHake_Orange(new Item.Properties()));
 	public static Item HAKE_magenta = register("item_hake_magenta", new ItemHake_Magenta(new Item.Properties()));
@@ -413,11 +414,11 @@ public class Items_Wadeco {
 	public static Item HAKE_red = register("item_hake_red", new ItemHake_Red(new Item.Properties()));
 	public static Item HAKE_black = register("item_hake_black", new ItemHake_Black(new Item.Properties()));
 
-	public static Item KUMADE = register("item_kumade", new ItemKumade(new Item.Properties()));
-	public static Item NOMI = register("item_chisel", new ItemChisel(new Item.Properties()));
-	
-	public static Item MAKIBISHI = register("block_makibishi", new Wadeco_noFuel(Garden_Blocks.MAKIBISHI, new Item.Properties()));
+	public static Item KUMADE = register("item_kumade", new ItemKumade(new Item.Properties().maxStackSize(1).maxDamage(128).group(ItemGroups_CM.WADECO)));
+	public static Item NOMI = register("item_chisel", new ItemChisel(new Item.Properties().maxStackSize(1).maxDamage(256).group(ItemGroups_CM.WADECO)));
 
+	public static Item MAKIBISHI = register("block_makibishi", new Wadeco_noFuel(Garden_Blocks.MAKIBISHI, new Item.Properties()));
+	
 	///* Register *///
 	private static Item register(String name, Item item) {
 		ITEMS.register(name, () -> item);

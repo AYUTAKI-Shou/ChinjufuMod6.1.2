@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 public class Wall_Fuel150 extends BlockNamedItem {
 
 	public Wall_Fuel150(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.WALLPANEL));
+		super(block, builder.group(ItemGroups_CM.WALLPANEL));
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
 		return 150;

@@ -59,13 +59,13 @@ import com.ayutaki.chinjufumod.registry.Furniture_Blocks;
 import com.ayutaki.chinjufumod.registry.Harbor_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Wadeco;
 import com.ayutaki.chinjufumod.registry.JPChair_Blocks;
-import com.ayutaki.chinjufumod.registry.JPDeco_Blocks;
 import com.ayutaki.chinjufumod.registry.JP_Blocks;
+import com.ayutaki.chinjufumod.registry.JPdeco_Blocks;
 import com.ayutaki.chinjufumod.registry.KamoiPlaster_Blocks;
 import com.ayutaki.chinjufumod.registry.Ranma_Blocks;
 import com.ayutaki.chinjufumod.registry.Slidedoor_Blocks;
 import com.ayutaki.chinjufumod.registry.Unit_Blocks;
-import com.ayutaki.chinjufumod.registry.WallPanel_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -94,18 +94,19 @@ public class ItemHake_Blue extends Base_ItemHake {
 	}
 
 	/* FlintAndSteel */
-	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity playerIn = context.getPlayer();
-		IWorld iworld = context.getLevel();
-		BlockPos blockpos = context.getClickedPos();
+		IWorld iworld = context.getWorld();
+		BlockPos blockpos = context.getPos();
 		BlockState blockstate = iworld.getBlockState(blockpos);
 		Block block = blockstate.getBlock();
 
-		ItemStack itemstack = context.getItemInHand();
-		boolean mode = playerIn.abilities.instabuild;
+		ItemStack itemstack = context.getItem();
+		boolean mode = playerIn.abilities.isCreativeMode;
 
-		/** other Blocks **/
+		/** 木材 採用見送り **/
+
+		/** 羊毛・コンクリート **/
 		if (block == Blocks.WHITE_WOOL || block == Blocks.ORANGE_WOOL || block == Blocks.MAGENTA_WOOL ||
 				block == Blocks.LIGHT_BLUE_WOOL || block == Blocks.YELLOW_WOOL || block == Blocks.LIME_WOOL ||
 				block == Blocks.PINK_WOOL || block == Blocks.GRAY_WOOL || block == Blocks.LIGHT_GRAY_WOOL ||
@@ -113,12 +114,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 				block == Blocks.GREEN_WOOL || block == Blocks.RED_WOOL || block == Blocks.BLACK_WOOL) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_WOOL.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_WOOL.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } ); //BreakAnimation 無しで筆を返すことも可能
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } ); //BreakAnimation 無しで筆を返すことも可能
 
 			return ActionResultType.SUCCESS;
 		}
@@ -130,12 +131,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 				block == Blocks.GREEN_CONCRETE || block == Blocks.RED_CONCRETE || block == Blocks.BLACK_CONCRETE) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_CONCRETE.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_CONCRETE.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -148,12 +149,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 				block == Blocks.TERRACOTTA) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_TERRACOTTA.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_TERRACOTTA.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -161,12 +162,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof ConcretePowderBlock && block != Blocks.BLUE_CONCRETE_POWDER) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_CONCRETE_POWDER.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_CONCRETE_POWDER.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -174,12 +175,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if ((block instanceof StainedGlassBlock && block != Blocks.BLUE_STAINED_GLASS) || block == Blocks.GLASS) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_STAINED_GLASS.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_STAINED_GLASS.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -188,13 +189,13 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof GlazedTerracottaBlock && block != Blocks.BLUE_GLAZED_TERRACOTTA) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_GLAZED_TERRACOTTA.defaultBlockState()
-					.setValue(GlazedTerracottaBlock.FACING, blockstate.getValue(GlazedTerracottaBlock.FACING)), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_GLAZED_TERRACOTTA.getDefaultState()
+					.with(GlazedTerracottaBlock.HORIZONTAL_FACING, blockstate.get(GlazedTerracottaBlock.HORIZONTAL_FACING)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -203,17 +204,17 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if ((block instanceof StainedGlassPaneBlock && block != Blocks.BLUE_STAINED_GLASS_PANE) || block == Blocks.GLASS_PANE) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_STAINED_GLASS_PANE.defaultBlockState()
-					.setValue(PaneBlock.NORTH, blockstate.getValue(PaneBlock.NORTH))
-					.setValue(PaneBlock.EAST, blockstate.getValue(PaneBlock.EAST))
-					.setValue(PaneBlock.SOUTH, blockstate.getValue(PaneBlock.SOUTH))
-					.setValue(PaneBlock.WEST, blockstate.getValue(PaneBlock.WEST))
-					.setValue(PaneBlock.WATERLOGGED, blockstate.getValue(PaneBlock.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_STAINED_GLASS_PANE.getDefaultState()
+					.with(PaneBlock.NORTH, blockstate.get(PaneBlock.NORTH))
+					.with(PaneBlock.EAST, blockstate.get(PaneBlock.EAST))
+					.with(PaneBlock.SOUTH, blockstate.get(PaneBlock.SOUTH))
+					.with(PaneBlock.WEST, blockstate.get(PaneBlock.WEST))
+					.with(PaneBlock.WATERLOGGED, blockstate.get(PaneBlock.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -222,12 +223,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof CarpetBlock && block != Blocks.BLUE_CARPET) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Blocks.BLUE_CARPET.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Blocks.BLUE_CARPET.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -237,13 +238,13 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Full_Kawara && block != JP_Blocks.KAWARA_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.KAWARA_blue.defaultBlockState()
-					.setValue(Base_Full_JP.CRACK, blockstate.getValue(Base_Full_JP.CRACK)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_blue.getDefaultState()
+					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -251,13 +252,13 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Full_Plaster && block != JP_Blocks.SHIKKUI_blue && block != JP_Blocks.DIRTWALL) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.SHIKKUI_blue.defaultBlockState()
-					.setValue(Base_Full_JP.CRACK, blockstate.getValue(Base_Full_JP.CRACK)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_blue.getDefaultState()
+					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -265,13 +266,13 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Full_Namako && block != JP_Blocks.NAMAKO_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKO_blue.defaultBlockState()
-					.setValue(Base_Full_JP.CRACK, blockstate.getValue(Base_Full_JP.CRACK)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_blue.getDefaultState()
+					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -279,13 +280,13 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Full_Namako_B && block != JP_Blocks.NAMAKOB_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKOB_blue.defaultBlockState()
-					.setValue(Base_Full_JP.CRACK, blockstate.getValue(Base_Full_JP.CRACK)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_blue.getDefaultState()
+					.with(Base_Full_JP.CRACK, blockstate.get(Base_Full_JP.CRACK)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -294,16 +295,16 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Stairs_Kawara && block != JP_Blocks.KAWARA_ST_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.KAWARA_ST_blue.defaultBlockState()
-					.setValue(StairsBlock.FACING, blockstate.getValue(StairsBlock.FACING))
-					.setValue(StairsBlock.HALF, blockstate.getValue(StairsBlock.HALF))
-					.setValue(StairsBlock.SHAPE, blockstate.getValue(StairsBlock.SHAPE))
-					.setValue(StairsBlock.WATERLOGGED, blockstate.getValue(StairsBlock.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_ST_blue.getDefaultState()
+					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
+					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
+					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
+					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -311,16 +312,16 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Stairs_Plaster && block != JP_Blocks.SHIKKUI_ST_blue && block != JP_Blocks.DIRTWALL_stairs) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.SHIKKUI_ST_blue.defaultBlockState()
-					.setValue(StairsBlock.FACING, blockstate.getValue(StairsBlock.FACING))
-					.setValue(StairsBlock.HALF, blockstate.getValue(StairsBlock.HALF))
-					.setValue(StairsBlock.SHAPE, blockstate.getValue(StairsBlock.SHAPE))
-					.setValue(StairsBlock.WATERLOGGED, blockstate.getValue(StairsBlock.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_ST_blue.getDefaultState()
+					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
+					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
+					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
+					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -328,16 +329,16 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Stairs_Namako && block != JP_Blocks.NAMAKO_ST_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKO_ST_blue.defaultBlockState()
-					.setValue(StairsBlock.FACING, blockstate.getValue(StairsBlock.FACING))
-					.setValue(StairsBlock.HALF, blockstate.getValue(StairsBlock.HALF))
-					.setValue(StairsBlock.SHAPE, blockstate.getValue(StairsBlock.SHAPE))
-					.setValue(StairsBlock.WATERLOGGED, blockstate.getValue(StairsBlock.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_ST_blue.getDefaultState()
+					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
+					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
+					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
+					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -345,16 +346,16 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Stairs_Namako_B && block != JP_Blocks.NAMAKOB_ST_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKOB_ST_blue.defaultBlockState()
-					.setValue(StairsBlock.FACING, blockstate.getValue(StairsBlock.FACING))
-					.setValue(StairsBlock.HALF, blockstate.getValue(StairsBlock.HALF))
-					.setValue(StairsBlock.SHAPE, blockstate.getValue(StairsBlock.SHAPE))
-					.setValue(StairsBlock.WATERLOGGED, blockstate.getValue(StairsBlock.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_ST_blue.getDefaultState()
+					.with(StairsBlock.FACING, blockstate.get(StairsBlock.FACING))
+					.with(StairsBlock.HALF, blockstate.get(StairsBlock.HALF))
+					.with(StairsBlock.SHAPE, blockstate.get(StairsBlock.SHAPE))
+					.with(StairsBlock.WATERLOGGED, blockstate.get(StairsBlock.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -363,23 +364,23 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Slab_Kawara && block != JP_Blocks.KAWARA_SH_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.KAWARA_SH_blue.defaultBlockState()
-					.setValue(Base_Slab_JP.TYPE, blockstate.getValue(Base_Slab_JP.TYPE))
-					.setValue(Base_Slab_JP.CRACK, blockstate.getValue(Base_Slab_JP.CRACK))
-					.setValue(Base_Slab_JP.WATERLOGGED, blockstate.getValue(Base_Slab_JP.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_SH_blue.getDefaultState()
+					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
+					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
+					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(2, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
+				itemstack.damageItem(2, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(1, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
+				itemstack.damageItem(1, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 			return ActionResultType.SUCCESS;
 		}
@@ -387,23 +388,23 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Slab_Plaster && block != JP_Blocks.SHIKKUI_SH_blue && block != JP_Blocks.DIRTWALL_SH) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.SHIKKUI_SH_blue.defaultBlockState()
-					.setValue(Base_Slab_JP.TYPE, blockstate.getValue(Base_Slab_JP.TYPE))
-					.setValue(Base_Slab_JP.CRACK, blockstate.getValue(Base_Slab_JP.CRACK))
-					.setValue(Base_Slab_JP.WATERLOGGED, blockstate.getValue(Base_Slab_JP.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_SH_blue.getDefaultState()
+					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
+					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
+					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(2, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
+				itemstack.damageItem(2, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(1, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
+				itemstack.damageItem(1, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 			return ActionResultType.SUCCESS;
 		}
@@ -411,23 +412,23 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Slab_Namako && block != JP_Blocks.NAMAKO_SH_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKO_SH_blue.defaultBlockState()
-					.setValue(Base_Slab_JP.TYPE, blockstate.getValue(Base_Slab_JP.TYPE))
-					.setValue(Base_Slab_JP.CRACK, blockstate.getValue(Base_Slab_JP.CRACK))
-					.setValue(Base_Slab_JP.WATERLOGGED, blockstate.getValue(Base_Slab_JP.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_SH_blue.getDefaultState()
+					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
+					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
+					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(2, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
+				itemstack.damageItem(2, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(1, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
+				itemstack.damageItem(1, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 			return ActionResultType.SUCCESS;
 		}
@@ -435,23 +436,23 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Slab_Namako_B && block != JP_Blocks.NAMAKOB_SH_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKOB_SH_blue.defaultBlockState()
-					.setValue(Base_Slab_JP.TYPE, blockstate.getValue(Base_Slab_JP.TYPE))
-					.setValue(Base_Slab_JP.CRACK, blockstate.getValue(Base_Slab_JP.CRACK))
-					.setValue(Base_Slab_JP.WATERLOGGED, blockstate.getValue(Base_Slab_JP.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_SH_blue.getDefaultState()
+					.with(Base_Slab_JP.TYPE, blockstate.get(Base_Slab_JP.TYPE))
+					.with(Base_Slab_JP.CRACK, blockstate.get(Base_Slab_JP.CRACK))
+					.with(Base_Slab_JP.WATERLOGGED, blockstate.get(Base_Slab_JP.WATERLOGGED)), 3);
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(2, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) == SlabType.DOUBLE) {
+				itemstack.damageItem(2, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 
-			if (blockstate.getValue(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
-				itemstack.hurtAndBreak(1, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Base_Slab_JP.TYPE) != SlabType.DOUBLE) {
+				itemstack.damageItem(1, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 			return ActionResultType.SUCCESS;
 		}
@@ -461,14 +462,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof CTruss && block != Harbor_Blocks.TRUSS_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Harbor_Blocks.TRUSS_blue.defaultBlockState()
-					.setValue(BaseFacingWater.H_FACING, blockstate.getValue(BaseFacingWater.H_FACING))
-					.setValue(BaseFacingWater.WATERLOGGED, blockstate.getValue(BaseFacingWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, Harbor_Blocks.TRUSS_blue.getDefaultState()
+					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
+					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -477,12 +478,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof CafeChair && block != Chair_Blocks.CAFECHAIR_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Chair_Blocks.CAFECHAIR_blue.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, Chair_Blocks.CAFECHAIR_blue.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -490,12 +491,12 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Zabuton && block != JPChair_Blocks.ZABUTON_blue && block != JPChair_Blocks.WARAZABUTON) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JPChair_Blocks.ZABUTON_blue.defaultBlockState(), 3);
+			iworld.setBlockState(blockpos, JPChair_Blocks.ZABUTON_blue.getDefaultState(), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -503,32 +504,32 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Candle && block != Furniture_Blocks.CANDLE_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Furniture_Blocks.CANDLE_blue.defaultBlockState()
-					.setValue(Candle.LIT, blockstate.getValue(Candle.LIT))
-					.setValue(Candle.DOWN, blockstate.getValue(Candle.DOWN))
-					.setValue(Candle.WATERLOGGED, blockstate.getValue(Candle.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, Furniture_Blocks.CANDLE_blue.getDefaultState()
+					.with(Candle.LIT, blockstate.get(Candle.LIT))
+					.with(Candle.DOWN, blockstate.get(Candle.DOWN))
+					.with(Candle.WATERLOGGED, blockstate.get(Candle.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
 		/** 行灯 **/
-		if (block instanceof Andon && block != JPDeco_Blocks.ANDON_blue) {
+		if (block instanceof Andon && block != JPdeco_Blocks.ANDON_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JPDeco_Blocks.ANDON_blue.defaultBlockState()
-					.setValue(Andon.LIT, blockstate.getValue(Andon.LIT))
-					.setValue(Andon.H_FACING, blockstate.getValue(Andon.H_FACING))
-					.setValue(Andon.WATERLOGGED, blockstate.getValue(Andon.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JPdeco_Blocks.ANDON_blue.getDefaultState()
+					.with(Andon.LIT, blockstate.get(Andon.LIT))
+					.with(Andon.H_FACING, blockstate.get(Andon.H_FACING))
+					.with(Andon.WATERLOGGED, blockstate.get(Andon.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -537,15 +538,15 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Sofa && block != Chair_Blocks.SOFA_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Chair_Blocks.SOFA_blue.defaultBlockState()
-					.setValue(BaseSofa.TYPE, blockstate.getValue(BaseSofa.TYPE))
-					.setValue(BaseSofa.H_FACING, blockstate.getValue(BaseSofa.H_FACING))
-					.setValue(BaseSofa.WATERLOGGED, blockstate.getValue(BaseSofa.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, Chair_Blocks.SOFA_blue.getDefaultState()
+					.with(BaseSofa.TYPE, blockstate.get(BaseSofa.TYPE))
+					.with(BaseSofa.H_FACING, blockstate.get(BaseSofa.H_FACING))
+					.with(BaseSofa.WATERLOGGED, blockstate.get(BaseSofa.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(2, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(2, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -554,14 +555,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Zaisu && block != JPChair_Blocks.ZAISU_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JPChair_Blocks.ZAISU_blue.defaultBlockState()
-					.setValue(BaseFacingWater.H_FACING, blockstate.getValue(BaseFacingWater.H_FACING))
-					.setValue(BaseFacingWater.WATERLOGGED, blockstate.getValue(BaseFacingWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JPChair_Blocks.ZAISU_blue.getDefaultState()
+					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
+					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -570,65 +571,65 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Noren && block != Ranma_Blocks.NOREN_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Ranma_Blocks.NOREN_blue.defaultBlockState()
-					.setValue(Noren.TYPE, blockstate.getValue(Noren.TYPE))
-					.setValue(Noren.H_FACING, blockstate.getValue(Noren.H_FACING))
-					.setValue(Noren.WATERLOGGED, blockstate.getValue(Noren.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, Ranma_Blocks.NOREN_blue.getDefaultState()
+					.with(Noren.TYPE, blockstate.get(Noren.TYPE))
+					.with(Noren.H_FACING, blockstate.get(Noren.H_FACING))
+					.with(Noren.WATERLOGGED, blockstate.get(Noren.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
 		/** 布団 **/
-		if (block instanceof Futon && block != JPDeco_Blocks.FUTON_blue) {
+		if (block instanceof Futon && block != JPdeco_Blocks.FUTON_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JPDeco_Blocks.FUTON_blue.defaultBlockState()
-					.setValue(BaseStage2_FaceWater.STAGE_1_2, blockstate.getValue(BaseStage2_FaceWater.STAGE_1_2))
-					.setValue(BaseStage2_FaceWater.H_FACING, blockstate.getValue(BaseStage2_FaceWater.H_FACING))
-					.setValue(BaseStage2_FaceWater.WATERLOGGED, blockstate.getValue(BaseStage2_FaceWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JPdeco_Blocks.FUTON_blue.getDefaultState()
+					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
+					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
+					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
 		/** 畳 **/
-		if (block instanceof Tatami && block != JPDeco_Blocks.TATAMI_H_blue && block != JPDeco_Blocks.TATAMI_H) {
+		if (block instanceof Tatami && block != JPdeco_Blocks.TATAMI_H_blue && block != JPdeco_Blocks.TATAMI_H) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JPDeco_Blocks.TATAMI_H_blue.defaultBlockState()
-					.setValue(BaseFacingSlab_Water.TYPE, blockstate.getValue(BaseFacingSlab_Water.TYPE))
-					.setValue(BaseFacingSlab_Water.H_FACING, blockstate.getValue(BaseFacingSlab_Water.H_FACING))
-					.setValue(BaseFacingSlab_Water.WATERLOGGED, blockstate.getValue(BaseFacingSlab_Water.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JPdeco_Blocks.TATAMI_H_blue.getDefaultState()
+					.with(BaseFacingSlab_Water.TYPE, blockstate.get(BaseFacingSlab_Water.TYPE))
+					.with(BaseFacingSlab_Water.H_FACING, blockstate.get(BaseFacingSlab_Water.H_FACING))
+					.with(BaseFacingSlab_Water.WATERLOGGED, blockstate.get(BaseFacingSlab_Water.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
-		if (block instanceof Tatami_Y && block != JPDeco_Blocks.TATAMI_HY_blue && block != JPDeco_Blocks.TATAMI_HY) {
+		if (block instanceof Tatami_Y && block != JPdeco_Blocks.TATAMI_HY_blue && block != JPdeco_Blocks.TATAMI_HY) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JPDeco_Blocks.TATAMI_HY_blue.defaultBlockState()
-					.setValue(BaseFacingSlab_Water.TYPE, blockstate.getValue(BaseFacingSlab_Water.TYPE))
-					.setValue(BaseFacingSlab_Water.H_FACING, blockstate.getValue(BaseFacingSlab_Water.H_FACING))
-					.setValue(BaseFacingSlab_Water.WATERLOGGED, blockstate.getValue(BaseFacingSlab_Water.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JPdeco_Blocks.TATAMI_HY_blue.getDefaultState()
+					.with(BaseFacingSlab_Water.TYPE, blockstate.get(BaseFacingSlab_Water.TYPE))
+					.with(BaseFacingSlab_Water.H_FACING, blockstate.get(BaseFacingSlab_Water.H_FACING))
+					.with(BaseFacingSlab_Water.WATERLOGGED, blockstate.get(BaseFacingSlab_Water.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -637,18 +638,18 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Wagasa && block != Unit_Blocks.KASA_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, Unit_Blocks.KASA_blue.defaultBlockState()
-					.setValue(Wagasa.NORTH, blockstate.getValue(Wagasa.NORTH))
-					.setValue(Wagasa.EAST, blockstate.getValue(Wagasa.EAST))
-					.setValue(Wagasa.SOUTH, blockstate.getValue(Wagasa.SOUTH))
-					.setValue(Wagasa.WEST, blockstate.getValue(Wagasa.WEST))
-					.setValue(Wagasa.WHICH, Boolean.valueOf(false))
-					.setValue(Wagasa.WATERLOGGED, blockstate.getValue(Wagasa.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, Unit_Blocks.KASA_blue.getDefaultState()
+					.with(Wagasa.NORTH, blockstate.get(Wagasa.NORTH))
+					.with(Wagasa.EAST, blockstate.get(Wagasa.EAST))
+					.with(Wagasa.SOUTH, blockstate.get(Wagasa.SOUTH))
+					.with(Wagasa.WEST, blockstate.get(Wagasa.WEST))
+					.with(Wagasa.WHICH, Boolean.valueOf(false))
+					.with(Wagasa.WATERLOGGED, blockstate.get(Wagasa.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -660,42 +661,42 @@ public class ItemHake_Blue extends Base_ItemHake {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
 
-			if (blockstate.getValue(BaseSlidedoor.HALF) == DoubleBlockHalf.LOWER) {
-				iworld.setBlock(blockpos, Slidedoor_Blocks.FUSUMA_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlock(blockpos.above(), Slidedoor_Blocks.FUSUMA_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3); }
+			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.LOWER) {
+				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMA_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
+				iworld.setBlockState(blockpos.up(), Slidedoor_Blocks.FUSUMA_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
 
-			if (blockstate.getValue(BaseSlidedoor.HALF) == DoubleBlockHalf.UPPER) {
-				iworld.setBlock(blockpos, Slidedoor_Blocks.FUSUMA_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlock(blockpos.below(), Slidedoor_Blocks.FUSUMA_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3); }
+			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.UPPER) {
+				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMA_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
+				iworld.setBlockState(blockpos.down(), Slidedoor_Blocks.FUSUMA_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -704,42 +705,42 @@ public class ItemHake_Blue extends Base_ItemHake {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
 
-			if (blockstate.getValue(BaseSlidedoor.HALF) == DoubleBlockHalf.LOWER) {
-				iworld.setBlock(blockpos, Slidedoor_Blocks.FUSUMAB_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlock(blockpos.above(), Slidedoor_Blocks.FUSUMAB_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3); }
+			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.LOWER) {
+				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMAB_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
+				iworld.setBlockState(blockpos.up(), Slidedoor_Blocks.FUSUMAB_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
 
-			if (blockstate.getValue(BaseSlidedoor.HALF) == DoubleBlockHalf.UPPER) {
-				iworld.setBlock(blockpos, Slidedoor_Blocks.FUSUMAB_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3);
-				iworld.setBlock(blockpos.below(), Slidedoor_Blocks.FUSUMAB_blue.defaultBlockState()
-						.setValue(BaseSlidedoor.H_FACING, blockstate.getValue(BaseSlidedoor.H_FACING))
-						.setValue(BaseSlidedoor.OPEN, blockstate.getValue(BaseSlidedoor.OPEN))
-						.setValue(BaseSlidedoor.HINGE, blockstate.getValue(BaseSlidedoor.HINGE))
-						.setValue(BaseSlidedoor.POWERED, blockstate.getValue(BaseSlidedoor.POWERED))
-						.setValue(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
-						.setValue(BaseSlidedoor.WATERLOGGED, blockstate.getValue(BaseSlidedoor.WATERLOGGED)), 3); }
+			if (blockstate.get(BaseSlidedoor.HALF) == DoubleBlockHalf.UPPER) {
+				iworld.setBlockState(blockpos, Slidedoor_Blocks.FUSUMAB_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3);
+				iworld.setBlockState(blockpos.down(), Slidedoor_Blocks.FUSUMAB_blue.getDefaultState()
+						.with(BaseSlidedoor.H_FACING, blockstate.get(BaseSlidedoor.H_FACING))
+						.with(BaseSlidedoor.OPEN, blockstate.get(BaseSlidedoor.OPEN))
+						.with(BaseSlidedoor.HINGE, blockstate.get(BaseSlidedoor.HINGE))
+						.with(BaseSlidedoor.POWERED, blockstate.get(BaseSlidedoor.POWERED))
+						.with(BaseSlidedoor.HALF, DoubleBlockHalf.LOWER)
+						.with(BaseSlidedoor.WATERLOGGED, blockstate.get(BaseSlidedoor.WATERLOGGED)), 3); }
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -749,14 +750,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Oak && block != KamoiPlaster_Blocks.KAMOI_blue_oak) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_oak.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_oak.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -764,14 +765,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Spruce && block != KamoiPlaster_Blocks.KAMOI_blue_spru) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_spru.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_spru.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -779,14 +780,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Birch && block != KamoiPlaster_Blocks.KAMOI_blue_bir) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_bir.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_bir.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -794,14 +795,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Jungle && block != KamoiPlaster_Blocks.KAMOI_blue_jun) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_jun.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_jun.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -809,14 +810,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Acacia && block != KamoiPlaster_Blocks.KAMOI_blue_aca) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_aca.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_aca.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -824,14 +825,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_DarkOak && block != KamoiPlaster_Blocks.KAMOI_blue_doak) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_doak.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_doak.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -839,14 +840,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Sakura && block != KamoiPlaster_Blocks.KAMOI_blue_sakura) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_sakura.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_sakura.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -854,14 +855,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Kaede && block != KamoiPlaster_Blocks.KAMOI_blue_kaede) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_kaede.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_kaede.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -869,14 +870,14 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof KamoiPlaster_Ichoh && block != KamoiPlaster_Blocks.KAMOI_blue_ichoh) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, KamoiPlaster_Blocks.KAMOI_blue_ichoh.defaultBlockState()
-					.setValue(Base_KamoiPlaster.H_FACING, blockstate.getValue(Base_KamoiPlaster.H_FACING))
-					.setValue(Base_KamoiPlaster.STAGE_1_4, blockstate.getValue(Base_KamoiPlaster.STAGE_1_4)), 3);
+			iworld.setBlockState(blockpos, KamoiPlaster_Blocks.KAMOI_blue_ichoh.getDefaultState()
+					.with(Base_KamoiPlaster.H_FACING, blockstate.get(Base_KamoiPlaster.H_FACING))
+					.with(Base_KamoiPlaster.STAGE_1_4, blockstate.get(Base_KamoiPlaster.STAGE_1_4)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -884,83 +885,83 @@ public class ItemHake_Blue extends Base_ItemHake {
 
 		///////////////////////
 		/** 粘土 **/
-		if (block instanceof WallPane_Clay && block != WallPanel_Blocks.WP_CLAY_blue) {
+		if (block instanceof WallPane_Clay && block != WallPane_Blocks.WP_CLAY_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, WallPanel_Blocks.WP_CLAY_blue.defaultBlockState()
-					.setValue(BaseFacingWater.H_FACING, blockstate.getValue(BaseFacingWater.H_FACING))
-					.setValue(BaseFacingWater.WATERLOGGED, blockstate.getValue(BaseFacingWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, WallPane_Blocks.WP_CLAY_blue.getDefaultState()
+					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
+					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
 		/** ガラス **/
-		if (block instanceof WallPane_Glass && block != WallPanel_Blocks.WP_GLASS_blue) {
+		if (block instanceof WallPane_Glass && block != WallPane_Blocks.WP_GLASS_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, WallPanel_Blocks.WP_GLASS_blue.defaultBlockState()
-					.setValue(BaseFacingWater.H_FACING, blockstate.getValue(BaseFacingWater.H_FACING))
-					.setValue(BaseFacingWater.WATERLOGGED, blockstate.getValue(BaseFacingWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, WallPane_Blocks.WP_GLASS_blue.getDefaultState()
+					.with(BaseFacingWater.H_FACING, blockstate.get(BaseFacingWater.H_FACING))
+					.with(BaseFacingWater.WATERLOGGED, blockstate.get(BaseFacingWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
 		/** しっくい **/
-		if (block instanceof WallPane_Plaster && block != WallPanel_Blocks.WP_PLASTER_blue) {
+		if (block instanceof WallPane_Plaster && block != WallPane_Blocks.WP_PLASTER_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, WallPanel_Blocks.WP_PLASTER_blue.defaultBlockState()
-					.setValue(BaseStage2_FaceWater.H_FACING, blockstate.getValue(BaseStage2_FaceWater.H_FACING))
-					.setValue(BaseStage2_FaceWater.STAGE_1_2, blockstate.getValue(BaseStage2_FaceWater.STAGE_1_2))
-					.setValue(BaseStage2_FaceWater.WATERLOGGED, blockstate.getValue(BaseStage2_FaceWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, WallPane_Blocks.WP_PLASTER_blue.getDefaultState()
+					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
+					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
+					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
 		/** なまこ **/
-		if (block instanceof WallPane_Namako && block != WallPanel_Blocks.WP_NAMAKO_blue) {
+		if (block instanceof WallPane_Namako && block != WallPane_Blocks.WP_NAMAKO_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, WallPanel_Blocks.WP_NAMAKO_blue.defaultBlockState()
-					.setValue(BaseStage2_FaceWater.H_FACING, blockstate.getValue(BaseStage2_FaceWater.H_FACING))
-					.setValue(BaseStage2_FaceWater.STAGE_1_2, blockstate.getValue(BaseStage2_FaceWater.STAGE_1_2))
-					.setValue(BaseStage2_FaceWater.WATERLOGGED, blockstate.getValue(BaseStage2_FaceWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, WallPane_Blocks.WP_NAMAKO_blue.getDefaultState()
+					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
+					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
+					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 
-		if (block instanceof WallPane_Namako_B && block != WallPanel_Blocks.WP_NAMAKOB_blue) {
+		if (block instanceof WallPane_Namako_B && block != WallPane_Blocks.WP_NAMAKOB_blue) {
 
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, WallPanel_Blocks.WP_NAMAKOB_blue.defaultBlockState()
-					.setValue(BaseStage2_FaceWater.H_FACING, blockstate.getValue(BaseStage2_FaceWater.H_FACING))
-					.setValue(BaseStage2_FaceWater.STAGE_1_2, blockstate.getValue(BaseStage2_FaceWater.STAGE_1_2))
-					.setValue(BaseStage2_FaceWater.WATERLOGGED, blockstate.getValue(BaseStage2_FaceWater.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, WallPane_Blocks.WP_NAMAKOB_blue.getDefaultState()
+					.with(BaseStage2_FaceWater.H_FACING, blockstate.get(BaseStage2_FaceWater.H_FACING))
+					.with(BaseStage2_FaceWater.STAGE_1_2, blockstate.get(BaseStage2_FaceWater.STAGE_1_2))
+					.with(BaseStage2_FaceWater.WATERLOGGED, blockstate.get(BaseStage2_FaceWater.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -969,18 +970,18 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Wall_Plaster && block != JP_Blocks.SHIKKUI_WALL_blue && block != JP_Blocks.DIRTWALL_WALL) {
 			
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.SHIKKUI_WALL_blue.defaultBlockState()
-					.setValue(Wall_Plaster.NORTH, blockstate.getValue(Wall_Plaster.NORTH))
-					.setValue(Wall_Plaster.SOUTH, blockstate.getValue(Wall_Plaster.SOUTH))
-					.setValue(Wall_Plaster.EAST, blockstate.getValue(Wall_Plaster.EAST))
-					.setValue(Wall_Plaster.WEST, blockstate.getValue(Wall_Plaster.WEST))
-					.setValue(Wall_Plaster.CRACK, blockstate.getValue(Wall_Plaster.CRACK))
-					.setValue(Wall_Plaster.WATERLOGGED, blockstate.getValue(Wall_Plaster.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_WALL_blue.getDefaultState()
+					.with(Wall_Plaster.NORTH, blockstate.get(Wall_Plaster.NORTH))
+					.with(Wall_Plaster.SOUTH, blockstate.get(Wall_Plaster.SOUTH))
+					.with(Wall_Plaster.EAST, blockstate.get(Wall_Plaster.EAST))
+					.with(Wall_Plaster.WEST, blockstate.get(Wall_Plaster.WEST))
+					.with(Wall_Plaster.CRACK, blockstate.get(Wall_Plaster.CRACK))
+					.with(Wall_Plaster.WATERLOGGED, blockstate.get(Wall_Plaster.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -988,23 +989,23 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Wall_Sama && block != JP_Blocks.SHIKKUI_SAMA_blue && block != JP_Blocks.DIRTWALL_SAMA) {
 			
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.SHIKKUI_SAMA_blue.defaultBlockState()
-					.setValue(Wall_Sama.H_FACING, blockstate.getValue(Wall_Sama.H_FACING))
-					.setValue(Wall_Sama.STAGE_1_4, blockstate.getValue(Wall_Sama.STAGE_1_4))
-					.setValue(Wall_Sama.WATERLOGGED, blockstate.getValue(Wall_Sama.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.SHIKKUI_SAMA_blue.getDefaultState()
+					.with(Wall_Sama.H_FACING, blockstate.get(Wall_Sama.H_FACING))
+					.with(Wall_Sama.STAGE_1_4, blockstate.get(Wall_Sama.STAGE_1_4))
+					.with(Wall_Sama.WATERLOGGED, blockstate.get(Wall_Sama.WATERLOGGED)), 3);
 			
-			if (blockstate.getValue(Wall_Sama.STAGE_1_4) <= 2) {
-				itemstack.hurtAndBreak(1, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Wall_Sama.STAGE_1_4) <= 2) {
+				itemstack.damageItem(1, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 			
-			if (blockstate.getValue(Wall_Sama.STAGE_1_4) >= 3) {
-				itemstack.hurtAndBreak(2, playerIn, user -> {
-					if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-						playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-					user.broadcastBreakEvent(context.getHand()); } );
+			if (blockstate.get(Wall_Sama.STAGE_1_4) >= 3) {
+				itemstack.damageItem(2, playerIn, user -> {
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+						playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+					user.sendBreakAnimation(context.getHand()); } );
 			}
 
 			return ActionResultType.SUCCESS;
@@ -1013,17 +1014,17 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Wall_Kawara && block != JP_Blocks.KAWARA_WALL_blue) {
 			
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.KAWARA_WALL_blue.defaultBlockState()
-					.setValue(Wall_Kawara.NORTH, blockstate.getValue(Wall_Kawara.NORTH))
-					.setValue(Wall_Kawara.SOUTH, blockstate.getValue(Wall_Kawara.SOUTH))
-					.setValue(Wall_Kawara.EAST, blockstate.getValue(Wall_Kawara.EAST))
-					.setValue(Wall_Kawara.WEST, blockstate.getValue(Wall_Kawara.WEST))
-					.setValue(Wall_Kawara.WATERLOGGED, blockstate.getValue(Wall_Kawara.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.KAWARA_WALL_blue.getDefaultState()
+					.with(Wall_Kawara.NORTH, blockstate.get(Wall_Kawara.NORTH))
+					.with(Wall_Kawara.SOUTH, blockstate.get(Wall_Kawara.SOUTH))
+					.with(Wall_Kawara.EAST, blockstate.get(Wall_Kawara.EAST))
+					.with(Wall_Kawara.WEST, blockstate.get(Wall_Kawara.WEST))
+					.with(Wall_Kawara.WATERLOGGED, blockstate.get(Wall_Kawara.WATERLOGGED)), 3);
 			
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -1031,18 +1032,18 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Wall_Namako && block != JP_Blocks.NAMAKO_WALL_blue) {
 			
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKO_WALL_blue.defaultBlockState()
-					.setValue(Wall_Namako.NORTH, blockstate.getValue(Wall_Namako.NORTH))
-					.setValue(Wall_Namako.SOUTH, blockstate.getValue(Wall_Namako.SOUTH))
-					.setValue(Wall_Namako.EAST, blockstate.getValue(Wall_Namako.EAST))
-					.setValue(Wall_Namako.WEST, blockstate.getValue(Wall_Namako.WEST))
-					.setValue(Wall_Namako.CRACK, blockstate.getValue(Wall_Namako.CRACK))
-					.setValue(Wall_Namako.WATERLOGGED, blockstate.getValue(Wall_Namako.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKO_WALL_blue.getDefaultState()
+					.with(Wall_Namako.NORTH, blockstate.get(Wall_Namako.NORTH))
+					.with(Wall_Namako.SOUTH, blockstate.get(Wall_Namako.SOUTH))
+					.with(Wall_Namako.EAST, blockstate.get(Wall_Namako.EAST))
+					.with(Wall_Namako.WEST, blockstate.get(Wall_Namako.WEST))
+					.with(Wall_Namako.CRACK, blockstate.get(Wall_Namako.CRACK))
+					.with(Wall_Namako.WATERLOGGED, blockstate.get(Wall_Namako.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
@@ -1050,33 +1051,32 @@ public class ItemHake_Blue extends Base_ItemHake {
 		if (block instanceof Wall_NamakoB && block != JP_Blocks.NAMAKOB_WALL_blue) {
 			
 			CMEvents.soundPaint(iworld, playerIn, blockpos);
-			iworld.setBlock(blockpos, JP_Blocks.NAMAKOB_WALL_blue.defaultBlockState()
-					.setValue(Wall_NamakoB.NORTH, blockstate.getValue(Wall_NamakoB.NORTH))
-					.setValue(Wall_NamakoB.SOUTH, blockstate.getValue(Wall_NamakoB.SOUTH))
-					.setValue(Wall_NamakoB.EAST, blockstate.getValue(Wall_NamakoB.EAST))
-					.setValue(Wall_NamakoB.WEST, blockstate.getValue(Wall_NamakoB.WEST))
-					.setValue(Wall_NamakoB.CRACK, blockstate.getValue(Wall_NamakoB.CRACK))
-					.setValue(Wall_NamakoB.WATERLOGGED, blockstate.getValue(Wall_NamakoB.WATERLOGGED)), 3);
+			iworld.setBlockState(blockpos, JP_Blocks.NAMAKOB_WALL_blue.getDefaultState()
+					.with(Wall_NamakoB.NORTH, blockstate.get(Wall_NamakoB.NORTH))
+					.with(Wall_NamakoB.SOUTH, blockstate.get(Wall_NamakoB.SOUTH))
+					.with(Wall_NamakoB.EAST, blockstate.get(Wall_NamakoB.EAST))
+					.with(Wall_NamakoB.WEST, blockstate.get(Wall_NamakoB.WEST))
+					.with(Wall_NamakoB.CRACK, blockstate.get(Wall_NamakoB.CRACK))
+					.with(Wall_NamakoB.WATERLOGGED, blockstate.get(Wall_NamakoB.WATERLOGGED)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> {
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
-				user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> {
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
+				user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS;
 		}
 		
-		
 		/* Wash the brush. MIZUOKE work is in the block. */
 		if (block == Blocks.CAULDRON) {
-			int level = blockstate.getValue(CauldronBlock.LEVEL);
+			int level = blockstate.get(CauldronBlock.LEVEL);
 			if (level != 0) {
 				CMEvents.soundWash(iworld, playerIn, blockpos);
-				iworld.setBlock(blockpos, blockstate.setValue(CauldronBlock.LEVEL, Integer.valueOf(level - 1)), 3);
+				iworld.setBlockState(blockpos, blockstate.with(CauldronBlock.LEVEL, Integer.valueOf(level - 1)), 3);
 
-				/** Return the Item. **/
-				if (!playerIn.inventory.add(new ItemStack(Items_Wadeco.HAKE))) {
-					playerIn.drop(new ItemStack(Items_Wadeco.HAKE), false); }
+				/** アイテムを返す **/
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Wadeco.HAKE))) {
+					playerIn.dropItem(new ItemStack(Items_Wadeco.HAKE), false); }
 
 				if (!mode) { itemstack.shrink(1); }
 				return ActionResultType.SUCCESS;

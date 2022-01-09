@@ -2,7 +2,6 @@ package com.ayutaki.chinjufumod.blocks.garden;
 
 import com.ayutaki.chinjufumod.registry.Garden_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -15,22 +14,22 @@ import net.minecraft.world.IBlockReader;
 public class Niwaishi extends Base_Niwaishi {
 
 	/* Collision */
-	protected static final VoxelShape AABB_0 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 16.0D, 13.5D);
-	protected static final VoxelShape AABB_2 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 14.0D, 13.5D);
-	protected static final VoxelShape AABB_4 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 12.0D, 13.5D);
-	protected static final VoxelShape AABB_6 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 10.0D, 13.5D);
-	protected static final VoxelShape AABB_8 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 8.0D, 13.5D);
-	protected static final VoxelShape AABB_10 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 6.0D, 13.5D);
-	protected static final VoxelShape AABB_12 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 4.0D, 13.5D);
-	protected static final VoxelShape AABB_14 = Block.box(2.5D, 0.0D, 2.5D, 13.5D, 2.0D, 13.5D);
+	protected static final VoxelShape AABB_0 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 16.0D, 13.5D);
+	protected static final VoxelShape AABB_2 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 14.0D, 13.5D);
+	protected static final VoxelShape AABB_4 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 12.0D, 13.5D);
+	protected static final VoxelShape AABB_6 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 10.0D, 13.5D);
+	protected static final VoxelShape AABB_8 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 8.0D, 13.5D);
+	protected static final VoxelShape AABB_10 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 6.0D, 13.5D);
+	protected static final VoxelShape AABB_12 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 4.0D, 13.5D);
+	protected static final VoxelShape AABB_14 = Block.makeCuboidShape(2.5D, 0.0D, 2.5D, 13.5D, 2.0D, 13.5D);
 
-	public Niwaishi(AbstractBlock.Properties properties) {
+	public Niwaishi(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int i = state.getValue(STAGE_0_15);
+		int i = state.get(STAGE_0_15);
 
 		switch (i) {
 		case 0 :
@@ -63,7 +62,7 @@ public class Niwaishi extends Base_Niwaishi {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 
 		if (this == Garden_Blocks.NIWAISHI_and) { return new ItemStack(Items.ANDESITE); }
 		if (this == Garden_Blocks.NIWAISHI_dio) { return new ItemStack(Items.DIORITE); }

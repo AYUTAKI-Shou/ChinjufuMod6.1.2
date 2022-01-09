@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 public class Teatime_noFuel extends BlockNamedItem {
 
 	public Teatime_noFuel(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.TEATIME));
+		super(block, builder.group(ItemGroups_CM.TEATIME));
 	}
 
 }

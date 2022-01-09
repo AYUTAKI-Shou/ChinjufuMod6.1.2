@@ -2,7 +2,6 @@ package com.ayutaki.chinjufumod.blocks.school;
 
 import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
@@ -15,38 +14,38 @@ import net.minecraft.world.IBlockReader;
 public class TeacherDesk extends BaseFacingWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.box(-8.0D, 15.0D, 0.0D, 24.0D, 16.0D, 16.0D), 
-			Block.box(-6.0D, 11.0D, 1.0D, 22.0D, 15.0D, 15.0D),
-			Block.box(-7.0D, 0.0D, 1.0D, 23.0D, 15.0D, 3.0D),
-			Block.box(-7.0D, 0.0D, 1.0D, -4.0D, 15.0D, 15.0D),
-			Block.box(20.0D, 0.0D, 1.0D, 23.0D, 15.0D, 15.0D));
+	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.makeCuboidShape(-8.0D, 15.0D, 0.0D, 24.0D, 16.0D, 16.0D), 
+			Block.makeCuboidShape(-6.0D, 11.0D, 1.0D, 22.0D, 15.0D, 15.0D),
+			Block.makeCuboidShape(-7.0D, 0.0D, 1.0D, 23.0D, 15.0D, 3.0D),
+			Block.makeCuboidShape(-7.0D, 0.0D, 1.0D, -4.0D, 15.0D, 15.0D),
+			Block.makeCuboidShape(20.0D, 0.0D, 1.0D, 23.0D, 15.0D, 15.0D));
 	
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(Block.box(0.0D, 15.0D, -8.0D, 16.0D, 16.0D, 24.0D), 
-			Block.box(1.0D, 11.0D, -6.0D, 15.0D, 15.0D, 22.0D),
-			Block.box(12.0D, 0.0D, -7.0D, 15.0D, 15.0D, 23.0D),
-			Block.box(1.0D, 0.0D, -7.0D, 15.0D, 15.0D, -4.0D),
-			Block.box(1.0D, 0.0D, 20.0D, 15.0D, 15.0D, 23.0D));
+	protected static final VoxelShape AABB_WEST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, -8.0D, 16.0D, 16.0D, 24.0D), 
+			Block.makeCuboidShape(1.0D, 11.0D, -6.0D, 15.0D, 15.0D, 22.0D),
+			Block.makeCuboidShape(12.0D, 0.0D, -7.0D, 15.0D, 15.0D, 23.0D),
+			Block.makeCuboidShape(1.0D, 0.0D, -7.0D, 15.0D, 15.0D, -4.0D),
+			Block.makeCuboidShape(1.0D, 0.0D, 20.0D, 15.0D, 15.0D, 23.0D));
 	
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.box(-8.0D, 15.0D, 0.0D, 24.0D, 16.0D, 16.0D), 
-			Block.box(-6.0D, 11.0D, 1.0D, 22.0D, 15.0D, 15.0D),
-			Block.box(-7.0D, 0.0D, 12.0D, 23.0D, 15.0D, 15.0D),
-			Block.box(-7.0D, 0.0D, 1.0D, -4.0D, 15.0D, 15.0D),
-			Block.box(20.0D, 0.0D, 1.0D, 23.0D, 15.0D, 15.0D));
+	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.makeCuboidShape(-8.0D, 15.0D, 0.0D, 24.0D, 16.0D, 16.0D), 
+			Block.makeCuboidShape(-6.0D, 11.0D, 1.0D, 22.0D, 15.0D, 15.0D),
+			Block.makeCuboidShape(-7.0D, 0.0D, 12.0D, 23.0D, 15.0D, 15.0D),
+			Block.makeCuboidShape(-7.0D, 0.0D, 1.0D, -4.0D, 15.0D, 15.0D),
+			Block.makeCuboidShape(20.0D, 0.0D, 1.0D, 23.0D, 15.0D, 15.0D));
 	
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(Block.box(0.0D, 15.0D, -8.0D, 16.0D, 16.0D, 24.0D), 
-			Block.box(1.0D, 11.0D, -6.0D, 15.0D, 15.0D, 22.0D),
-			Block.box(1.0D, 0.0D, -7.0D, 3.0D, 15.0D, 23.0D),
-			Block.box(1.0D, 0.0D, -7.0D, 15.0D, 15.0D, -4.0D),
-			Block.box(1.0D, 0.0D, 20.0D, 15.0D, 15.0D, 23.0D));
+	protected static final VoxelShape AABB_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 15.0D, -8.0D, 16.0D, 16.0D, 24.0D), 
+			Block.makeCuboidShape(1.0D, 11.0D, -6.0D, 15.0D, 15.0D, 22.0D),
+			Block.makeCuboidShape(1.0D, 0.0D, -7.0D, 3.0D, 15.0D, 23.0D),
+			Block.makeCuboidShape(1.0D, 0.0D, -7.0D, 15.0D, 15.0D, -4.0D),
+			Block.makeCuboidShape(1.0D, 0.0D, 20.0D, 15.0D, 15.0D, 23.0D));
 
-	public TeacherDesk(AbstractBlock.Properties properties) {
+	public TeacherDesk(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
+		Direction direction = state.get(H_FACING);
 
 		switch (direction) {
 		case NORTH :

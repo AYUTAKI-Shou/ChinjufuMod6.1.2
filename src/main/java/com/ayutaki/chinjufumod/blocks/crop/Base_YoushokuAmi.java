@@ -1,22 +1,17 @@
 package com.ayutaki.chinjufumod.blocks.crop;
 
-import com.ayutaki.chinjufumod.registry.Items_Teatime;
-
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -38,22 +33,22 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	public static final BooleanProperty WAKE = BooleanProperty.create("wake");
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 	
-	protected static final VoxelShape AABB_1 = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
-			Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D));
-	protected static final VoxelShape AABB_2 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
-	protected static final VoxelShape AABB_3 = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
-			Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D));
-	protected static final VoxelShape AABB_4 = Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_6 = Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_7 = VoxelShapes.or(Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D));
-	protected static final VoxelShape AABB_8 = Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_9 = VoxelShapes.or(Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D));	
+	protected static final VoxelShape AABB_1 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D));
+	protected static final VoxelShape AABB_2 = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
+	protected static final VoxelShape AABB_3 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
+			Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D));
+	protected static final VoxelShape AABB_4 = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_6 = Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_7 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D));
+	protected static final VoxelShape AABB_8 = Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_9 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D));	
 	
-	protected static final VoxelShape BOT_BASE = Block.box(0.0D, -1.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+	protected static final VoxelShape BOT_BASE = Block.makeCuboidShape(0.0D, -1.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 	protected static final VoxelShape BOT_1 = VoxelShapes.or(AABB_1, BOT_BASE);
 	protected static final VoxelShape BOT_2 = VoxelShapes.or(AABB_2, BOT_BASE);
 	protected static final VoxelShape BOT_3 = VoxelShapes.or(AABB_3, BOT_BASE);
@@ -63,18 +58,18 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	protected static final VoxelShape BOT_8 = VoxelShapes.or(AABB_8, BOT_BASE);
 	protected static final VoxelShape BOT_9 = VoxelShapes.or(AABB_9, BOT_BASE);
 	
-	protected static final VoxelShape TAKE_1 = VoxelShapes.or(Block.box(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 3.0D),
-			Block.box(0.0D, 13.0D, 3.0D, 3.0D, 16.0D, 16.0D));
-	protected static final VoxelShape TAKE_2 = Block.box(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 3.0D);
-	protected static final VoxelShape TAKE_3 = VoxelShapes.or(Block.box(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 3.0D),
-			Block.box(13.0D, 13.0D, 3.0D, 16.0D, 16.0D, 16.0D));
-	protected static final VoxelShape TAKE_4 = Block.box(0.0D, 13.0D, 0.0D, 3.0D, 16.0D, 16.0D);
-	protected static final VoxelShape TAKE_6 = Block.box(13.0D, 13.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape TAKE_7 = VoxelShapes.or(Block.box(0.0D, 13.0D, 13.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.0D, 13.0D, 0.0D, 3.0D, 16.0D, 13.0D));
-	protected static final VoxelShape TAKE_8 = Block.box(0.0D, 13.0D, 13.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape TAKE_9 = VoxelShapes.or(Block.box(0.0D, 13.0D, 13.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(13.0D, 13.0D, 0.0D, 16.0D, 16.0D, 13.0D));
+	protected static final VoxelShape TAKE_1 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 3.0D),
+			Block.makeCuboidShape(0.0D, 13.0D, 3.0D, 3.0D, 16.0D, 16.0D));
+	protected static final VoxelShape TAKE_2 = Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 3.0D);
+	protected static final VoxelShape TAKE_3 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 3.0D),
+			Block.makeCuboidShape(13.0D, 13.0D, 3.0D, 16.0D, 16.0D, 16.0D));
+	protected static final VoxelShape TAKE_4 = Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 3.0D, 16.0D, 16.0D);
+	protected static final VoxelShape TAKE_6 = Block.makeCuboidShape(13.0D, 13.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape TAKE_7 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 13.0D, 13.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 3.0D, 16.0D, 13.0D));
+	protected static final VoxelShape TAKE_8 = Block.makeCuboidShape(0.0D, 13.0D, 13.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape TAKE_9 = VoxelShapes.or(Block.makeCuboidShape(0.0D, 13.0D, 13.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(13.0D, 13.0D, 0.0D, 16.0D, 16.0D, 13.0D));
 	
 	protected static final VoxelShape TOP_1 = VoxelShapes.or(AABB_1, TAKE_1);
 	protected static final VoxelShape TOP_2 = VoxelShapes.or(AABB_2, TAKE_2);
@@ -94,22 +89,22 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	protected static final VoxelShape TOPBOT_8 = VoxelShapes.or(AABB_8, TAKE_8, BOT_BASE);
 	protected static final VoxelShape TOPBOT_9 = VoxelShapes.or(AABB_9, TAKE_9, BOT_BASE);
 	
-	public Base_YoushokuAmi(AbstractBlock.Properties properties) {
+	public Base_YoushokuAmi(Block.Properties properties) {
 		super(properties);
 		
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-				.setValue(AGE_1_12, Integer.valueOf(1))
-				.setValue(DOWN, Boolean.valueOf(false))
-				.setValue(UP, Boolean.valueOf(false))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(STAGE_1_9, Integer.valueOf(5))
+				.with(AGE_1_12, Integer.valueOf(1))
+				.with(DOWN, Boolean.valueOf(false))
+				.with(UP, Boolean.valueOf(false))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 	
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int stage = state.getValue(STAGE_1_9);
+		int stage = state.get(STAGE_1_9);
 		
 		switch (stage) {
 		case 5 :
@@ -127,10 +122,10 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int stage = state.getValue(STAGE_1_9);
+		int stage = state.get(STAGE_1_9);
 		
-		boolean down = state.getValue(DOWN);
-		boolean up = state.getValue(UP);
+		boolean down = state.get(DOWN);
+		boolean up = state.get(UP);
 		
 		if (down == false) {
 			if (up == false) {
@@ -199,7 +194,7 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	
 	/* Connect the blocks. */
 	protected boolean connectThis(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.relative(face);
+		BlockPos newPos = pos.offset(face);
 		BlockState state = worldIn.getBlockState(newPos);
 		Block block = state.getBlock();
 
@@ -207,7 +202,7 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	}
 	
 	protected boolean connectAir(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.relative(face);
+		BlockPos newPos = pos.offset(face);
 		BlockState state = worldIn.getBlockState(newPos);
 		Block block = state.getBlock();
 
@@ -216,50 +211,25 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 	
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
-	}
-
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
-		
-		if (!state.canSurvive(worldIn, pos)) { return Blocks.AIR.defaultBlockState(); }
+		if (!state.isValidPosition(worldIn, pos)) { return Blocks.AIR.getDefaultState(); }
 		
 		boolean down = connectThis(worldIn, pos, Direction.DOWN);
 		boolean up = connectAir(worldIn, pos, Direction.UP);
-		return state.setValue(DOWN, down).setValue(UP, up);
+		return state.with(DOWN, down).with(UP, up);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		int stage = state.getValue(STAGE_1_9);
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		int stage = state.get(STAGE_1_9);
 		
 		double x = (double) pos.getX();
 		double y = (double) pos.getY();
@@ -273,18 +243,19 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 		if (stage == 7) { return worldIn.getBlockState(new BlockPos(x + 1, y, z)).getBlock() instanceof Base_YoushokuAmi; }
 		if (stage == 8) { return worldIn.getBlockState(new BlockPos(x, y, z - 1)).getBlock() instanceof Base_YoushokuAmi; }
 		if (stage == 9) { return worldIn.getBlockState(new BlockPos(x - 1, y, z)).getBlock() instanceof Base_YoushokuAmi; }
-		return super.canSurvive(state, worldIn, pos);
+		return super.isValidPosition(state, worldIn, pos);
 	}
 	
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(AGE_1_12, DOWN, STAGE_1_9, UP, WAKE, WATERLOGGED);
 	}
 
 	/* Destroy at the same time. & Drop item. */
 	@Override
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
 
 		double x = (double) pos.getX();
 		double y = (double) pos.getY();
@@ -299,7 +270,7 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 		BlockState state8 = worldIn.getBlockState(new BlockPos(x, y, z + 1));
 		BlockState state9 = worldIn.getBlockState(new BlockPos(x + 1, y, z + 1));
 
-		/** False is not Drop. **/
+		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
 		if (state1.getBlock() instanceof Base_YoushokuAmi) { worldIn.destroyBlock(new BlockPos(x - 1, y, z - 1), false); }
 		if (state2.getBlock() instanceof Base_YoushokuAmi) { worldIn.destroyBlock(new BlockPos(x, y, z - 1), false); }
 		if (state3.getBlock() instanceof Base_YoushokuAmi) { worldIn.destroyBlock(new BlockPos(x + 1, y, z - 1), false); }
@@ -308,13 +279,25 @@ public class Base_YoushokuAmi extends Block implements IWaterLoggable {
 		if (state7.getBlock() instanceof Base_YoushokuAmi) { worldIn.destroyBlock(new BlockPos(x - 1, y, z + 1), false); }
 		if (state8.getBlock() instanceof Base_YoushokuAmi) { worldIn.destroyBlock(new BlockPos(x, y, z + 1), false); }
 		if (state9.getBlock() instanceof Base_YoushokuAmi) { worldIn.destroyBlock(new BlockPos(x + 1, y, z + 1), false); }
-		super.playerWillDestroy(worldIn, pos, state, playerIn);
-	}
-	
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Teatime.YOUSHOKU_AMI);
+		super.onBlockHarvested(worldIn, pos, state, playerIn);
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+	
 }

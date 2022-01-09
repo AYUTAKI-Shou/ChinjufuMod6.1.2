@@ -33,45 +33,45 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Weapon {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
 
-	public static Item AMMUNITION_L = register("item_ammunition_kc", new Ammo_Large(new Item.Properties().tab(ItemGroups_CM.CMARMOR)));
-	public static Item AMMUNITION_M = register("item_ammunition_medium", new Ammo_Medium(new Item.Properties().tab(ItemGroups_CM.CMARMOR)));
-	public static Item AMMUNITION_S = register("item_ammunition_small", new Ammo_Small(new Item.Properties().tab(ItemGroups_CM.CMARMOR)));
+	public static Item AMMUNITION_L = register("item_ammunition_kc", new Ammo_Large(new Item.Properties().group(ItemGroups_CM.CMARMOR)));
+	public static Item AMMUNITION_M = register("item_ammunition_medium", new Ammo_Medium(new Item.Properties().group(ItemGroups_CM.CMARMOR)));
+	public static Item AMMUNITION_S = register("item_ammunition_small", new Ammo_Small(new Item.Properties().group(ItemGroups_CM.CMARMOR)));
 	public static Item CARTRIDGE_L = register("item_cartridge_kc", new Item(new Item.Properties()));
 	public static Item CARTRIDGE_M = register("item_cartridge_medium", new Item(new Item.Properties()));
 	public static Item CARTRIDGE_S = register("item_cartridge_small", new Item(new Item.Properties()));
 
-	/* durability + 100 */
-	public static Item RENSOUHOU_127 = register("item_rensouhou127", new RensouHou127(new Item.Properties().durability(1100).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SHIGUREHOU = register("item_shigurehou", new ShigureHou(new Item.Properties().durability(1100).tab(ItemGroups_CM.CMARMOR)));
-	public static Item KOUKAKUHOU_100 = register("item_koukakuhou100", new KoukakuHou100(new Item.Properties().durability(1100).tab(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_127 = register("item_rensouhou127", new RensouHou127(new Item.Properties().maxStackSize(1).maxDamage(1100).group(ItemGroups_CM.CMARMOR)));
+	public static Item SHIGUREHOU = register("item_shigurehou", new ShigureHou(new Item.Properties().maxStackSize(1).maxDamage(1100).group(ItemGroups_CM.CMARMOR)));
+	public static Item KOUKAKUHOU_100 = register("item_koukakuhou100", new KoukakuHou100(new Item.Properties().maxStackSize(1).maxDamage(1100).group(ItemGroups_CM.CMARMOR)));
 
-	public static Item RENSOUHOU_155 = register("item_rensouhou155", new RensouHou155(new Item.Properties().durability(2960).tab(ItemGroups_CM.CMARMOR)));
-	public static Item RENSOUHOU_203 = register("item_rensouhou203", new RensouHou203(new Item.Properties().durability(2600).tab(ItemGroups_CM.CMARMOR)));
-	public static Item RENSOUHOU_SKC = register("item_rensouhou203_skc34", new RensouHou203SKC34(new Item.Properties().durability(2100).tab(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_155 = register("item_rensouhou155", new RensouHou155(new Item.Properties().maxStackSize(1).maxDamage(2960).group(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_203 = register("item_rensouhou203", new RensouHou203(new Item.Properties().maxStackSize(1).maxDamage(2600).group(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_SKC = register("item_rensouhou203_skc34", new RensouHou203SKC34(new Item.Properties().maxStackSize(1).maxDamage(2100).group(ItemGroups_CM.CMARMOR)));
 
-	public static Item RENSOUHOU_356 = register("item_rensouhou356", new RensouHou356(new Item.Properties().durability(5100).tab(ItemGroups_CM.CMARMOR)));
-	public static Item RENSOUHOU_356S3 = register("item_rensouhou356_s3", new RensouHou356S3(new Item.Properties().durability(4850).tab(ItemGroups_CM.CMARMOR)));
-	public static Item RENSOUHOU_380 = register("item_rensouhou380", new RensouHou380(new Item.Properties().durability(4600).tab(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_356 = register("item_rensouhou356", new RensouHou356(new Item.Properties().maxStackSize(1).maxDamage(5100).group(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_356S3 = register("item_rensouhou356_s3", new RensouHou356S3(new Item.Properties().maxStackSize(1).maxDamage(4850).group(ItemGroups_CM.CMARMOR)));
+	public static Item RENSOUHOU_380 = register("item_rensouhou380", new RensouHou380(new Item.Properties().maxStackSize(1).maxDamage(4600).group(ItemGroups_CM.CMARMOR)));
 
-	public static Item TYPE97KK = register("item_kk_type97", new Type97(new Item.Properties().durability(1100).tab(ItemGroups_CM.CMARMOR)));
-	public static Item TENZAN = register("item_kk_tenzan", new Tenzan(new Item.Properties().durability(1600).tab(ItemGroups_CM.CMARMOR)));
-	public static Item RYUSEI = register("item_kk_ryusei", new Ryusei(new Item.Properties().durability(2100).tab(ItemGroups_CM.CMARMOR)));
-	public static Item JU87 = register("item_kk_ju87", new Ju87(new Item.Properties().durability(1300).tab(ItemGroups_CM.CMARMOR))); //1200
-	public static Item TBF = register("item_kk_tbf", new TBF(new Item.Properties().durability(1900).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SWORDFISH = register("item_kk_swordfish", new Swordfish(new Item.Properties().durability(1100).tab(ItemGroups_CM.CMARMOR)));
+	public static Item TYPE97KK = register("item_kk_type97", new Type97(new Item.Properties().maxStackSize(1).maxDamage(1100).group(ItemGroups_CM.CMARMOR)));
+	public static Item TENZAN = register("item_kk_tenzan", new Tenzan(new Item.Properties().maxStackSize(1).maxDamage(1600).group(ItemGroups_CM.CMARMOR)));
+	public static Item RYUSEI = register("item_kk_ryusei", new Ryusei(new Item.Properties().maxStackSize(1).maxDamage(2100).group(ItemGroups_CM.CMARMOR)));
+	public static Item JU87 = register("item_kk_ju87", new Ju87(new Item.Properties().maxStackSize(1).maxDamage(1300).group(ItemGroups_CM.CMARMOR)));
+	public static Item TBF = register("item_kk_tbf", new TBF(new Item.Properties().maxStackSize(1).maxDamage(1900).group(ItemGroups_CM.CMARMOR)));
+	public static Item SWORDFISH = register("item_kk_swordfish", new Swordfish(new Item.Properties().maxStackSize(1).maxDamage(1100).group(ItemGroups_CM.CMARMOR)));
 
-	public static Item GYORAI_61cm = register("item_gyorai_61cm", new Gyorai61cm(new Item.Properties().tab(ItemGroups_CM.CMARMOR)));
+	public static Item GYORAI_61cm = register("item_gyorai_61cm", new Gyorai61cm(new Item.Properties().group(ItemGroups_CM.CMARMOR)));
 
-	public static Item SHIELD_kuchiku = register("item_shield_kuchiku", new Shield_CM(new Item.Properties().durability(1108).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SHIELD_yura = register("item_shield_yura", new Shield_CM(new Item.Properties().durability(1780).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SHIELD_mogami = register("item_shield_mogami", new Shield_CM(new Item.Properties().durability(2452).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SHIELD_kongou = register("item_shield_kongou", new Shield_CM(new Item.Properties().durability(3124).tab(ItemGroups_CM.CMARMOR)));
+	public static Item SHIELD_kuchiku = register("item_shield_kuchiku", new Shield_CM(new Item.Properties().maxStackSize(1).maxDamage(1108).group(ItemGroups_CM.CMARMOR)));
+	public static Item SHIELD_yura = register("item_shield_yura", new Shield_CM(new Item.Properties().maxStackSize(1).maxDamage(1780).group(ItemGroups_CM.CMARMOR)));
+	public static Item SHIELD_mogami = register("item_shield_mogami", new Shield_CM(new Item.Properties().maxStackSize(1).maxDamage(2452).group(ItemGroups_CM.CMARMOR)));
+	public static Item SHIELD_kongou = register("item_shield_kongou", new Shield_CM(new Item.Properties().maxStackSize(1).maxDamage(3124).group(ItemGroups_CM.CMARMOR)));
 
-	public static Item SWORD_sakura = register("item_sword_sakura", new Sword_CM(ItemTier.WOOD,3, -2.4F, (new Item.Properties()).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SWORD_ichoh = register("item_sword_ichoh", new Sword_CM(ItemTier.WOOD,3, -2.4F, (new Item.Properties()).tab(ItemGroups_CM.CMARMOR)));
-	public static Item SWORD_kaede = register("item_sword_kaede", new Sword_CM(ItemTier.WOOD,3, -2.4F, (new Item.Properties()).tab(ItemGroups_CM.CMARMOR)));
+	public static Item SWORD_sakura = register("item_sword_sakura", new Sword_CM(ItemTier.WOOD,3, -2.4F, (new Item.Properties()).group(ItemGroups_CM.CMARMOR)));
+	public static Item SWORD_ichoh = register("item_sword_ichoh", new Sword_CM(ItemTier.WOOD,3, -2.4F, (new Item.Properties()).group(ItemGroups_CM.CMARMOR)));
+	public static Item SWORD_kaede = register("item_sword_kaede", new Sword_CM(ItemTier.WOOD,3, -2.4F, (new Item.Properties()).group(ItemGroups_CM.CMARMOR)));
 
 	///* Register *///
 	private static Item register(String name, Item item) {

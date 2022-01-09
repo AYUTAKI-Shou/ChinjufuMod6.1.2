@@ -9,16 +9,15 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -26,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -50,26 +48,27 @@ public class TaruF_Hakusai2 extends Block implements IWaterLoggable {
 	/* Property */
 	public static final IntegerProperty STAGE_0_9 = IntegerProperty.create("stage", 0, 9);
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
+	
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.25D, 8.0D, 0.25D, 15.75D, 12.0D, 15.75D),
-			Block.box(0.5D, 4.0D, 0.5D, 15.5D, 8.0D, 15.5D),
-			Block.box(0.75D, 0.0D, 0.75D, 15.25D, 4.0D, 15.25D));
+	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.makeCuboidShape(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.25D, 8.0D, 0.25D, 15.75D, 12.0D, 15.75D),
+			Block.makeCuboidShape(0.5D, 4.0D, 0.5D, 15.5D, 8.0D, 15.5D),
+			Block.makeCuboidShape(0.75D, 0.0D, 0.75D, 15.25D, 4.0D, 15.25D));
 
 	/** 0=本漬けF、5=本漬け1、6=白菜漬1、7=白菜漬2、8=白菜漬3、9=白菜漬4 **/
-	public TaruF_Hakusai2(AbstractBlock.Properties properties) {
+	public TaruF_Hakusai2(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(this.defaultBlockState().setValue(STAGE_0_9, Integer.valueOf(0))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(STAGE_0_9, Integer.valueOf(0))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_0_9);
+		int i = state.get(STAGE_0_9);
 
 		/** Too early to collect **/
 		if (i <= 5) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
@@ -80,16 +79,14 @@ public class TaruF_Hakusai2 extends Block implements IWaterLoggable {
 				/** Collect with an Item **/
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundTake(worldIn, pos);
+
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.HAKUSAIDUKE)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.HAKUSAIDUKE))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.HAKUSAIDUKE), false); }
 	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.HAKUSAIDUKE)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.HAKUSAIDUKE))) {
-					playerIn.drop(new ItemStack(Items_Teatime.HAKUSAIDUKE), false); }
-	
-				if (i != 9) {
-					worldIn.setBlock(pos, state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
+				if (i != 9) { worldIn.setBlockState(pos, state.with(STAGE_0_9, Integer.valueOf(i + 1))); }
 				if (i == 9) {
-					worldIn.setBlock(pos, Hakkou_Blocks.HAKKOU_TARU.defaultBlockState()
-							.setValue(Taru_Hakkou.STAGE_0_5, Integer.valueOf(5)), 3); }
+					worldIn.setBlockState(pos, Hakkou_Blocks.HAKKOU_TARU.getDefaultState().with(Taru_Hakkou.STAGE_0_5, Integer.valueOf(5))); }
 			}
 			
 			if (item != Items_Teatime.SARA) { CMEvents.textNotHave(worldIn, pos, playerIn); }
@@ -101,63 +98,39 @@ public class TaruF_Hakusai2 extends Block implements IWaterLoggable {
 
 	/* Gives a value when placed. */
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER));
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true;
-		}
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		else { return Fluids.EMPTY; }
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	/* Distinguish LOST from WATERLOGGED. */
 	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.getValue(WATERLOGGED)) { return true; }
+		if (state.get(WATERLOGGED)) { return true; }
 		return false;
 	}
 	
 	/* Update BlockState. */
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
 		if (inWater(state, worldIn, pos) == true) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
 
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
 	}
 
 	@Override
@@ -166,13 +139,13 @@ public class TaruF_Hakusai2 extends Block implements IWaterLoggable {
 		if (!worldIn.isAreaLoaded(pos, 2)) return;
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100);
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Hakkou_Blocks.HAKKOU_TARU.defaultBlockState()
-					.setValue(Taru_Hakkou.STAGE_0_5, Integer.valueOf(5))
-					.setValue(Taru_Hakkou.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-			this.dropRottenfood(worldIn, pos);
-		}
+			worldIn.setBlockState(pos, Hakkou_Blocks.HAKKOU_TARU.getDefaultState()
+					.with(Taru_Hakkou.STAGE_0_5, Integer.valueOf(5))
+					.with(Taru_Hakkou.WATERLOGGED, state.get(WATERLOGGED)), 3);
+			this.dropRottenfood(worldIn, pos); }
+		
 		else { }
 	}
 
@@ -181,27 +154,26 @@ public class TaruF_Hakusai2 extends Block implements IWaterLoggable {
 
 		if (!worldIn.isAreaLoaded(pos, 2)) return;
 
-		int i = state.getValue(STAGE_0_9);
+		int i = state.get(STAGE_0_9);
 
 		if (i < 5 && rand.nextInt(2) == 0) {
-			worldIn.setBlock(pos, state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_0_9, Integer.valueOf(i + 1))); }
 
 		if (i == 5 && rand.nextInt(2) == 0) {
-			worldIn.setBlock(pos, state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3);
+			worldIn.setBlockState(pos, state.with(STAGE_0_9, Integer.valueOf(i + 1)));
 			/** Get EXP. **/
-			worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1)); }
+			worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1)); }
 
 		else { }
 	}
 
 	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 
 	/* Create Blockstate */
-	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(STAGE_0_9, WATERLOGGED);
 	}
 
@@ -211,21 +183,23 @@ public class TaruF_Hakusai2 extends Block implements IWaterLoggable {
 		return AABB_BOX;
 	}
 
-	/* Flammable Block */
+	/* 立方体 */
 	@Override
-	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return true; }
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
 
+	/* モブ湧き */
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 5; }
-
-	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 20; }
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_taru_hakusai_f2")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_taru_hakusai_f2")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

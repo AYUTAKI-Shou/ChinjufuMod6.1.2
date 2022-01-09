@@ -8,10 +8,10 @@ import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,49 +35,49 @@ import net.minecraftforge.common.ToolType;
 public class Wall_Sama extends BaseStage4_FaceWater {
 
 	/* Collision ...Based on the value of WallBlock.*/
-	private static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 5.0D, 16.0D, 6.0D, 11.0D),
-			Block.box(0.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D),
-			Block.box(10.0D, 6.0D, 5.0D, 16.0D, 10.0D, 11.0D),
-			Block.box(0.0D, 6.0D, 5.0D, 6.0D, 10.0D, 11.0D));
-	private static final VoxelShape AABB_EAST = VoxelShapes.or(Block.box(5.0D, 0.0D, 0.0D, 11.0D, 6.0D, 16.0D),
-			Block.box(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 16.0D),
-			Block.box(5.0D, 6.0D, 0.0D, 11.0D, 10.0D, 6.0D),
-			Block.box(5.0D, 6.0D, 10.0D, 11.0D, 10.0D, 16.0D));
-	private static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 5.0D, 16.0D, 6.0D, 11.0D),
-			Block.box(0.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D),
-			Block.box(0.0D, 6.0D, 5.0D, 6.0D, 10.0D, 11.0D),
-			Block.box(10.0D, 6.0D, 5.0D, 16.0D, 10.0D, 11.0D));
-	private static final VoxelShape AABB_WEST = VoxelShapes.or(Block.box(5.0D, 0.0D, 0.0D, 11.0D, 6.0D, 16.0D),
-			Block.box(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 16.0D),
-			Block.box(5.0D, 6.0D, 0.0D, 11.0D, 10.0D, 6.0D),
-			Block.box(5.0D, 6.0D, 10.0D, 11.0D, 10.0D, 16.0D));
+	private static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 5.0D, 16.0D, 6.0D, 11.0D),
+			Block.makeCuboidShape(0.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D),
+			Block.makeCuboidShape(10.0D, 6.0D, 5.0D, 16.0D, 10.0D, 11.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 5.0D, 6.0D, 10.0D, 11.0D));
+	private static final VoxelShape AABB_EAST = VoxelShapes.or(Block.makeCuboidShape(5.0D, 0.0D, 0.0D, 11.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(5.0D, 6.0D, 0.0D, 11.0D, 10.0D, 6.0D),
+			Block.makeCuboidShape(5.0D, 6.0D, 10.0D, 11.0D, 10.0D, 16.0D));
+	private static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 5.0D, 16.0D, 6.0D, 11.0D),
+			Block.makeCuboidShape(0.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 5.0D, 6.0D, 10.0D, 11.0D),
+			Block.makeCuboidShape(10.0D, 6.0D, 5.0D, 16.0D, 10.0D, 11.0D));
+	private static final VoxelShape AABB_WEST = VoxelShapes.or(Block.makeCuboidShape(5.0D, 0.0D, 0.0D, 11.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(5.0D, 6.0D, 0.0D, 11.0D, 10.0D, 6.0D),
+			Block.makeCuboidShape(5.0D, 6.0D, 10.0D, 11.0D, 10.0D, 16.0D));
 	
-	private static final VoxelShape DOUBLE_NORTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(10.0D, 6.0D, 0.0D, 16.0D, 10.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 6.0D, 10.0D, 16.0D));
-	private static final VoxelShape DOUBLE_EAST = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 16.0D, 10.0D, 6.0D),
-			Block.box(0.0D, 6.0D, 10.0D, 16.0D, 10.0D, 16.0D));
-	private static final VoxelShape DOUBLE_SOUTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 6.0D, 10.0D, 16.0D),
-			Block.box(10.0D, 6.0D, 0.0D, 16.0D, 10.0D, 16.0D));
-	private static final VoxelShape DOUBLE_WEST = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 16.0D, 10.0D, 6.0D),
-			Block.box(0.0D, 6.0D, 10.0D, 16.0D, 10.0D, 16.0D));
+	private static final VoxelShape DOUBLE_NORTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(10.0D, 6.0D, 0.0D, 16.0D, 10.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 6.0D, 10.0D, 16.0D));
+	private static final VoxelShape DOUBLE_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 10.0D, 6.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 10.0D, 16.0D, 10.0D, 16.0D));
+	private static final VoxelShape DOUBLE_SOUTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 6.0D, 10.0D, 16.0D),
+			Block.makeCuboidShape(10.0D, 6.0D, 0.0D, 16.0D, 10.0D, 16.0D));
+	private static final VoxelShape DOUBLE_WEST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 10.0D, 6.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 10.0D, 16.0D, 10.0D, 16.0D));
 	
-	public Wall_Sama(AbstractBlock.Properties properties) {
+	public Wall_Sama(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		int i = state.getValue(STAGE_1_4);
+		Direction direction = state.get(H_FACING);
+		int i = state.get(STAGE_1_4);
 		
 		switch (i) {
 		case 1 :
@@ -105,18 +105,18 @@ public class Wall_Sama extends BaseStage4_FaceWater {
 	
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+		
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 		
 		if (item instanceof Base_ItemHake) { return ActionResultType.PASS; }
 
 		if (itemstack.getItem() == this.asItem() && (i == 1 || i == 2)) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundStonePlace(worldIn, pos);
-			worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3);
+			worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2)), 3);
 			return ActionResultType.SUCCESS; }
 		
 		else {
@@ -127,19 +127,19 @@ public class Wall_Sama extends BaseStage4_FaceWater {
 					switch (i) {
 					case 1 :
 					default :
-						worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3);
+						worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1)), 3);
 						break;
 
 					case 2 :
-						worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3);
+						worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1)), 3);
 						break;
 
 					case 3 :
-						worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3);
+						worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1)), 3);
 						break;
 						
 					case 4 :
-						worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3);
+						worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1)), 3);
 						break;
 					} // switch STAGE_1_4
 					return ActionResultType.SUCCESS; }
@@ -152,7 +152,25 @@ public class Wall_Sama extends BaseStage4_FaceWater {
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+	
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -166,9 +184,9 @@ public class Wall_Sama extends BaseStage4_FaceWater {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_sama")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_sama")).applyTextStyle(TextFormatting.GRAY));
 	}
 	
 }

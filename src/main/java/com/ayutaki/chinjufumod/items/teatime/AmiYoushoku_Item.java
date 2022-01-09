@@ -22,19 +22,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class AmiYoushoku_Item extends BlockNamedItem {
 
-	public AmiYoushoku_Item(Block blockIn, Item.Properties builder) {
-		super(blockIn, builder.tab(ItemGroups_CM.TEATIME));
+	public AmiYoushoku_Item(Block block, Item.Properties builder) {
+		super(block, builder.group(ItemGroups_CM.TEATIME));
 	}
 
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		return material.getItem() == Items.STRING || material.getItem() == Items_Seasonal.ORIITO; }
 	
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_ami_youshoku")).withStyle(TextFormatting.GRAY));
-		tooltip.add((new TranslationTextComponent("tips.repair_ami")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_ami_youshoku")).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add((new TranslationTextComponent("tips.repair_ami")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

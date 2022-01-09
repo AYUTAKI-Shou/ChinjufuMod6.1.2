@@ -20,7 +20,7 @@ public class Stove_TileEntity extends AbstractStoveTileEntity {
 	}
 
 	protected Container createMenu(int id, PlayerInventory playerIn) {
-		return new FurnaceContainer(id, playerIn, this, this.dataAccess);
+		return new FurnaceContainer(id, playerIn, this, this.furnaceData);
 	}
 
 }

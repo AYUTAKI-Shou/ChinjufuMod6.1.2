@@ -8,7 +8,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,64 +31,67 @@ import net.minecraft.world.server.ServerWorld;
 public class Kit_Cheese_AAA extends BaseStage4_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 12.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(4.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 12.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
 
 	/* stage1=AAA, stage2=BAA, stage3=BBA, stage4=BBB */
-	public Kit_Cheese_AAA(AbstractBlock.Properties properties) {
+	public Kit_Cheese_AAA(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_1_4);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_1_4);
 
 		/** Hand is empty. **/
 		if (itemstack.isEmpty()) {
 			/** stage1=AAA **/
 			if (i == 1) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CHEESE_CURD));
 				CMEvents.soundTake_Pick(worldIn, pos);
-				worldIn.setBlock(pos, Kitchen_Blocks.CHEESE_OAA.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(1))
-						.setValue(BaseStage3_FaceWater.WATERLOGGED, state.getValue(WATERLOGGED)), 3); } /* → OAA */
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHEESE_CURD));
+
+				worldIn.setBlockState(pos, Kitchen_Blocks.CHEESE_OAA.getDefaultState()
+						.with(H_FACING, state.get(H_FACING))
+						.with(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(1))
+						.with(BaseStage3_FaceWater.WATERLOGGED, state.get(WATERLOGGED))); } /* → OAA */
 	
 	
 			/** stage2=BAA **/
 			if (i == 2) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CHEESE));
 				CMEvents.soundTake_Pick(worldIn, pos);
-				worldIn.setBlock(pos, Kitchen_Blocks.CHEESE_OAA.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(1))
-						.setValue(BaseStage3_FaceWater.WATERLOGGED, state.getValue(WATERLOGGED)), 3); } /* → OAA */
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHEESE));
+
+				worldIn.setBlockState(pos, Kitchen_Blocks.CHEESE_OAA.getDefaultState()
+						.with(H_FACING, state.get(H_FACING))
+						.with(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(1))
+						.with(BaseStage3_FaceWater.WATERLOGGED, state.get(WATERLOGGED))); } /* → OAA */
 	
 	
 			/** stage3=BBA **/
 			if (i == 3) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CHEESE));
 				CMEvents.soundTake_Pick(worldIn, pos);
-				worldIn.setBlock(pos, Kitchen_Blocks.CHEESE_OAA.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(2))
-						.setValue(BaseStage3_FaceWater.WATERLOGGED, state.getValue(WATERLOGGED)), 3); } /* → OBA */
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHEESE));
+
+				worldIn.setBlockState(pos, Kitchen_Blocks.CHEESE_OAA.getDefaultState()
+						.with(H_FACING, state.get(H_FACING))
+						.with(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(2))
+						.with(BaseStage3_FaceWater.WATERLOGGED, state.get(WATERLOGGED))); } /* → OBA */
 	
 	
 			/** stage4=BBB **/
 			if (i == 4) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CHEESE));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHEESE));
 				CMEvents.soundTake_Pick(worldIn, pos);
-				worldIn.setBlock(pos, Kitchen_Blocks.CHEESE_OAA.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(3))
-						.setValue(BaseStage3_FaceWater.WATERLOGGED, state.getValue(WATERLOGGED)), 3); } /* → OBB */
-		}
+				worldIn.setBlockState(pos, Kitchen_Blocks.CHEESE_OAA.getDefaultState()
+						.with(H_FACING, state.get(H_FACING))
+						.with(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(3))
+						.with(BaseStage3_FaceWater.WATERLOGGED, state.get(WATERLOGGED))); } /* → OBB */
+			}
 		
 		/** Hand is not empty. **/
 		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
@@ -99,8 +101,8 @@ public class Kit_Cheese_AAA extends BaseStage4_FaceWater {
 	}
 
 	protected boolean hasWater(IWorldReader worldIn, BlockPos pos) {
-		for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-2, -2, -2), pos.offset(2, 2, 2))) {
-			if (worldIn.getFluidState(blockpos).is(FluidTags.WATER)) {
+		for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-2, -2, -2), pos.add(2, 2, 2))) {
+			if (worldIn.getFluidState(blockpos).isTagged(FluidTags.WATER)) {
 				return true;
 			}
 		}
@@ -109,41 +111,44 @@ public class Kit_Cheese_AAA extends BaseStage4_FaceWater {
 
 	/* Distinguish LOST from WATERLOGGED. */
 	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.getValue(WATERLOGGED)) { return true; }
+		if (state.get(WATERLOGGED)) { return true; }
 		return false;
 	}
 	
 	/* Update BlockState. */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
 		if (inWater(state, worldIn, pos) == true) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
 
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		/* stage1=AAA, stage2=BAA, stage3=BBA, stage4=BBB */
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100);
-			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Kitchen_Blocks.CHEESE_TANA.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(1))
-					.setValue(BaseStage3_FaceWater.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-			this.dropRottenfood(worldIn, pos); }
+		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 
+		if (inWater(state, worldIn, pos)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100);
+			CMEvents.soundSnowBreak(worldIn, pos);
+			this.dropRottenfood(worldIn, pos);
+			worldIn.setBlockState(pos, Kitchen_Blocks.CHEESE_TANA.getDefaultState()
+					.with(H_FACING, state.get(H_FACING))
+					.with(BaseStage3_FaceWater.STAGE_1_3, Integer.valueOf(1))
+					.with(BaseStage3_FaceWater.WATERLOGGED, state.get(WATERLOGGED)), 3); }
+		
 		else { }
 	}
 
@@ -151,33 +156,35 @@ public class Kit_Cheese_AAA extends BaseStage4_FaceWater {
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		/* stage1=AAA, stage2=BAA, stage3=BBA, stage4=BBB */
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 
 		if (i < 4 && !hasWater(worldIn, pos) && rand.nextInt(4) == 0) {
-			worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 
 		else { }
 	}
 
+
 	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD, 3);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
@@ -185,7 +192,7 @@ public class Kit_Cheese_AAA extends BaseStage4_FaceWater {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.CHEESE_TANA);
 	}
 

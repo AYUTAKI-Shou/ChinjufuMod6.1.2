@@ -3,7 +3,6 @@ package com.ayutaki.chinjufumod.blocks.dish;
 import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -15,9 +14,9 @@ import net.minecraft.world.IBlockReader;
 public class Kettle_kara extends BaseFacingWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D);
 
-	public Kettle_kara(AbstractBlock.Properties properties) {
+	public Kettle_kara(Block.Properties properties) {
 		super(properties);
 	}
 
@@ -29,7 +28,7 @@ public class Kettle_kara extends BaseFacingWater {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.KETTLE_kara);
 	}
 

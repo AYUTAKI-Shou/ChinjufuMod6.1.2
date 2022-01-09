@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.entity.AbstractAmmo_Entity;
+import com.ayutaki.chinjufumod.entity.AmmoAbstract_Entity;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 import com.ayutaki.chinjufumod.registry.Items_Weapon;
 
@@ -22,6 +22,7 @@ import net.minecraft.item.UseAction;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -34,16 +35,27 @@ public class RensouHou203 extends BowItem {
 
 	public RensouHou203(Item.Properties builder) {
 		super(builder);
+
+		this.addPropertyOverride(new ResourceLocation("pull"), (stack, worldIn, entity) -> {
+		if (entity == null) {
+			return 0.0F;
+		}
+		else {
+			return !(entity.getActiveItemStack().getItem() instanceof RensouHou203) ? 0.0F : (float)(stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
+		} } );
+
+		this.addPropertyOverride(new ResourceLocation("pulling"), (stack, worldIn, entity) -> {
+			return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
+		});
 	}
 
 	/* Called when the player stops using an Item (stops holding the right mouse button). */
-	@Override
-	public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 
 		if (entityLiving instanceof PlayerEntity) {
 			PlayerEntity playerIn = (PlayerEntity)entityLiving;
-			boolean mode = playerIn.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
-			ItemStack itemstack = playerIn.getProjectile(stack);
+			boolean mode = playerIn.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+			ItemStack itemstack = playerIn.findAmmo(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
 			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, playerIn, i, !itemstack.isEmpty() || mode);
@@ -57,79 +69,82 @@ public class RensouHou203 extends BowItem {
 				}
 
 				/** 弾速計算 **/
-				float f = getPowerForTime(i);
+				float f = getArrowVelocity(i);
 
 				if (!((double)f < 0.1D)) {
 
-					boolean mode1 = playerIn.abilities.instabuild || (itemstack.getItem() instanceof Ammo_Small && ((Ammo_Medium)itemstack.getItem()).isInfinite(itemstack, stack, playerIn));
+					boolean mode1 = playerIn.abilities.isCreativeMode || (itemstack.getItem() instanceof Ammo_Small && ((Ammo_Medium)itemstack.getItem()).isInfinite(itemstack, stack, playerIn));
 
-					if (!worldIn.isClientSide) {
+					if (!worldIn.isRemote) {
 
 						Ammo_Medium arrowitem = (Ammo_Medium)(itemstack.getItem() instanceof Ammo_Small ? itemstack.getItem() : Items_Weapon.AMMUNITION_M);
-						AbstractAmmo_Entity abstractarrowentity = arrowitem.createArrow(worldIn, itemstack, playerIn);
+						AmmoAbstract_Entity abstractarrowentity = arrowitem.createArrow(worldIn, itemstack, playerIn);
 						abstractarrowentity = customeArrow(abstractarrowentity);
-						abstractarrowentity.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, f * 3.5F, 1.0F);
+						abstractarrowentity.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, f * 3.5F, 1.0F);
 
-						if (f == 1.0F) { abstractarrowentity.setCritArrow(true); }
+						if (f == 1.0F) { abstractarrowentity.setIsCritical(true); }
 
-						/* 基本値にレベルに応じて加算 標準で POWER (8.0-2.0)÷2 */
-						int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+						/* 標準で POWER (8.0-2.0)÷2 */
+						int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
+
 						if (playerIn.experienceLevel < 12) {
-							if (j == 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D); }
-							if (j > 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + (double)j * 0.5D); }
+							if (j == 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D); }
+							if (j > 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + (double)j * 0.5D); }
 						}
 						
 						if (playerIn.experienceLevel >= 12 && playerIn.experienceLevel < 19) {
-							if (j == 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + 0.5D); }
-							if (j > 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + (double)j * 0.5D + 0.5D); }
+							if (j == 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + 0.5D); }
+							if (j > 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + (double)j * 0.5D + 0.5D); }
 						}
 						
 						if (playerIn.experienceLevel >= 19 && playerIn.experienceLevel < 25) {
-							if (j == 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + 1.0D); }
-							if (j > 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + (double)j * 0.5D + 1.0D); }
+							if (j == 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + 1.0D); }
+							if (j > 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + (double)j * 0.5D + 1.0D); }
 						}
 						
 						if (playerIn.experienceLevel >= 25) {
-							if (j == 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + 1.5D); }
-							if (j > 0) { abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + 3.0D + (double)j * 0.5D + 1.5D); }
+							if (j == 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + 1.5D); }
+							if (j > 0) { abstractarrowentity.setDamage(abstractarrowentity.getDamage() + 3.0D + (double)j * 0.5D + 1.5D); }
 						}
 						
 						/* PUNCH I の効果を乗せる */
-						int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
-						if (k == 0) { abstractarrowentity.setKnockback(1); }
-						if (k > 0) { abstractarrowentity.setKnockback(k + 1); }
+						int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
+						if (k == 0) { abstractarrowentity.setKnockbackStrength(1); }
+						if (k > 0) { abstractarrowentity.setKnockbackStrength(k + 1); }
 
-						if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) { abstractarrowentity.setSecondsOnFire(100); }
+						if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) { abstractarrowentity.setFire(100); }
 
 						/* 壊れた時 */
-						stack.hurtAndBreak(1, playerIn, (user) -> { user.broadcastBreakEvent(playerIn.getUsedItemHand()); } );
+						stack.damageItem(1, playerIn, (user) -> { user.sendBreakAnimation(playerIn.getActiveHand()); } );
 
-						if (mode1 || playerIn.abilities.instabuild && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
-							 abstractarrowentity.pickup = AbstractAmmo_Entity.PickupStatus.CREATIVE_ONLY;
+						if (mode1 || playerIn.abilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
+							abstractarrowentity.pickupStatus = AmmoAbstract_Entity.PickupStatus.CREATIVE_ONLY;
 						}
-						worldIn.addFreshEntity(abstractarrowentity);
+						worldIn.addEntity(abstractarrowentity);
 					}
 
-					/* 発射時のPlay Soundを変更 */
-					worldIn.playSound((PlayerEntity)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents_CM.AM_FIRE, SoundCategory.PLAYERS, 0.5F, 1.4F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					/* 発射時の効果音を変更 */
+					worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents_CM
+							.AM_FIRE, SoundCategory.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-					if (!mode1 && !playerIn.abilities.instabuild) {
+					if (!mode1 && !playerIn.abilities.isCreativeMode) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {
-							playerIn.inventory.removeItem(itemstack);
+							playerIn.inventory.deleteStack(itemstack);
 						}
 					}
 
 					/* 薬莢のドロップ、クリエイティブモードに分岐 */
-					if (!worldIn.isClientSide) {
-						if (!playerIn.abilities.instabuild) {
-							playerIn.drop(new ItemStack(Items_Weapon.CARTRIDGE_M), false);
-							worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents_CM.AM_CARTRIDGE, SoundCategory.PLAYERS, 0.5F, 1.4F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					if (!worldIn.isRemote) {
+						if (!playerIn.abilities.isCreativeMode) {
+							playerIn.dropItem(new ItemStack(Items_Weapon.CARTRIDGE_M), false);
+							worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents_CM
+									.AM_CARTRIDGE, SoundCategory.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 						}
-						else if (playerIn.abilities.instabuild) { }
+						else if (playerIn.abilities.isCreativeMode) { }
 					}
 
-					playerIn.awardStat(Stats.ITEM_USED.get(this));
+					playerIn.addStat(Stats.ITEM_USED.get(this));
 				}
 			}
 		}
@@ -137,38 +152,35 @@ public class RensouHou203 extends BowItem {
 
 
 	/* 引き絞り程度に対する弾速計算 */
-	public static float getPowerForTime(int charge) {
+	public static float getArrowVelocity(int charge) {
 		return 1.0F;
 	}
 
 	/* 引き絞り継続時間 */
-	@Override
 	public int getUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
 	/* 使用中のアクション */
-	@Override
-	public UseAction getUseAnimation(ItemStack stack) {
+	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BOW;
 	}
 
 	/* Called to trigger the item's "innate" right click behavior. To handle when this item is used on a Block, see {@link #onItemUse}. */
-	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 
-		ItemStack itemstack = playerIn.getItemInHand(handIn);
-		boolean flag = !playerIn.getProjectile(itemstack).isEmpty();
+		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		boolean flag = !playerIn.findAmmo(itemstack).isEmpty();
 
 		ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, worldIn, playerIn, handIn, flag);
 		if (ret != null) return ret;
 
-		if (!playerIn.abilities.instabuild && !flag) {
-			return ActionResult.fail(itemstack);
+		if (!playerIn.abilities.isCreativeMode && !flag) {
+			return ActionResult.resultFail(itemstack);
 		}
 		else {
-			playerIn.startUsingItem(handIn);
-			return ActionResult.consume(itemstack);
+			playerIn.setActiveHand(handIn);
+			return ActionResult.resultConsume(itemstack);
 		}
 	}
 
@@ -177,31 +189,25 @@ public class RensouHou203 extends BowItem {
 		return itemstack.getItem() == Items_Weapon.AMMUNITION_M;
 	};
 
-	@Override
-	public Predicate<ItemStack> getAllSupportedProjectiles() {
+	public Predicate<ItemStack> getInventoryAmmoPredicate() {
 		return AMMOM;
 	}
 
-	public AbstractAmmo_Entity customeArrow(AbstractAmmo_Entity arrow) {
+	public AmmoAbstract_Entity customeArrow(AmmoAbstract_Entity arrow) {
 		return arrow;
-	}
-
-	@Override
-	public int getDefaultProjectileRange() {
-		return 17;
 	}
 
 	/* Items needed for repair. */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		return material.getItem() == Items.IRON_INGOT;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_rensouhou_medium")).withStyle(TextFormatting.GRAY));
-		tooltip.add((new TranslationTextComponent("tips.item_rensouhou203")).withStyle(TextFormatting.DARK_GREEN));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_rensouhou_medium")).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add((new TranslationTextComponent("tips.item_rensouhou203")).applyTextStyle(TextFormatting.DARK_GREEN));
 	}
 
 }

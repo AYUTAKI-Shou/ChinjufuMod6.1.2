@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -14,11 +13,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
@@ -26,9 +25,9 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoorHingeSide;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -62,61 +61,61 @@ public class WindowTall extends Block implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape FRAME_SOUTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
-	protected static final VoxelShape FRAME_WEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
-	protected static final VoxelShape FRAME_NORTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
-	protected static final VoxelShape FRAME_EAST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
+	protected static final VoxelShape FRAME_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
+	protected static final VoxelShape FRAME_WEST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
+	protected static final VoxelShape FRAME_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
+	protected static final VoxelShape FRAME_EAST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
 
-	protected static final VoxelShape CLOSEB_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D));
-	protected static final VoxelShape CLOSEB_WEST = VoxelShapes.or(FRAME_WEST, Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D));
-	protected static final VoxelShape CLOSEB_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D));
-	protected static final VoxelShape CLOSEB_EAST = VoxelShapes.or(FRAME_EAST, Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSEB_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D));
+	protected static final VoxelShape CLOSEB_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSEB_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D));
+	protected static final VoxelShape CLOSEB_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D));
 	
-	protected static final VoxelShape OPENBR_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(13.8D, 0.0D, 7.0D, 15.8D, 16.0D, 23.0D));
-	protected static final VoxelShape OPENBR_WEST = VoxelShapes.or(FRAME_WEST, Block.box(-7.0D, 0.0D, 13.8D, 9.0D, 16.0D, 15.8D));
-	protected static final VoxelShape OPENBR_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(0.2D, 0.0D, -7.0D, 2.2D, 16.0D, 9.0D));
-	protected static final VoxelShape OPENBR_EAST = VoxelShapes.or(FRAME_EAST, Block.box(7.0D, 0.0D, 0.2D, 23.0D, 16.0D, 2.2D));
+	protected static final VoxelShape OPENBR_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(13.8D, 0.0D, 7.0D, 15.8D, 16.0D, 23.0D));
+	protected static final VoxelShape OPENBR_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(-7.0D, 0.0D, 13.8D, 9.0D, 16.0D, 15.8D));
+	protected static final VoxelShape OPENBR_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(0.2D, 0.0D, -7.0D, 2.2D, 16.0D, 9.0D));
+	protected static final VoxelShape OPENBR_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(7.0D, 0.0D, 0.2D, 23.0D, 16.0D, 2.2D));
 
-	protected static final VoxelShape OPENBL_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(0.2D, 0.0D, 7.0D, 2.2D, 16.0D, 23.0D));
-	protected static final VoxelShape OPENBL_WEST = VoxelShapes.or(FRAME_WEST, Block.box(-7.0D, 0.0D, 0.2D, 9.0D, 16.0D, 2.2D));
-	protected static final VoxelShape OPENBL_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(13.8D, 0.0D, -7.0D, 15.8D, 16.0D, 9.0D));
-	protected static final VoxelShape OPENBL_EAST = VoxelShapes.or(FRAME_EAST, Block.box(7.0D, 0.0D, 13.8D, 23.0D, 16.0D, 15.8D));
+	protected static final VoxelShape OPENBL_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(0.2D, 0.0D, 7.0D, 2.2D, 16.0D, 23.0D));
+	protected static final VoxelShape OPENBL_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(-7.0D, 0.0D, 0.2D, 9.0D, 16.0D, 2.2D));
+	protected static final VoxelShape OPENBL_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(13.8D, 0.0D, -7.0D, 15.8D, 16.0D, 9.0D));
+	protected static final VoxelShape OPENBL_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(7.0D, 0.0D, 13.8D, 23.0D, 16.0D, 15.8D));
 	
-	protected static final VoxelShape CLOSE_SOUTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
-	protected static final VoxelShape CLOSE_WEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);
-	protected static final VoxelShape CLOSE_NORTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
-	protected static final VoxelShape CLOSE_EAST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);
+	protected static final VoxelShape CLOSE_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
+	protected static final VoxelShape CLOSE_WEST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);
+	protected static final VoxelShape CLOSE_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
+	protected static final VoxelShape CLOSE_EAST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D);
 
-	protected static final VoxelShape OPENR_SOUTH = Block.box(13.8D, 0.0D, 7.0D, 15.8D, 16.0D, 23.0D);
-	protected static final VoxelShape OPENR_WEST = Block.box(-7.0D, 0.0D, 13.8D, 9.0D, 16.0D, 15.8D);
-	protected static final VoxelShape OPENR_NORTH = Block.box(0.2D, 0.0D, -7.0D, 2.2D, 16.0D, 9.0D);
-	protected static final VoxelShape OPENR_EAST = Block.box(7.0D, 0.0D, 0.2D, 23.0D, 16.0D, 2.2D);
+	protected static final VoxelShape OPENR_SOUTH = Block.makeCuboidShape(13.8D, 0.0D, 7.0D, 15.8D, 16.0D, 23.0D);
+	protected static final VoxelShape OPENR_WEST = Block.makeCuboidShape(-7.0D, 0.0D, 13.8D, 9.0D, 16.0D, 15.8D);
+	protected static final VoxelShape OPENR_NORTH = Block.makeCuboidShape(0.2D, 0.0D, -7.0D, 2.2D, 16.0D, 9.0D);
+	protected static final VoxelShape OPENR_EAST = Block.makeCuboidShape(7.0D, 0.0D, 0.2D, 23.0D, 16.0D, 2.2D);
 
-	protected static final VoxelShape OPENL_SOUTH = Block.box(0.2D, 0.0D, 7.0D, 2.2D, 16.0D, 23.0D);
-	protected static final VoxelShape OPENL_WEST = Block.box(-7.0D, 0.0D, 0.2D, 9.0D, 16.0D, 2.2D);
-	protected static final VoxelShape OPENL_NORTH = Block.box(13.8D, 0.0D, -7.0D, 15.8D, 16.0D, 9.0D);
-	protected static final VoxelShape OPENL_EAST = Block.box(7.0D, 0.0D, 13.8D, 23.0D, 16.0D, 15.8D);
+	protected static final VoxelShape OPENL_SOUTH = Block.makeCuboidShape(0.2D, 0.0D, 7.0D, 2.2D, 16.0D, 23.0D);
+	protected static final VoxelShape OPENL_WEST = Block.makeCuboidShape(-7.0D, 0.0D, 0.2D, 9.0D, 16.0D, 2.2D);
+	protected static final VoxelShape OPENL_NORTH = Block.makeCuboidShape(13.8D, 0.0D, -7.0D, 15.8D, 16.0D, 9.0D);
+	protected static final VoxelShape OPENL_EAST = Block.makeCuboidShape(7.0D, 0.0D, 13.8D, 23.0D, 16.0D, 15.8D);
 
-	public WindowTall(AbstractBlock.Properties properties) {
+	public WindowTall(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(OPEN, Boolean.valueOf(false))
-				.setValue(HINGE, DoorHingeSide.LEFT)
-				.setValue(POWERED, Boolean.valueOf(false))
-				.setValue(HALF, DoubleBlockHalf.LOWER)
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(OPEN, Boolean.valueOf(false))
+				.with(HINGE, DoorHingeSide.LEFT)
+				.with(POWERED, Boolean.valueOf(false))
+				.with(HALF, DoubleBlockHalf.LOWER)
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		
-		Direction direction = state.getValue(H_FACING);
-		DoubleBlockHalf half = state.getValue(HALF);
-		boolean flagopen = !state.getValue(OPEN);
-		boolean flagright = (state.getValue(HINGE) == DoorHingeSide.RIGHT);
+		Direction direction = state.get(H_FACING);
+		DoubleBlockHalf half = state.get(HALF);
+		boolean flagopen = !state.get(OPEN);
+		boolean flagright = (state.get(HINGE) == DoorHingeSide.RIGHT);
 
 		switch (half) {
 		case LOWER :
@@ -149,45 +148,43 @@ public class WindowTall extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public BlockRenderType getRenderShape(BlockState state) {
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
-	/* Destroy a DoubleBlock from DoublePlantBlock.class */
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+	/* 同時破壊とドロップの指定 1.16.5に合わせる */
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+		DoubleBlockHalf doubleblockhalf = state.get(HALF);
+		BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+		BlockState blockstate = worldIn.getBlockState(blockpos);
 
-		if (!worldIn.isClientSide) {
-			if (playerIn.isCreative()) { breakLowerPart(worldIn, pos, state, playerIn); }
-			else { dropResources(state, worldIn, pos, (TileEntity)null, playerIn, playerIn.getMainHandItem()); }
-		}
-		super.playerWillDestroy(worldIn, pos, state, playerIn);
-	}
+		if (blockstate.getBlock() == this && blockstate.get(HALF) != doubleblockhalf) {
+			worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
+			worldIn.playEvent(playerIn, 2001, blockpos, Block.getStateId(blockstate));
 
-	public void playerDestroy(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		super.playerDestroy(worldIn, playerIn, pos, Blocks.AIR.defaultBlockState(), te, stack);
-	}
-
-	protected static void breakLowerPart(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-		DoubleBlockHalf half = state.getValue(HALF);
-		if (half == DoubleBlockHalf.UPPER) {
-			BlockPos downpos = pos.below();
-			BlockState downstate = worldIn.getBlockState(downpos);
-
-			if (downstate.getBlock() == state.getBlock() && downstate.getValue(HALF) == DoubleBlockHalf.LOWER) {
-				worldIn.setBlock(downpos, Blocks.AIR.defaultBlockState(), 35);
-				worldIn.levelEvent(playerIn, 2001, downpos, Block.getId(downstate));
+			ItemStack itemstack = playerIn.getHeldItemMainhand();
+			if (!worldIn.isRemote && !playerIn.isCreative() && playerIn.canHarvestBlock(blockstate)) {
+				Block.spawnDrops(state, worldIn, pos, (TileEntity)null, playerIn, itemstack);
+				Block.spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, playerIn, itemstack);
 			}
 		}
+		super.onBlockHarvested(worldIn, pos, state, playerIn);
 	}
 
-	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		switch (type) {
+	@Override
+	public void harvestBlock(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+		super.harvestBlock(worldIn, playerIn, pos, Blocks.AIR.getDefaultState(), te, stack);
+	}
+
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+		switch(type) {
 		case LAND:
-			return state.getValue(OPEN);
+			return state.get(OPEN);
 		case WATER:
 			return false;
 		case AIR:
-			return state.getValue(OPEN);
+			return state.get(OPEN);
 		default:
 			return false;
 		}
@@ -196,124 +193,101 @@ public class WindowTall extends Block implements IWaterLoggable {
 	/* Gives a value when placed. */
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
 		PlayerEntity playerIn = context.getPlayer();
-		BlockPos blockpos = context.getClickedPos();
+		BlockPos blockpos = context.getPos();
 
-		/** pos.up() = Replaceable block. **/
-		if (blockpos.getY() < 255 && context.getLevel().getBlockState(blockpos.above()).canBeReplaced(context)) {
-			World worldIn = context.getLevel();
-			boolean flag = worldIn.hasNeighborSignal(blockpos) || worldIn.hasNeighborSignal(blockpos.above());
+		/** 直上が置き換え可能なブロックの時 **/
+		if (blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context)) {
+			World worldIn = context.getWorld();
+			boolean flag = worldIn.isBlockPowered(blockpos) || worldIn.isBlockPowered(blockpos.up());
 
-			if (playerIn.isCrouching()) {
-				return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER))
-						.setValue(HINGE, DoorHingeSide.RIGHT).setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)).setValue(HALF, DoubleBlockHalf.LOWER); }
+			if (playerIn.isSneaking()) {
+				return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing()).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+						.with(HINGE, DoorHingeSide.RIGHT).with(POWERED, Boolean.valueOf(flag)).with(OPEN, Boolean.valueOf(flag)).with(HALF, DoubleBlockHalf.LOWER); }
 
-			return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER))
-					.setValue(HINGE, DoorHingeSide.LEFT).setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)).setValue(HALF, DoubleBlockHalf.LOWER);
+			return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing()).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+					.with(HINGE, DoorHingeSide.LEFT).with(POWERED, Boolean.valueOf(flag)).with(OPEN, Boolean.valueOf(flag)).with(HALF, DoubleBlockHalf.LOWER);
 		}
 
+		/** それ以外の時 **/
 		else { return null; }
 	}
 
 	/* Add DoubleBlockHalf.UPPER on the Block. */
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		FluidState fluidUp = worldIn.getFluidState(pos.above());
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		IFluidState ifluidstateUp = worldIn.getFluidState(pos.up());
 
-		worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(H_FACING, state.getValue(H_FACING))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluidUp.getType() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos.up(), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(H_FACING, state.get(H_FACING))
+				.with(WATERLOGGED, Boolean.valueOf(ifluidstateUp.isTagged(FluidTags.WATER))), 3);
 	}
 
-	/* Limit the place. */
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos downpos = pos.below();
-		BlockState downstate = worldIn.getBlockState(downpos);
+	/* 設置制限 isSolidSide → true */
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		BlockPos blockpos = pos.down();
+		BlockState blockstate = worldIn.getBlockState(blockpos);
 
-		/** Lower part is true. **/
-		if (state.getValue(HALF) == DoubleBlockHalf.LOWER) { return true; }
-
-		/** Upper part is this block. **/
-		else { return downstate.getBlock() == this; }
+		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+			return true;
+		}
+		else {
+			return blockstate.getBlock() == this;
+		}
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true;
-		}
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		else { return Fluids.EMPTY; }
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	/* Update BlockState. */
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
 
-		BlockState blockstate = super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		BlockState blockstate = super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 		if (!blockstate.isAir(worldIn, pos)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
-		}
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
-		DoubleBlockHalf half = state.getValue(HALF);
+		DoubleBlockHalf half = state.get(HALF);
 		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP)) {
-			return facingState.getBlock() == this && facingState.getValue(HALF) != half ? state
-					.setValue(H_FACING, facingState.getValue(H_FACING)).setValue(OPEN, facingState.getValue(OPEN))
-					.setValue(HINGE, facingState.getValue(HINGE)).setValue(POWERED, facingState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
+			return facingState.getBlock() == this && facingState.get(HALF) != half ? state
+					.with(H_FACING, facingState.get(H_FACING)).with(OPEN, facingState.get(OPEN))
+					.with(HINGE, facingState.get(HINGE)).with(POWERED, facingState.get(POWERED)) : Blocks.AIR.getDefaultState();
 		}
 		else {
-			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(worldIn, pos) ? Blocks.AIR
-					.defaultBlockState() : super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.isValidPosition(worldIn, pos) ? Blocks.AIR
+					.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 		}
 	}
 
 	/* RightClick Action */
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
 		state = state.cycle(OPEN);
-		worldIn.setBlock(pos, state, 10);
+		worldIn.setBlockState(pos, state, 10);
 
-		if (state.getValue(OPEN) == true) { CMEvents.soundWin_OpenL(worldIn, pos); }
-		if (state.getValue(OPEN) == false) { CMEvents.soundWin_CloseL(worldIn, pos); }
+		if (state.get(OPEN) == true) { CMEvents.soundWin_OpenL(worldIn, pos); }
+		if (state.get(OPEN) != true) { CMEvents.soundWin_CloseL(worldIn, pos); }
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void setOpen(BlockState state, World worldIn, BlockPos pos, boolean open) {
+	public void toggleDoor(BlockState state, World worldIn, BlockPos pos, boolean open) {
 		BlockState blockstate = worldIn.getBlockState(pos);
-		if (blockstate.getBlock() == this && blockstate.getValue(OPEN) != open) {
-			worldIn.setBlock(pos, blockstate.setValue(OPEN, Boolean.valueOf(open)), 10);
+		if (blockstate.getBlock() == this && blockstate.get(OPEN) != open) {
+			worldIn.setBlockState(pos, blockstate.with(OPEN, Boolean.valueOf(open)), 10);
 			this.moveSound(worldIn, pos, open);
 		}
 	}
 
-	/* Get POWER. */
+	/* 隣接ブロックの変化 */
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		boolean flag = worldIn.hasNeighborSignal(pos) || worldIn.hasNeighborSignal(pos.relative(state.getValue(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
+		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
 
-		if (block != this && flag != state.getValue(POWERED)) {
-			if (flag != state.getValue(OPEN)) { this.moveSound(worldIn, pos, flag); }
-			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)), 2);
+		if (block != this && flag != state.get(POWERED)) {
+			if (flag != state.get(OPEN)) { this.moveSound(worldIn, pos, flag); }
+			worldIn.setBlockState(pos, state.with(POWERED, Boolean.valueOf(flag)).with(OPEN, Boolean.valueOf(flag)), 2);
 		}
 	}
 
@@ -324,36 +298,52 @@ public class WindowTall extends Block implements IWaterLoggable {
 	}
 
 	/* @deprecated call via {@link IBlockState#getMobilityFlag()} whenever possible. Implementing/overriding is fine. */
-	public PushReaction getPistonPushReaction(BlockState state) {
+	public PushReaction getPushReaction(BlockState state) {
 		return PushReaction.DESTROY;
 	}
 
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+	public BlockState rotate(BlockState state, Rotation rot) {
+		return state.with(H_FACING, rot.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return mirror == Mirror.NONE ? state : state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+	public BlockState mirror(BlockState state, Mirror mirrorIn) {
+		return mirrorIn == Mirror.NONE ? state : state.rotate(mirrorIn.toRotation(state.get(H_FACING))).cycle(HINGE);
 	}
 
 	/* Return a random long to be passed to {@link IBakedModel#getQuads}, used for random model rotations */
 	@OnlyIn(Dist.CLIENT)
-	public long getSeed(BlockState state, BlockPos pos) {
-		return MathHelper.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
+	public long getPositionRandom(BlockState state, BlockPos pos) {
+		return MathHelper.getCoordinateRandom(pos.getX(), pos.down(state.get(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 	/* Create Blockstate */
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(HALF, H_FACING, OPEN, HINGE, POWERED, WATERLOGGED);
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_window")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_window")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

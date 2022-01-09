@@ -15,7 +15,6 @@ import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 import com.ayutaki.chinjufumod.registry.School_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,6 +34,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -43,12 +43,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Kettle_full extends BaseFood_Stage3Water {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D);
 
-	protected static final VoxelShape AABB_3_BOX = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-	protected static final VoxelShape AABB_3_DOWN = Block.box(5.0D, -8.0D, 5.0D, 11.0D, 8.0D, 11.0D);
+	protected static final VoxelShape AABB_3_BOX = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+	protected static final VoxelShape AABB_3_DOWN = Block.makeCuboidShape(5.0D, -8.0D, 5.0D, 11.0D, 8.0D, 11.0D);
 
-	public Kettle_full(AbstractBlock.Properties properties) {
+	public Kettle_full(Block.Properties properties) {
 		super(properties);
 	}
 
@@ -57,8 +57,8 @@ public class Kettle_full extends BaseFood_Stage3Water {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
-		int i = state.getValue(STAGE_1_3);
+		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
+		int i = state.get(STAGE_1_3);
 
 		if (i == 3) { return flag? AABB_3_BOX : AABB_3_DOWN; }
 		return AABB_BOX;
@@ -66,52 +66,57 @@ public class Kettle_full extends BaseFood_Stage3Water {
 
 	/* TickRandom and Conditions for TickRandom. */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
 		if (isCooking(worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1000 + (20 * worldIn.getRandom().nextInt(5)));
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * worldIn.getRandom().nextInt(5)));
 		}
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	private boolean isCooking(IBlockReader worldIn, BlockPos pos) {
-		BlockState downstate = worldIn.getBlockState(pos.below());
+		BlockState downstate = worldIn.getBlockState(pos.down());
 		Block downblock = downstate.getBlock();
-		return (downblock == Blocks.FURNACE && downstate.getValue(FurnaceBlock.LIT) == true) ||
-				(downblock == Kitchen_Blocks.KIT_OVEN && downstate.getValue(Kitchen_Oven.LIT) == true) ||
-				(downblock == Kitchen_Blocks.KIT_OVEN_B && downstate.getValue(Kitchen_Oven_B.LIT) == true) ||
-				(downblock == Kitchen_Blocks.IRORI && downstate.getValue(Irori.LIT) == true) ||
-				(downblock == Kitchen_Blocks.KIT_COOKTOP && downstate.getValue(Kit_Cooktop.STAGE_1_3) == 2) ||
-				(downblock == School_Blocks.CSTOVE_top && downstate.getValue(CStove_Top.LIT) == true);
+		return (downblock == Blocks.FURNACE && downstate.get(FurnaceBlock.LIT) == true) ||
+				(downblock == Kitchen_Blocks.KIT_OVEN && downstate.get(Kitchen_Oven.LIT) == true) ||
+				(downblock == Kitchen_Blocks.KIT_OVEN_B && downstate.get(Kitchen_Oven_B.LIT) == true) ||
+				(downblock == Kitchen_Blocks.IRORI && downstate.get(Irori.LIT) == true) ||
+				(downblock == Kitchen_Blocks.KIT_COOKTOP && downstate.get(Kit_Cooktop.STAGE_1_3) == 2) ||
+				(downblock == School_Blocks.CSTOVE_top && downstate.get(CStove_Top.LIT) == true);
 	}
 
-	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 1000 + (20 * worldIn.random.nextInt(5)));
+	public int tickRate(IWorldReader world) {
+		return 1000;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * worldIn.rand.nextInt(5)));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int i = state.getValue(STAGE_1_3);
+		int i = state.get(STAGE_1_3);
 
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 
-		if (i == 1 && isCooking(worldIn, pos) && !state.getValue(WATERLOGGED)) {
+		if (i == 1 && isCooking(worldIn, pos) && !state.get(WATERLOGGED)) {
 
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1000 + (20 * rand.nextInt(5)));
-			worldIn.setBlock(pos, state.setValue(STAGE_1_3, Integer.valueOf(2)), 3);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * rand.nextInt(5)));
+			worldIn.setBlockState(pos, state.with(STAGE_1_3, Integer.valueOf(2)));
 
 			/** Get EXP. **/
-			worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1)); }
+			worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
+		}
 
 		else { }
 	}
 
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_3);
+		int i = state.get(STAGE_1_3);
 
 		double d0 = (double)pos.getX() + 0.5D;
 		double d1 = (double)pos.getY() + 0.8D;
@@ -123,10 +128,10 @@ public class Kettle_full extends BaseFood_Stage3Water {
 
 			if (rand.nextDouble() < 0.1D) {
 				if (i ==1) {
-					worldIn.playLocalSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
+					worldIn.playSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
 
 				if (i ==2) {
-					worldIn.playLocalSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.3F, 0.7F, false); }
+					worldIn.playSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.3F, 0.7F, false); }
 			}
 
 			if (i ==2 && rand.nextDouble() < 0.25D) {
@@ -139,7 +144,7 @@ public class Kettle_full extends BaseFood_Stage3Water {
 		/* Play Sound */
 	@Override
 	public SoundType getSoundType(BlockState state) {
-		int i = state.getValue(STAGE_1_3);
+		int i = state.get(STAGE_1_3);
 		if (i == 3) { return SoundType.STONE; }
 		 return this.soundType;
 	}
@@ -147,16 +152,16 @@ public class Kettle_full extends BaseFood_Stage3Water {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_3);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_3);
 		return (i != 3)? new ItemStack(Items_Teatime.KETTLE_full) : new ItemStack(Items_Teatime.SAKEBOTTLE);
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kettle")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_kettle")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

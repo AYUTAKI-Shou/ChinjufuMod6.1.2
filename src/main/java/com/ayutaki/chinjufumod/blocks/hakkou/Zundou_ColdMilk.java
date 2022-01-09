@@ -10,8 +10,9 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -26,34 +27,35 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class Zundou_ColdMilk extends BaseZundou_4Stage {
 
 	/** 1=冷めた牛乳、2=乳酸菌、3=レンネット、4=カード **/
-	public Zundou_ColdMilk(AbstractBlock.Properties properties) {
+	public Zundou_ColdMilk(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 
 		if (i == 1) {
 			if (item == Items_Teatime.NYUSAN) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
+				
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE))) {
+					playerIn.dropItem(new ItemStack(Items.GLASS_BOTTLE), false); }
 	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items.GLASS_BOTTLE)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items.GLASS_BOTTLE))) {
-					playerIn.drop(new ItemStack(Items.GLASS_BOTTLE), false); }
-	
-				worldIn.setBlock(pos, state.setValue(BaseStage4_FaceWater.STAGE_1_4, Integer.valueOf(2)), 3); }
+				worldIn.setBlockState(pos, state.with(BaseStage4_FaceWater.STAGE_1_4, Integer.valueOf(2))); }
 			
 			if (item != Items_Teatime.NYUSAN) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -63,7 +65,7 @@ public class Zundou_ColdMilk extends BaseZundou_4Stage {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(BaseStage4_FaceWater.STAGE_1_4, Integer.valueOf(3)), 3); }
+				worldIn.setBlockState(pos, state.with(BaseStage4_FaceWater.STAGE_1_4, Integer.valueOf(3))); }
 			
 			if (item != Items_Teatime.RENNET) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -74,13 +76,13 @@ public class Zundou_ColdMilk extends BaseZundou_4Stage {
 			if (itemstack.isEmpty()) {
 				
 				CMEvents.soundTake_Pick(worldIn, pos);
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CHEESE_CURD));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHEESE_CURD));
 	
 				/** Get EXP. **/
-				worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
+				worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
 	
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseStage2_FaceWater.STAGE_1_2, Integer.valueOf(2)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(BaseStage2_FaceWater.STAGE_1_2, Integer.valueOf(2))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -90,34 +92,39 @@ public class Zundou_ColdMilk extends BaseZundou_4Stage {
 
 	/* TickRandom and Conditions for TickRandom. */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
 		if (true) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 300 + (50 * worldIn.getRandom().nextInt(5)));
-		}
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (50 * worldIn.getRandom().nextInt(5))); }
+		
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 300 + (50 * worldIn.random.nextInt(5)));
+	public int tickRate(IWorldReader world) {
+		return 300;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (50 * worldIn.rand.nextInt(5)));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 
 		if (i == 3) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 300 + (50 * rand.nextInt(5)));
-			worldIn.setBlock(pos, state.setValue(BaseStage4_FaceWater.STAGE_1_4, Integer.valueOf(4)), 3); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (50 * rand.nextInt(5)));
+			worldIn.setBlockState(pos, state.with(BaseStage4_FaceWater.STAGE_1_4, Integer.valueOf(4))); }
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60);
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.ZUNDOU.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Zundou.STAGE_1_2, Integer.valueOf(2)), 3); }
+			worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Zundou.STAGE_1_2, Integer.valueOf(2))); }
 
 		else { }
 	}
@@ -128,9 +135,27 @@ public class Zundou_ColdMilk extends BaseZundou_4Stage {
 		return AABB_BOX;
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.ZUNDOU);
 	}
 

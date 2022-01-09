@@ -1,7 +1,5 @@
 package com.ayutaki.chinjufumod;
 
-import java.util.stream.Collectors;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,16 +9,14 @@ import com.ayutaki.chinjufumod.handler.Biomes_CM;
 import com.ayutaki.chinjufumod.handler.CompostableItems_CM;
 import com.ayutaki.chinjufumod.handler.EntityRender_CM;
 import com.ayutaki.chinjufumod.handler.EntityTypes_CM;
-import com.ayutaki.chinjufumod.handler.Features_CM;
-import com.ayutaki.chinjufumod.handler.ItemModelsProperty_CM;
+import com.ayutaki.chinjufumod.handler.FlammableBlocks_CM;
 import com.ayutaki.chinjufumod.handler.ParticleTypes_CM;
 import com.ayutaki.chinjufumod.handler.RenderTypes_CM;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 import com.ayutaki.chinjufumod.handler.TileEntity_CM;
 import com.ayutaki.chinjufumod.handler.TintColors_CM;
 import com.ayutaki.chinjufumod.proxy.ClientProxy;
-import com.ayutaki.chinjufumod.proxy.IProxy;
-import com.ayutaki.chinjufumod.proxy.ServerProxy;
+import com.ayutaki.chinjufumod.proxy.CommonProxy;
 import com.ayutaki.chinjufumod.registry.Chair_Blocks;
 import com.ayutaki.chinjufumod.registry.ChinjufuModBlocks;
 import com.ayutaki.chinjufumod.registry.Crop_Blocks;
@@ -36,11 +32,11 @@ import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Items_Wablock;
 import com.ayutaki.chinjufumod.registry.Items_Wadeco;
-import com.ayutaki.chinjufumod.registry.Items_WallPanel;
+import com.ayutaki.chinjufumod.registry.Items_WallPane;
 import com.ayutaki.chinjufumod.registry.Items_Weapon;
 import com.ayutaki.chinjufumod.registry.JPChair_Blocks;
-import com.ayutaki.chinjufumod.registry.JPDeco_Blocks;
 import com.ayutaki.chinjufumod.registry.JP_Blocks;
+import com.ayutaki.chinjufumod.registry.JPdeco_Blocks;
 import com.ayutaki.chinjufumod.registry.KamoiPlanks_Blocks;
 import com.ayutaki.chinjufumod.registry.KamoiPlaster_Blocks;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
@@ -50,26 +46,19 @@ import com.ayutaki.chinjufumod.registry.School_Blocks;
 import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
 import com.ayutaki.chinjufumod.registry.Slidedoor_Blocks;
 import com.ayutaki.chinjufumod.registry.Unit_Blocks;
-import com.ayutaki.chinjufumod.registry.WallPanel_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
 import com.ayutaki.chinjufumod.registry.Window_Blocks;
 import com.ayutaki.chinjufumod.registry.Wood_Blocks;
-import com.ayutaki.chinjufumod.world.biome.SurfaceBuilder_CM;
-import com.ayutaki.chinjufumod.world.generate.OreGen_CM;
+import com.ayutaki.chinjufumod.world.generate.CM_OreGen;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /* The value here should match an entry in the META-INF/mods.toml file */
@@ -77,14 +66,18 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ChinjufuMod {
 
 	public static final String MOD_ID = "chinjufumod";
+
 	/* Directly reference a log4j logger. */
 	public static final Logger LOGGER = LogManager.getLogger();
-	public static final IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+	@SuppressWarnings("deprecation")
+	public static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
 	public ChinjufuMod() {
 
+		/** Config **/
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config_CM.SPEC, MOD_ID + ".toml");
 
+		/** Register the method for modloading **/
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 		EntityTypes_CM.ENTITY_TYPES.register(eventBus);
@@ -103,7 +96,7 @@ public class ChinjufuMod {
 		Hakkou_Blocks.BLOCKS.register(eventBus);
 		Harbor_Blocks.BLOCKS.register(eventBus);
 		JPChair_Blocks.BLOCKS.register(eventBus);
-		JPDeco_Blocks.BLOCKS.register(eventBus);
+		JPdeco_Blocks.BLOCKS.register(eventBus);
 		JP_Blocks.BLOCKS.register(eventBus);
 		KamoiPlanks_Blocks.BLOCKS.register(eventBus);
 		KamoiPlaster_Blocks.BLOCKS.register(eventBus);
@@ -114,7 +107,7 @@ public class ChinjufuMod {
 		Seasonal_Blocks.BLOCKS.register(eventBus);
 		Slidedoor_Blocks.BLOCKS.register(eventBus);
 		Unit_Blocks.BLOCKS.register(eventBus);
-		WallPanel_Blocks.BLOCKS.register(eventBus);
+		WallPane_Blocks.BLOCKS.register(eventBus);
 		Window_Blocks.BLOCKS.register(eventBus);
 		Wood_Blocks.BLOCKS.register(eventBus);
 
@@ -126,64 +119,40 @@ public class ChinjufuMod {
 		Items_Weapon.ITEMS.register(eventBus);
 		Items_Wadeco.ITEMS.register(eventBus);
 		Items_Wablock.ITEMS.register(eventBus);
-		Items_WallPanel.ITEMS.register(eventBus);
+		Items_WallPane.ITEMS.register(eventBus);
 
 		/** register Biome **/
-		Features_CM.FEATURES.register(eventBus);
-		SurfaceBuilder_CM.SURFACE_BUILDERS.register(eventBus);
 		Biomes_CM.BIOMES.register(eventBus);
 
 		eventBus.addListener(this::setup);
-		eventBus.addListener(this::enqueueIMC);
-		eventBus.addListener(this::processIMC);
 		eventBus.addListener(this::clientSetup);
 
-		/** Register ourselves for server and other game events we are interested in **/
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {
 
 		/** add Biome **/
-		AnimalSpawnRules_CM.registers();
-		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, OreGen_CM::generate);
-		event.enqueueWork(AddBiomes_CM::addBiomes);
+		CM_OreGen.addOres();
+		AnimalSpawnRules_CM.replaceAnimalSpawnRegistrys();
+		AddBiomes_CM.addBiomes();
 
 		/** etc **/
-		CompostableItems_CM.register();
+		CompostableItems_CM.setup();
+		FlammableBlocks_CM.setup();
 
 		/** ConfigScreen**/
-		proxy.setup(event);
+		PROXY.setup(event);
 	}
 
-	private void clientSetup(final FMLClientSetupEvent event) {
+	public void clientSetup(final FMLClientSetupEvent event) {
 
 		/** EntityRender **/
 		EntityRender_CM.register();
-		/** ItemModels ...eating drinking **/
-		ItemModelsProperty_CM.register();
-
 		/** BlockRenderType, Tint **/
 		RenderTypes_CM.register();
 		TintColors_CM.registerBlockColors();
 		TintColors_CM.registerItemColors();
-	}
-
-	private void enqueueIMC(final InterModEnqueueEvent event) {
-		/** some example code to dispatch IMC to another mod **/
-		InterModComms.sendTo("chinjufumod", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
-	}
-
-	private void processIMC(final InterModProcessEvent event) {
-		/** some example code to receive and process InterModComms from other mods **/
-		LOGGER.info("Got IMC {}", event.getIMCStream().map(m->m.getMessageSupplier().get()).collect(Collectors.toList()));
-	}
-
-	/* You can use SubscribeEvent and let the Event Bus discover methods to call */
-	@SubscribeEvent
-	public void onServerStarting(FMLServerStartingEvent event) {
-		/** do something when the server starts **/
-		LOGGER.info("HELLO from server starting");
 	}
 
 }

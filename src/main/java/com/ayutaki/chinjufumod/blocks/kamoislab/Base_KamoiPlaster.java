@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,58 +30,58 @@ public class Base_KamoiPlaster extends Block {
 	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final IntegerProperty STAGE_1_4 = IntegerProperty.create("stage", 1, 4);
 
-	public Base_KamoiPlaster(AbstractBlock.Properties properties) {
+	public Base_KamoiPlaster(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(STAGE_1_4, Integer.valueOf(1)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(STAGE_1_4, Integer.valueOf(1)));
 	}
 
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection().getOpposite());
+		return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
 		if (item instanceof Base_ItemHake) { return ActionResultType.PASS; }
 
 		else {
 			if (itemstack.isEmpty()) {
-				if (playerIn.isCrouching()) {
+				if (playerIn.isSneaking()) {
 					CMEvents.soundStonePlace(worldIn, pos);
-					worldIn.setBlock(pos, state.cycle(STAGE_1_4), 3);
+					worldIn.setBlockState(pos, state.cycle(STAGE_1_4));
 					return ActionResultType.SUCCESS; }
-				
-				if (!playerIn.isCrouching()) {
+			
+				if (!playerIn.isSneaking()) {
 					CMEvents.textNotSneak(worldIn, pos, playerIn);
 					return ActionResultType.SUCCESS; }
 			}
-
+			
 			return ActionResultType.PASS;
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -96,7 +95,8 @@ public class Base_KamoiPlaster extends Block {
 
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(H_FACING, STAGE_1_4);
 	}
 

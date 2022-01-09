@@ -1,19 +1,8 @@
-素手回収は
-worldIn.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, 2.0F);
-worldIn.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundCategory.BLOCKS, 0.8F, 1.2F);
+回収は SoundEvents.SNOW_BREAK
+設置は SoundEvents.SNOW_PLACE
 
-器で回収は
-worldIn.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundCategory.BLOCKS, 0.8F, 1.2F);
-
-設置は 
-worldIn.playSound(null, pos, SoundEvents.SNOW_PLACE, SoundCategory.BLOCKS, 0.8F, 1.2F);
-
-
-world.isRemote → level.isClientSide
 )^p → )
-Ctrl+Shift+O
-
-1tickは1/20秒、20tickで1秒
+Ctrl+Shift+O 未使用インポート除去
 
 1.0―0.0625
 2.0―0.125
@@ -179,8 +168,6 @@ Tint Index, "tintindex": 30
 #7cbd6b=7060860
 色が薄い桜と銀杏は Tint に不向きと判断
 
-9=鶸萌黄 130,174,70=8564294
-
 半透明は器の透過問題があるため断念。水に色を付けるのみ
 minecraft:block/water_still
 20=水 63,118,228=4159204
@@ -279,22 +266,24 @@ addItemBurnTime(map, Blocks.COMPOSTER, 300);
 
 ////////////////////////////////////////////////////////////
 キャベツ1, とうもろこし1. 白菜1. たまねぎ4. 米1. 大豆2. ほうれん草1. トマト4
-
 ////////////////////////////////////////////////////////////
-木の葉ドロップ 1.16.5
+木の葉ドロップ 1.15.2
 {
-	"type": "minecraft:block",
+   "type": "minecraft:block",
 	"pools": [
 		{ "rolls": 1,
 			"entries": [ { "type": "minecraft:alternatives",
 
 					"children": [
 						{ "type": "minecraft:item",
-							"conditions": [ { "condition": "minecraft:alternative",
-								"terms": [ { "condition": "minecraft:match_tool", "predicate": { "item": "minecraft:shears" } },
-										{ "condition": "minecraft:match_tool", "predicate": { "enchantments": [ { "enchantment": "minecraft:silk_touch", "levels": { "min": 1 } } ] } } ] }
-							],
-							"name": "minecraft:oak_leaves" },
+							"conditions": [
+								{ "condition": "minecraft:alternative",
+									"terms": [
+										{ "condition": "minecraft:match_tool", "predicate": { "item": "minecraft:shears" } },
+										{ "condition": "minecraft:match_tool", "predicate": { "enchantments": [ { "enchantment": "minecraft:silk_touch", "levels": { "min": 1 } } ] } } ]
+								} ],
+							"name": "minecraft:oak_leaves"
+						},
 
 						{ "type": "minecraft:item",
 							"conditions": [
@@ -305,9 +294,9 @@ addItemBurnTime(map, Blocks.COMPOSTER, 300);
 										0.05,
 										0.0625,
 										0.083333336,
-										0.1 ] }
-							],
-							"name": "minecraft:oak_sapling" }
+										0.1 ] } ],
+							"name": "minecraft:oak_sapling"
+						}
 					]
 				}
 			]
@@ -324,12 +313,15 @@ addItemBurnTime(map, Blocks.COMPOSTER, 300);
 								0.025,
 								0.033333335,
 								0.1 ] } ],
-					"functions": [ { "function": "minecraft:set_count", "count": { "min": 1.0, "max": 2.0, "type": "minecraft:uniform" } }, { "function": "minecraft:explosion_decay" } ],
-					"name": "minecraft:stick" }
+					"functions": [ { "function": "minecraft:set_count", "count": { "min": 1.0, "max": 2.0, "type": "minecraft:uniform" } },
+						{ "function": "minecraft:explosion_decay" } ],
+					"name": "minecraft:stick"
+				}
 			],
 			"conditions": [
 				{ "condition": "minecraft:inverted",
-					"term": { "condition": "minecraft:alternative",
+					"term": {
+						"condition": "minecraft:alternative",
 						"terms": [
 							{ "condition": "minecraft:match_tool", "predicate": { "item": "minecraft:shears" } },
 							{ "condition": "minecraft:match_tool", "predicate": { "enchantments": [ { "enchantment": "minecraft:silk_touch", "levels": { "min": 1 } } ] } }
@@ -350,16 +342,17 @@ addItemBurnTime(map, Blocks.COMPOSTER, 300);
 								0.0055555557,
 								0.00625,
 								0.008333334,
-								0.025 ] }
-					],
-					"name": "minecraft:apple" }
+								0.025 ] } ],
+					"name": "minecraft:apple"
+				}
 			],
 			"conditions": [
 				{ "condition": "minecraft:inverted",
-					"term": { "condition": "minecraft:alternative",
+					"term": {
+						"condition": "minecraft:alternative",
 						"terms": [
 							{ "condition": "minecraft:match_tool", "predicate": { "item": "minecraft:shears" } },
-							{ "condition": "minecraft:match_tool", "predicate": { "enchantments": [ { "enchantment": "minecraft:silk_touch", "levels": { "min": 1 } } ] } }
+							{ "condition": "minecraft:match_tool", "predicate": { "enchantments": [ { "enchantment": "minecraft:silk_touch", } ] } }
 						]
 					}
 				}
@@ -368,8 +361,7 @@ addItemBurnTime(map, Blocks.COMPOSTER, 300);
 	]
 }
 
-
-農作物ドロップ 1.16.5
+農作物ドロップ 1.15.2
 {
 	"type": "minecraft:block",
 	"pools": [
@@ -387,19 +379,21 @@ addItemBurnTime(map, Blocks.COMPOSTER, 300);
 			]
 		},
 
-		{
-			"rolls": 1,
+		{ "rolls": 1,
 			"entries": [ { "type": "minecraft:item",
-					"functions": [ { "function": "minecraft:apply_bonus", "enchantment": "minecraft:fortune",
-						"formula": "minecraft:binomial_with_bonus_count", "parameters": { "extra": 3, "probability": 0.5714286 } } ],
+					"functions": [
+						{ "function": "minecraft:apply_bonus",
+							"enchantment": "minecraft:fortune",
+							"formula": "minecraft:binomial_with_bonus_count",
+							"parameters": { "extra": 3, "probability": 0.5714286 } } ],
 					"conditions": [ { "condition": "minecraft:block_state_property", "block": "minecraft:wheat", "properties": { "age": "7" } } ],
-					"name": "minecraft:wheat_seeds" }
+					"name": "minecraft:wheat_seeds"
+				}
 			]
 		}
 	],
 	"functions": [ { "function": "minecraft:explosion_decay" } ]
 }
-
 ////////////////////////////////////////////////////////////
 minecraft:aqua_affinity 水中採掘
 minecraft:blast_protection 爆発耐性 3
@@ -419,9 +413,6 @@ minecraft:sharpness ダメージ増加
 minecraft:silk_touch シルクタッチ 16
 minecraft:unbreaking 耐久力 17
 
-////////////////////////////////////////////////////////////
-
-		
 ////////////////////////////////////////////////////////////
 ttps://minecraft.fandom.com/wiki/Experience
 11…187
@@ -503,7 +494,7 @@ case EAST :
 case WEST :
 
 	break;
-} // switch
+} // switch direction
 
 switch (half) {
 case LOWER :

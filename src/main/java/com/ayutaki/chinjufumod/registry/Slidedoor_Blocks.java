@@ -1,9 +1,6 @@
 package com.ayutaki.chinjufumod.registry;
 
-import java.util.function.ToIntFunction;
-
 import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.Config_CM;
 import com.ayutaki.chinjufumod.blocks.amado.Amado;
 import com.ayutaki.chinjufumod.blocks.amado.AmadoWindow;
 import com.ayutaki.chinjufumod.blocks.amado.Amado_spruce;
@@ -20,14 +17,9 @@ import com.ayutaki.chinjufumod.blocks.slidedoor.Shouji;
 import com.ayutaki.chinjufumod.blocks.slidedoor.ShoujiHalf;
 import com.ayutaki.chinjufumod.blocks.slidedoor.ShoujiWindow;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,7 +27,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Slidedoor_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block FUSUMA_white = register("block_fusuma", fusuma());
 	public static Block FUSUMA_orange = register("block_fusuma_orange", fusuma());
@@ -151,76 +144,57 @@ public class Slidedoor_Blocks {
 	public static Block SHOUJI_WINR_KAE = register("block_shoujihr_kaede", shoujiWin());
 	public static Block SHOUJI_WINR_ICH = register("block_shoujihr_ichoh", shoujiWin());
 
-	public static Block AMADO_S = register("block_amado_spruce", new Amado_spruce(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
-	public static Block TOBUKURO_S = register("block_tobukuro_spruce", new Tobukuro_spruce(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
-	public static Block TOBUKURO_SL = register("block_tobukuro_sprucel", new Tobukuro_spruce_L(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
+	public static Block AMADO_S = register("block_amado_spruce", new Amado_spruce(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block TOBUKURO_S = register("block_tobukuro_spruce", new Tobukuro_spruce(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block TOBUKURO_SL = register("block_tobukuro_sprucel", new Tobukuro_spruce_L(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
 
-	public static Block AMADOWIN_S = register("block_amadowin_spruce", new AmadoWindow(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
-	public static Block TOBUKUROWIN_S = register("block_tobukurowin_spruce", new TobukuroWindow(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
+	public static Block AMADOWIN_S = register("block_amadowin_spruce", new AmadoWindow(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block TOBUKUROWIN_S = register("block_tobukurowin_spruce", new TobukuroWindow(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
-	public static Block AMADO = register("block_amado", new Amado(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
-	public static Block TOBUKURO = register("block_tobukuro", new Tobukuro(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
-	public static Block TOBUKURO_L = register("block_tobukuro_l", new Tobukuro_L(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
+	public static Block AMADO = register("block_amado", new Amado(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block TOBUKURO = register("block_tobukuro", new Tobukuro(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block TOBUKURO_L = register("block_tobukuro_l", new Tobukuro_L(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
 
-	public static Block AMADOWIN = register("block_amadowin", new AmadoWindow(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
-	public static Block TOBUKUROWIN = register("block_tobukurowin", new TobukuroWindow(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never)));
+	public static Block AMADOWIN = register("block_amadowin", new AmadoWindow(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block TOBUKUROWIN = register("block_tobukurowin", new TobukuroWindow(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	/* Share variables */
-	private static ToIntFunction<BlockState> litBlockEmission(int value) {
-		return (state) -> { return (Config_CM.getInstance().antiShadow() == true) ? value : 0; };
-	}
-
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static Fusuma fusuma() {
-		return new Fusuma(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new Fusuma(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Fusuma_B fusumaBtype() {
-		return new Fusuma_B(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new Fusuma_B(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static GlassDoor glassdoor() {
-		return new GlassDoor(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new GlassDoor(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static GlassDoorHalf glassdoorHalf() {
-		return new GlassDoorHalf(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never));
+		return new GlassDoorHalf(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Shouji shouji() {
-		return new Shouji(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new Shouji(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static ShoujiHalf shoujiHalf() {
-		return new ShoujiHalf(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new ShoujiHalf(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static ShoujiWindow shoujiWin() {
-		return new ShoujiWindow(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Slidedoor_Blocks::neverEntity).isSuffocating(Slidedoor_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new ShoujiWindow(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	///* Register *///

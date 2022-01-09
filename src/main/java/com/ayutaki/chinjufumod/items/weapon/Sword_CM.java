@@ -17,26 +17,25 @@ public class Sword_CM extends SwordItem {
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
 		return 200;
 	}
 
 	/* クラフト時にエンチャント付与 */
-	@Override
-	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-		super.onCraftedBy(stack, worldIn, playerIn);
+	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
+		super.onCreated(stack, worldIn, playerIn);
 
-		if (this == Items_Weapon.SWORD_sakura) { stack.enchant(Enchantments.FIRE_ASPECT, 2); }
-		if (this == Items_Weapon.SWORD_kaede) { stack.enchant(Enchantments.SHARPNESS, 2); }
-		if (this == Items_Weapon.SWORD_ichoh) { stack.enchant(Enchantments.BANE_OF_ARTHROPODS, 3); }
+		if (this == Items_Weapon.SWORD_sakura) { stack.addEnchantment(Enchantments.FIRE_ASPECT, 2); }
+		if (this == Items_Weapon.SWORD_kaede) { stack.addEnchantment(Enchantments.SHARPNESS, 2); }
+		if (this == Items_Weapon.SWORD_ichoh) { stack.addEnchantment(Enchantments.BANE_OF_ARTHROPODS, 3); }
 		else { }
 	}
 
 	/* Items needed for repair. */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 
 		if (this == Items_Weapon.SWORD_kaede) { return material.getItem() == Items_Seasonal.KAEDE_planks; }
 		if (this == Items_Weapon.SWORD_ichoh) { return material.getItem() == Items_Seasonal.ICHOH_planks; }

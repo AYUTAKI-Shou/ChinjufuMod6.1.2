@@ -14,7 +14,7 @@ public class Base_Stairs_JP extends StairsBlock {
 		super(state, properties);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

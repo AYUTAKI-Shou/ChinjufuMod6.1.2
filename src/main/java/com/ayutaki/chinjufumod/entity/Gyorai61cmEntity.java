@@ -7,8 +7,9 @@ import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 import com.ayutaki.chinjufumod.registry.Items_Weapon;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -29,7 +30,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
+@OnlyIn( value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class Gyorai61cmEntity extends ThrowableEntity implements IRendersAsItem {
 
 	private ItemStack stack = new ItemStack(Items_Weapon.GYORAI_61cm);
@@ -44,17 +45,18 @@ public class Gyorai61cmEntity extends ThrowableEntity implements IRendersAsItem 
 	}
 
 	@Override
-	protected void defineSynchedData() { }
+	protected void registerData() {
+	}
 
 	/* Flying render */
 	@Nonnull
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	public boolean ignoreExplosion() {
+	public boolean isImmuneToExplosions() {
 		return true;
 	}
 
@@ -63,17 +65,20 @@ public class Gyorai61cmEntity extends ThrowableEntity implements IRendersAsItem 
 		super.tick();
 
 		/** パーティクル **/
-		this.level.addParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+		double d0 = this.getPosX();
+		double d1 = this.getPosY();
+		double d2 = this.getPosZ();
+		this.world.addParticle(ParticleTypes.CLOUD, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 
 		/** Server state control **/
-		if (!level.isClientSide && tickCount >= 60) { dropAndKill(); }
+		if (!world.isRemote && ticksExisted >= 60) { dropAndKill(); }
 	}
 
 	private void dropAndKill() {
 		ItemStack stack = getItemStack();
 		stack.setCount(1);
-		ItemEntity item = new ItemEntity(level, getX(), getY(), getZ(), stack);
-		level.addFreshEntity(item);
+		ItemEntity item = new ItemEntity(world, getPosX(), getPosY(), getPosZ(), stack);
+		world.addEntity(item);
 		remove();
 	}
 
@@ -89,70 +94,73 @@ public class Gyorai61cmEntity extends ThrowableEntity implements IRendersAsItem 
 		return getItemStack();
 	}
 
-	/* 衝突処理 */
 	@Override
-	protected void onHit(RayTraceResult result) {
-		RayTraceResult.Type raytraceresult$type = result.getType();
-		if (raytraceresult$type == RayTraceResult.Type.ENTITY) {
-			onHitEntity((EntityRayTraceResult)result); }
+	protected void onImpact(@Nonnull RayTraceResult result) {
 
-		else if (raytraceresult$type == RayTraceResult.Type.BLOCK) {
-			onHitBlock((BlockRayTraceResult)result); }
-	}
+		switch (result.getType()) {
+		case BLOCK: {
+			BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+			Block block = world.getBlockState(blockResult.getPos()).getBlock();
 
-	/* Entity との衝突 */
-	@Override
-	protected void onHitEntity(EntityRayTraceResult result) {
+			if (block == Blocks.AIR || block == Blocks.WATER || block instanceof BushBlock || block instanceof LeavesBlock) {
+				return;
+			}
 
-		/** ダメージ値 艦これの 火力＋雷装または爆装 の数値を使う 97式は 5.0F 2で+1.0F 3で+2.0F **/
-		float i = 11.0F;
-		int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, stack);
+			else {
+				this.playSound(SoundEvents_CM.AM_IMPACT, 2.0F, 0.8F);
+				this.world.setEntityState(this, (byte)3);
+				this.remove();
+			}
+			break;
+		}
 
-		if (j == 0) { result.getEntity().hurt(DamageSource.thrown(this, this.getOwner()), i); }
-		if (j > 0) { result.getEntity().hurt(DamageSource.thrown(this, this.getOwner()), i + j * 0.5F); }
-		this.playSound(SoundEvents_CM.AM_IMPACT, 2.0F, 0.8F);
-		this.remove();
-	}
+		case ENTITY: {
+			EntityRayTraceResult entityResult = (EntityRayTraceResult) result;
+			float i = 11.0F;
+			int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, stack);
 
-	/* Block との衝突 */
-	@Override
-	protected void onHitBlock(BlockRayTraceResult result) {
-		BlockState blockstate = this.level.getBlockState(result.getBlockPos());
-		blockstate.onProjectileHit(this.level, blockstate, result, this);
-
-		Block block = blockstate.getBlock();
-		if (blockstate.getMaterial().isReplaceable() || block == Blocks.KELP) { return; }
-		
-		if (!blockstate.getMaterial().isReplaceable() && block != Blocks.KELP) { 
+			if (j == 0) { entityResult.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), i); }
+			if (j > 0) { entityResult.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), i + j * 0.5F); }
 			this.playSound(SoundEvents_CM.AM_IMPACT, 2.0F, 0.8F);
-			this.remove(); }
+			this.world.setEntityState(this, (byte)3);
+			this.remove();
+
+			break;
+		}
+		default:
+			break;
+		}
 	}
 
 	@Override
-	protected float getGravity() {
-		if (this.isInWater()) { return 0F; }
+	protected float getGravityVelocity() {
+		if (this.inWater) { return 0F; }
 		return 0.01F;
 	}
 
 	/* 水による速度への影響 */
 	@Override
-	public boolean isInWater() {
+	public boolean handleWaterMovement() {
+		return false;
+	}
+
+	public boolean isPushedByWater() {
 		return false;
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT compound) {
-		super.addAdditionalSaveData(compound);
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
 		if (!stack.isEmpty()) {
-			compound.put("fly_stack", stack.save(new CompoundNBT()));
+			compound.put("fly_stack", stack.write(new CompoundNBT()));
 		}
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT compound) {
-		super.readAdditionalSaveData(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		if (compound.contains("fly_stack")) {
-			stack = ItemStack.of(compound.getCompound("fly_stack"));
+			stack = ItemStack.read(compound.getCompound("fly_stack"));
 		}
 	}
 

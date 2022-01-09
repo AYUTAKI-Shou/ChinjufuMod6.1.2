@@ -9,7 +9,7 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,33 +31,33 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NabeGohan extends BaseNabe {
 
-	public NabeGohan(AbstractBlock.Properties properties) {
+	public NabeGohan(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 
 		if (item == Items_Teatime.CHAWAN) {
 			/** Collect with an Item **/
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
-			
-			if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.GOHAN)); }
-			else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.GOHAN))) {
-				playerIn.drop(new ItemStack(Items_Teatime.GOHAN), false); }
 
-			if (i != 4) { worldIn.setBlock(pos, state.setValue(BaseNabe.STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.GOHAN)); }
+			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.GOHAN))) {
+				playerIn.dropItem(new ItemStack(Items_Teatime.GOHAN), false); }
+
+			if (i != 4) { worldIn.setBlockState(pos, state.with(BaseNabe.STAGE_1_4, Integer.valueOf(i + 1))); }
 
 			if (i == 4) {
-				worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(COOK, state.getValue(COOK)).setValue(DOWN, state.getValue(DOWN))
-						.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(3)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(COOK, state.get(COOK)).with(DOWN, state.get(DOWN))
+						.with(Nabe_kara.STAGE_1_4, Integer.valueOf(3))); }
 		}
 
 		if (item == Items_Teatime.SARA) {
@@ -65,16 +65,16 @@ public class NabeGohan extends BaseNabe {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
 			
-			if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.RICE)); }
-			else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.RICE))) {
-				playerIn.drop(new ItemStack(Items_Teatime.RICE), false); }
+			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.RICE)); }
+			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.RICE))) {
+				playerIn.dropItem(new ItemStack(Items_Teatime.RICE), false); }
 
-			if (i != 4) { worldIn.setBlock(pos, state.setValue(BaseNabe.STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			if (i != 4) { worldIn.setBlockState(pos, state.with(BaseNabe.STAGE_1_4, Integer.valueOf(i + 1))); }
 
 			if (i == 4) {
-				worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(COOK, state.getValue(COOK)).setValue(DOWN, state.getValue(DOWN))
-						.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(3)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(COOK, state.get(COOK)).with(DOWN, state.get(DOWN))
+						.with(Nabe_kara.STAGE_1_4, Integer.valueOf(3))); }
 		}
 
 		if (item == Items_Teatime.DONBURI) {
@@ -83,16 +83,16 @@ public class NabeGohan extends BaseNabe {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundTake(worldIn, pos);
 				
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.DONBURI_MESHI)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.DONBURI_MESHI))) {
-					playerIn.drop(new ItemStack(Items_Teatime.DONBURI_MESHI), false); }
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DONBURI_MESHI)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DONBURI_MESHI))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.DONBURI_MESHI), false); }
 	
 				if (i == 3) {
-					worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-							.setValue(COOK, state.getValue(COOK)).setValue(DOWN, state.getValue(DOWN))
-							.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(3)), 3); }
+					worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState().with(H_FACING, state.get(H_FACING))
+							.with(COOK, state.get(COOK)).with(DOWN, state.get(DOWN))
+							.with(Nabe_kara.STAGE_1_4, Integer.valueOf(3))); }
 	
-				if (i != 3) { worldIn.setBlock(pos, state.setValue(BaseNabe.STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+				if (i != 3) { worldIn.setBlockState(pos, state.with(BaseNabe.STAGE_1_4, Integer.valueOf(i + 2))); }
 			}
 			
 			if (i == 4) { CMEvents.textNotHave(worldIn, pos, playerIn); }
@@ -104,14 +104,13 @@ public class NabeGohan extends BaseNabe {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundTake(worldIn, pos);
 				
-					if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.MUSHIGOME)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MUSHIGOME))) {
-					playerIn.drop(new ItemStack(Items_Teatime.MUSHIGOME), false); }
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MUSHIGOME)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MUSHIGOME))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.MUSHIGOME), false); }
 	
-				worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(COOK, state.getValue(COOK)).setValue(DOWN, state.getValue(DOWN))
-						.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(3)), 3);
-			}
+				worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(COOK, state.get(COOK)).with(DOWN, state.get(DOWN))
+						.with(Nabe_kara.STAGE_1_4, Integer.valueOf(3))); }
 			
 			if (i != 1) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -122,11 +121,12 @@ public class NabeGohan extends BaseNabe {
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
+
 	
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_4);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_4);
 		return (i == 1)? new ItemStack(Items_Teatime.NABEGOHAN) : new ItemStack(Items_Teatime.NABE_kara);
 	}
 
@@ -135,14 +135,14 @@ public class NabeGohan extends BaseNabe {
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(COOK, state.getValue(COOK))
-					.setValue(DOWN, state.getValue(DOWN))
-					.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(3))
-					.setValue(Nabe_kara.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
+			worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState()
+					.with(H_FACING, state.get(H_FACING))
+					.with(COOK, state.get(COOK))
+					.with(DOWN, state.get(DOWN))
+					.with(Nabe_kara.STAGE_1_4, Integer.valueOf(3))
+					.with(Nabe_kara.WATERLOGGED, state.get(WATERLOGGED)), 3);
 			this.dropRottenfood(worldIn, pos); }
 		
 		else { }
@@ -150,9 +150,9 @@ public class NabeGohan extends BaseNabe {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_food_nabegohan_1")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_food_nabegohan_1")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

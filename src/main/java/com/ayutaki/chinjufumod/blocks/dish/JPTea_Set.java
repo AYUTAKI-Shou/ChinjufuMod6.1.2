@@ -5,7 +5,6 @@ import java.util.Random;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,26 +25,26 @@ import net.minecraft.world.server.ServerWorld;
 public class JPTea_Set extends BaseFood_Stage4Water {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(2.0D, 0.0D, 4.5D, 14.0D, 3.0D, 11.5D);
-	protected static final VoxelShape AABB_WEST = Block.box(4.5D, 0.0D, 2.0D, 11.5D, 3.0D, 14.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(2.0D, 0.0D, 4.5D, 14.0D, 3.0D, 11.5D);
-	protected static final VoxelShape AABB_EAST = Block.box(4.5D, 0.0D, 2.0D, 11.5D, 3.0D, 14.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(2.0D, 0.0D, 4.5D, 14.0D, 3.0D, 11.5D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(4.5D, 0.0D, 2.0D, 11.5D, 3.0D, 14.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(2.0D, 0.0D, 4.5D, 14.0D, 3.0D, 11.5D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(4.5D, 0.0D, 2.0D, 11.5D, 3.0D, 14.0D);
 
-	protected static final VoxelShape DOWN_SOUTH = Block.box(2.0D, -8.0D, 4.5D, 14.0D, 0.1D, 11.5D);
-	protected static final VoxelShape DOWN_WEST = Block.box(4.5D, -8.0D, 2.0D, 11.5D, 0.1D, 14.0D);
-	protected static final VoxelShape DOWN_NORTH = Block.box(2.0D, -8.0D, 4.5D, 14.0D, 0.1D, 11.5D);
-	protected static final VoxelShape DOWN_EAST = Block.box(4.5D, -8.0D, 2.0D, 11.5D, 0.1D, 14.0D);
+	protected static final VoxelShape DOWN_SOUTH = Block.makeCuboidShape(2.0D, -8.0D, 4.5D, 14.0D, 0.1D, 11.5D);
+	protected static final VoxelShape DOWN_WEST = Block.makeCuboidShape(4.5D, -8.0D, 2.0D, 11.5D, 0.1D, 14.0D);
+	protected static final VoxelShape DOWN_NORTH = Block.makeCuboidShape(2.0D, -8.0D, 4.5D, 14.0D, 0.1D, 11.5D);
+	protected static final VoxelShape DOWN_EAST = Block.makeCuboidShape(4.5D, -8.0D, 2.0D, 11.5D, 0.1D, 14.0D);
 
-	public JPTea_Set(AbstractBlock.Properties properties) {
+	public JPTea_Set(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_1_4);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_1_4);
 
 		if (i != 4) {
 			/** Hand is empty. **/
@@ -54,18 +53,18 @@ public class JPTea_Set extends BaseFood_Stage4Water {
 	
 				if (i == 1) {
 					/** 採掘速度60秒 1秒＝20 **/
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0));
-					playerIn.addEffect(new EffectInstance(Effects.SATURATION, 4, 0)); }
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0));
+					playerIn.addPotionEffect(new EffectInstance(Effects.SATURATION, 4, 0)); }
 	
 				if (i == 2) {
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0));
-					playerIn.addEffect(new EffectInstance(Effects.SATURATION, 4, 0)); }
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0));
+					playerIn.addPotionEffect(new EffectInstance(Effects.SATURATION, 4, 0)); }
 	
 				if (i == 3) {
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0));
-					playerIn.addEffect(new EffectInstance(Effects.SATURATION, 4, 0)); }
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0));
+					playerIn.addPotionEffect(new EffectInstance(Effects.SATURATION, 4, 0)); }
 	
-				worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -80,17 +79,17 @@ public class JPTea_Set extends BaseFood_Stage4Water {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 
-		Direction direction = state.getValue(H_FACING);
-		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+		Direction direction = state.get(H_FACING);
+		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return flag? AABB_NORTH : DOWN_NORTH;
+		switch(direction) {
 		case SOUTH:
 			return flag? AABB_SOUTH : DOWN_SOUTH;
 		case WEST:
 			return flag? AABB_WEST : DOWN_WEST;
+		case NORTH:
+		default:
+			return flag? AABB_NORTH : DOWN_NORTH;
 		case EAST:
 			return flag? AABB_EAST : DOWN_EAST;
 		}
@@ -98,24 +97,25 @@ public class JPTea_Set extends BaseFood_Stage4Water {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_4);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_4);
 		return (i == 1)? new ItemStack(Items_Teatime.JPTEASET) : new ItemStack(Items_Teatime.SARA);
 	}
 
 	/* TickRandom */
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 		
 		if (i != 4) {
 			if (inWater(state, worldIn, pos)) {
-				worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 				CMEvents.soundSnowBreak(worldIn, pos);
-				worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(4)), 3);
+				worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(4)));
 				this.dropRottenfood(worldIn, pos); }
 			
-			else { } }
+			else { }
+		}
 		
 		if (i == 4) { }
 	}

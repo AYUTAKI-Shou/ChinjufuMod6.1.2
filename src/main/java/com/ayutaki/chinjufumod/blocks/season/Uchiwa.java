@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
@@ -31,28 +31,29 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Uchiwa extends BaseStage4_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
 
-	public Uchiwa(AbstractBlock.Properties properties) {
+	public Uchiwa(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+
+		/** Hand is empty. **/
 		if (itemstack.isEmpty()) {
-			if (playerIn.isCrouching()) {
+			if (playerIn.isSneaking()) {
 				CMEvents.soundWoolPlace(worldIn, pos);
-				worldIn.setBlock(pos, state.cycle(STAGE_1_4), 3);
+				worldIn.setBlockState(pos, state.cycle(STAGE_1_4));
 				return ActionResultType.SUCCESS; }
 			
-			if (!playerIn.isCrouching()) {
+			if (!playerIn.isSneaking()) {
 				CMEvents.textNotSneak(worldIn, pos, playerIn);
 				return ActionResultType.SUCCESS; }
 		}
@@ -60,19 +61,38 @@ public class Uchiwa extends BaseStage4_FaceWater {
 		return ActionResultType.PASS;
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
@@ -80,9 +100,9 @@ public class Uchiwa extends BaseStage4_FaceWater {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_uchiwa")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_uchiwa")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

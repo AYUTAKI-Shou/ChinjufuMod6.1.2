@@ -5,11 +5,11 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,28 +24,27 @@ import net.minecraft.world.World;
 
 public class SconeSet_kara extends BaseStage2_FaceWater {
 
-	/* Collision 1=空、2＝煮干し空*/
-	protected static final VoxelShape AABB_1 = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.5D, 13.0D);
-	protected static final VoxelShape AABB_2 = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D);
+	/* 当たり判定 1=空、2＝煮干し空*/
+	protected static final VoxelShape AABB_1 = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 10.5D, 13.0D);
+	protected static final VoxelShape AABB_2 = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D);
 
-	public SconeSet_kara(AbstractBlock.Properties properties) {
+	public SconeSet_kara(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_1_2);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_1_2);
 
 		if (i == 2) {
 			if (itemstack.isEmpty()) {
 				
 				CMEvents.soundTake_Pick(worldIn, pos);
-				playerIn.inventory.add(new ItemStack(Items.PAPER));
-				
-				worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 3); }
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items.PAPER));
+				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -58,12 +57,30 @@ public class SconeSet_kara extends BaseStage2_FaceWater {
 
 	/* Clone Item in Creative. : new ItemStack(Items.PAPER)*/
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return (this == Dish_Blocks.SCONESET_kara)? new ItemStack(Items_Teatime.SCONESET_kara) : new ItemStack(Items.PAPER);
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	public SoundType getSoundType(BlockState state) {
-		int wet = state.getValue(STAGE_1_2);
+		int wet = state.get(STAGE_1_2);
 		if (wet == 2) { return SoundType.SNOW; }
 		 return this.soundType;
 	}
@@ -71,7 +88,7 @@ public class SconeSet_kara extends BaseStage2_FaceWater {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return (state.getValue(STAGE_1_2) == 1)? AABB_1 : AABB_2;
+		return (state.get(STAGE_1_2) == 1)? AABB_1 : AABB_2;
 	}
 
 }

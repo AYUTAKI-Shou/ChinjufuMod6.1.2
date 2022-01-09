@@ -19,19 +19,10 @@ import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Namako;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_NamakoB;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Plaster;
 import com.ayutaki.chinjufumod.blocks.jpblock.Wall_Sama;
-import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
-import com.ayutaki.chinjufumod.blocks.wood.WoodStairs_CM;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,9 +30,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class JP_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block JPBLOCKDUMMY = register("block_dummy", new JpBlockDummy(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE).noOcclusion()));
+	public static Block JPBLOCKDUMMY = register("block_dummy", new JpBlockDummy(Block.Properties.create(Material.ROCK)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid()));
 
 	public static Block KAWARA_white = register("block_kawara_white", fullKawara());
 	public static Block KAWARA_orange = register("block_kawara_orange", fullKawara());
@@ -251,7 +244,7 @@ public class JP_Blocks {
 	public static Block NAMAKOB_SH_green = register("block_nsh_b_green", slabNamakoBtype());
 	public static Block NAMAKOB_SH_red = register("block_nsh_b_red", slabNamakoBtype());
 	public static Block NAMAKOB_SH_black = register("block_nsh_b_black", slabNamakoBtype());
-	
+
 	
 	public static Block DIRTWALL_WALL = register("block_dirtwall_wall", wallPlaster());
 	public static Block SHIKKUI_WALL_white = register("block_pwall_white", wallPlaster());
@@ -341,96 +334,75 @@ public class JP_Blocks {
 	public static Block KAWARA_WALL_black = register("block_kwall_black", wallKawara());
 	
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static boolean neverSlab(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return (state.getValue(WoodSlabWater_CM.TYPE) == SlabType.DOUBLE)? true : false;
-	}
-
-	private static Boolean neverEntitySlab(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodSlabWater_CM.TYPE) == SlabType.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityStairs(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodStairs_CM.HALF) == Half.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
 	private static Full_Kawara fullKawara() {
-		return new Full_Kawara(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Full_Kawara(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 
 	private static Stairs_Kawara stairsKawara() {
-		return new Stairs_Kawara(JPBLOCKDUMMY.defaultBlockState(), Block.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntityStairs).isSuffocating(JP_Blocks::never));
+		return new Stairs_Kawara(JPBLOCKDUMMY.getDefaultState(), Block.Properties.create(Material.ROCK)
+				.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Slab_Kawara slabKawara() {
-		return new Slab_Kawara(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntitySlab).isSuffocating(JP_Blocks::neverSlab));
+		return new Slab_Kawara(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Full_Plaster fullPlaster() {
-		return new Full_Plaster(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Full_Plaster(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 
 	private static Stairs_Plaster stairsPlaster() {
-		return new Stairs_Plaster(JPBLOCKDUMMY.defaultBlockState(), Block.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntityStairs).isSuffocating(JP_Blocks::never));
+		return new Stairs_Plaster(JPBLOCKDUMMY.getDefaultState(), Block.Properties.create(Material.ROCK)
+				.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Slab_Plaster slabPlaster() {
-		return new Slab_Plaster(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntitySlab).isSuffocating(JP_Blocks::neverSlab));
+		return new Slab_Plaster(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Full_Namako fullNamako() {
-		return new Full_Namako(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Full_Namako(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 
 	private static Stairs_Namako stairsNamako() {
-		return new Stairs_Namako(JPBLOCKDUMMY.defaultBlockState(), Block.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntityStairs).isSuffocating(JP_Blocks::never));
+		return new Stairs_Namako(JPBLOCKDUMMY.getDefaultState(), Block.Properties.create(Material.ROCK)
+				.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Slab_Namako slabNamako() {
-		return new Slab_Namako(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntitySlab).isSuffocating(JP_Blocks::neverSlab));
+		return new Slab_Namako(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Full_Namako_B fullNamakoBtype() {
-		return new Full_Namako_B(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Full_Namako_B(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 
 	private static Stairs_Namako_B stairsNamakoBtype() {
-		return new Stairs_Namako_B(JPBLOCKDUMMY.defaultBlockState(), Block.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntityStairs).isSuffocating(JP_Blocks::never));
+		return new Stairs_Namako_B(JPBLOCKDUMMY.getDefaultState(), Block.Properties.create(Material.ROCK).notSolid());
 	}
 
 	private static Slab_Namako_B slabNamakoBtype() {
-		return new Slab_Namako_B(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(JP_Blocks::neverEntitySlab).isSuffocating(JP_Blocks::neverSlab));
+		return new Slab_Namako_B(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Wall_Plaster wallPlaster() {
-		return new Wall_Plaster(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Wall_Plaster(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 	
 	private static Wall_Namako wallNamako() {
-		return new Wall_Namako(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Wall_Namako(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 	
 	private static Wall_NamakoB wallNamakoBtype() {
-		return new Wall_NamakoB(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Wall_NamakoB(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 	
 	private static Wall_Sama wallSama() {
-		return new Wall_Sama(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Wall_Sama(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 	
 	private static Wall_Kawara wallKawara() {
-		return new Wall_Kawara(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new Wall_Kawara(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 	
 	///* Register *///

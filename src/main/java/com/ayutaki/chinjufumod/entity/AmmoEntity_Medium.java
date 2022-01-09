@@ -1,6 +1,5 @@
 package com.ayutaki.chinjufumod.entity;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.Config_CM;
@@ -13,16 +12,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.ExplosionContext;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class AmmoEntity_Medium extends AbstractAmmo_Entity {
+public class AmmoEntity_Medium extends AmmoAbstract_Entity {
+
+	@SuppressWarnings("unused")
+	private SoundEvent hitSound = this.getHitEntitySound();
 
 	public AmmoEntity_Medium(EntityType<? extends AmmoEntity_Medium> type, World worldIn) {
 		super(type, worldIn);
@@ -37,75 +38,78 @@ public class AmmoEntity_Medium extends AbstractAmmo_Entity {
 	}
 
 	/* PotionEffect null */
-	public void setEffectsFromItemt(ItemStack stack) { }
+	public void setPotionEffect(ItemStack stack) { }
 
 	public static int getCustomColor(ItemStack stack) { return -1; }
 
-	@SuppressWarnings("unused")
-	private void updateColor() { }
-
-	public void addEffect(EffectInstance instance) { }
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-	}
-
-	/* ↓↓Hit result↓↓ */
-	/**小口径 音1.0-1.2 威力－, 中口径 音1.5-1.0 威力1.25, 大口径 音2.0-0.8 威力2.5**/
-	/* net.minecraft.entity.projectile.FireballEntity */
-	@Override
-	protected void onHitEntity(EntityRayTraceResult result) {
-		super.onHitEntity(result);
-		this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 0.0D, 0.5D, 0.0D);
-		
-		if (!this.level.isClientSide) {
-			/** Config value **/
-			boolean blast = Config_CM.getInstance().blastBlockBreak();
-			this.createExplosion(this, this.getX(), this.getY(), this.getZ(), 1.25F, false, (blast == true)? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
-			this.remove();
-		}
-	}
-
-	@Override
-	protected void onHitBlock(BlockRayTraceResult result) {
-		super.onHitBlock(result);
-		this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 0.0D, 0.5D, 0.0D);
-		
-		if (!this.level.isClientSide) {
-			/** Config value **/
-			boolean blast = Config_CM.getInstance().blastBlockBreak();
-			this.createExplosion(this, this.getX(), this.getY(), this.getZ(), 1.25F, false, (blast == true)? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
-			this.remove();
-		}
-	}
-
-	public Explosion_CM createExplosion(@Nullable Entity entityIn, double xIn, double yIn, double zIn, float value, boolean flag, Explosion.Mode mode) {
-		return this.explode(entityIn, (DamageSource)null, (ExplosionContext)null, xIn, yIn, zIn, value, flag, mode);
-	}
-
-	public Explosion_CM explode(@Nullable Entity entityIn, @Nullable DamageSource damage, @Nullable ExplosionContext context, double xIn, double yIn, double zIn, float value, boolean flag, Explosion.Mode mode) {
-		Explosion_CM explosion = new Explosion_CM(level, this, damage, context, xIn, yIn, zIn, value, flag, mode);
-		explosion.explode();
-		explosion.finalizeExplosion(true);
-		return explosion;
-	}
-
 	/* Pickup AIR */
 	@Override
-	protected ItemStack getPickupItem() {
+	protected ItemStack getArrowStack() {
 		return new ItemStack(Items.AIR);
 	}
 
+	/* ↓↓Hit result↓↓ */
 	@Override
-	public void handleEntityEvent(byte value) {
-		super.handleEntityEvent(value);
+	public void tick() {
+		super.tick();
+
+		/** inGround remove **/
+		if (this.inGround) {
+			this.remove();
+		}
+	}
+
+	@Override
+	protected void arrowHit(LivingEntity living) {
+		super.arrowHit(living);
+	}
+
+	@Override
+	protected void onHit(RayTraceResult raytraceResult) {
+		super.onHit(raytraceResult);
+
+		this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.5D, 0.0D);
+		
+		if (!this.world.isRemote) {
+		RayTraceResult.Type raytraceresult$type = raytraceResult.getType();
+		/** Config value **/
+		boolean blast = Config_CM.getInstance().blastBlockBreak();
+
+			if (raytraceresult$type == RayTraceResult.Type.ENTITY) {
+				this.onEntityHit((EntityRayTraceResult)raytraceResult);
+				/**小口径 音1.0-1.2 威力－, 中口径 音1.5-1.0 威力1.25, 大口径 音2.0-0.8 威力2.5**/
+				this.playSound(this.getHitEntitySound(), 2.0F, 0.8F / (this.rand.nextFloat() * 0.2F + 0.9F));
+				this.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 1.25F, false, (blast == true)? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+				this.remove();
+			}
+
+			else if (raytraceresult$type == RayTraceResult.Type.BLOCK) {
+				this.playSound(this.getHitEntitySound(), 2.0F, 0.8F / (this.rand.nextFloat() * 0.2F + 0.9F));
+				this.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 1.25F, false, (blast == true)? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+				this.remove();
+			}
+		}
+	}
+
+	public Explosion_CM createExplosion(@Nullable Entity entityIn, double xIn, double yIn, double zIn, float value, boolean flag, Explosion.Mode modeIn) {
+		return this.explode(entityIn, (DamageSource)null, xIn, yIn, zIn, value, flag, modeIn);
+	}
+
+	public Explosion_CM explode(@Nullable Entity entityIn, @Nullable DamageSource damage, double xIn, double yIn, double zIn, float value, boolean flag, Explosion.Mode modeIn) {
+		Explosion_CM explosion = new Explosion_CM(world, this, xIn, yIn, zIn, value, flag, modeIn);
+		explosion.doExplosionA();
+		explosion.doExplosionB(true);
+		return explosion;
+	}
+
+	@Override
+	protected void onEntityHit(EntityRayTraceResult entityRay) {
+		super.onEntityHit(entityRay);
 	}
 
 	/* Flying render */
-	@Nonnull
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

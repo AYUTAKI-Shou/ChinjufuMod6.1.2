@@ -1,17 +1,21 @@
 package com.ayutaki.chinjufumod.tileentity;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
+import com.ayutaki.chinjufumod.blocks.furnace.AbstractOvenBlock;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IRecipeHelperPopulator;
+import net.minecraft.inventory.IRecipeHolder;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,344 +25,328 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.tags.Tag;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
 
-public abstract class AbstractOvenTileEntity extends AbstractFurnaceTileEntity {
+public abstract class AbstractOvenTileEntity extends LockableTileEntity implements ISidedInventory, IRecipeHolder, IRecipeHelperPopulator, ITickableTileEntity {
 
-	private static final int[] SLOTS_FOR_UP = new int[]{0};
-	private static final int[] SLOTS_FOR_DOWN = new int[]{2, 1};
-	private static final int[] SLOTS_FOR_SIDES = new int[]{1};
+	private static final int[] SLOTS_UP = new int[]{0};
+	private static final int[] SLOTS_DOWN = new int[]{2, 1};
+	private static final int[] SLOTS_HORIZONTAL = new int[]{1};
 	protected NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
-	private int litTime;
-	private int litDuration;
-	private int cookingProgress;
-	private int cookingTotalTime;
-	protected final IIntArray dataAccess = new IIntArray() {
+	private int burnTime;
+	private int recipesUsed;
+	private int cookTime;
+	private int cookTimeTotal;
+
+	protected final IIntArray furnaceData = new IIntArray() {
 		public int get(int index) {
-			switch (index) {
+			switch(index) {
 			case 0:
-				return AbstractOvenTileEntity.this.litTime;
+				return AbstractOvenTileEntity.this.burnTime;
 			case 1:
-				return AbstractOvenTileEntity.this.litDuration;
+				return AbstractOvenTileEntity.this.recipesUsed;
 			case 2:
-				return AbstractOvenTileEntity.this.cookingProgress;
+				return AbstractOvenTileEntity.this.cookTime;
 			case 3:
-				return AbstractOvenTileEntity.this.cookingTotalTime;
+				return AbstractOvenTileEntity.this.cookTimeTotal;
 			default:
 				return 0;
 			}
+	}
+
+	public void set(int index, int value) {
+		switch(index) {
+		case 0:
+			AbstractOvenTileEntity.this.burnTime = value;
+			break;
+		case 1:
+			AbstractOvenTileEntity.this.recipesUsed = value;
+			break;
+		case 2:
+			AbstractOvenTileEntity.this.cookTime = value;
+			break;
+		case 3:
+			AbstractOvenTileEntity.this.cookTimeTotal = value;
 		}
+	}
 
-		public void set(int index, int value) {
-			switch (index) {
-			case 0:
-				AbstractOvenTileEntity.this.litTime = value;
-				break;
-			case 1:
-				AbstractOvenTileEntity.this.litDuration = value;
-				break;
-			case 2:
-				AbstractOvenTileEntity.this.cookingProgress = value;
-				break;
-			case 3:
-				AbstractOvenTileEntity.this.cookingTotalTime = value;
-			}
-
-		}
-
-		public int getCount() {
-			return 4;
+	public int size() {
+		return 4;
 		}
 	};
 
-	private final Object2IntOpenHashMap<ResourceLocation> recipesUsed = new Object2IntOpenHashMap<>();
+	private final Map<ResourceLocation, Integer> map = Maps.newHashMap();
 	protected final IRecipeType<? extends AbstractCookingRecipe> recipeType;
 
 	protected AbstractOvenTileEntity(TileEntityType<?> tileTypeIn, IRecipeType<? extends AbstractCookingRecipe> recipeTypeIn) {
-		super(tileTypeIn, recipeTypeIn);
+		super(tileTypeIn);
 		this.recipeType = recipeTypeIn;
 	}
 
 	@Deprecated //Forge - get burn times by calling ForgeHooks#getBurnTime(ItemStack)
-	public static Map<Item, Integer> getFuel() {
+	public static Map<Item, Integer> getBurnTimes() {
 		Map<Item, Integer> map = Maps.newLinkedHashMap();
-		add(map, Items.LAVA_BUCKET, 20000);
-		add(map, Blocks.COAL_BLOCK, 16000);
-		add(map, Items.BLAZE_ROD, 2400);
-		add(map, Items.COAL, 1600);
-		add(map, Items.CHARCOAL, 1600);
-		add(map, ItemTags.LOGS, 300);
-		add(map, ItemTags.PLANKS, 300);
-		add(map, ItemTags.WOODEN_STAIRS, 300);
-		add(map, ItemTags.WOODEN_SLABS, 150);
-		add(map, ItemTags.WOODEN_TRAPDOORS, 300);
-		add(map, ItemTags.WOODEN_PRESSURE_PLATES, 300);
-		add(map, Blocks.OAK_FENCE, 300);
-		add(map, Blocks.BIRCH_FENCE, 300);
-		add(map, Blocks.SPRUCE_FENCE, 300);
-		add(map, Blocks.JUNGLE_FENCE, 300);
-		add(map, Blocks.DARK_OAK_FENCE, 300);
-		add(map, Blocks.ACACIA_FENCE, 300);
-		add(map, Blocks.OAK_FENCE_GATE, 300);
-		add(map, Blocks.BIRCH_FENCE_GATE, 300);
-		add(map, Blocks.SPRUCE_FENCE_GATE, 300);
-		add(map, Blocks.JUNGLE_FENCE_GATE, 300);
-		add(map, Blocks.DARK_OAK_FENCE_GATE, 300);
-		add(map, Blocks.ACACIA_FENCE_GATE, 300);
-		add(map, Blocks.NOTE_BLOCK, 300);
-		add(map, Blocks.BOOKSHELF, 300);
-		add(map, Blocks.LECTERN, 300);
-		add(map, Blocks.JUKEBOX, 300);
-		add(map, Blocks.CHEST, 300);
-		add(map, Blocks.TRAPPED_CHEST, 300);
-		add(map, Blocks.CRAFTING_TABLE, 300);
-		add(map, Blocks.DAYLIGHT_DETECTOR, 300);
-		add(map, ItemTags.BANNERS, 300);
-		add(map, Items.BOW, 300);
-		add(map, Items.FISHING_ROD, 300);
-		add(map, Blocks.LADDER, 300);
-		add(map, ItemTags.SIGNS, 200);
-		add(map, Items.WOODEN_SHOVEL, 200);
-		add(map, Items.WOODEN_SWORD, 200);
-		add(map, Items.WOODEN_HOE, 200);
-		add(map, Items.WOODEN_AXE, 200);
-		add(map, Items.WOODEN_PICKAXE, 200);
-		add(map, ItemTags.WOODEN_DOORS, 200);
-		add(map, ItemTags.BOATS, 1200);
-		add(map, ItemTags.WOOL, 100);
-		add(map, ItemTags.WOODEN_BUTTONS, 100);
-		add(map, Items.STICK, 100);
-		add(map, ItemTags.SAPLINGS, 100);
-		add(map, Items.BOWL, 100);
-		add(map, ItemTags.CARPETS, 67);
-		add(map, Blocks.DRIED_KELP_BLOCK, 4001);
-		add(map, Items.CROSSBOW, 300);
-		add(map, Blocks.BAMBOO, 50);
-		add(map, Blocks.DEAD_BUSH, 100);
-		add(map, Blocks.SCAFFOLDING, 400);
-		add(map, Blocks.LOOM, 300);
-		add(map, Blocks.BARREL, 300);
-		add(map, Blocks.CARTOGRAPHY_TABLE, 300);
-		add(map, Blocks.FLETCHING_TABLE, 300);
-		add(map, Blocks.SMITHING_TABLE, 300);
-		add(map, Blocks.COMPOSTER, 300);
+		addItemBurnTime(map, Items.LAVA_BUCKET, 20000);
+		addItemBurnTime(map, Blocks.COAL_BLOCK, 16000);
+		addItemBurnTime(map, Items.BLAZE_ROD, 2400);
+		addItemBurnTime(map, Items.COAL, 1600);
+		addItemBurnTime(map, Items.CHARCOAL, 1600);
+		addItemTagBurnTime(map, ItemTags.LOGS, 300);
+		addItemTagBurnTime(map, ItemTags.PLANKS, 300);
+		addItemTagBurnTime(map, ItemTags.WOODEN_STAIRS, 300);
+		addItemTagBurnTime(map, ItemTags.WOODEN_SLABS, 150);
+		addItemTagBurnTime(map, ItemTags.WOODEN_TRAPDOORS, 300);
+		addItemTagBurnTime(map, ItemTags.WOODEN_PRESSURE_PLATES, 300);
+		addItemTagBurnTime(map, net.minecraftforge.common.Tags.Items.FENCES_WOODEN, 300);
+		addItemTagBurnTime(map, net.minecraftforge.common.Tags.Items.FENCE_GATES_WOODEN, 300);
+		addItemBurnTime(map, Blocks.NOTE_BLOCK, 300);
+		addItemBurnTime(map, Blocks.BOOKSHELF, 300);
+		addItemBurnTime(map, Blocks.LECTERN, 300);
+		addItemBurnTime(map, Blocks.JUKEBOX, 300);
+		addItemBurnTime(map, Blocks.CHEST, 300);
+		addItemBurnTime(map, Blocks.TRAPPED_CHEST, 300);
+		addItemBurnTime(map, Blocks.CRAFTING_TABLE, 300);
+		addItemBurnTime(map, Blocks.DAYLIGHT_DETECTOR, 300);
+		addItemTagBurnTime(map, ItemTags.BANNERS, 300);
+		addItemBurnTime(map, Items.BOW, 300);
+		addItemBurnTime(map, Items.FISHING_ROD, 300);
+		addItemBurnTime(map, Blocks.LADDER, 300);
+		addItemTagBurnTime(map, ItemTags.SIGNS, 200);
+		addItemBurnTime(map, Items.WOODEN_SHOVEL, 200);
+		addItemBurnTime(map, Items.WOODEN_SWORD, 200);
+		addItemBurnTime(map, Items.WOODEN_HOE, 200);
+		addItemBurnTime(map, Items.WOODEN_AXE, 200);
+		addItemBurnTime(map, Items.WOODEN_PICKAXE, 200);
+		addItemTagBurnTime(map, ItemTags.WOODEN_DOORS, 200);
+		addItemTagBurnTime(map, ItemTags.BOATS, 1200);
+		addItemTagBurnTime(map, ItemTags.WOOL, 100);
+		addItemTagBurnTime(map, ItemTags.WOODEN_BUTTONS, 100);
+		addItemBurnTime(map, Items.STICK, 100);
+		addItemTagBurnTime(map, ItemTags.SAPLINGS, 100);
+		addItemBurnTime(map, Items.BOWL, 100);
+		addItemTagBurnTime(map, ItemTags.CARPETS, 67);
+		addItemBurnTime(map, Blocks.DRIED_KELP_BLOCK, 4001);
+		addItemBurnTime(map, Items.CROSSBOW, 300);
+		addItemBurnTime(map, Blocks.BAMBOO, 50);
+		addItemBurnTime(map, Blocks.DEAD_BUSH, 100);
+		addItemBurnTime(map, Blocks.SCAFFOLDING, 400);
+		addItemBurnTime(map, Blocks.LOOM, 300);
+		addItemBurnTime(map, Blocks.BARREL, 300);
+		addItemBurnTime(map, Blocks.CARTOGRAPHY_TABLE, 300);
+		addItemBurnTime(map, Blocks.FLETCHING_TABLE, 300);
+		addItemBurnTime(map, Blocks.SMITHING_TABLE, 300);
+		addItemBurnTime(map, Blocks.COMPOSTER, 300);
 		return map;
 	}
 
-	private static boolean isNeverAFurnaceFuel(Item item) {
-		return ItemTags.NON_FLAMMABLE_WOOD.contains(item);
-	}
-
-	private static void add(Map<Item, Integer> map, ITag<Item> itemProvider, int burnTimeIn) {
-		for(Item item : itemProvider.getValues()) {
-			if (!isNeverAFurnaceFuel(item)) {
-				map.put(item, burnTimeIn);
-			}
-		}
-
-	}
-
-	private static void add(Map<Item, Integer> map, IItemProvider itemProvider, int burnTimeIn) {
-		Item item = itemProvider.asItem();
-		if (isNeverAFurnaceFuel(item)) {
-			if (SharedConstants.IS_RUNNING_IN_IDE) {
-				throw (IllegalStateException)Util.pauseInIde(new IllegalStateException("A developer tried to explicitly make fire resistant item " + item.getName((ItemStack)null).getString() + " a furnace fuel. That will not work!"));
-			}
-		} else {
+	private static void addItemTagBurnTime(Map<Item, Integer> map, Tag<Item> itemTag, int burnTimeIn) {
+		for(Item item : itemTag.getAllElements()) {
 			map.put(item, burnTimeIn);
 		}
 	}
 
-	private boolean isLit() {
-		return this.litTime > 0;
+	private static void addItemBurnTime(Map<Item, Integer> map, IItemProvider itemProvider, int burnTimeIn) {
+		map.put(itemProvider.asItem(), burnTimeIn);
 	}
 
-	@Override
-	public void load(BlockState state, CompoundNBT compound) { //TODO: MARK
-		super.load(state, compound);
-		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-		ItemStackHelper.loadAllItems(compound, this.items);
-		this.litTime = compound.getInt("BurnTime");
-		this.cookingProgress = compound.getInt("CookTime");
-		this.cookingTotalTime = compound.getInt("CookTimeTotal");
-		this.litDuration = this.getBurnDuration(this.items.get(1));
-		CompoundNBT compoundnbt = compound.getCompound("RecipesUsed");
+	private boolean isBurning() {
+		return this.burnTime > 0;
+	}
 
-		for(String s : compoundnbt.getAllKeys()) {
-			this.recipesUsed.put(new ResourceLocation(s), compoundnbt.getInt(s));
+	public void read(CompoundNBT compound) {
+		super.read(compound);
+		this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+		ItemStackHelper.loadAllItems(compound, this.items);
+		this.burnTime = compound.getInt("BurnTime");
+		this.cookTime = compound.getInt("CookTime");
+		this.cookTimeTotal = compound.getInt("CookTimeTotal");
+		this.recipesUsed = this.getBurnTime(this.items.get(1));
+		int i = compound.getShort("RecipesUsedSize");
+
+		for(int j = 0; j < i; ++j) {
+			ResourceLocation resourcelocation = new ResourceLocation(compound.getString("RecipeLocation" + j));
+			int k = compound.getInt("RecipeAmount" + j);
+			this.map.put(resourcelocation, k);
 		}
 	}
 
-	@Override
-	public CompoundNBT save(CompoundNBT compound) {
-		super.save(compound);
-		compound.putInt("BurnTime", this.litTime);
-		compound.putInt("CookTime", this.cookingProgress);
-		compound.putInt("CookTimeTotal", this.cookingTotalTime);
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
+		compound.putInt("BurnTime", this.burnTime);
+		compound.putInt("CookTime", this.cookTime);
+		compound.putInt("CookTimeTotal", this.cookTimeTotal);
 		ItemStackHelper.saveAllItems(compound, this.items);
-		CompoundNBT compoundnbt = new CompoundNBT();
-		this.recipesUsed.forEach((p_235643_1_, p_235643_2_) -> {
-			compoundnbt.putInt(p_235643_1_.toString(), p_235643_2_);
-		});
-		compound.put("RecipesUsed", compoundnbt);
+		compound.putShort("RecipesUsedSize", (short)this.map.size());
+		int i = 0;
+
+		for(Entry<ResourceLocation, Integer> entry : this.map.entrySet()) {
+			compound.putString("RecipeLocation" + i, entry.getKey().toString());
+			compound.putInt("RecipeAmount" + i, entry.getValue());
+			++i;
+		}
 		return compound;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void tick() {
-		boolean flag = this.isLit();
+		boolean flag = this.isBurning();
 		boolean flag1 = false;
-		if (this.isLit()) {
-			--this.litTime;
+		if (this.isBurning()) {
+			--this.burnTime;
 		}
 
-		if (!this.level.isClientSide) {
+		if (!this.world.isRemote) {
 			ItemStack itemstack = this.items.get(1);
-			if (this.isLit() || !itemstack.isEmpty() && !this.items.get(0).isEmpty()) {
-				IRecipe<?> irecipe = this.level.getRecipeManager().getRecipeFor((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.level).orElse(null);
-				if (!this.isLit() && this.canBurn(irecipe)) {
-					this.litTime = this.getBurnDuration(itemstack);
-					this.litDuration = this.litTime;
-					if (this.isLit()) {
+
+			if (this.isBurning() || !itemstack.isEmpty() && !this.items.get(0).isEmpty()) {
+				IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).orElse(null);
+
+				if (!this.isBurning() && this.canSmelt(irecipe)) {
+					this.burnTime = this.getBurnTime(itemstack);
+					this.recipesUsed = this.burnTime;
+
+					if (this.isBurning()) {
 						flag1 = true;
 						if (itemstack.hasContainerItem())
-							 this.items.set(1, itemstack.getContainerItem());
+							this.items.set(1, itemstack.getContainerItem());
 						else
-						if (!itemstack.isEmpty()) {
-							//Item item = itemstack.getItem();
-							itemstack.shrink(1);
-							if (itemstack.isEmpty()) {
-								this.items.set(1, itemstack.getContainerItem());
+							if (!itemstack.isEmpty()) {
+								//Item item = itemstack.getItem();
+								itemstack.shrink(1);
+								if (itemstack.isEmpty()) {
+									this.items.set(1, itemstack.getContainerItem());
 							}
 						}
 					}
 				}
 
-				if (this.isLit() && this.canBurn(irecipe)) {
-					++this.cookingProgress;
-					if (this.cookingProgress == this.cookingTotalTime) {
-						this.cookingProgress = 0;
-						this.cookingTotalTime = this.getTotalCookTime();
-						this.burn(irecipe);
+				if (this.isBurning() && this.canSmelt(irecipe)) {
+					++this.cookTime;
+					if (this.cookTime == this.cookTimeTotal) {
+						this.cookTime = 0;
+						this.cookTimeTotal = this.getCookTime();
+						this.smelt(irecipe);
 						flag1 = true;
 					}
-				} else {
-					this.cookingProgress = 0;
 				}
-			} else if (!this.isLit() && this.cookingProgress > 0) {
-				this.cookingProgress = MathHelper.clamp(this.cookingProgress - 2, 0, this.cookingTotalTime);
+				else {
+					this.cookTime = 0;
+				}
+			}
+			else if (!this.isBurning() && this.cookTime > 0) {
+				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
 			}
 
-			if (flag != this.isLit()) {
+			if (flag != this.isBurning()) {
 				flag1 = true;
-				this.level.setBlock(this.worldPosition, this.level.getBlockState(this.worldPosition).setValue(AbstractFurnaceBlock.LIT, Boolean.valueOf(this.isLit())), 3);
+				this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(AbstractOvenBlock.LIT, Boolean.valueOf(this.isBurning())), 3);
 			}
 		}
 
 		if (flag1) {
-			this.setChanged();
+			this.markDirty();
 		}
-
 	}
 
-	@Override
-	protected boolean canBurn(@Nullable IRecipe<?> recipe) {
-		if (!this.items.get(0).isEmpty() && recipe != null) {
-			ItemStack itemstack = recipe.getResultItem();
+	protected boolean canSmelt(@Nullable IRecipe<?> recipeIn) {
+		if (!this.items.get(0).isEmpty() && recipeIn != null) {
+			ItemStack itemstack = recipeIn.getRecipeOutput();
+
 			if (itemstack.isEmpty()) {
 				return false;
-			} else {
+			}
+			else {
 				ItemStack itemstack1 = this.items.get(2);
 				if (itemstack1.isEmpty()) {
 					return true;
-				} else if (!itemstack1.sameItem(itemstack)) {
+				}
+				else if (!itemstack1.isItemEqual(itemstack)) {
 					return false;
-				} else if (itemstack1.getCount() + itemstack.getCount() <= this.getMaxStackSize() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
+				}
+				else if (itemstack1.getCount() + itemstack.getCount() <= this.getInventoryStackLimit() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
 					return true;
-				} else {
+				}
+				else {
 					return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
 				}
 			}
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
 
-	private void burn(@Nullable IRecipe<?> recipe) {
-		if (recipe != null && this.canBurn(recipe)) {
+	private void smelt(@Nullable IRecipe<?> recipe) {
+		if (recipe != null && this.canSmelt(recipe)) {
 			ItemStack itemstack = this.items.get(0);
-			ItemStack itemstack1 = recipe.getResultItem();
+			ItemStack itemstack1 = recipe.getRecipeOutput();
 			ItemStack itemstack2 = this.items.get(2);
+
 			if (itemstack2.isEmpty()) {
 				this.items.set(2, itemstack1.copy());
-			} else if (itemstack2.getItem() == itemstack1.getItem()) {
+			}
+			else if (itemstack2.getItem() == itemstack1.getItem()) {
 				itemstack2.grow(itemstack1.getCount());
 			}
 
-			if (!this.level.isClientSide) {
+			if (!this.world.isRemote) {
 				this.setRecipeUsed(recipe);
 			}
 
 			if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.BUCKET) {
 				this.items.set(1, new ItemStack(Items.WATER_BUCKET));
 			}
-
-			itemstack.shrink(1);
+		itemstack.shrink(1);
 		}
 	}
 
 	/* 燃料の燃焼時間 KitOvenは3倍にする */
-	@Override
-	protected int getBurnDuration(ItemStack stack) {
-		if (stack.isEmpty()) {
+	protected int getBurnTime(ItemStack fuel) {
+		if (fuel.isEmpty()) {
 			return 0;
-		} else {
-			//Item item = stack.getItem();
-			return net.minecraftforge.common.ForgeHooks.getBurnTime(stack, this.recipeType) * 3;
+		}
+		else {
+			//Item item = fuel.getItem();
+			return net.minecraftforge.common.ForgeHooks.getBurnTime(fuel) * 3;
 		}
 	}
 
 	/* 間接的な熱を使うため、200 → 250 */
 	@SuppressWarnings("unchecked")
-	protected int getTotalCookTime() {
-		return this.level.getRecipeManager().getRecipeFor((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.level)
-				.map(AbstractCookingRecipe::getCookingTime).orElse(200) /4 * 5;
+	protected int getCookTime() {
+		return this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world)
+				.map(AbstractCookingRecipe::getCookTime).orElse(200) /4 * 5;
 	}
 
 	public static boolean isFuel(ItemStack stack) {
-		return net.minecraftforge.common.ForgeHooks.getBurnTime(stack, null) > 0;
+		return net.minecraftforge.common.ForgeHooks.getBurnTime(stack) > 0;
 	}
 
-	@Override
-	public int[] getSlotsForFace(Direction direction) {
-		if (direction == Direction.DOWN) {
-			return SLOTS_FOR_DOWN;
-		} else {
-			return direction == Direction.UP ? SLOTS_FOR_UP : SLOTS_FOR_SIDES;
+	public int[] getSlotsForFace(Direction side) {
+		if (side == Direction.DOWN) {
+			return SLOTS_DOWN;
+		}
+		else {
+			return side == Direction.UP ? SLOTS_UP : SLOTS_HORIZONTAL;
 		}
 	}
 
-	@Override
-	public boolean canPlaceItemThroughFace(int count, ItemStack stack, @Nullable Direction direction) {
-		return this.canPlaceItem(count, stack);
+	public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+		return this.isItemValidForSlot(index, itemStackIn);
 	}
 
-	@Override
-	public boolean canTakeItemThroughFace(int count, ItemStack stack, Direction direction) {
-		if (direction == Direction.DOWN && count == 1) {
+	public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+		if (direction == Direction.DOWN && index == 1) {
 			Item item = stack.getItem();
 			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
 				return false;
@@ -367,12 +355,10 @@ public abstract class AbstractOvenTileEntity extends AbstractFurnaceTileEntity {
 		return true;
 	}
 
-	@Override
-	public int getContainerSize() {
+	public int getSizeInventory() {
 		return this.items.size();
 	}
 
-	@Override
 	public boolean isEmpty() {
 		for(ItemStack itemstack : this.items) {
 			if (!itemstack.isEmpty()) {
@@ -382,69 +368,64 @@ public abstract class AbstractOvenTileEntity extends AbstractFurnaceTileEntity {
 		return true;
 	}
 
-	@Override
-	public ItemStack getItem(int count) {
-		return this.items.get(count);
+	public ItemStack getStackInSlot(int index) {
+		return this.items.get(index);
 	}
 
-	@Override
-	public ItemStack removeItem(int count1, int count2) {
-		return ItemStackHelper.removeItem(this.items, count1, count2);
+	public ItemStack decrStackSize(int index, int count) {
+		return ItemStackHelper.getAndSplit(this.items, index, count);
 	}
 
-	@Override
-	public ItemStack removeItemNoUpdate(int count) {
-		return ItemStackHelper.takeItem(this.items, count);
+	public ItemStack removeStackFromSlot(int index) {
+		return ItemStackHelper.getAndRemove(this.items, index);
 	}
 
-	@Override
-	public void setItem(int count, ItemStack stack) {
-		ItemStack itemstack = this.items.get(count);
-		boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.tagMatches(stack, itemstack);
-		this.items.set(count, stack);
-		if (stack.getCount() > this.getMaxStackSize()) {
-			stack.setCount(this.getMaxStackSize());
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		ItemStack itemstack = this.items.get(index);
+		boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
+		this.items.set(index, stack);
+		if (stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
 		}
 
-		if (count == 0 && !flag) {
-			this.cookingTotalTime = this.getTotalCookTime();
-			this.cookingProgress = 0;
-			this.setChanged();
+		if (index == 0 && !flag) {
+			this.cookTimeTotal = this.getCookTime();
+			this.cookTime = 0;
+			this.markDirty();
 		}
-
 	}
 
-	@Override
-	public boolean stillValid(PlayerEntity playerIn) {
-		if (this.level.getBlockEntity(this.worldPosition) != this) {
+	public boolean isUsableByPlayer(PlayerEntity playerIn) {
+		if (this.world.getTileEntity(this.pos) != this) {
 			return false;
-		} else {
-			return playerIn.distanceToSqr((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D) <= 64.0D;
+		}
+		else {
+			return playerIn.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 		}
 	}
 
-	@Override
-	public boolean canPlaceItem(int count, ItemStack stack) {
-		if (count == 2) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		if (index == 2) {
 			return false;
-		} else if (count != 1) {
+		}
+		else if (index != 1) {
 			return true;
-		} else {
+		}
+		else {
 			ItemStack itemstack = this.items.get(1);
 			return isFuel(stack) || stack.getItem() == Items.BUCKET && itemstack.getItem() != Items.BUCKET;
 		}
 	}
 
-	@Override
-	public void clearContent() {
+	public void clear() {
 		this.items.clear();
 	}
 
-	@Override
 	public void setRecipeUsed(@Nullable IRecipe<?> recipe) {
 		if (recipe != null) {
-			ResourceLocation resourcelocation = recipe.getId();
-			this.recipesUsed.addTo(resourcelocation, 1);
+			this.map.compute(recipe.getId(), (p_214004_0_, p_214004_1_) -> {
+				return 1 + (p_214004_1_ == null ? 0 : p_214004_1_);
+			});
 		}
 	}
 
@@ -453,43 +434,41 @@ public abstract class AbstractOvenTileEntity extends AbstractFurnaceTileEntity {
 		return null;
 	}
 
-	/*public void awardUsedRecipes(PlayerEntity playerIn) {
-	}
+	public void onCrafting(PlayerEntity playerIn) { }
 
-	public void awardUsedRecipesAndPopExperience(PlayerEntity playerIn) {
-		List<IRecipe<?>> list = this.getRecipesToAwardAndPopExperience(playerIn.level, playerIn.position());
-		player.awardRecipes(list);
-		this.recipesUsed.clear();
-	}
-
-	public List<IRecipe<?>> getRecipesToAwardAndPopExperience(World worldIn, Vector3d v3d) {
+	public void func_213995_d(PlayerEntity playerIn) {
 		List<IRecipe<?>> list = Lists.newArrayList();
 
-		for(Entry<ResourceLocation> entry : this.recipesUsed.object2IntEntrySet()) {
-			worldIn.getRecipeManager().byKey(entry.getKey()).ifPresent((p_235642_4_) -> {
-				list.add(p_235642_4_);
-				createExperience(worldIn, v3d, entry.getIntValue(), ((AbstractCookingRecipe)p_235642_4_).getExperience());
+		for(Entry<ResourceLocation, Integer> entry : this.map.entrySet()) {
+			playerIn.world.getRecipeManager().getRecipe(entry.getKey()).ifPresent((p_213993_3_) -> {
+				list.add(p_213993_3_);
+				spawnExpOrbs(playerIn, entry.getValue(), ((AbstractCookingRecipe)p_213993_3_).getExperience());
 			});
 		}
-		return list;
-	}*/
+		playerIn.unlockRecipes(list);
+			this.map.clear();
+	}
 
-	@SuppressWarnings("unused")
-	private static void createExperience(World worldIn, Vector3d v3d, int count, float count_f) {
-		int i = MathHelper.floor((float)count * count_f);
-		float f = MathHelper.frac((float)count * count_f);
-		if (f != 0.0F && Math.random() < (double)f) {
-			++i;
+	private static void spawnExpOrbs(PlayerEntity playerIn, int t, float experience) {
+		if (experience == 0.0F) {
+			t = 0;
 		}
 
-		while(i > 0) {
-			int j = ExperienceOrbEntity.getExperienceValue(i);
-			i -= j;
-			worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, v3d.x, v3d.y, v3d.z, j));
+		else if (experience < 1.0F) {
+			int i = MathHelper.floor((float)t * experience);
+			if (i < MathHelper.ceil((float)t * experience) && Math.random() < (double)((float)t * experience - (float)i)) {
+				++i;
+			}
+			t = i;
+		}
+
+		while(t > 0) {
+			int j = ExperienceOrbEntity.getXPSplit(t);
+			t -= j;
+			playerIn.world.addEntity(new ExperienceOrbEntity(playerIn.world, playerIn.getPosX(), playerIn.getPosY() + 0.5D, playerIn.getPosZ() + 0.5D, j));
 		}
 	}
 
-	@Override
 	public void fillStackedContents(RecipeItemHelper helper) {
 		for(ItemStack itemstack : this.items) {
 			helper.accountStack(itemstack);
@@ -497,11 +476,12 @@ public abstract class AbstractOvenTileEntity extends AbstractFurnaceTileEntity {
 	}
 
 	net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
-			 net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
+			net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
 
 	@Override
 	public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+
+		if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			if (facing == Direction.UP)
 				return handlers[0].cast();
 			else if (facing == Direction.DOWN)
@@ -510,13 +490,13 @@ public abstract class AbstractOvenTileEntity extends AbstractFurnaceTileEntity {
 				return handlers[2].cast();
 		}
 		return super.getCapability(capability, facing);
-	}
+		}
 
-	@Override
-	protected void invalidateCaps() {
-		super.invalidateCaps();
-		for (int x = 0; x < handlers.length; x++)
-		 handlers[x].invalidate();
+		@Override
+		public void remove() {
+			super.remove();
+			for (int x = 0; x < handlers.length; x++)
+				handlers[x].invalidate();
 	}
 
 }

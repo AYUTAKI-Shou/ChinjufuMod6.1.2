@@ -10,7 +10,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,18 +19,16 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.block.FireBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SnowBlock;
-import net.minecraft.block.SoulFireBlock;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -43,6 +40,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -50,28 +48,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /* FallingBlock. When this falls, the only drop is this ItemBlock. */
 public class SnowCore extends FallingBlock implements IWaterLoggable {
-	
+
 	public static final IntegerProperty STAGE_0_9 = IntegerProperty.create("stage", 0, 9);
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape AABB_01 = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 5.0D, 10.0D);
-	protected static final VoxelShape AABB_23 = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D);
-	protected static final VoxelShape AABB_45 = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 9.0D, 11.0D);
-	protected static final VoxelShape AABB_67 = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 11.0D, 12.0D);
-	protected static final VoxelShape AABB_89 = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 13.0D, 13.0D);
-	protected static final VoxelShape COLL_89 = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 16.0D, 13.0D);
+	protected static final VoxelShape AABB_01 = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 5.0D, 10.0D);
+	protected static final VoxelShape AABB_23 = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D);
+	protected static final VoxelShape AABB_45 = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 9.0D, 11.0D);
+	protected static final VoxelShape AABB_67 = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 11.0D, 12.0D);
+	protected static final VoxelShape AABB_89 = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 13.0D, 13.0D);
+	protected static final VoxelShape COLL_89 = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 16.0D, 13.0D);
 	
 	private final int dustColor;
 	
-	public SnowCore(int value, AbstractBlock.Properties properties) {
+	public SnowCore(int value, Block.Properties properties) {
 		super(properties);
-		
 		this.dustColor = value;
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState()
-				.setValue(STAGE_0_9, Integer.valueOf(0))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState()
+				.with(STAGE_0_9, Integer.valueOf(0))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -80,11 +77,12 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 	}
 	
 	/* RightClick Action */
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
-		
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_0_9);
-		Direction facing = playerIn.getDirection();
+	@Override
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_0_9);
+		Direction facing = playerIn.getHorizontalFacing();
 		
 		BlockState northstate = worldIn.getBlockState(pos.north());
 		BlockState southstate = worldIn.getBlockState(pos.south());
@@ -101,58 +99,58 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 		Block westblock = weststate.getBlock();
 		
 		Block AIR = Blocks.AIR;
-		BlockState AIRstate = AIR.defaultBlockState();
+		BlockState AIRstate = AIR.getDefaultState();
 		Block SNOW = Blocks.SNOW;
-		BlockState placeSNOW = SNOW.defaultBlockState().setValue(SnowBlock.LAYERS, Integer.valueOf(1));
+		BlockState placeSNOW = SNOW.getDefaultState().with(SnowBlock.LAYERS, Integer.valueOf(1));
 		Block SNOWCORE = Seasonal_Blocks.SNOWCORE;
 		
 		/** Hand is empty. **/
 		if (itemstack.isEmpty()) {
-
+			
 			if (i <= 7) {
 				switch (facing) {
 				case NORTH :
 				default :
 					if (northblock == SNOW) {
 						CMEvents.soundSnowPlace(worldIn, pos);
-						worldIn.setBlock(pos, AIRstate, 3);
-						worldIn.setBlock(pos.north(), state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
+						worldIn.setBlockState(pos, AIRstate, 3);
+						worldIn.setBlockState(pos.north(), state.with(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
 					
 					if (northblock != SNOW) {
 						if (northstate.getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.north(), state.setValue(STAGE_0_9, Integer.valueOf(i)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.north(), state.with(STAGE_0_9, Integer.valueOf(i)), 3); }
 						 
 						if (!northstate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					break;
-		
+
 				case SOUTH :
 					if (southblock == SNOW) {
 						CMEvents.soundSnowPlace(worldIn, pos);
-						worldIn.setBlock(pos, AIRstate, 3);
-						worldIn.setBlock(pos.south(), state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
+						worldIn.setBlockState(pos, AIRstate, 3);
+						worldIn.setBlockState(pos.south(), state.with(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
 					
 					if (southblock != SNOW) {
 						if (southstate.getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.south(), state.setValue(STAGE_0_9, Integer.valueOf(i)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.south(), state.with(STAGE_0_9, Integer.valueOf(i)), 3); }
 						 
 						if (!southstate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					break;
-		
+
 				case EAST :
 					if (eastblock == SNOW) {
 						CMEvents.soundSnowPlace(worldIn, pos);
-						worldIn.setBlock(pos, AIRstate, 3);
-						worldIn.setBlock(pos.east(), state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
+						worldIn.setBlockState(pos, AIRstate, 3);
+						worldIn.setBlockState(pos.east(), state.with(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
 					
 					if (eastblock != SNOW) {
 						if (eaststate.getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.east(), state.setValue(STAGE_0_9, Integer.valueOf(i)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.east(), state.with(STAGE_0_9, Integer.valueOf(i)), 3); }
 						 
 						if (!eaststate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					break;
@@ -160,14 +158,14 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 				case WEST :
 					if (westblock == SNOW) {
 						CMEvents.soundSnowPlace(worldIn, pos);
-						worldIn.setBlock(pos, AIRstate, 3);
-						worldIn.setBlock(pos.west(), state.setValue(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
+						worldIn.setBlockState(pos, AIRstate, 3);
+						worldIn.setBlockState(pos.west(), state.with(STAGE_0_9, Integer.valueOf(i + 1)), 3); }
 					
 					if (westblock != SNOW) {
 						if (weststate.getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.west(), state.setValue(STAGE_0_9, Integer.valueOf(i)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.west(), state.with(STAGE_0_9, Integer.valueOf(i)), 3); }
 						 
 						if (!weststate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					break;
@@ -180,152 +178,152 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 				case NORTH :
 				default :
 					if (northblock == SNOWCORE) {
-						if (northstate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
+						if (northstate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (northstate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
+						if (northstate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (northblock != SNOWCORE) {
 						if (northblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.north(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.north(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (northblock != SNOW) {
 							if (northstate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, AIRstate, 3);
-								worldIn.setBlock(pos.north(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, AIRstate, 3);
+								worldIn.setBlockState(pos.north(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!northstate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
 					break;
-	
+
 				case SOUTH :
 					if (southblock == SNOWCORE) {
-						if (southstate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
+						if (southstate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (southstate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
+						if (southstate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (southblock != SNOWCORE) {
 						if (southblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.south(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.south(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (southblock != SNOW) {
 							if (southstate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, AIRstate, 3);
-								worldIn.setBlock(pos.south(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, AIRstate, 3);
+								worldIn.setBlockState(pos.south(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!southstate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
 					break;
-	
+
 				case EAST :
 					if (eastblock == SNOWCORE) {
-						if (eaststate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (eaststate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (eaststate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (eaststate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (eastblock != SNOWCORE) {
 						if (eastblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.east(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.east(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (eastblock != SNOW) {
 							if (eaststate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, AIRstate, 3);
-								worldIn.setBlock(pos.east(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, AIRstate, 3);
+								worldIn.setBlockState(pos.east(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!eaststate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
@@ -333,209 +331,209 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 					
 				case WEST :
 					if (westblock == SNOWCORE) {
-						if (weststate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (weststate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (weststate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (weststate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (westblock != SNOWCORE) {
 						if (westblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, AIRstate, 3);
-							worldIn.setBlock(pos.west(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, AIRstate, 3);
+							worldIn.setBlockState(pos.west(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (westblock != SNOW) {
 							if (weststate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, AIRstate, 3);
-								worldIn.setBlock(pos.west(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, AIRstate, 3);
+								worldIn.setBlockState(pos.west(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!weststate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
 					break;
-				} // switch
+				} // switch facing
 			} //i == 8
-	
+
 			
 			if (i == 9) {
 				switch (facing) {
 				case NORTH :
 				default :
 					if (northblock == SNOWCORE) {
-						if (northstate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
+						if (northstate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (northstate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
+						if (northstate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z - 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.SOUTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z - 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.SOUTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (northblock != SNOWCORE) {
 						if (northblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(pos.north(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(pos.north(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (northblock != SNOW) {
 							if (northstate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, placeSNOW, 3);
-								worldIn.setBlock(pos.north(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, placeSNOW, 3);
+								worldIn.setBlockState(pos.north(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!northstate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
 					break;
-	
+
 				case SOUTH :
 					if (southblock == SNOWCORE) {
-						if (southstate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
+						if (southstate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (southstate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
+						if (southstate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x, y + 1, z + 1)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.NORTH)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x, y, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x, y + 1, z + 1), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.NORTH)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (southblock != SNOWCORE) {
 						if (southblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(pos.south(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(pos.south(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (southblock != SNOW) {
 							if (southstate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, placeSNOW, 3);
-								worldIn.setBlock(pos.south(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, placeSNOW, 3);
+								worldIn.setBlockState(pos.south(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!southstate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
 					break;
-	
+
 				case EAST :
 					if (eastblock == SNOWCORE) {
-						if (eaststate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (eaststate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (eaststate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (eaststate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x + 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.WEST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x + 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.WEST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (eastblock != SNOWCORE) {
 						if (eastblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(pos.east(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(pos.east(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (eastblock != SNOW) {
 							if (eaststate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, placeSNOW, 3);
-								worldIn.setBlock(pos.east(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, placeSNOW, 3);
+								worldIn.setBlockState(pos.east(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!eaststate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
@@ -543,57 +541,57 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 					
 				case WEST :
 					if (westblock == SNOWCORE) {
-						if (weststate.getValue(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (weststate.get(SnowCore.STAGE_0_9) == 8 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(false))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 						
-						if (weststate.getValue(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
+						if (weststate.get(SnowCore.STAGE_0_9) == 9 && worldIn.getBlockState(new BlockPos(x - 1, y + 1, z)).getMaterial().isReplaceable()) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-							worldIn.setBlock(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-									.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-									.setValue(SnowMan.H_FACING, Direction.EAST)
-									.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-									.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-									.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+							worldIn.setBlockState(new BlockPos(x - 1, y + 1, z), Seasonal_Blocks.SNOWMAN.getDefaultState()
+									.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+									.with(SnowMan.H_FACING, Direction.EAST)
+									.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+									.with(SnowMan.DOWN, Boolean.valueOf(true))
+									.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 					} // make SNOUMAN
 					
 					if (westblock != SNOWCORE) {
 						if (westblock == SNOW) {
 							CMEvents.soundSnowPlace(worldIn, pos);
-							worldIn.setBlock(pos, placeSNOW, 3);
-							worldIn.setBlock(pos.west(), state.setValue(STAGE_0_9, Integer.valueOf(9)), 3); }
+							worldIn.setBlockState(pos, placeSNOW, 3);
+							worldIn.setBlockState(pos.west(), state.with(STAGE_0_9, Integer.valueOf(9)), 3); }
 						
 						if (westblock != SNOW) {
 							if (weststate.getMaterial().isReplaceable()) {
 								CMEvents.soundSnowPlace(worldIn, pos);
-								worldIn.setBlock(pos, placeSNOW, 3);
-								worldIn.setBlock(pos.west(), state.setValue(STAGE_0_9, Integer.valueOf(8)), 3); }
+								worldIn.setBlockState(pos, placeSNOW, 3);
+								worldIn.setBlockState(pos.west(), state.with(STAGE_0_9, Integer.valueOf(8)), 3); }
 							
 							if (!weststate.getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); } }
 					} // not make SNOUMAN
 					break;
-				} // switch
+				} // switch facing
 			} //i == 9
-		}/** Hand is empty. **/
+		} // Hand is empty.
 		
 		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		
@@ -604,146 +602,119 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 	/* Gives a value when placed. */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		BlockPos blockpos = context.getClickedPos();
-		Block blockIn = context.getLevel().getBlockState(blockpos).getBlock();
+		BlockPos blockpos = context.getPos();
+		Block blockIn = context.getWorld().getBlockState(blockpos).getBlock();
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
 		
 		if (blockIn == Blocks.SNOW) {
-			return this.defaultBlockState().setValue(STAGE_0_9, Integer.valueOf(1))
-					.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
-		
-		else { return this.defaultBlockState().setValue(STAGE_0_9, Integer.valueOf(0))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			return this.getDefaultState().with(STAGE_0_9, Integer.valueOf(1)).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER); }
+		return this.getDefaultState().with(STAGE_0_9, Integer.valueOf(0)).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 	
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-	
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
-		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
-	}
-	
 	/* Update BlockState. */
 	protected boolean inWater(BlockState state, IWorld worldIn, BlockPos pos) {
-		return state.getValue(WATERLOGGED);
+		return state.get(WATERLOGGED);
 	}
 	
-	private boolean hasHeat(IWorld worldIn, BlockPos pos) {
-		for(BlockPos nearpos : BlockPos.betweenClosed(pos.offset(-2, -1, -2), pos.offset(2, 1, 2))) {
+	private boolean hasHeat(IWorldReader worldIn, BlockPos pos) {
+		for(BlockPos nearpos : BlockPos.getAllInBoxMutable(pos.add(-2, -1, -2), pos.add(2, 1, 2))) {
 			BlockState nearstate = worldIn.getBlockState(nearpos);
 			Block nearblock = nearstate.getBlock();
 
 			if (nearblock == Blocks.LAVA || nearblock == Blocks.MAGMA_BLOCK ||
-					nearblock instanceof FireBlock || nearblock instanceof SoulFireBlock || 
-					(nearblock instanceof CampfireBlock && nearstate.getValue(CampfireBlock.LIT)) ||
-					(nearblock instanceof AbstractFurnaceBlock && nearstate.getValue(AbstractFurnaceBlock.LIT)) ||
-					(nearblock instanceof AbstractOvenBlock && nearstate.getValue(AbstractOvenBlock.LIT)) ||
-					(nearblock instanceof AbstractStoveBlock && nearstate.getValue(AbstractStoveBlock.LIT)) ||
-					(nearblock instanceof Irori && nearstate.getValue(Irori.LIT)) ||
-					(nearblock instanceof Kit_Cooktop && nearstate.getValue(Kit_Cooktop.STAGE_1_3) == 2) ) {
+					nearblock instanceof FireBlock ||
+					(nearblock instanceof CampfireBlock && nearstate.get(CampfireBlock.LIT)) ||
+					(nearblock instanceof AbstractFurnaceBlock && nearstate.get(AbstractFurnaceBlock.LIT)) ||
+					(nearblock instanceof AbstractOvenBlock && nearstate.get(AbstractOvenBlock.LIT)) ||
+					(nearblock instanceof AbstractStoveBlock && nearstate.get(AbstractStoveBlock.LIT)) ||
+					(nearblock instanceof Irori && nearstate.get(Irori.LIT)) ||
+					(nearblock instanceof Kit_Cooktop && nearstate.get(Kit_Cooktop.STAGE_1_3) == 2) ) {
 				return true; }
 		}
 		return false;
 	}
 	
 	private boolean hasAtama(IWorld worldIn, BlockPos pos) {
-		BlockState upstate = worldIn.getBlockState(pos.above());
+		BlockState upstate = worldIn.getBlockState(pos.up());
 		Block upblock = upstate.getBlock();
-		return (upblock instanceof SnowCore && upstate.getValue(STAGE_0_9) >= 8);
+		return (upblock instanceof SnowCore && upstate.get(STAGE_0_9) >= 8);
 	}
 	
-	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
-
-		if ((worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) || hasAtama(worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelayAfterPlace()); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		else{ worldIn.getBlockTicks().scheduleTick(pos, this, 200); }
+		if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) || hasAtama(worldIn, pos)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn)); }
 		
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		else{ worldIn.getPendingBlockTicks().scheduleTick(pos, this, 200); }
+		
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
+	
 	
 	/* TickRandom */
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		if ((worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) || hasAtama(worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelayAfterPlace()); }
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) || hasAtama(worldIn, pos)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn)); }
 		
-		else { worldIn.getBlockTicks().scheduleTick(pos, this, 200); }
+		else{ worldIn.getPendingBlockTicks().scheduleTick(pos, this, 200); }
 	}
-
+	
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int i = state.getValue(STAGE_0_9);
-		Block downblock = worldIn.getBlockState(pos.below()).getBlock();
-
-		if (worldIn.isEmptyBlock(pos.below()) || isFree(worldIn.getBlockState(pos.below())) && pos.getY() >= 0) {
+		int i = state.get(STAGE_0_9);
+		Block downblock = worldIn.getBlockState(pos.down()).getBlock();
+	
+		if (worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) {
 			FallingBlockEntity fallingblockentity = new FallingBlockEntity(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, worldIn.getBlockState(pos));
-			this.falling(fallingblockentity);
-			worldIn.addFreshEntity(fallingblockentity); }
+			this.onStartFalling(fallingblockentity);
+			worldIn.addEntity(fallingblockentity); }
 		
 		if (hasAtama(worldIn, pos)) {
 			if (i <= 7) { }
 			
 			if (i == 8) {
-				worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelayAfterPlace());
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, 2);
 				CMEvents.soundSnowPlace(worldIn, pos);
-				worldIn.setBlock(pos, Seasonal_Blocks.SNOWMAN.defaultBlockState()
-						.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-						.setValue(SnowMan.H_FACING, Direction.SOUTH)
-						.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-						.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-						.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-				worldIn.setBlock(pos.above(), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-						.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-						.setValue(SnowMan.H_FACING, Direction.SOUTH)
-						.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-						.setValue(SnowMan.DOWN, Boolean.valueOf(false))
-						.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+				worldIn.setBlockState(pos, Seasonal_Blocks.SNOWMAN.getDefaultState()
+						.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+						.with(SnowMan.H_FACING, Direction.SOUTH)
+						.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+						.with(SnowMan.DOWN, Boolean.valueOf(false))
+						.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos.up(), Seasonal_Blocks.SNOWMAN.getDefaultState()
+						.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+						.with(SnowMan.H_FACING, Direction.SOUTH)
+						.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+						.with(SnowMan.DOWN, Boolean.valueOf(false))
+						.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 		
 			if (i == 9) {
-				worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelayAfterPlace());
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, 2);
 				CMEvents.soundSnowPlace(worldIn, pos);
-				worldIn.setBlock(pos, Seasonal_Blocks.SNOWMAN.defaultBlockState()
-						.setValue(SnowMan.HALF, DoubleBlockHalf.LOWER)
-						.setValue(SnowMan.H_FACING, Direction.SOUTH)
-						.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-						.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-						.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3);
-				worldIn.setBlock(pos.above(), Seasonal_Blocks.SNOWMAN.defaultBlockState()
-						.setValue(SnowMan.HALF, DoubleBlockHalf.UPPER)
-						.setValue(SnowMan.H_FACING, Direction.SOUTH)
-						.setValue(SnowMan.STAGE_1_4, Integer.valueOf(1))
-						.setValue(SnowMan.DOWN, Boolean.valueOf(true))
-						.setValue(SnowMan.WATERLOGGED, state.getValue(SnowMan.WATERLOGGED)), 3); }
+				worldIn.setBlockState(pos, Seasonal_Blocks.SNOWMAN.getDefaultState()
+						.with(SnowMan.HALF, DoubleBlockHalf.LOWER)
+						.with(SnowMan.H_FACING, Direction.SOUTH)
+						.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+						.with(SnowMan.DOWN, Boolean.valueOf(true))
+						.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3);
+				worldIn.setBlockState(pos.up(), Seasonal_Blocks.SNOWMAN.getDefaultState()
+						.with(SnowMan.HALF, DoubleBlockHalf.UPPER)
+						.with(SnowMan.H_FACING, Direction.SOUTH)
+						.with(SnowMan.STAGE_1_4, Integer.valueOf(1))
+						.with(SnowMan.DOWN, Boolean.valueOf(true))
+						.with(SnowMan.WATERLOGGED, state.get(SnowMan.WATERLOGGED)), 3); }
 		} //upblock SnowCore
 		
 		if (inWater(state, worldIn, pos)) { 
-			worldIn.getBlockTicks().scheduleTick(pos, this, 200);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 200);
 			breakBlock(state, worldIn, pos); }
 		
 		if (!inWater(state, worldIn, pos)) {
@@ -754,13 +725,13 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 					downblock != Blocks.BLUE_ICE && downblock != Blocks.SNOW_BLOCK) {
 				
 				if (hasHeat(worldIn, pos)) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 200);
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, 200);
 					breakBlock(state, worldIn, pos); }
 				
 				if (!hasHeat(worldIn, pos)) {
 					/** Plain 0.8F, Jungle 0.9F, Desert 2.0F **/
 					if (worldIn.getBiome(pos).getTemperature(pos) > 0.85F) {
-						worldIn.getBlockTicks().scheduleTick(pos, this, 200);
+						worldIn.getPendingBlockTicks().scheduleTick(pos, this, 200);
 						breakBlock(state, worldIn, pos); }
 					
 					if (worldIn.getBiome(pos).getTemperature(pos) <= 0.85F) { }
@@ -770,24 +741,24 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 	}
 
 	private void breakBlock(BlockState state, World worldIn, BlockPos pos) {
-		int i = state.getValue(STAGE_0_9);
+		int i = state.get(STAGE_0_9);
 		if (i != 0) { 
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, state.setValue(STAGE_0_9, Integer.valueOf(i - 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_0_9, Integer.valueOf(i - 1)), 3); }
 		if (i == 0) { worldIn.destroyBlock(pos, true); }
 	}
 	
-	
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(STAGE_0_9, WATERLOGGED);
 	}
 	
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int i = state.getValue(STAGE_0_9);
+		int i = state.get(STAGE_0_9);
 		
 		switch (i) {
 		case 0 :
@@ -803,17 +774,17 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 		case 9 : return AABB_89;
 		} // switch STAGE_0_9
 	}
-
+	
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int i = state.getValue(STAGE_0_9);
+		int i = state.get(STAGE_0_9);
 		
 		switch (i) {
 		case 0 :
 		default :
-		case 1 :
+		case 1 : 
 		case 2 :
-		case 3 :
+		case 3 : 
 		case 4 :
 		case 5 : return VoxelShapes.empty();
 		case 6 :
@@ -823,9 +794,27 @@ public class SnowCore extends FallingBlock implements IWaterLoggable {
 		} // switch STAGE_0_9
 	}
 	
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+	
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Seasonal.SNOWCORE);
 	}
 	

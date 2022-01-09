@@ -9,7 +9,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Crop_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,6 +16,7 @@ import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.MovingPistonBlock;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -53,26 +53,26 @@ public class Enden extends Block {
 	/* 1=水を張った、2、3、4、5=塩1、6=塩1、7=塩2、8=塩2、9=塩3 */
 	public static final IntegerProperty WET_1_9 = IntegerProperty.create("wet", 1, 9);
 
-	protected static final VoxelShape AABB_1 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.5D, 16.0D);
-	protected static final VoxelShape AABB_9 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	
-	public Enden(AbstractBlock.Properties properties) {
+	protected static final VoxelShape AABB_1 = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.5D, 16.0D);
+	protected static final VoxelShape AABB_9 = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+
+	public Enden(Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(NORTH, Boolean.valueOf(false))
-				.setValue(EAST, Boolean.valueOf(false))
-				.setValue(SOUTH, Boolean.valueOf(false))
-				.setValue(WEST, Boolean.valueOf(false))
-				.setValue(WET_1_9, Integer.valueOf(1)));
+		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
+				.with(EAST, Boolean.valueOf(false))
+				.with(SOUTH, Boolean.valueOf(false))
+				.with(WEST, Boolean.valueOf(false))
+				.with(WET_1_9, Integer.valueOf(1)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(WET_1_9);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(WET_1_9);
 		/* 1=水を張った、2、3、4、5=塩1、6=塩1、7=塩2、8=塩2、9=塩3 */
 
 		/** Too early to collect **/
@@ -81,17 +81,18 @@ public class Enden extends Block {
 		/** Can harvest **/
 		if (i >= 5) {
 			if (itemstack.isEmpty()) {
-				
+
 				CMEvents.soundTake_Pick(worldIn, pos);
 				
-				if (i == 5 || i == 6) { playerIn.inventory.add(new ItemStack(Items_Teatime.SHIO, 1)); }
-				if (i == 7 || i == 8) { playerIn.inventory.add(new ItemStack(Items_Teatime.SHIO, 2)); }
+				if (i == 5 || i == 6) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SHIO, 1)); }
+				if (i == 7 || i == 8) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SHIO, 2)); }
 				if (i == 9) {
-					playerIn.inventory.add(new ItemStack(Items_Teatime.SHIO, 3));
-					if (!playerIn.inventory.add(new ItemStack(Items_Teatime.NIGARI, 1))) {
-						playerIn.drop(new ItemStack(Items_Teatime.NIGARI, 1), false); } }
+					playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SHIO, 3));
+					if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NIGARI, 1))) {
+						playerIn.dropItem(new ItemStack(Items_Teatime.NIGARI, 1), false); } }
 				
-				worldIn.setBlock(pos, Crop_Blocks.ENDEN_k.defaultBlockState(), 3); }
+				worldIn.setBlockState(pos, Crop_Blocks.ENDEN_k.getDefaultState());
+			}
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -102,76 +103,75 @@ public class Enden extends Block {
 
 	/* Connect the blocks. */
 	private boolean canConnectTo(IWorld worldIn, BlockPos source, Direction direction) {
-		BlockState state = worldIn.getBlockState(source.relative(direction));
+		BlockState state = worldIn.getBlockState(source.offset(direction));
 		return state.getBlock() == this;
 	}
 
 	/* Update BlockState. */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 2);
-		
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, 2);
+
 		boolean north = canConnectTo(worldIn, pos, Direction.NORTH);
 		boolean east = canConnectTo(worldIn, pos, Direction.EAST);
 		boolean south = canConnectTo(worldIn, pos, Direction.SOUTH);
 		boolean west = canConnectTo(worldIn, pos, Direction.WEST);
-		return state.setValue(NORTH, north).setValue(EAST, east).setValue(SOUTH, south).setValue(WEST, west);
+		return state.with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockState upstate = worldIn.getBlockState(pos.above());
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		BlockState upstate = worldIn.getBlockState(pos.up());
 		return !upstate.getMaterial().isSolid() || upstate.getBlock() instanceof FenceGateBlock || upstate.getBlock() instanceof MovingPistonBlock;
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return !this.defaultBlockState().canSurvive(context.getLevel(), context.getClickedPos()) ? Blocks.SAND.defaultBlockState() : this.defaultBlockState();
+		return !this.getDefaultState().isValidPosition(context.getWorld(), context.getPos()) ? Blocks.SAND.getDefaultState() : this.getDefaultState();
 	}
 
 	/* TickRandom and Conditions for TickRandom. */
 	public static void turnToSand(BlockState state, World worldIn, BlockPos pos) {
-		worldIn.setBlockAndUpdate(pos, Blocks.SAND.defaultBlockState());
+		worldIn.setBlockState(pos, Blocks.SAND.getDefaultState());
 	}
 
 	/* TickRandom */
 	@SuppressWarnings("deprecation")
-	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		super.tick(state, worldIn, pos, rand);
-		if (!state.canSurvive(worldIn, pos)) { turnToSand(state, worldIn, pos); }
+		if (!state.isValidPosition(worldIn, pos)) { turnToSand(state, worldIn, pos); }
 	}
 	
 	@Override
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		if (!worldIn.isAreaLoaded(pos, 2)) { return; }
-		
-		BlockState upstate = worldIn.getBlockState(pos.above());
+
+		BlockState upstate = worldIn.getBlockState(pos.up());
 		if (upstate.getBlock() instanceof FlowingFluidBlock) { 
 			if (rand.nextInt(2) == 0) { turnToSand(state, worldIn, pos); }
 		}
 		
-		/** WATERLOGGED で水面より下と成るため pos.above() か **/
-		if (!worldIn.canSeeSky(pos.above())) { }
+		/** WATERLOGGED で水面より下と成るため pos.up() か **/
+		if (!worldIn.canSeeSky(pos.up())) { }
 
-		if (worldIn.canSeeSky(pos.above())) {
+		if (worldIn.canSeeSky(pos.up())) {
 
-			int i = state.getValue(WET_1_9);
+			int i = state.get(WET_1_9);
 
-			if (!worldIn.isRainingAt(pos.above())) {
+			if (!worldIn.isRainingAt(pos.up())) {
 				if (i != 9) {
-					if (worldIn.isDay()) {
-						if (rand.nextInt(6) == 0) { worldIn.setBlock(pos, state.setValue(WET_1_9, Integer.valueOf(i + 1)), 3); } }
+					if (worldIn.isDaytime()) {
+						if (rand.nextInt(6) == 0) { worldIn.setBlockState(pos, state.with(WET_1_9, Integer.valueOf(i + 1)), 3); } }
 	
-					if (!worldIn.isDay()) { } }
+					if (!worldIn.isDaytime()) { } }
 				
 				if (i == 9) { }
 			}
 
-			if (worldIn.isRainingAt(pos.above())) {
+			if (worldIn.isRainingAt(pos.up())) {
 				if (i != 1) {
-					if (rand.nextInt(2) == 0) { worldIn.setBlock(pos, state.setValue(WET_1_9, Integer.valueOf(i - 1)), 3); } }
+					if (rand.nextInt(2) == 0) { worldIn.setBlockState(pos, state.with(WET_1_9, Integer.valueOf(i - 1)), 3); } }
 				
 				if (i == 1) { }
 			}
@@ -184,28 +184,34 @@ public class Enden extends Block {
 	}
 
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		int i = state.getValue(WET_1_9);
+		int i = state.get(WET_1_9);
 		return (i == 9)? AABB_9 : AABB_1;
-	}
-
-	/* Clone Item in Creative. */
-	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		return new ItemStack(Items_Teatime.ENDEN);
 	}
 
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(NORTH, EAST, SOUTH, WEST, WET_1_9);
 	}
 
 	/* 透過 */
-	public boolean useShapeForLightOcclusion(BlockState state) {
+	public boolean isTransparent(BlockState state) {
 		return true;
 	}
 
-	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+	/* 窒息 滑るため false */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
 		return false;
 	}
 
@@ -214,7 +220,13 @@ public class Enden extends Block {
 		return true;
 	}
 
-	/* Harvest by Pickaxe. */
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -225,12 +237,12 @@ public class Enden extends Block {
 	public int getHarvestLevel(BlockState state) {
 		return 0;
 	}
-
+	
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_enden")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_enden")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

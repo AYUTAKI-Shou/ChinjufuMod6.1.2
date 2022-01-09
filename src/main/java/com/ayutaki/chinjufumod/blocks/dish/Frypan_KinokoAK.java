@@ -5,12 +5,11 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -33,15 +32,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Frypan_KinokoAK extends BaseFrypan_Stage2 {
 
-	public Frypan_KinokoAK(AbstractBlock.Properties properties) {
+	public Frypan_KinokoAK(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 		
 		if (i == 1) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
 		/** SUCCESS to not put anything on top. **/
@@ -52,24 +51,25 @@ public class Frypan_KinokoAK extends BaseFrypan_Stage2 {
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		if (isCooking(worldIn, pos)) {
-			worldIn.setBlock(pos, state.setValue(STAGE_1_2, Integer.valueOf(2)), 3);
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1000 + (20 * rand.nextInt(5)));
+			worldIn.setBlockState(pos, state.with(STAGE_1_2, Integer.valueOf(2)));
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * rand.nextInt(5)));
 
 			/** Get EXP. **/
-			worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1)); }
+			worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
+		}
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60);
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.FRYPAN_kara.defaultBlockState()
-					.setValue(BaseFacingWater.H_FACING, state.getValue(H_FACING))
-					.setValue(BaseFacingWater.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-			this.dropRottenfood(worldIn, pos); }
-		
+			worldIn.setBlockState(pos, Dish_Blocks.FRYPAN_kara.getDefaultState()
+					.with(Frypan_kara.H_FACING, state.get(H_FACING))
+					.with(Frypan_kara.WATERLOGGED, state.get(WATERLOGGED)), 3);
+			this.dropRottenfood(worldIn, pos);
+		}
 		else { }
 	}
 
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
@@ -82,7 +82,7 @@ public class Frypan_KinokoAK extends BaseFrypan_Stage2 {
 		if (isCooking(worldIn, pos)) {
 
 			if (rand.nextDouble() < 0.1D) {
-				worldIn.playLocalSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
+				worldIn.playSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
 
 			if (rand.nextDouble() < 0.25D) {
 				/** 種類, 座標x, y, z, 速度x, y, z **/
@@ -92,9 +92,9 @@ public class Frypan_KinokoAK extends BaseFrypan_Stage2 {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_frypan")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_frypan")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

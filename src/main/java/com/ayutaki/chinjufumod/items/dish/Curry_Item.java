@@ -24,6 +24,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -35,30 +36,33 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Curry_Item extends BlockNamedItem {
 
 	public Curry_Item(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.TEATIME));
+		super(block, builder.group(ItemGroups_CM.TEATIME));
+
+		this.addPropertyOverride(new ResourceLocation("eat"), (stack, worldIn, entity) -> {
+			return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F; } );
 	}
 
 	/* アイテム消費時の追加処理 */
-	@Override
-	public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
 
 		PlayerEntity playerIn = entityLiving instanceof PlayerEntity ? (PlayerEntity)entityLiving : null;
 
 		/** 満腹度をここで処理 **/
-		entityLiving.addEffect(new EffectInstance(Effects.SATURATION, 10, 0));
+		entityLiving.addPotionEffect(new EffectInstance(Effects.SATURATION, 10, 0));
 
 		/** 追加効果 **/
-		entityLiving.addEffect(new EffectInstance(Effects.DIG_SPEED, 3000, 0));
-		entityLiving.addEffect(new EffectInstance(Effects.HEAL, 1, 0));
-		entityLiving.addEffect(new EffectInstance(Effects.REGENERATION, 3000, 0));
+		entityLiving.addPotionEffect(new EffectInstance(Effects.HASTE, 3000, 0));
+		entityLiving.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 1, 0));
+		entityLiving.addPotionEffect(new EffectInstance(Effects.REGENERATION, 3000, 0));
 
 
 		if (playerIn != null) {
-			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			playerIn.addStat(Stats.ITEM_USED.get(this));
 
-			if (!playerIn.abilities.instabuild) {
+			if (!playerIn.abilities.isCreativeMode) {
 				if (stack.isEmpty()) { return new ItemStack(Items_Teatime.SARA); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.SARA))) { playerIn.drop(new ItemStack(Items_Teatime.SARA), false); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SARA))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.SARA), false); }
 
 				stack.shrink(1);
 			}
@@ -66,42 +70,39 @@ public class Curry_Item extends BlockNamedItem {
 		return stack;
 	}
 
-	@Override
 	public int getUseDuration(ItemStack stack) {
 		return 32;
 	}
 
-	@Override
-	public UseAction getUseAnimation(ItemStack stack) {
+	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.EAT;
 	}
 
-	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
 		/** 食物が必要な時だけ成功 **/
-		if (playerIn.getFoodData().needsFood()) {
-			playerIn.startUsingItem(hand);
-			return ActionResult.consume(playerIn.getItemInHand(hand));
+		if (playerIn.getFoodStats().needFood()) {
+			playerIn.setActiveHand(hand);
+			return ActionResult.resultSuccess(playerIn.getHeldItem(hand));
 		}
-		return ActionResult.fail(playerIn.getItemInHand(hand));
+		return ActionResult.resultFail(playerIn.getHeldItem(hand));
 	}
 
-	/* 設置処理の分岐 スニーク時 playerIn.isCrouching() 座っている時 playerIn.isPassenger() */
-	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	/* 設置処理の分岐 スニーク時 playerIn.isSneaking() 座っている時 playerIn.isPassenger() */
+	public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity playerIn = context.getPlayer();
 
-		if (context.getClickedFace() == Direction.UP && (playerIn.isCrouching() || playerIn.isPassenger())) {
-			return this.place(new BlockItemUseContext(context)); }
+		if (context.getFace() == Direction.UP && (playerIn.isSneaking() || playerIn.isPassenger()) ) {
+			return this.tryPlace(new BlockItemUseContext(context)); }
 
 		else {
-			return this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult(); }
+			return this.onItemRightClick(context.getWorld(), context.getPlayer(), context.getHand()).getType(); }
 	}
 
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_simpledish")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_simpledish")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

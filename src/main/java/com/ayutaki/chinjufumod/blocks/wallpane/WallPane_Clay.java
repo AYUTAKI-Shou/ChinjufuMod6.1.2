@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
@@ -17,34 +16,34 @@ import net.minecraftforge.common.ToolType;
 public class WallPane_Clay extends BaseFacingWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
 
-	public WallPane_Clay(AbstractBlock.Properties properties) {
+	public WallPane_Clay(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

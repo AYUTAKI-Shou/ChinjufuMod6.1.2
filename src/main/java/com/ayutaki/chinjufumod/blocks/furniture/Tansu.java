@@ -8,15 +8,13 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.tileentity.Tansu_TileEntity;
 
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.piglin.PiglinTasks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
@@ -55,160 +53,155 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Tansu extends AbstractTansu<Tansu_TileEntity> {
 
-	/* Property */
 	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 	public static final EnumProperty<ChestType> TYPE = BlockStateProperties.CHEST_TYPE;
 
-	public Tansu(AbstractBlock.Properties builder, Supplier<TileEntityType<? extends Tansu_TileEntity>> entityType) {
+	public Tansu(Block.Properties builder, Supplier<TileEntityType<? extends Tansu_TileEntity>> entityType) {
 		super(builder, entityType);
-		this.registerDefaultState(this.stateDefinition.any().setValue(H_FACING, Direction.NORTH)
-				.setValue(WATERLOGGED, Boolean.valueOf(false))
-				.setValue(TYPE, ChestType.SINGLE));
+		this.setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(TYPE, ChestType.SINGLE)
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
-	public static TileEntityMerger.Type getBlockType(BlockState state) {
+	public static TileEntityMerger.Type func_226919_h_(BlockState state) {
 		return TileEntityMerger.Type.SINGLE;
 	}
 
 	@Override
-	public BlockRenderType getRenderShape(BlockState state) {
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL; // BlockRenderType.MODEL でブロックのモデルを表示
-	}
-
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return VoxelShapes.block();
 	}
 
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER))
-				.setValue(H_FACING, context.getHorizontalDirection().getOpposite());
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
+	}
+
+	/* HORIZONTAL Property */
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
-		
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+		}
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return VoxelShapes.fullCube();
 	}
 
 	@Nullable
 	private Direction candidatePartnerFacing(BlockItemUseContext context, Direction direct) {
-		BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos().relative(direct));
-		return blockstate.is(this) && blockstate.getValue(TYPE) == ChestType.SINGLE ? blockstate.getValue(H_FACING) : null;
+		BlockState blockstate = context.getWorld().getBlockState(context.getPos().offset(direct));
+		return blockstate.getBlock() == this && blockstate.get(TYPE) == ChestType.SINGLE ? blockstate.get(H_FACING) : null;
 	}
 
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		if (stack.hasCustomHoverName()) {
-			TileEntity tileentity = worldIn.getBlockEntity(pos);
-			if (tileentity instanceof Tansu_TileEntity) {
-				((Tansu_TileEntity)tileentity).setCustomName(stack.getHoverName());
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (stack.hasDisplayName()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+		if (tileentity instanceof Tansu_TileEntity) {
+			((Tansu_TileEntity)tileentity).setCustomName(stack.getDisplayName());
 			}
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState facingState, boolean p_196243_5_) {
-		if (!state.is(facingState.getBlock())) {
-			TileEntity tileentity = worldIn.getBlockEntity(pos);
-			if (tileentity instanceof IInventory) {
-				InventoryHelper.dropContents(worldIn, pos, (IInventory)tileentity);
-				worldIn.updateNeighbourForOutputSignal(pos, this);
+	@Override
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+			if (tileentity instanceof Tansu_TileEntity) {
+				InventoryHelper.dropItems(worldIn, pos, ((Tansu_TileEntity) tileentity).getItems());
 			}
-			super.onRemove(state, worldIn, pos, facingState, p_196243_5_);
 		}
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
 
-		if (worldIn.isClientSide) { return ActionResultType.SUCCESS; }
+		if (worldIn.isRemote) { return ActionResultType.SUCCESS; }
 
-		if (!worldIn.isClientSide) {
+		if (!worldIn.isRemote) {
 
-			if (!state.getValue(WATERLOGGED)) {
-
-				INamedContainerProvider inamedcontainerprovider = this.getMenuProvider(state, worldIn, pos);
-				Direction direction = state.getValue(H_FACING);
+			if (!state.get(WATERLOGGED)) {
+				INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+				Direction direction = state.get(H_FACING);
 
 				switch (direction) {
 				case NORTH :
 				default :
-					if (!worldIn.getBlockState(pos.north()).getMaterial().isReplaceable()) {
-						CMEvents.textIsBlocked(worldIn, pos, playerIn);
-						return ActionResultType.SUCCESS; }
+					if (!worldIn.getBlockState(pos.north()).getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); }
 					
 					if (worldIn.getBlockState(pos.north()).getMaterial().isReplaceable()) {
 						if (inamedcontainerprovider != null) {
-							playerIn.openMenu(inamedcontainerprovider);
-							playerIn.awardStat(this.getOpenChestStat());
-							PiglinTasks.angerNearbyPiglins(playerIn, true); } }
+							playerIn.openContainer(inamedcontainerprovider);
+							playerIn.addStat(this.getOpenStat()); } }
 					break;
 
 				case SOUTH :
-					if (!worldIn.getBlockState(pos.south()).getMaterial().isReplaceable()) {
-						CMEvents.textIsBlocked(worldIn, pos, playerIn);
-						return ActionResultType.SUCCESS; }
-					
+					if (!worldIn.getBlockState(pos.south()).getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); }
+
 					if (worldIn.getBlockState(pos.south()).getMaterial().isReplaceable()) {
 						if (inamedcontainerprovider != null) {
-							playerIn.openMenu(inamedcontainerprovider);
-							playerIn.awardStat(this.getOpenChestStat());
-							PiglinTasks.angerNearbyPiglins(playerIn, true); } }
+							playerIn.openContainer(inamedcontainerprovider);
+							playerIn.addStat(this.getOpenStat()); } }
 					break;
 
 				case EAST :
-					if (!worldIn.getBlockState(pos.east()).getMaterial().isReplaceable()) {
-						CMEvents.textIsBlocked(worldIn, pos, playerIn);
-						return ActionResultType.SUCCESS; }
-				
+					if (!worldIn.getBlockState(pos.east()).getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); }
+					
 					if (worldIn.getBlockState(pos.east()).getMaterial().isReplaceable()) {
 						if (inamedcontainerprovider != null) {
-							playerIn.openMenu(inamedcontainerprovider);
-							playerIn.awardStat(this.getOpenChestStat());
-							PiglinTasks.angerNearbyPiglins(playerIn, true); } }
+							playerIn.openContainer(inamedcontainerprovider);
+							playerIn.addStat(this.getOpenStat()); } }
 					break;
 					
 				case WEST :
-					if (!worldIn.getBlockState(pos.west()).getMaterial().isReplaceable()) {
-						CMEvents.textIsBlocked(worldIn, pos, playerIn);
-						return ActionResultType.SUCCESS; }
+					if (!worldIn.getBlockState(pos.west()).getMaterial().isReplaceable()) { CMEvents.textIsBlocked(worldIn, pos, playerIn); }
 					
 					if (worldIn.getBlockState(pos.west()).getMaterial().isReplaceable()) {
 						if (inamedcontainerprovider != null) {
-							playerIn.openMenu(inamedcontainerprovider);
-							playerIn.awardStat(this.getOpenChestStat());
-							PiglinTasks.angerNearbyPiglins(playerIn, true); } }
+							playerIn.openContainer(inamedcontainerprovider);
+							playerIn.addStat(this.getOpenStat()); } }
 					break;
 				} // switch
-			} // !state.getValue(WATERLOGGED)
+			} // !state.get(WATERLOGGED)
 			
-			if (state.getValue(WATERLOGGED)) { 
-				CMEvents.textIsWaterlogged(worldIn, pos, playerIn);
-				return ActionResultType.SUCCESS; }
+			if (state.get(WATERLOGGED)) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); }
 		}
-		return ActionResultType.CONSUME;
+		
+		return ActionResultType.SUCCESS;
 	}
 
-	protected Stat<ResourceLocation> getOpenChestStat() {
+	protected Stat<ResourceLocation> getOpenStat() {
 		return Stats.CUSTOM.get(Stats.OPEN_CHEST);
 	}
 
 	@Nullable
 	public static IInventory getContainer(Tansu block, BlockState state, World worldIn, BlockPos pos, boolean flag) {
-		return (IInventory)worldIn.getBlockEntity(pos);
+		return (IInventory)worldIn.getTileEntity(pos);
 	}
 
 	public TileEntityMerger.ICallbackWrapper<? extends Tansu_TileEntity> combine(BlockState state, World worldIn, BlockPos pos, boolean flag) {
@@ -218,55 +211,44 @@ public class Tansu extends AbstractTansu<Tansu_TileEntity> {
 	@OnlyIn(Dist.CLIENT)
 	public static TileEntityMerger.ICallback<Tansu_TileEntity, Float2FloatFunction> opennessCombiner(final IChestLid lis) {
 		return new TileEntityMerger.ICallback<Tansu_TileEntity, Float2FloatFunction>() {
-			public Float2FloatFunction acceptDouble(Tansu_TileEntity tileEntity_1, Tansu_TileEntity tileEntity_2) {
+			public Float2FloatFunction func_225539_a_(Tansu_TileEntity tileEntity_1, Tansu_TileEntity tileEntity_2) {
 				return (p_226921_2_) -> {
-					return Math.max(tileEntity_1.getOpenNess(p_226921_2_), tileEntity_2.getOpenNess(p_226921_2_));
+					return Math.max(tileEntity_1.getLidAngle(p_226921_2_), tileEntity_2.getLidAngle(p_226921_2_));
 				};
 			}
 
-			public Float2FloatFunction acceptSingle(Tansu_TileEntity tileEntity) {
-				return tileEntity::getOpenNess;
+			public Float2FloatFunction func_225538_a_(Tansu_TileEntity tileEntity) {
+				return tileEntity::getLidAngle;
 			}
 
-			public Float2FloatFunction acceptNone() {
-				return lis::getOpenNess;
+			public Float2FloatFunction func_225537_b_() {
+				return lis::getLidAngle;
 			}
 		};
 	}
 
-	public TileEntity newBlockEntity(IBlockReader worldIn) {
+	@Override
+	public TileEntity createNewTileEntity(IBlockReader worldIn) {
 		return new Tansu_TileEntity();
 	}
 
 	@Override
-	public boolean hasAnalogOutputSignal(BlockState state) {
+	public boolean hasComparatorInputOverride(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState state, World worldIn, BlockPos pos) {
-		return Container.getRedstoneSignalFromContainer(getContainer(this, state, worldIn, pos, false));
-	}
-
-	/* HORIZONTAL Property */
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
-	}
-
-	@SuppressWarnings("deprecation")
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
-	}
-
-	/* Create Blockstate */
-	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(H_FACING, WATERLOGGED, TYPE);
+	public int getComparatorInputOverride(BlockState state, World worldIn, BlockPos pos) {
+		return Container.calcRedstoneFromInventory(getContainer(this, state, worldIn, pos, false));
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType path) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(H_FACING, TYPE, WATERLOGGED);
+	}
+
+	@Override
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType path) {
 		return false;
 	}
 

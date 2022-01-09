@@ -1,7 +1,5 @@
 package com.ayutaki.chinjufumod.registry;
 
-import java.util.function.ToIntFunction;
-
 import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.blocks.furniture.Takeakari;
 import com.ayutaki.chinjufumod.blocks.garden.Bonsai;
@@ -12,7 +10,7 @@ import com.ayutaki.chinjufumod.blocks.garden.IronFence;
 import com.ayutaki.chinjufumod.blocks.garden.Kanyou;
 import com.ayutaki.chinjufumod.blocks.garden.Makibishi;
 import com.ayutaki.chinjufumod.blocks.garden.Niwaishi;
-import com.ayutaki.chinjufumod.blocks.garden.Niwaishi_slab;
+import com.ayutaki.chinjufumod.blocks.garden.Niwaishi_Slab;
 import com.ayutaki.chinjufumod.blocks.garden.Samon;
 import com.ayutaki.chinjufumod.blocks.garden.ShishiOdoshi_stage1;
 import com.ayutaki.chinjufumod.blocks.garden.ShishiOdoshi_stage2;
@@ -20,16 +18,9 @@ import com.ayutaki.chinjufumod.blocks.garden.Sudare;
 import com.ayutaki.chinjufumod.blocks.garden.Tourou;
 import com.ayutaki.chinjufumod.blocks.garden.TourouLong;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,15 +28,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Garden_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block SUDARE = register("block_sudare_1", new Sudare(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never)));
+	public static Block SUDARE = register("block_sudare_1", new Sudare(Block.Properties.create(Material.WOOD).doesNotBlockMovement()
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
 
-	public static Block SHISHIODOSHI = register("block_shishiodoshi", new ShishiOdoshi_stage1(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never)));
-	public static Block SHISHIODOSHI2 = register("block_shishiodoshi2", new ShishiOdoshi_stage2(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never)));
+	public static Block SHISHIODOSHI = register("block_shishiodoshi", new ShishiOdoshi_stage1(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid()));
+	public static Block SHISHIODOSHI2 = register("block_shishiodoshi2", new ShishiOdoshi_stage2(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid()));
 
 	public static Block CHOUZUBACHI = register("block_chouzubachi_kara", chouzubachi());
 	public static Block CHOUZUBACHI_gra = register("block_chouzu_gra_kara", chouzubachi());
@@ -62,8 +54,8 @@ public class Garden_Blocks {
 	public static Block LONGTOUROU_dio = register("block_longtourou_dio", tourouLong());
 	public static Block LONGTOUROU_and = register("block_longtourou_and", tourouLong());
 
-	public static Block TAKEAKARI = register("block_takeakari", new Takeakari(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never).lightLevel(litBlockEmission(14))));
+	public static Block TAKEAKARI = register("block_takeakari", new Takeakari(Block.Properties.create(Material.WOOD).doesNotBlockMovement()
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block BONSAI_oak = register("block_bonsai_oak", bonsai());
 	public static Block BONSAI_spru = register("block_bonsai_spruce", bonsai());
@@ -109,8 +101,8 @@ public class Garden_Blocks {
 	public static Block IKEGAKILONG_ichoh = register("block_longichoh_bot", ikegakiLong());
 	public static Block IKEGAKILONG_kare = register("block_longoakkare_bot", ikegakiLong());
 
-	public static Block TETSUSAKU_BOT = register("block_ironfence_bot", new IronFence(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never)));
+	public static Block TETSUSAKU_BOT = register("block_ironfence_bot", new IronFence(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL).notSolid()));
 
 	public static Block SAMON = register("block_samon", samon());
 	public static Block SAMON_B = register("block_samon_black", samon());
@@ -123,75 +115,50 @@ public class Garden_Blocks {
 	public static Block NIWAISHI_slab_dio = register("block_niwaishi_slab_dio", niwaishi_slab());
 	public static Block NIWAISHI_slab_and = register("block_niwaishi_slab_and", niwaishi_slab());
 	
-	public static Block MAKIBISHI = register("block_makibishi", new Makibishi(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 1.0F).sound(SoundType.METAL)
-			.noCollission().noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never)));
-
+	public static Block MAKIBISHI = register("block_makibishi", new Makibishi(Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.METAL)
+			.doesNotBlockMovement().notSolid()));
+	
 	/* Share variables */
-	private static ToIntFunction<BlockState> litBlockEmission(int value) {
-		return (state) -> { return state.getValue(BlockStateProperties.LIT) ? value : 0; };
-	}
-
-	private static ToIntFunction<BlockState> litTourouLong(int value) {
-		return (state) -> { return (state.getValue(TourouLong.HALF) == DoubleBlockHalf.UPPER && state.getValue(TourouLong.LIT)) ? value : 0; };
-	}
-
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static Chouzubachi chouzubachi() {
-		return new Chouzubachi(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never));
+		return new Chouzubachi(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Tourou tourou() {
-		return new Tourou(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never).lightLevel(litBlockEmission(15)));
+		return new Tourou(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static TourouLong tourouLong() {
-		return new TourouLong(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never).lightLevel(litTourouLong(15)));
+		return new TourouLong(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Bonsai bonsai() {
-		return new Bonsai(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F, 3.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never));
+		return new Bonsai(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static Kanyou kanyou() {
-		return new Kanyou(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never));
+		return new Kanyou(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Ikegaki ikegaki() {
-		return new Ikegaki(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never));
+		return new Ikegaki(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static IkegakiLong ikegakiLong() {
-		return new IkegakiLong(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity).isSuffocating(Garden_Blocks::never));
+		return new IkegakiLong(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Samon samon() {
-		return new Samon(AbstractBlock.Properties.of(Material.SAND).strength(1.0F, 3.0F).sound(SoundType.SAND)
-				.isValidSpawn(Garden_Blocks::neverEntity));
+		return new Samon(Block.Properties.create(Material.SAND).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.SAND));
 	}
 	
 	private static Niwaishi niwaishi() {
-		return new Niwaishi(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 3.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity));
+		return new Niwaishi(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE));
 	}
 
-	private static Niwaishi_slab niwaishi_slab() {
-		return new Niwaishi_slab(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 3.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Garden_Blocks::neverEntity));
+	private static Niwaishi_Slab niwaishi_slab() {
+		return new Niwaishi_Slab(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE));
 	}
+	
 
 	///* Register *///
 	private static Block register(String name, Block block) {

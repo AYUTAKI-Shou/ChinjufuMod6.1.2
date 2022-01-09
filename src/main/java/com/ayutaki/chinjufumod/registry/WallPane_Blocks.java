@@ -1,7 +1,6 @@
 package com.ayutaki.chinjufumod.registry;
 
 import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.blocks.kamoi.Base_Kamoi;
 import com.ayutaki.chinjufumod.blocks.kamoi.Kamoi_Acacia;
 import com.ayutaki.chinjufumod.blocks.kamoi.Kamoi_Birch;
 import com.ayutaki.chinjufumod.blocks.kamoi.Kamoi_DarkOak;
@@ -22,28 +21,20 @@ import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Stage2;
 import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Stage3;
 import com.ayutaki.chinjufumod.blocks.wallpane.WallPane_Stage4;
 import com.ayutaki.chinjufumod.blocks.wood.WoodPillar_CM;
-import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
-import com.ayutaki.chinjufumod.blocks.wood.WoodStairs_CM;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class WallPanel_Blocks {
+public class WallPane_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block BRICK_GRA = register("block_brick_gra_c", bricks());
 	public static Block BRICK_DIO = register("block_brick_dio_c", bricks());
@@ -78,18 +69,18 @@ public class WallPanel_Blocks {
 	public static Block PILLAR_aca = register("block_pillar_aca_c", logPillar());
 	public static Block PILLAR_doak = register("block_pillar_doak_c", logPillar());
 
-	public static Block PILLARSLAB_oak = register("block_kamoi_oak", new Kamoi_Oak(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityKamoi).isSuffocating(WallPanel_Blocks::never)));
-	public static Block PILLARSLAB_spru = register("block_kamoi_spruce", new Kamoi_Spruce(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityKamoi).isSuffocating(WallPanel_Blocks::never)));
-	public static Block PILLARSLAB_bir = register("block_kamoi_birch", new Kamoi_Birch(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityKamoi).isSuffocating(WallPanel_Blocks::never)));
-	public static Block PILLARSLAB_jun = register("block_kamoi_jungle", new Kamoi_Jungle(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityKamoi).isSuffocating(WallPanel_Blocks::never)));
-	public static Block PILLARSLAB_aca = register("block_kamoi_acacia", new Kamoi_Acacia(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityKamoi).isSuffocating(WallPanel_Blocks::never)));
-	public static Block PILLARSLAB_doak = register("block_kamoi_darkoak", new Kamoi_DarkOak(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityKamoi).isSuffocating(WallPanel_Blocks::never)));
+	public static Block PILLARSLAB_oak = register("block_kamoi_oak", new Kamoi_Oak(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_spru = register("block_kamoi_spruce", new Kamoi_Spruce(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_bir = register("block_kamoi_birch", new Kamoi_Birch(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_jun = register("block_kamoi_jungle", new Kamoi_Jungle(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_aca = register("block_kamoi_acacia", new Kamoi_Acacia(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_doak = register("block_kamoi_darkoak", new Kamoi_DarkOak(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block WP_LOG_oak = register("block_wp_log_oak", woodPaneStage3());
 	public static Block WP_LOG_spru = register("block_wp_log_spru", woodPaneStage3());
@@ -105,8 +96,8 @@ public class WallPanel_Blocks {
 	public static Block WP_PLANK_aca = register("block_wp_plank_aca", woodPaneStage4());
 	public static Block WP_PLANK_doak = register("block_wp_plank_doak", woodPaneStage4());
 
-	public static Block WP_STONE = register("block_wp_stone", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 6.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
+	public static Block WP_STONE = register("block_wp_stone", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid()));
 	public static Block WP_STONE_M = register("block_wp_stone_m", stonePaneStage2());
 
 	public static Block WP_STONE_gra = register("block_wp_stone_gra", stonePaneStage2());
@@ -123,15 +114,15 @@ public class WallPanel_Blocks {
 	public static Block WP_STONE_dioP = register("block_wp_stone_diop", stonePaneStage3());
 	public static Block WP_STONE_andP = register("block_wp_stone_andp", stonePaneStage3());
 
-	public static Block WP_BRICK = register("block_wp_brick", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 6.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
+	public static Block WP_BRICK = register("block_wp_brick", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid()));
 
 	public static Block WP_SANDSTONE = register("block_wp_sand_stone", stonePaneStage3());
 	public static Block WP_REDSANDSTONE = register("block_wp_redsand_stone", stonePaneStage3());
 
 	public static Block WP_PRISMA = register("block_wp_prisma", stonePaneStage3());
-	public static Block WP_OBSIDIAN = register("block_wp_obsidian", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1200.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
+	public static Block WP_OBSIDIAN = register("block_wp_obsidian", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 1200.0F).sound(SoundType.STONE).notSolid()));
 
 	public static Block WP_CLAY = register("block_wp_clay", clayPane());
 	public static Block WP_CLAY_white = register("block_wp_clay_white", clayPane());
@@ -169,19 +160,19 @@ public class WallPanel_Blocks {
 	public static Block WP_GLASS_red = register("block_wp_glass_red", glassPane());
 	public static Block WP_GLASS_black = register("block_wp_glass_black", glassPane());
 
-	public static Block WP_NETHE_rack = register("block_wp_netherrack", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 0.4F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
+	public static Block WP_NETHE_rack = register("block_wp_netherrack", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 0.4F).sound(SoundType.STONE).notSolid()));
 	public static Block WP_NETHE_b = register("block_wp_netherb", stonePaneStage2());
 	public static Block WP_QUARTZ = register("block_wp_quartz", stonePaneStage2());
 	public static Block WP_QUARTZ_PIL = register("block_wp_quartz_pil", stonePaneStage3());
 
-	public static Block WP_ENDSTONE = register("block_wp_endstone", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 9.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
-	public static Block WP_ENDBRICKS = register("block_wp_endstone_b", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 9.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
+	public static Block WP_ENDSTONE = register("block_wp_endstone", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 9.0F).sound(SoundType.STONE).notSolid()));
+	public static Block WP_ENDBRICKS = register("block_wp_endstone_b", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 9.0F).sound(SoundType.STONE).notSolid()));
 
-	public static Block WP_PURPUR = register("block_wp_purpur", new WallPane_Simple(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 6.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never)));
+	public static Block WP_PURPUR = register("block_wp_purpur", new WallPane_Simple(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid()));
 	public static Block WP_PURPUR_PIL = register("block_wp_purpur_pil", stonePaneStage3());
 
 	public static Block WP_BAMBOO = register("block_wp_bamboo", woodPaneStage3());
@@ -241,100 +232,65 @@ public class WallPanel_Blocks {
 	public static Block WP_NAMAKOB_black = register("block_wp_namako_b_black", namakoPaneBtype());
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
-	private static boolean neverSlab(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return (state.getValue(WoodSlabWater_CM.TYPE) == SlabType.DOUBLE)? true : false;
-	}
-
-	private static Boolean neverEntitySlab(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodSlabWater_CM.TYPE) == SlabType.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityStairs(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodStairs_CM.HALF) == Half.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityKamoi(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(Base_Kamoi.STAGE_1_4) != 4)? (boolean)false : (boolean)true;
-	}
-
 	private static Block bricks() {
-		return new BrickBlock_CM(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new BrickBlock_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 
 	private static BrickSlabWater_CM brickSlab() {
-		return new BrickSlabWater_CM(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntitySlab).isSuffocating(WallPanel_Blocks::neverSlab));
+		return new BrickSlabWater_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static BrickStairs_CM brickStairs() {
-		return new BrickStairs_CM(BRICK_GRA.defaultBlockState(), Block.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntityStairs).isSuffocating(WallPanel_Blocks::never));
+		return new BrickStairs_CM(BRICK_GRA.getDefaultState(), Block.Properties.create(Material.WOOD)
+				.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static BrickPillar_CM brickPillar() {
-		return new BrickPillar_CM(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE));
+		return new BrickPillar_CM(Block.Properties.create(Material.WOOD, MaterialColor.STONE).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE));
 	}
 
 	private static WoodPillar_CM logPillar() {
-		return new WoodPillar_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new WoodPillar_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static WallPane_Stage3 woodPaneStage3() {
-		return new WallPane_Stage3(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Stage3(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WallPane_Stage4 woodPaneStage4() {
-		return new WallPane_Stage4(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Stage4(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WallPane_Stage2 stonePaneStage2() {
-		return new WallPane_Stage2(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Stage2(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static WallPane_Stage3 stonePaneStage3() {
-		return new WallPane_Stage3(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Stage3(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static WallPane_Stage4 stonePaneStage4() {
-		return new WallPane_Stage4(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Stage4(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static WallPane_Clay clayPane() {
-		return new WallPane_Clay(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Clay(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static WallPane_Glass glassPane() {
-		return new WallPane_Glass(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 0.3F).sound(SoundType.GLASS)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Glass(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 0.3F).sound(SoundType.GLASS).notSolid());
 	}
 
 	private static WallPane_Plaster plasterPane() {
-		return new WallPane_Plaster(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Plaster(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static WallPane_Namako namakoPane() {
-		return new WallPane_Namako(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Namako(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	private static WallPane_Namako_B namakoPaneBtype() {
-		return new WallPane_Namako_B(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(WallPanel_Blocks::neverEntity).isSuffocating(WallPanel_Blocks::never));
+		return new WallPane_Namako_B(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	///* Register *///

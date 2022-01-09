@@ -8,15 +8,14 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +24,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -40,6 +38,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -50,56 +49,61 @@ public class Takeakari extends Block implements IWaterLoggable {
 	/* Property */
 	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
-	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(6.5D, 0.0D, 1.5D, 9.5D, 8.0D, 4.5D);
-	protected static final VoxelShape AABB_WEST = Block.box(11.5D, 0.0D, 6.5D, 14.5D, 8.0D, 9.5D);
-	protected static final VoxelShape AABB_NORTH = Block.box(6.5D, 0.0D, 11.5D, 9.5D, 8.0D, 14.5D);
-	protected static final VoxelShape AABB_EAST = Block.box(1.5D, 0.0D, 6.5D, 4.5D, 8.0D, 9.5D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(6.5D, 0.0D, 1.5D, 9.5D, 8.0D, 4.5D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(11.5D, 0.0D, 6.5D, 14.5D, 8.0D, 9.5D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(6.5D, 0.0D, 11.5D, 9.5D, 8.0D, 14.5D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(1.5D, 0.0D, 6.5D, 4.5D, 8.0D, 9.5D);
 
-	public Takeakari(AbstractBlock.Properties properties) {
+	public Takeakari(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(LIT, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(LIT, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
+	}
+
+	public int getLightValue(BlockState state) {
+		return state.get(LIT) ? 14 : 0;
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		boolean lit = state.getValue(LIT);
+		boolean lit = state.get(LIT);
 
 		if (lit == false) {
 			
-			if (!state.getValue(WATERLOGGED)) {
+			if (!state.get(WATERLOGGED)) {
 				
 				if (item == Items.FLINT_AND_STEEL) {
-					itemstack.hurtAndBreak(1, playerIn, user -> { user.broadcastBreakEvent(hand); } );
+					itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(hand); } );
 
 					CMEvents.soundFlint(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(true)), 3); }
-		
+					worldIn.setBlockState(pos, state.with(LIT, Boolean.valueOf(true))); }
+
 				if (item == Items_Teatime.MATCH) {
-					CMEvents.Consume_1Item(playerIn, hand);					
+					CMEvents.Consume_1Item(playerIn, hand);
 					CMEvents.soundFlint(worldIn, pos);
 					
-					worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(true)), 3); }
+					worldIn.setBlockState(pos, state.with(LIT, Boolean.valueOf(true))); }
 				
-				if (item != Items.FLINT_AND_STEEL && item != Items_Teatime.MATCH) { CMEvents.textNotHave(worldIn, pos, playerIn); } }
+				if (item != Items.FLINT_AND_STEEL && item != Items_Teatime.MATCH) { CMEvents.textNotHave(worldIn, pos, playerIn); }
+			}
 			
-			if (state.getValue(WATERLOGGED)) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); }
+			if (state.get(WATERLOGGED)) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); }
 		}
 		
 		if (lit == true) {
 			if (itemstack.isEmpty()) {
 				CMEvents.soundFireExting(worldIn, pos);
-				worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(false)), 3); }
+				worldIn.setBlockState(pos, state.with(LIT, Boolean.valueOf(false))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -111,109 +115,104 @@ public class Takeakari extends Block implements IWaterLoggable {
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER))
-				.setValue(H_FACING, context.getHorizontalDirection().getOpposite());
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
-		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
-	}
-
-	/* Update BlockState. */
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 10);
+	public int tickRate(IWorldReader world) {
+		return 10;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		if (state.getValue(LIT) == true && state.getValue(WATERLOGGED) == true) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 10);
-			
+		if (state.get(LIT) == true && state.get(WATERLOGGED)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 			CMEvents.soundFireExting(worldIn, pos);
-			worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(false)), 3); }
+			worldIn.setBlockState(pos, state.with(LIT, Boolean.valueOf(false))); }
 
 		else { }
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 
-		Direction direction = state.getValue(H_FACING);
+		Direction direction = state.get(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		default:
+		case NORTH:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
 	}
 
-	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(H_FACING, LIT, WATERLOGGED);
 	}
 
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
-		boolean lit = state.getValue(LIT);
+		boolean lit = state.get(LIT);
 
 		double d0 = (double)pos.getX() + 0.5D;
 		double d1 = (double)pos.getY() + 0.3D;
@@ -223,12 +222,12 @@ public class Takeakari extends Block implements IWaterLoggable {
 
 			if (rand.nextDouble() < 0.05D) {
 				/** 種類, 座標x, y, z, 速度x, y, z **/
-				Direction direction = state.getValue(H_FACING);
+				Direction direction = state.get(H_FACING);
 				Direction.Axis direction$axis = direction.getAxis();
 				double d4 = rand.nextDouble() * 0.05D;
-				double d5 = direction$axis == Direction.Axis.X ? (double)direction.getStepX() * 0.35D : d4;
+				double d5 = direction$axis == Direction.Axis.X ? (double)direction.getXOffset() * 0.35D : d4;
 				double d6 = rand.nextDouble() * 6.0D / 16.0D;
-				double d7 = direction$axis == Direction.Axis.Z ? (double)direction.getStepZ() * 0.35D : d4;
+				double d7 = direction$axis == Direction.Axis.Z ? (double)direction.getZOffset() * 0.35D : d4;
 				worldIn.addParticle(ParticleTypes.SMOKE, d0 - d5, d1 + d6 +0.2D, d2 - d7, 0.0D, 0.0D, 0.0D);
 			}
 		}
@@ -236,9 +235,9 @@ public class Takeakari extends Block implements IWaterLoggable {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_takeakari")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_takeakari")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

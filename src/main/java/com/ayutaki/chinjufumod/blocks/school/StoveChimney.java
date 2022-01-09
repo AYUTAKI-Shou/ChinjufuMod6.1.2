@@ -2,17 +2,15 @@ package com.ayutaki.chinjufumod.blocks.school;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -33,77 +31,46 @@ public class StoveChimney extends Block implements IWaterLoggable {
 	public static final BooleanProperty WEST = BooleanProperty.create("west");
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
-	/* Collision */
-	private static final VoxelShape AABB_CENTER = Block.box(5.9D, 5.9D, 5.9D, 10.1D, 10.1D, 10.1D);
-	private static final VoxelShape AABB_UP = Block.box(5.9D, 10.1D, 5.9D, 10.1D, 16.0D, 10.1D);
-	private static final VoxelShape AABB_DOWN = Block.box(5.9D, 0.0D, 5.9D, 10.1D, 10.1D, 10.1D);
-	private static final VoxelShape AABB_NORTH = Block.box(5.9D, 5.9D, 0.0D, 10.1D, 10.1D, 5.9D);
-	private static final VoxelShape AABB_EAST = Block.box(10.1D, 5.9D, 5.9D, 16.0D, 10.1D, 10.1D);
-	private static final VoxelShape AABB_SOUTH = Block.box(5.9D, 5.9D, 10.1D, 10.1D, 10.1D, 16.0D);
-	private static final VoxelShape AABB_WEST = Block.box(0.0D, 5.9D, 5.9D, 5.9D, 10.1D, 10.1D);
+	private static final VoxelShape AABB_CENTER = Block.makeCuboidShape(5.9D, 5.9D, 5.9D, 10.1D, 10.1D, 10.1D);
+	private static final VoxelShape AABB_UP = Block.makeCuboidShape(5.9D, 10.1D, 5.9D, 10.1D, 16.0D, 10.1D);
+	private static final VoxelShape AABB_DOWN = Block.makeCuboidShape(5.9D, 0.0D, 5.9D, 10.1D, 10.1D, 10.1D);
+	private static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.9D, 5.9D, 0.0D, 10.1D, 10.1D, 5.9D);
+	private static final VoxelShape AABB_EAST = Block.makeCuboidShape(10.1D, 5.9D, 5.9D, 16.0D, 10.1D, 10.1D);
+	private static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.9D, 5.9D, 10.1D, 10.1D, 10.1D, 16.0D);
+	private static final VoxelShape AABB_WEST = Block.makeCuboidShape(0.0D, 5.9D, 5.9D, 5.9D, 10.1D, 10.1D);
 
-	public StoveChimney(AbstractBlock.Properties properties) {
+	public StoveChimney(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(NORTH, Boolean.valueOf(false))
-				.setValue(EAST, Boolean.valueOf(false))
-				.setValue(SOUTH, Boolean.valueOf(false))
-				.setValue(WEST, Boolean.valueOf(false))
-				.setValue(UP, Boolean.valueOf(false))
-				.setValue(DOWN, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
+				.with(EAST, Boolean.valueOf(false))
+				.with(SOUTH, Boolean.valueOf(false))
+				.with(WEST, Boolean.valueOf(false))
+				.with(UP, Boolean.valueOf(false))
+				.with(DOWN, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* Gives a value when placed. */
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER));
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	/* Connect the blocks. */
 	private boolean canConnectTo(IWorld worldIn, BlockPos source, Direction direction) {
-		BlockState state = worldIn.getBlockState(source.relative(direction));
+		BlockState state = worldIn.getBlockState(source.offset(direction));
 		return state.getBlock() == this;
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true;
-		}
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		else { return Fluids.EMPTY; }
 	}
 
 	/* Update BlockState. */
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if (stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
 		boolean up = canConnectTo(worldIn, pos, Direction.UP);
 		boolean down = canConnectTo(worldIn, pos, Direction.DOWN);
@@ -111,19 +78,19 @@ public class StoveChimney extends Block implements IWaterLoggable {
 		boolean east = canConnectTo(worldIn, pos, Direction.EAST);
 		boolean south = canConnectTo(worldIn, pos, Direction.SOUTH);
 		boolean west = canConnectTo(worldIn, pos, Direction.WEST);
-		return stateIn.setValue(UP, up).setValue(DOWN, down).setValue(NORTH, north).setValue(EAST, east).setValue(SOUTH, south).setValue(WEST, west);
+		return stateIn.with(UP, up).with(DOWN, down).with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
 	}
 
 	/* Collision */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 
-		boolean up = state.getValue(UP).booleanValue();
-		boolean down = state.getValue(DOWN).booleanValue();
-		boolean north = state.getValue(NORTH).booleanValue();
-		boolean east = state.getValue(EAST).booleanValue();
-		boolean south = state.getValue(SOUTH).booleanValue();
-		boolean west = state.getValue(WEST).booleanValue();
+		boolean up = state.get(UP).booleanValue();
+		boolean down = state.get(DOWN).booleanValue();
+		boolean north = state.get(NORTH).booleanValue();
+		boolean east = state.get(EAST).booleanValue();
+		boolean south = state.get(SOUTH).booleanValue();
+		boolean west = state.get(WEST).booleanValue();
 
 		VoxelShape shape = AABB_CENTER;
 
@@ -169,13 +136,37 @@ public class StoveChimney extends Block implements IWaterLoggable {
 		return shape;
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
+	/* Waterlogged */
+	@SuppressWarnings("deprecation")
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

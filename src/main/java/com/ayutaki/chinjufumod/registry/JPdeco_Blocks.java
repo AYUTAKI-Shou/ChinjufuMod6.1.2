@@ -1,7 +1,5 @@
 package com.ayutaki.chinjufumod.registry;
 
-import java.util.function.ToIntFunction;
-
 import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.blocks.furniture.Andon;
 import com.ayutaki.chinjufumod.blocks.futon.Futon;
@@ -19,25 +17,18 @@ import com.ayutaki.chinjufumod.blocks.season.Door_CM;
 import com.ayutaki.chinjufumod.blocks.season.TrapDoor_CM;
 import com.ayutaki.chinjufumod.blocks.season.WoodButton_CM;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class JPDeco_Blocks {
+public class JPdeco_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block TATAMI_H = register("block_tatamih", tatami());
 	public static Block TATAMI_H_white = register("block_tatamih_white", tatami());
@@ -139,107 +130,65 @@ public class JPDeco_Blocks {
 	public static Block FUTON_red = register("block_futon_c_red", futon());
 	public static Block FUTON_black = register("block_futon_c_black", futon());
 
-	public static Block WADAIKO = register("block_wadaiko", new Wadaiko_Large(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never)));
-	public static Block WADAIKO_small = register("block_wadaiko_small", new Wadaiko_Small(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never)));
+	public static Block WADAIKO = register("block_wadaiko", new Wadaiko_Large(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block WADAIKO_small = register("block_wadaiko_small", new Wadaiko_Small(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
 
 	/* Share variables */
-	private static ToIntFunction<BlockState> litBlockEmission(int value) {
-		return (state) -> { return state.getValue(BlockStateProperties.LIT) ? value : 0; };
-	}
-
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
-	private static boolean neverTatami(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return (state.getValue(Tatami.TYPE) == SlabType.DOUBLE)? true : false;
-	}
-
-	private static Boolean neverEntityTatami(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(Tatami.TYPE) == SlabType.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
 	private static Tatami tatami() {
-		return new Tatami(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntityTatami).isSuffocating(JPDeco_Blocks::neverTatami));
+		return new Tatami(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid());
 	}
 
 	private static Tatami_Y tatamiY() {
-		return new Tatami_Y(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntityTatami).isSuffocating(JPDeco_Blocks::neverTatami));
-	}
-
-	private static boolean neverSlab(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return (state.getValue(BambooSlab.TYPE) == SlabType.DOUBLE)? true : false;
-	}
-
-	private static Boolean neverEntitySlab(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(BambooSlab.TYPE) == SlabType.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityStairs(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(BambooStairs.TYPE) == Half.BOTTOM)? (boolean)false : (boolean)true;
+		return new Tatami_Y(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid());
 	}
 
 	private static BambooCube bambooCube() {
-		return new BambooCube(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD).noOcclusion());
+		return new BambooCube(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static BambooStairs bambooStairs() {
-		return new BambooStairs(TAKECUBE.defaultBlockState(), Block.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntityStairs).isSuffocating(JPDeco_Blocks::never));
+		return new BambooStairs(TAKECUBE.getDefaultState(), Block.Properties.create(Material.WOOD)
+				.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static BambooSlab bambooSlab() {
-		return new BambooSlab(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntitySlab).isSuffocating(JPDeco_Blocks::neverSlab));
+		return new BambooSlab(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static BambooFence bambooFence() {
-		return new BambooFence(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new BambooFence(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static BambooFenceGate bambooFenceGate() {
-		return new BambooFenceGate(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new BambooFenceGate(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Door_CM bambooDoor() {
-		return new Door_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new Door_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static TrapDoor_CM bambooTrapDoor() {
-		return new TrapDoor_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new TrapDoor_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static BambooPressurePlate bambooPressurePlate() {
-		return new BambooPressurePlate(BambooPressurePlate.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new BambooPressurePlate(BambooPressurePlate.Sensitivity.EVERYTHING, Block.Properties.create(Material.WOOD)
+				.hardnessAndResistance(0.5F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WoodButton_CM bambooButton() {
-		return new WoodButton_CM(AbstractBlock.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new WoodButton_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD).notSolid());
 	}
 
 
 	private static Andon andon() {
-		return new Andon(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never).lightLevel(litBlockEmission(14)));
+		return new Andon(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Futon futon() {
-		return new Futon(AbstractBlock.Properties.of(Material.WOOL).strength(1.0F, 1.0F).sound(SoundType.WOOL)
-				.noOcclusion().isValidSpawn(JPDeco_Blocks::neverEntity).isSuffocating(JPDeco_Blocks::never));
+		return new Futon(Block.Properties.create(Material.WOOL).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.CLOTH).notSolid());
 	}
 
 	///* Register *///

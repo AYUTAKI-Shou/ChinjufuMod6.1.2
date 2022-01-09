@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.registry.Crop_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -40,107 +39,105 @@ public class Corn extends BushBlock implements IGrowable {
 	public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
 	public static final IntegerProperty AGE_0_7 = IntegerProperty.create("age", 0, 7);
 	/* Collision */
-	protected static final VoxelShape AABB_BOT_0 = Block.box(1.0D, -1.0D, 1.0D, 15.0D, 1.0D, 15.0D);
-	protected static final VoxelShape AABB_BOT_1 = Block.box(1.0D, -1.0D, 1.0D, 15.0D, 1.0D, 15.0D);
-	protected static final VoxelShape AABB_BOT_2 = Block.box(1.0D, -1.0D, 1.0D, 15.0D, 7.0D, 15.0D);
-	protected static final VoxelShape AABB_BOT_3 = Block.box(1.0D, -1.0D, 1.0D, 15.0D, 11.0D, 15.0D);
-	protected static final VoxelShape AABB_BOT_4 = Block.box(1.0D, -1.0D, 1.0D, 15.0D, 18.0D, 15.0D);
-	protected static final VoxelShape AABB_BOT_5 = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 24.0D, 15.0D);
-	protected static final VoxelShape AABB_BOT_6 = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 28.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_0 = Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 1.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_1 = Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 1.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_2 = Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 7.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_3 = Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 11.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_4 = Block.makeCuboidShape(1.0D, -1.0D, 1.0D, 15.0D, 18.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_5 = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 24.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_6 = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 28.0D, 15.0D);
 
-	protected static final VoxelShape AABB_BOT_7 = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
-	protected static final VoxelShape AABB_TOP_7 = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+	protected static final VoxelShape AABB_BOT_7 = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+	protected static final VoxelShape AABB_TOP_7 = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
 
-	public Corn(AbstractBlock.Properties properties) {
+	public Corn(Block.Properties properties) {
 		super(properties);
 
-		registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER)
-				.setValue(AGE_0_7, Integer.valueOf(0)));
+		setDefaultState(this.stateContainer.getBaseState().with(HALF, DoubleBlockHalf.LOWER)
+				.with(AGE_0_7, Integer.valueOf(0)));
 	}
 
 	/* Gives a value when placed. */
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getClickedPos();
-		return blockpos.getY() < 255 && context.getLevel().getBlockState(blockpos.above()).canBeReplaced(context) ?
+		BlockPos blockpos = context.getPos();
+		return blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ?
 				 super.getStateForPlacement(context) : null;
 	}
 
 	/* Add DoubleBlockHalf.UPPER on the Block. */
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(AGE_0_7, Integer.valueOf(0)), 3);
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		worldIn.setBlockState(pos.up(), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AGE_0_7, Integer.valueOf(0)), 3);
 	}
 
 	/* blockstate の更新 */
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
 
-		DoubleBlockHalf half = stateIn.getValue(HALF);
+		DoubleBlockHalf half = stateIn.get(HALF);
 		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP)) {
 			return (facingState.getBlock() == Crop_Blocks.CORN) &&
-					facingState.getValue(HALF) != half ? stateIn.setValue(AGE_0_7, facingState.getValue(AGE_0_7)) : Blocks.AIR.defaultBlockState();
+					facingState.get(HALF) != half ? stateIn.with(AGE_0_7, facingState.get(AGE_0_7)) : Blocks.AIR.getDefaultState();
 		}
 		else {
-			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !stateIn.canSurvive(worldIn, pos) ? Blocks.AIR
-					.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, pos, facingPos);
+			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, pos) ? Blocks.AIR
+					.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, pos, facingPos);
 		}
 	}
 
-	/* Limit the place. */
-	protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	/* 設置制限 */
+	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		Block block = state.getBlock();
 		return (block != Blocks.GRASS_BLOCK && block != Blocks.DIRT && block != Blocks.COARSE_DIRT && block != Blocks.PODZOL) && block == Blocks.FARMLAND;
 	}
 
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		if (state.getValue(HALF) != DoubleBlockHalf.UPPER) {
-			BlockPos blockpos = pos.below();
-			return this.mayPlaceOn(worldIn.getBlockState(blockpos), worldIn, blockpos);
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		if (state.get(HALF) != DoubleBlockHalf.UPPER) {
+			BlockPos blockpos = pos.down();
+			return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
 		}
 
 		else {
-			BlockState blockstate = worldIn.getBlockState(pos.below());
-			if (state.getBlock() != this) return super.canSurvive(state, worldIn, pos);
-			return blockstate.getBlock() == this && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
+			BlockState blockstate = worldIn.getBlockState(pos.down());
+			if (state.getBlock() != this) return super.isValidPosition(state, worldIn, pos);
+			return blockstate.getBlock() == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
 		}
 	}
 
-	public boolean canBeReplaced(BlockState state, BlockItemUseContext context) {
+	public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
 		return false;
 	}
 
 	/* TickRandom */
-	@Override
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(AGE_0_7);
-		BlockState upstate = worldIn.getBlockState(pos.above());
+		int i = state.get(AGE_0_7);
+		BlockState upstate = worldIn.getBlockState(pos.up());
 		
 		if (!worldIn.isAreaLoaded(pos, 2)) { return; }
 
 		float f = getGrowthChance(this, worldIn, pos);
-		if (i < 7 && worldIn.getRawBrightness(pos.above(), 0) >= 9 && state.getValue(HALF) == DoubleBlockHalf.LOWER &&
-					net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt((int)(25.0F / f) + 1) == 0)) {
-
-			worldIn.setBlock(pos, state.setValue(AGE_0_7, Integer.valueOf(i + 1)), 2);
-			net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
-
-			if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-				worldIn.setBlock(pos.above(), upstate.setValue(AGE_0_7, Integer.valueOf(i + 1)), 2);
+		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+			if (i < 7 && worldIn.getLightSubtracted(pos.up(), 0) >= 9 &&
+						net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt((int)(25.0F / f) + 1) == 0)) {
+	
+				worldIn.setBlockState(pos, state.with(AGE_0_7, Integer.valueOf(i + 1)), 2);
+				worldIn.setBlockState(pos.up(), upstate.with(AGE_0_7, Integer.valueOf(i + 1)), 2);
+				net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
 			}
 		}
 	}
 
 	protected static float getGrowthChance(Block blockIn, IBlockReader worldIn, BlockPos pos) {
 		float f = 1.0F;
-		BlockPos blockpos = pos.below();
+		BlockPos blockpos = pos.down();
 
 		for(int i = -1; i <= 1; ++i) {
 			for(int j = -1; j <= 1; ++j) {
 				float f1 = 0.0F;
-				BlockState blockstate = worldIn.getBlockState(blockpos.offset(i, 0, j));
-				if (blockstate.canSustainPlant(worldIn, blockpos.offset(i, 0, j), net.minecraft.util.Direction.UP, (net.minecraftforge.common.IPlantable)blockIn)) {
+				BlockState blockstate = worldIn.getBlockState(blockpos.add(i, 0, j));
+				if (blockstate.canSustainPlant(worldIn, blockpos.add(i, 0, j), net.minecraft.util.Direction.UP, (net.minecraftforge.common.IPlantable)blockIn)) {
 					f1 = 1.0F;
-					if (blockstate.isFertile(worldIn, blockpos.offset(i, 0, j))) {
+					if (blockstate.isFertile(worldIn, blockpos.add(i, 0, j))) {
 						f1 = 3.0F;
 					}
 				}
@@ -173,34 +170,39 @@ public class Corn extends BushBlock implements IGrowable {
 
 	/* 必要項目 */
 	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-		return state.getValue(AGE_0_7) < 7;
+		return state.get(AGE_0_7) < 7;
+	}
+
+	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+		return true;
 	}
 
 	protected int getBonemealAgeIncrease(World worldIn) {
-		return MathHelper.nextInt(worldIn.random, 2, 5);
+		return MathHelper.nextInt(worldIn.rand, 2, 5);
 	}
 
-	public void growCrops(World worldIn, BlockPos pos, BlockState state) {
-		BlockState upstate = worldIn.getBlockState(pos.above());
-		int i = state.getValue(AGE_0_7) + this.getBonemealAgeIncrease(worldIn);
+	@Override
+	public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
+		BlockState upstate = worldIn.getBlockState(pos.up());
+		int i = state.get(AGE_0_7) + this.getBonemealAgeIncrease(worldIn);
 		int j = 7;
 		if (i > j) {
 			i = j;
 		}
-		worldIn.setBlock(pos, state.setValue(AGE_0_7, Integer.valueOf(i)), 2);
-
-		if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-			worldIn.setBlock(pos.above(), upstate.setValue(AGE_0_7, Integer.valueOf(i)), 2);
+		
+		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+			worldIn.setBlockState(pos, state.with(AGE_0_7, Integer.valueOf(i)), 2);
+			worldIn.setBlockState(pos.up(), upstate.with(AGE_0_7, Integer.valueOf(i)), 2);
 		}
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		DoubleBlockHalf half = state.getValue(HALF);
-		int i = state.getValue(AGE_0_7);
+		DoubleBlockHalf half = state.get(HALF);
+		int i = state.get(AGE_0_7);
 
-		switch (i) {
+		switch(i) {
 		default:
 		case 0:
 			return (half == DoubleBlockHalf.UPPER)? VoxelShapes.empty() : AABB_BOT_0;
@@ -221,65 +223,36 @@ public class Corn extends BushBlock implements IGrowable {
 		}
 	}
 
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(AGE_0_7, HALF);
 	}
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.SEEDS_CORN);
 	}
 
-	/* Destroy a DoubleBlock from DoublePlantBlock.class */
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+	/* Destroy at the same time. & Drop item. */
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
 
-		if (!worldIn.isClientSide) {
-			if (playerIn.isCreative()) { breakLowerPart(worldIn, pos, state, playerIn); }
-			else { dropResources(state, worldIn, pos, (TileEntity)null, playerIn, playerIn.getMainHandItem()); }
-		}
-		super.playerWillDestroy(worldIn, pos, state, playerIn);
+		BlockState upstate = worldIn.getBlockState(pos.up());
+		BlockState downstate = worldIn.getBlockState(pos.down());
+
+		if (downstate.getBlock() == this && !playerIn.isCreative()) { worldIn.destroyBlock(pos.down(), false); }
+		if (upstate.getBlock() == this && !playerIn.isCreative()) { worldIn.destroyBlock(pos.up(), true); }
+		if (playerIn.isCreative()) { worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 35); }
+		super.onBlockHarvested(worldIn, pos, state, playerIn);
 	}
 
-	public void playerDestroy(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		super.playerDestroy(worldIn, playerIn, pos, Blocks.AIR.defaultBlockState(), te, stack);
-	}
-
-	protected static void breakLowerPart(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-		DoubleBlockHalf half = state.getValue(HALF);
-		if (half == DoubleBlockHalf.UPPER) {
-			BlockPos downpos = pos.below();
-			BlockState downstate = worldIn.getBlockState(downpos);
-
-			if (downstate.getBlock() == state.getBlock() && downstate.getValue(HALF) == DoubleBlockHalf.LOWER) {
-				worldIn.setBlock(downpos, Blocks.AIR.defaultBlockState(), 35);
-				worldIn.levelEvent(playerIn, 2001, downpos, Block.getId(downstate));
-			}
-		}
+	@Override
+	public void harvestBlock(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+		super.harvestBlock(worldIn, playerIn, pos, Blocks.AIR.getDefaultState(), te, stack);
 	}
 
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
 		return true;
-	}
-
-	/* 自動生成されたメソッド */
-	public boolean isMaxAge(BlockState state) {
-		return state.getValue(AGE_0_7) >= 7;
-	}
-
-	@Override
-	public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean tf) {
-		return !this.isMaxAge(state);
-	}
-
-	@Override
-	public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state) {
-		return true;
-	}
-
-	@Override
-	public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
-		this.growCrops(worldIn, pos, state);
 	}
 
 }

@@ -4,23 +4,18 @@ import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.blocks.unitblock.CafeTable;
 import com.ayutaki.chinjufumod.blocks.unitblock.Chabudai;
 import com.ayutaki.chinjufumod.blocks.unitblock.Endai;
-import com.ayutaki.chinjufumod.blocks.unitblock.TrayFude;
 import com.ayutaki.chinjufumod.blocks.unitblock.Kotatsu;
-import com.ayutaki.chinjufumod.blocks.unitblock.TrayLetter;
 import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk;
+import com.ayutaki.chinjufumod.blocks.unitblock.TrayFude;
+import com.ayutaki.chinjufumod.blocks.unitblock.TrayLetter;
 import com.ayutaki.chinjufumod.blocks.unitblock.UnitDesk;
 import com.ayutaki.chinjufumod.blocks.unitblock.Wagasa;
 import com.ayutaki.chinjufumod.blocks.unitblock.WrittenBook;
 import com.ayutaki.chinjufumod.blocks.unitblock.WrittenMakimono;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,7 +23,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Unit_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block UNITDESK = register("block_unitdesk", unitDesk());
 	public static Block UNITDESK_spruce = register("block_unitdesk_spruce", unitDesk());
@@ -64,8 +60,10 @@ public class Unit_Blocks {
 	public static Block LOWDESK_kaede = register("block_lowdesk_kaede", lowDesk());
 	public static Block LOWDESK_ichoh = register("block_lowdesk_ichoh", lowDesk());
 
-	public static Block LETTERTRAY = register("block_lettertray_c", letterTray());
-	public static Block FUDETRAY = register("block_fudetray_c", fudeTray());
+	public static Block LETTERTRAY = register("block_lettertray_c", new TrayLetter(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F)
+			.sound(SoundType.WOOD).doesNotBlockMovement().notSolid()));
+	public static Block FUDETRAY = register("block_fudetray_c", new TrayFude(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F)
+			.sound(SoundType.WOOD).doesNotBlockMovement().notSolid()));
 
 	public static Block CHABUDAI = register("block_chabudai", chabudai());
 	public static Block CHABUDAI_spruce = register("block_chabudai_spruce", chabudai());
@@ -103,64 +101,39 @@ public class Unit_Blocks {
 	public static Block KASA_green = register("block_mkasa_green", wagasa());
 	public static Block KASA_red = register("block_mkasa_red", wagasa());
 	public static Block KASA_black = register("block_mkasa_black", wagasa());
-
-	public static Block WRITTEN_BOOK = register("block_written_book", new WrittenBook(AbstractBlock.Properties.of(Material.WOOD).sound(SoundType.WOOD)
-			.strength(0.5F).noCollission().noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never)));
-	public static Block WRITTEN_MAKIMONO = register("block_written_makimono", new WrittenMakimono(AbstractBlock.Properties.of(Material.WOOD).sound(SoundType.WOOD)
-			.strength(0.5F).noCollission().noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never)));
 	
+	public static Block WRITTEN_BOOK = register("block_written_book", new WrittenBook(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)
+			.hardnessAndResistance(0.5F).doesNotBlockMovement().notSolid()));
+	public static Block WRITTEN_MAKIMONO = register("block_written_makimono", new WrittenMakimono(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)
+			.hardnessAndResistance(0.5F).doesNotBlockMovement().notSolid()));
+
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static UnitDesk unitDesk() {
-		return new UnitDesk(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new UnitDesk(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static CafeTable cafeTable() {
-		return new CafeTable(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new CafeTable(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Endai endai() {
-		return new Endai(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new Endai(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static LowDesk lowDesk() {
-		return new LowDesk(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new LowDesk(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
-	private static TrayLetter letterTray() {
-		return new TrayLetter(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
-	}
-
-	private static TrayFude fudeTray() {
-		return new TrayFude(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
-	}
-	
 	private static Chabudai chabudai() {
-		return new Chabudai(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new Chabudai(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Kotatsu kotatsu() {
-		return new Kotatsu(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new Kotatsu(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Wagasa wagasa() {
-		return new Wagasa(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOL)
-				.noOcclusion().isValidSpawn(Unit_Blocks::neverEntity).isSuffocating(Unit_Blocks::never));
+		return new Wagasa(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.CLOTH).notSolid());
 	}
 
 	///* Register *///

@@ -4,14 +4,9 @@ import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.blocks.chair.Zabuton;
 import com.ayutaki.chinjufumod.blocks.chair.Zaisu;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,7 +14,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class JPChair_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block ZABUTON_white = register("block_mzabuton_white", zabuton());
 	public static Block ZABUTON_orange = register("block_mzabuton_orange", zabuton());
@@ -38,8 +34,7 @@ public class JPChair_Blocks {
 	public static Block ZABUTON_red = register("block_mzabuton_red", zabuton());
 	public static Block ZABUTON_black = register("block_mzabuton_black", zabuton());
 
-	public static Block WARAZABUTON = register("block_wara_zabuton", new Zabuton(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.GRASS)
-			.noOcclusion().isValidSpawn(JPChair_Blocks::neverEntity).isSuffocating(JPChair_Blocks::never)));
+	public static Block WARAZABUTON = register("block_wara_zabuton", new Zabuton(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.CROP).notSolid()));
 
 	public static Block ZAISU_white = register("block_zaisu_white", zaisu());
 	public static Block ZAISU_orange = register("block_zaisu_orange", zaisu());
@@ -59,24 +54,15 @@ public class JPChair_Blocks {
 	public static Block ZAISU_black = register("block_zaisu_black", zaisu());
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static Zabuton zabuton() {
-		return new Zabuton(AbstractBlock.Properties.of(Material.WOOL).strength(1.0F, 1.0F).sound(SoundType.WOOL)
-				.noOcclusion().isValidSpawn(JPChair_Blocks::neverEntity).isSuffocating(JPChair_Blocks::never));
+		return new Zabuton(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.CLOTH).notSolid());
 	}
 
 	private static Zaisu zaisu() {
-		return new Zaisu(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(JPChair_Blocks::neverEntity).isSuffocating(JPChair_Blocks::never));
+		return new Zaisu(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
+	///* Register *///
 	private static Block register(String name, Block block) {
 		BLOCKS.register(name, () -> block);
 		return block;

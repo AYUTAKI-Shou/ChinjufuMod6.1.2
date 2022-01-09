@@ -21,11 +21,11 @@ public class ParticleManager_CM {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void registerFactories(ParticleFactoryRegisterEvent event) {
-		ParticleManager particleManager = Minecraft.getInstance().particleEngine;
-		particleManager.register(ParticleTypes_CM.FALLSAKURA, SakuraParticle.Factory::new);
-		particleManager.register(ParticleTypes_CM.FALLKAEDE, KaedeParticle.Factory::new);
-		particleManager.register(ParticleTypes_CM.FALLICHOH, IchohParticle.Factory::new);
-		particleManager.register(ParticleTypes_CM.FALLKARE, AutumnParticle.Factory::new);
+		ParticleManager particleManager = Minecraft.getInstance().particles;
+		particleManager.registerFactory(ParticleTypes_CM.FALLSAKURA, SakuraParticle.Factory::new);
+		particleManager.registerFactory(ParticleTypes_CM.FALLKAEDE, KaedeParticle.Factory::new);
+		particleManager.registerFactory(ParticleTypes_CM.FALLICHOH, IchohParticle.Factory::new);
+		particleManager.registerFactory(ParticleTypes_CM.FALLKARE, AutumnParticle.Factory::new);
 	}
 
 }

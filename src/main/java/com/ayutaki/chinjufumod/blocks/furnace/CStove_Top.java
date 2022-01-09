@@ -6,7 +6,6 @@ import com.ayutaki.chinjufumod.registry.Items_Chinjufu;
 import com.ayutaki.chinjufumod.registry.School_Blocks;
 import com.ayutaki.chinjufumod.tileentity.Stove_TileEntity;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,35 +24,35 @@ import net.minecraftforge.common.ToolType;
 public class CStove_Top extends AbstractStoveBlock {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
 
-	public CStove_Top(AbstractBlock.Properties properties) {
+	public CStove_Top(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* 生成する TileEntity */
-	public TileEntity newBlockEntity(IBlockReader world) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new Stove_TileEntity();
 	}
 
-	protected void openContainer(World worldIn, BlockPos pos, PlayerEntity playerIn) {
-		TileEntity tileentity = worldIn.getBlockEntity(pos);
+	protected void interactWith(World worldIn, BlockPos pos, PlayerEntity playerIn) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof Stove_TileEntity) {
-			playerIn.openMenu((INamedContainerProvider)tileentity);
-			playerIn.awardStat(Stats.INTERACT_WITH_FURNACE);
+			playerIn.openContainer((INamedContainerProvider)tileentity);
+			playerIn.addStat(Stats.INTERACT_WITH_FURNACE);
 		}
 	}
 
 	/* Destroy at the same time. & Drop item. */
 	@Override
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
 
-		BlockState blockstate = worldIn.getBlockState(pos.below());
-		/** False is not Drop. **/
+		BlockState blockstate = worldIn.getBlockState(pos.down());
+		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
 		if (blockstate.getBlock() == School_Blocks.CSTOVE_bot) {
-			worldIn.destroyBlock(pos.below(), false);
+			worldIn.destroyBlock(pos.down(), false);
 		}
-		super.playerWillDestroy(worldIn, pos, state, playerIn);
+		super.onBlockHarvested(worldIn, pos, state, playerIn);
 	}
 
 	/* Collisions for each property. */
@@ -62,7 +61,7 @@ public class CStove_Top extends AbstractStoveBlock {
 		return AABB_BOX;
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -76,7 +75,7 @@ public class CStove_Top extends AbstractStoveBlock {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Chinjufu.CSTOVE_bot);
 	}
 

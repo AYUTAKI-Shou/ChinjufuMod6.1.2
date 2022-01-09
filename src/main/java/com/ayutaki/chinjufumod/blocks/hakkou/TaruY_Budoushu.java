@@ -9,7 +9,7 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -31,18 +31,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TaruY_Budoushu extends BaseTaru_Yoh {
 
-	/* 1,2,3=未発酵、4,5=ワイン、6=熟成ワイン 進行が早いため6段階へ */
-	public TaruY_Budoushu(AbstractBlock.Properties properties) {
+	/* 1,2,3=未発酵、4,5=ワイン、6=熟成ワイン 進行が早いため6段階 */
+	public TaruY_Budoushu(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_6);
+		int i = state.get(STAGE_1_6);
 
 		/** Too early to collect **/
 		if (i <= 3) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
@@ -55,19 +55,19 @@ public class TaruY_Budoushu extends BaseTaru_Yoh {
 				CMEvents.soundSakeBottleFill(worldIn, pos);
 				
 				if (i == 4 || i == 5) {
-					if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.WINEBOT)); }
-					else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.WINEBOT))) {
-						playerIn.drop(new ItemStack(Items_Teatime.WINEBOT), false); } }
+					if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.WINEBOT)); }
+					else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.WINEBOT))) {
+						playerIn.dropItem(new ItemStack(Items_Teatime.WINEBOT), false); } }
+
+				if (i == 6 && item == Items_Teatime.SAKEBOTTLE) {
+					if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.JUKUWINEBOT)); }
+					else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.JUKUWINEBOT))) {
+						playerIn.dropItem(new ItemStack(Items_Teatime.JUKUWINEBOT), false); } }
 		
-				if (i == 6) {
-					if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.JUKUWINEBOT)); }
-					else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.JUKUWINEBOT))) {
-						playerIn.drop(new ItemStack(Items_Teatime.JUKUWINEBOT), false); } }
-				
 				/** Get EXP. **/
-				worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
-				worldIn.setBlock(pos, Hakkou_Blocks.COCOA_TARU.defaultBlockState()
-						.setValue(AXIS, state.getValue(AXIS)).setValue(BaseTaru_Yoh.STAGE_1_6, Integer.valueOf(6)), 3);
+				worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
+				worldIn.setBlockState(pos, Hakkou_Blocks.COCOA_TARU.getDefaultState()
+						.with(AXIS, state.get(AXIS)).with(BaseTaru_Yoh.STAGE_1_6, Integer.valueOf(6)));
 			}
 			
 			if (item != Items_Teatime.SAKEBOTTLE) { CMEvents.textNotHave(worldIn, pos, playerIn); }
@@ -83,25 +83,25 @@ public class TaruY_Budoushu extends BaseTaru_Yoh {
 
 		if (!worldIn.isAreaLoaded(pos, 2)) return;
 
-		int i = state.getValue(STAGE_1_6);
+		int i = state.get(STAGE_1_6);
 
 		if (i != 6 && rand.nextInt(6) == 0) {
-			worldIn.setBlock(pos, state.setValue(STAGE_1_6, Integer.valueOf(i + 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_1_6, Integer.valueOf(i + 1))); }
 
 		else { }
 	}
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.BUDOUSHU_TARU);
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_taru_budoushu")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_taru_budoushu")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

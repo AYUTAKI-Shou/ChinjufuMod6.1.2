@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 public class Wadeco_Fuel300 extends BlockNamedItem {
 
 	public Wadeco_Fuel300(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.WADECO));
+		super(block, builder.group(ItemGroups_CM.WADECO));
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
 		return 300;

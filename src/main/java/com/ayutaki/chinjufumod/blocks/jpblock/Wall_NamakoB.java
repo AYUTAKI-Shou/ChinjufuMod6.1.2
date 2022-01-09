@@ -1,10 +1,10 @@
 package com.ayutaki.chinjufumod.blocks.jpblock;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 
 public class Wall_NamakoB extends Base_Wall {
 	
-	public Wall_NamakoB(AbstractBlock.Properties properties) {
+	public Wall_NamakoB(Block.Properties properties) {
 		super(properties);
 	}
 

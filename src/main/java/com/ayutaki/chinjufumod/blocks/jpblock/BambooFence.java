@@ -1,10 +1,8 @@
 package com.ayutaki.chinjufumod.blocks.jpblock;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -13,24 +11,29 @@ import net.minecraft.world.IBlockReader;
 
 public class BambooFence extends FenceBlock {
 
-	private static final VoxelShape AABB_CENTER = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
-	private static final VoxelShape AABB_NORTH = Block.box(6.5D, 0.0D, 0.0D, 9.5D, 16.0D, 6.5D);
-	private static final VoxelShape AABB_EAST = Block.box(9.5D, 0.0D, 6.5D, 16.0D, 16.0D, 9.5D);
-	private static final VoxelShape AABB_SOUTH = Block.box(6.5D, 0.0D, 9.5D, 9.5D, 16.0D, 16.0D);
-	private static final VoxelShape AABB_WEST = Block.box(0.0D, 0.0D, 6.5D, 6.5D, 16.0D, 9.5D);
+	private static final VoxelShape AABB_CENTER = Block.makeCuboidShape(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
+	private static final VoxelShape AABB_NORTH = Block.makeCuboidShape(6.5D, 0.0D, 0.0D, 9.5D, 16.0D, 6.5D);
+	private static final VoxelShape AABB_EAST = Block.makeCuboidShape(9.5D, 0.0D, 6.5D, 16.0D, 16.0D, 9.5D);
+	private static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(6.5D, 0.0D, 9.5D, 9.5D, 16.0D, 16.0D);
+	private static final VoxelShape AABB_WEST = Block.makeCuboidShape(0.0D, 0.0D, 6.5D, 6.5D, 16.0D, 9.5D);
 
-	public BambooFence(AbstractBlock.Properties properties) {
+	public BambooFence(Block.Properties properties) {
 		super(properties);
 	}
+
+	/* 影対策
+	public int getLightValue(BlockState state) {
+		return (CM_Config_new.antiShadow.get() == true)? 1 : 0;
+	} */
 
 	/* Collision */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 
-		boolean north = state.getValue(NORTH).booleanValue();
-		boolean east = state.getValue(EAST).booleanValue();
-		boolean south = state.getValue(SOUTH).booleanValue();
-		boolean west = state.getValue(WEST).booleanValue();
+		boolean north = state.get(NORTH).booleanValue();
+		boolean east = state.get(EAST).booleanValue();
+		boolean south = state.get(SOUTH).booleanValue();
+		boolean west = state.get(WEST).booleanValue();
 
 		VoxelShape shape = AABB_CENTER;
 
@@ -42,15 +45,5 @@ public class BambooFence extends FenceBlock {
 
 		return shape;
 	}
-
-	/* Flammable Block */
-	@Override
-	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return true; }
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 5; }
-
-	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 20; }
 
 }

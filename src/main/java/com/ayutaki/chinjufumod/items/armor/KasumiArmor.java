@@ -28,19 +28,19 @@ public class KasumiArmor extends ArmorItem {
 		if (itemStack != null) {
 
 			if (armorModel != null) {
-				armorModel.head.visible = armorSlot == EquipmentSlotType.HEAD;
-				armorModel.hat.visible = armorSlot == EquipmentSlotType.HEAD;
-				armorModel.body.visible = (armorSlot == EquipmentSlotType.CHEST) || (armorSlot == EquipmentSlotType.CHEST);
-				armorModel.rightArm.visible = armorSlot == EquipmentSlotType.CHEST;
-				armorModel.leftArm.visible = armorSlot == EquipmentSlotType.CHEST;
-				armorModelLegs.rightLeg.visible = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
-				armorModelLegs.leftLeg.visible = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
+				armorModel.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
+				armorModel.bipedHeadwear.showModel = armorSlot == EquipmentSlotType.HEAD;
+				armorModel.bipedBody.showModel = (armorSlot == EquipmentSlotType.CHEST) || (armorSlot == EquipmentSlotType.CHEST);
+				armorModel.bipedRightArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+				armorModel.bipedLeftArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+				armorModelLegs.bipedRightLeg.showModel = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
+				armorModelLegs.bipedLeftLeg.showModel = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
 
-				armorModel.crouching = entityLiving.isCrouching();
-				armorModel.young = entityLiving.isBaby();
+				armorModel.isSneak = entityLiving.isSneaking();
+				armorModel.isChild = entityLiving.isChild();
 
-				armorModelLegs.crouching = entityLiving.isCrouching();
-				armorModelLegs.young = entityLiving.isBaby();
+				armorModelLegs.isSneak = entityLiving.isSneaking();
+				armorModelLegs.isChild = entityLiving.isChild();
 			}
 			return (Armor)armorModel;
 		}

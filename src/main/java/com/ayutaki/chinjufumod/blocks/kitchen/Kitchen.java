@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,22 +35,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Kitchen extends Base_Tana7 {
 
 	/* Collision */
-	protected static final VoxelShape TOP = Block.box(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape TOP = Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(TOP, Block.box(0.0D, 0.0D, 1.0D, 16.0D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(TOP, Block.box(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D));
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(TOP, Block.box(0.0D, 0.0D, 1.0D, 16.0D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(TOP, Block.box(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D));
+	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(TOP, Block.makeCuboidShape(0.0D, 0.0D, 1.0D, 16.0D, 15.0D, 15.0D));
+	protected static final VoxelShape AABB_WEST = VoxelShapes.or(TOP, Block.makeCuboidShape(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D));
+	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(TOP, Block.makeCuboidShape(0.0D, 0.0D, 1.0D, 16.0D, 15.0D, 15.0D));
+	protected static final VoxelShape AABB_EAST = VoxelShapes.or(TOP, Block.makeCuboidShape(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D));
 
 	/** 1=キッチン、2=やかん、3=寸胴、4=土鍋、5=土鍋、6=フライパン、7=フライパン **/
-	public Kitchen(AbstractBlock.Properties properties) {
+	public Kitchen(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
+		Direction direction = state.get(H_FACING);
 
 		switch (direction) {
 		case NORTH :
@@ -63,53 +63,52 @@ public class Kitchen extends Base_Tana7 {
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_7);
+		int i = state.get(STAGE_1_7);
 		/** 1=キッチン、2=やかん、3=寸胴、4=土鍋、5=土鍋、6=フライパン、7=フライパン **/
 
 		/** Hand is empty. **/
 		if (itemstack.isEmpty()) {
-			
 			if (i == 1) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 			
 			if (i == 2) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.KETTLE_kara));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.KETTLE_kara));
 				CMEvents.soundItemPick(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(1)), 3); }
-			
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(1))); }
+
 			if (i == 3) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.ZUNDOU));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.ZUNDOU));
 				CMEvents.soundItemPick(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(1))); }
 			
-			if (i == 4 && item != Items_Teatime.NABE_kara) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.NABE_kara));
+			if (i == 4) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NABE_kara));
 				CMEvents.soundItemPick(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(1)), 3); }
-	
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(1))); }
+
 			if (i == 5) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.NABE_kara));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NABE_kara));
 				CMEvents.soundItemPick(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(4)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(4))); }
 			
-			if (i == 6 && item != Items_Teatime.FRYPAN_kara) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.FRYPAN_kara));
+			if (i == 6) {
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.FRYPAN_kara));
 				CMEvents.soundItemPick(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(1))); }
 			
 			if (i == 7) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.FRYPAN_kara));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.FRYPAN_kara));
 				CMEvents.soundItemPick(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(6)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(6))); }
 		}
 		
 		/** Hand is not empty. **/
@@ -117,23 +116,27 @@ public class Kitchen extends Base_Tana7 {
 			if (i == 1) {
 				if (item == Items_Teatime.KETTLE_kara) {
 					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(2)), 3); }
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
+					
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(2))); }
 	
 				if (item == Items_Teatime.ZUNDOU) {
 					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(3)), 3); }
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
+					
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(3))); }
 	
 				if (item == Items_Teatime.NABE_kara) {
 					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.STONE_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(4)), 3); }
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(4))); }
 	
 				if (item == Items_Teatime.FRYPAN_kara) {
 					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(6)), 3); }
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
+					
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(6))); }
 				
 				if (item != Items_Teatime.KETTLE_kara && item != Items_Teatime.ZUNDOU &&
 						item != Items_Teatime.NABE_kara && item != Items_Teatime.FRYPAN_kara) { 
@@ -143,19 +146,21 @@ public class Kitchen extends Base_Tana7 {
 			if (i == 4) {
 				if (item == Items_Teatime.NABE_kara) {
 					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.STONE_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(5)), 3); }
-				
-				if (item != Items_Teatime.NABE_kara) { CMEvents.textFullItem(worldIn, pos, playerIn); }
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(5))); }
+	
+				if (item != Items_Teatime.NABE_kara) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 			}
-			
+		
 			if (i == 6) {
 				if (item == Items_Teatime.FRYPAN_kara) {
 					CMEvents.Consume_1Item(playerIn, hand);
-					worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(7)), 3); }
-				
-				if (item != Items_Teatime.FRYPAN_kara) { CMEvents.textFullItem(worldIn, pos, playerIn); }
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 3.0F);
+					
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(7))); }
+	
+				if (item != Items_Teatime.FRYPAN_kara) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 			}
 			
 			if (i != 1 && i != 4 && i != 6) { CMEvents.textFullItem(worldIn, pos, playerIn); }
@@ -165,11 +170,29 @@ public class Kitchen extends Base_Tana7 {
 		return ActionResultType.SUCCESS;
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kitchen")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_kitchen")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

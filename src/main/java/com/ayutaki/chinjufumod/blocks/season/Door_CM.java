@@ -2,7 +2,6 @@ package com.ayutaki.chinjufumod.blocks.season;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,35 +15,33 @@ import net.minecraft.world.World;
 
 public class Door_CM extends DoorBlock {
 
-	public Door_CM(AbstractBlock.Properties properties) {
+	public Door_CM(Block.Properties properties) {
 		super(properties);
 	}
 
-	/* Destroy a DoubleBlock from DoublePlantBlock.class */
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+	/* 同時破壊とドロップの指定 1.16.5に合わせる */
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+		DoubleBlockHalf doubleblockhalf = state.get(HALF);
+		BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+		BlockState blockstate = worldIn.getBlockState(blockpos);
 
-		if (!worldIn.isClientSide) {
-			if (playerIn.isCreative()) { breakLowerPart(worldIn, pos, state, playerIn); }
-			else { dropResources(state, worldIn, pos, (TileEntity)null, playerIn, playerIn.getMainHandItem()); }
-		}
-		super.playerWillDestroy(worldIn, pos, state, playerIn);
-	}
+		if (blockstate.getBlock() == this && blockstate.get(HALF) != doubleblockhalf) {
+			worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
+			worldIn.playEvent(playerIn, 2001, blockpos, Block.getStateId(blockstate));
 
-	public void playerDestroy(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		super.playerDestroy(worldIn, playerIn, pos, Blocks.AIR.defaultBlockState(), te, stack);
-	}
-
-	protected static void breakLowerPart(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-		DoubleBlockHalf half = state.getValue(HALF);
-		if (half == DoubleBlockHalf.UPPER) {
-			BlockPos downpos = pos.below();
-			BlockState downstate = worldIn.getBlockState(downpos);
-
-			if (downstate.getBlock() == state.getBlock() && downstate.getValue(HALF) == DoubleBlockHalf.LOWER) {
-				worldIn.setBlock(downpos, Blocks.AIR.defaultBlockState(), 35);
-				worldIn.levelEvent(playerIn, 2001, downpos, Block.getId(downstate));
+			ItemStack itemstack = playerIn.getHeldItemMainhand();
+			if (!worldIn.isRemote && !playerIn.isCreative() && playerIn.canHarvestBlock(blockstate)) {
+				Block.spawnDrops(state, worldIn, pos, (TileEntity)null, playerIn, itemstack);
+				Block.spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, playerIn, itemstack);
 			}
 		}
+		super.onBlockHarvested(worldIn, pos, state, playerIn);
+	}
+
+	@Override
+	public void harvestBlock(World worldIn, PlayerEntity playerIn, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+		super.harvestBlock(worldIn, playerIn, pos, Blocks.AIR.getDefaultState(), te, stack);
 	}
 
 }

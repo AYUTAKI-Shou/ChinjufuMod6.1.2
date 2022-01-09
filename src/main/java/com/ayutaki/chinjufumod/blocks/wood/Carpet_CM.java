@@ -1,9 +1,8 @@
 package com.ayutaki.chinjufumod.blocks.wood;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -14,9 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Carpet_CM extends Block {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.5D, 16.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 0.5D, 16.0D);
 
-	public Carpet_CM(AbstractBlock.Properties properties) {
+	public Carpet_CM(Block.Properties properties) {
 		super(properties);
 	}
 
@@ -28,18 +27,20 @@ public class Carpet_CM extends Block {
 
 	/* 周囲の光透過 影0.0F → 1.0F透過*/
 	@OnlyIn(Dist.CLIENT)
-	public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return 0.9F;
 	}
 
-	/* Flammable Block */
+	/* 窒息 */
 	@Override
-	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return true; }
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
 
+	/* モブ湧き */
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 60; }
-
-	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 20; }
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
 
 }

@@ -2,7 +2,6 @@ package com.ayutaki.chinjufumod.blocks.wood;
 
 import com.ayutaki.chinjufumod.registry.Wood_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,13 +16,13 @@ public class CM_SaplingBlock extends SaplingBlock {
 	@SuppressWarnings("unused")
 	private final Tree tree;
 
-	public CM_SaplingBlock(Tree treeIn, AbstractBlock.Properties properties) {
+	public CM_SaplingBlock(Tree treeIn, Properties properties) {
 		super(treeIn, properties);
 		this.tree = treeIn;
 	}
 
 	@Override
-	protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		Block block = state.getBlock();
 		return block == Blocks.GRASS_BLOCK || block == Blocks.DIRT || block == Blocks.COARSE_DIRT || 
 				block == Blocks.PODZOL || block == Blocks.FARMLAND || block == Wood_Blocks.FALL_LEAF;

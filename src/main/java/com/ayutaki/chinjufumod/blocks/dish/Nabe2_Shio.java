@@ -9,7 +9,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -32,29 +31,30 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Nabe2_Shio extends BaseNabe_Stage2 {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
 
-	public Nabe2_Shio(AbstractBlock.Properties properties) {
+	public Nabe2_Shio(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_1_2);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_1_2);
 
 		if (i != 1) {
 			/** Hand is empty. **/
 			if (itemstack.isEmpty()) {
 				
 				CMEvents.soundTake_Pick(worldIn, pos);	
-				playerIn.inventory.add(new ItemStack(Items_Teatime.SHIO, 3));
-				if (!playerIn.inventory.add(new ItemStack(Items_Teatime.NIGARI, 1))) { playerIn.drop(new ItemStack(Items_Teatime.NIGARI, 1), false); }
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SHIO, 3));
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.NIGARI, 1))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.NIGARI, 1), false); }
 	
-				worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState().setValue(Nabe_kara.H_FACING, state.getValue(H_FACING))
-						.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(4)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState().with(Nabe_kara.H_FACING, state.get(H_FACING))
+						.with(Nabe_kara.STAGE_1_4, Integer.valueOf(4))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -70,26 +70,26 @@ public class Nabe2_Shio extends BaseNabe_Stage2 {
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		if (isCooking(worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1200 + (20 * rand.nextInt(5)));
-			worldIn.setBlock(pos, state.setValue(STAGE_1_2, Integer.valueOf(2)), 3); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * rand.nextInt(5)));
+			worldIn.setBlockState(pos, state.with(STAGE_1_2, Integer.valueOf(2))); }
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60);
 			CMEvents.soundBubble(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState()
-					.setValue(Nabe_kara.H_FACING, state.getValue(H_FACING))
-					.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(4))
-					.setValue(Nabe_kara.WATERLOGGED, state.getValue(WATERLOGGED)), 3); }
-
+			worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState()
+					.with(Nabe_kara.H_FACING, state.get(H_FACING))
+					.with(Nabe_kara.STAGE_1_4, Integer.valueOf(4))
+					.with(Nabe_kara.WATERLOGGED, state.get(WATERLOGGED)), 3); }
+		
 		else { }
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_nabe")).withStyle(TextFormatting.GRAY));
-		tooltip.add((new TranslationTextComponent("tips.block_food_nabetoufu_b")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_nabe")).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add((new TranslationTextComponent("tips.block_food_nabetoufu_b")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

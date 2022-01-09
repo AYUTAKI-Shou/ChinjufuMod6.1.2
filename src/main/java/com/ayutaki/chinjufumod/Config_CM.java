@@ -12,7 +12,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
-/* net.minecraftforge.common.ForgeConfig.class*/
 public class Config_CM {
 
 	/* Config */
@@ -37,6 +36,7 @@ public class Config_CM {
 	public final IntValue ichohBiomeChance;
 	public final IntValue ichohTreeChance;
 	public final BooleanValue useMAKIMONO;
+	
 
 	private Config_CM(ForgeConfigSpec.Builder builder) {
 		/** Blast **/
@@ -101,7 +101,7 @@ public class Config_CM {
 				.comment("Common=9, Rare=1, Default=2")
 				.defineInRange("GinkgoTree_Chance", 2, 1, 9);
 		builder.pop();
-		
+
 		/** MAKIMONO **/
 		builder.comment("Use a MAKIMONO block.").push("use_makimono");
 		this.useMAKIMONO = builder
@@ -142,7 +142,7 @@ public class Config_CM {
 	public int ichohBiomeChance() { return ichohBiomeChance.get(); }
 	public int ichohTreeChance() { return ichohTreeChance.get(); }
 	public boolean useMAKIMONO() { return useMAKIMONO.get(); }
-
+	
 	/** changeValue **/
 	public void changeBlastBlockBreak(boolean newValue) { blastBlockBreak.set(newValue); }
 	public void changeAntiShadow(boolean newValue) { antiShadow.set(newValue); }

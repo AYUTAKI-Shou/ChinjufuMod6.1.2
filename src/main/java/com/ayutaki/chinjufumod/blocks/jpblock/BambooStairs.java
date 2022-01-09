@@ -7,17 +7,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
@@ -33,6 +33,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,38 +47,37 @@ public class BambooStairs extends Block implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape BOT_BASE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
-	protected static final VoxelShape BOT_SOUTH = VoxelShapes.or(BOT_BASE, Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 8.0D));
-	protected static final VoxelShape BOT_WEST = VoxelShapes.or(BOT_BASE, Block.box(8.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D));
-	protected static final VoxelShape BOT_NORTH = VoxelShapes.or(BOT_BASE, Block.box(0.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D));
-	protected static final VoxelShape BOT_EAST = VoxelShapes.or(BOT_BASE, Block.box(0.0D, 8.0D, 0.0D, 8.0D, 16.0D, 16.0D));
+	protected static final VoxelShape BOT_BASE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+	protected static final VoxelShape BOT_SOUTH = VoxelShapes.or(BOT_BASE, Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 8.0D));
+	protected static final VoxelShape BOT_WEST = VoxelShapes.or(BOT_BASE, Block.makeCuboidShape(8.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D));
+	protected static final VoxelShape BOT_NORTH = VoxelShapes.or(BOT_BASE, Block.makeCuboidShape(0.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D));
+	protected static final VoxelShape BOT_EAST = VoxelShapes.or(BOT_BASE, Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 8.0D, 16.0D, 16.0D));
 	
-	protected static final VoxelShape TOP_BASE = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape TOP_SOUTH = VoxelShapes.or(TOP_BASE, Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 8.0D));
-	protected static final VoxelShape TOP_WEST = VoxelShapes.or(TOP_BASE, Block.box(8.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
-	protected static final VoxelShape TOP_NORTH = VoxelShapes.or(TOP_BASE, Block.box(0.0D, 0.0D, 8.0D, 16.0D, 8.0D, 16.0D));
-	protected static final VoxelShape TOP_EAST = VoxelShapes.or(TOP_BASE, Block.box(0.0D, 0.0D, 0.0D, 8.0D, 8.0D, 16.0D));
-	
-	private final Block base;
-	private final BlockState baseState;
+	protected static final VoxelShape TOP_BASE = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape TOP_SOUTH = VoxelShapes.or(TOP_BASE, Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 8.0D));
+	protected static final VoxelShape TOP_WEST = VoxelShapes.or(TOP_BASE, Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
+	protected static final VoxelShape TOP_NORTH = VoxelShapes.or(TOP_BASE, Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 16.0D, 8.0D, 16.0D));
+	protected static final VoxelShape TOP_EAST = VoxelShapes.or(TOP_BASE, Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 8.0D, 8.0D, 16.0D));
+
+	private final Block modelBlock;
+	private final BlockState modelState;
 
 	public BambooStairs(BlockState state, Block.Properties properties) {
 		super(properties);
-
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(TYPE, Half.BOTTOM)
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(TYPE, Half.BOTTOM)
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 
-		this.baseState = state;
-		this.base = state.getBlock();
+		this.modelState = state;
+		this.modelBlock = state.getBlock();
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		Half half = state.getValue(TYPE);
+		Direction direction = state.get(H_FACING);
+		Half half = state.get(TYPE);
 		
 		switch (half) {
 		case BOTTOM :
@@ -106,72 +106,55 @@ public class BambooStairs extends Block implements IWaterLoggable {
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getClickedPos();
-		FluidState fluid = context.getLevel().getFluidState(blockpos);
-		BlockState blockState2 = this.defaultBlockState().setValue(TYPE, Half.BOTTOM).setValue(WATERLOGGED, Boolean.valueOf(Boolean.valueOf(fluid.getType() == Fluids.WATER)))
-				.setValue(H_FACING, context.getHorizontalDirection().getOpposite());
-		Direction direction = context.getClickedFace();
+		BlockPos blockpos = context.getPos();
+		IFluidState ifluidstate = context.getWorld().getFluidState(blockpos);
+		BlockState blockState2 = this.getDefaultState().with(TYPE, Half.BOTTOM).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER))
+				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
+		Direction direction = context.getFace();
 
-		return direction != Direction.DOWN && (direction == Direction.UP || context.getClickLocation().y - (double)blockpos.getY() <= 0.5D) ? blockState2 : blockState2.setValue(TYPE, Half.TOP);
+		return direction != Direction.DOWN && (direction == Direction.UP || context.getHitVec().y - (double)blockpos.getY() <= 0.5D) ? blockState2 : blockState2.with(TYPE, Half.TOP);
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
+	public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidStateIn) {
+		return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
 	}
 
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true;
-		}
-		else { return false; }
+	public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+		return IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
 	}
 
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		else { return Fluids.EMPTY; }
-	}
-
-	/* Update BlockState. */
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
-		}
-		return super.updateShape(stateIn, facing, facingState, worldIn, pos, facingPos);
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if (stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
+		
+		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		switch (type) {
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+		switch(type) {
 		case LAND:
 			return false;
 		case WATER:
-			return worldIn.getFluidState(pos).is(FluidTags.WATER);
+			return worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
 		case AIR:
 			return false;
 		default:
@@ -180,81 +163,85 @@ public class BambooStairs extends Block implements IWaterLoggable {
 	}
 
 	/* Create Blockstate */
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(H_FACING, TYPE, WATERLOGGED);
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* StairsBlock より */
-	public boolean useShapeForLightOcclusion(BlockState state) {
+	public boolean isTransparent(BlockState state) {
 		return true;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		this.base.animateTick(stateIn, worldIn, pos, rand);
+		this.modelBlock.animateTick(stateIn, worldIn, pos, rand);
 	}
 
-	public void attack(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn) {
-		this.baseState.attack(worldIn, pos, playerIn);
+	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn) {
+		this.modelState.onBlockClicked(worldIn, pos, playerIn);
 	}
 
-	public void destroy(IWorld worldIn, BlockPos pos, BlockState state) {
-		this.base.destroy(worldIn, pos, state);
+	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
+		this.modelBlock.onPlayerDestroy(worldIn, pos, state);
 	}
 
 	@SuppressWarnings("deprecation")
 	public float getExplosionResistance() {
-		return this.base.getExplosionResistance();
+		return this.modelBlock.getExplosionResistance();
+	}
+
+	public int tickRate(IWorldReader worldIn) {
+		return this.modelBlock.tickRate(worldIn);
 	}
 
 	@SuppressWarnings("deprecation")
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (state.getBlock() != state.getBlock()) {
-			this.baseState.neighborChanged(worldIn, pos, Blocks.AIR, pos, false);
-			this.base.onPlace(this.baseState, worldIn, pos, oldState, false);
+			this.modelState.neighborChanged(worldIn, pos, Blocks.AIR, pos, false);
+			this.modelBlock.onBlockAdded(this.modelState, worldIn, pos, oldState, false);
 		}
 	}
 
-	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			this.baseState.onRemove(worldIn, pos, newState, isMoving);
+			this.modelState.onReplaced(worldIn, pos, newState, isMoving);
 		}
 	}
 
-	public void stepOn(World worldIn, BlockPos pos, Entity entityIn) {
-		this.base.stepOn(worldIn, pos, entityIn);
-	}
-
-	public boolean isRandomlyTicking(BlockState state) {
-		return this.base.isRandomlyTicking(state);
-	}
-
-	@SuppressWarnings("deprecation")
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		this.base.randomTick(state, worldIn, pos, rand);
+	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+		this.modelBlock.onEntityWalk(worldIn, pos, entityIn);
 	}
 
 	@SuppressWarnings("deprecation")
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		this.base.tick(state, worldIn, pos, rand);
+		this.modelBlock.tick(state, worldIn, pos, rand);
 	}
 
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
-		return this.baseState.use(worldIn, playerIn, handIn, hit);
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
+		return this.modelState.onBlockActivated(worldIn, playerIn, handIn, hit);
 	}
 
-	public void wasExploded(World worldIn, BlockPos pos, Explosion expl) {
-		this.base.wasExploded(worldIn, pos, expl);
+	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn) {
+		this.modelBlock.onExplosionDestroy(worldIn, pos, explosionIn);
 	}
-
-	/* Flammable Block */
-	@Override
-	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return true; }
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 5; }
-
-	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 20; }
 
 }

@@ -5,22 +5,20 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -47,118 +45,92 @@ public class Base_Wall extends Block implements IWaterLoggable {
 	public static final BooleanProperty CRACK = BooleanProperty.create("cra");
 	
 	/* Collision ...Based on the value of WallBlock.*/
-	private static final VoxelShape AABB_CENTER = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-	private static final VoxelShape AABB_NORTH = Block.box(5.0D, 0.0D, 0.0D, 11.0D, 16.0D, 5.0D);
-	private static final VoxelShape AABB_EAST = Block.box(11.0D, 0.0D, 5.0D, 16.0D, 16.0D, 11.0D);
-	private static final VoxelShape AABB_SOUTH = Block.box(5.0D, 0.0D, 11.0D, 11.0D, 16.0D, 16.0D);
-	private static final VoxelShape AABB_WEST = Block.box(0.0D, 0.0D, 5.0D, 5.0D, 16.0D, 11.0D);
+	private static final VoxelShape AABB_CENTER = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+	private static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.0D, 0.0D, 0.0D, 11.0D, 16.0D, 5.0D);
+	private static final VoxelShape AABB_EAST = Block.makeCuboidShape(11.0D, 0.0D, 5.0D, 16.0D, 16.0D, 11.0D);
+	private static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.0D, 0.0D, 11.0D, 11.0D, 16.0D, 16.0D);
+	private static final VoxelShape AABB_WEST = Block.makeCuboidShape(0.0D, 0.0D, 5.0D, 5.0D, 16.0D, 11.0D);
 	
-	public Base_Wall(AbstractBlock.Properties properties) {
+	public Base_Wall(Block.Properties properties) {
 		super(properties);
 		
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(NORTH, Boolean.valueOf(false))
-				.setValue(EAST, Boolean.valueOf(false))
-				.setValue(SOUTH, Boolean.valueOf(false))
-				.setValue(WEST, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(false))
-				.setValue(CRACK, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.valueOf(false))
+				.with(EAST, Boolean.valueOf(false))
+				.with(SOUTH, Boolean.valueOf(false))
+				.with(WEST, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(false))
+				.with(CRACK, Boolean.valueOf(false)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
 		if (item instanceof Base_ItemHake) { return ActionResultType.PASS; }
 
 		else {
 			if (itemstack.isEmpty()) {
-				if (playerIn.isCrouching()) {
+				if (playerIn.isSneaking()) {
 					CMEvents.soundStonePlace(worldIn, pos);
-					worldIn.setBlock(pos, state.cycle(CRACK), 3);
+					worldIn.setBlockState(pos, state.cycle(CRACK));
 					return ActionResultType.SUCCESS; }
-				
-				if (!playerIn.isCrouching()) {
+			
+				if (!playerIn.isSneaking()) {
 					CMEvents.textNotSneak(worldIn, pos, playerIn);
 					return ActionResultType.SUCCESS; }
 			}
-
+			
 			return ActionResultType.PASS;
 		}
 	}
-
-	/* Gives a value when placed. */
-	@Nullable
+	
+	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IWorldReader worldIn = context.getLevel();
-		BlockPos blockpos = context.getClickedPos();
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-
-		BlockPos northpos = blockpos.north();
-		BlockPos eastpos = blockpos.east();
-		BlockPos southpos = blockpos.south();
-		BlockPos westpos = blockpos.west();
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		
+		IWorldReader worldIn = context.getWorld();
+		BlockPos posIn = context.getPos();
+		BlockPos northpos = posIn.north();
+		BlockPos eastpos = posIn.east();
+		BlockPos southpos = posIn.south();
+		BlockPos westpos = posIn.west();
 		BlockState northstate = worldIn.getBlockState(northpos);
 		BlockState eaststate = worldIn.getBlockState(eastpos);
 		BlockState southstate = worldIn.getBlockState(southpos);
 		BlockState weststate = worldIn.getBlockState(westpos);
 
-		boolean north = this.canConnectTo(northstate, northstate.isFaceSturdy(worldIn, northpos, Direction.SOUTH), Direction.SOUTH);
-		boolean east = this.canConnectTo(eaststate, eaststate.isFaceSturdy(worldIn, eastpos, Direction.WEST), Direction.WEST);
-		boolean south = this.canConnectTo(southstate, southstate.isFaceSturdy(worldIn, southpos, Direction.NORTH), Direction.NORTH);
-		boolean west = this.canConnectTo(weststate, weststate.isFaceSturdy(worldIn, westpos, Direction.EAST), Direction.EAST);
-
-		return this.defaultBlockState().setValue(NORTH, north).setValue(EAST, east).setValue(SOUTH, south).setValue(WEST, west)
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER));
-	}
-
-	/* Connect the blocks. GLASSDOOR, SHOUJI, FUSUMA, WINDOW, RANMA, KOUSHI, SAMA, PaneBlock, FenceGate */
-	private boolean canConnectTo(BlockState state, boolean sturdy, Direction direction) {
-		Block block = state.getBlock();
-		boolean flag = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
-		return state.is(BlockTags.WALLS) || !isExceptionForConnection(block) && sturdy || block instanceof PaneBlock || flag;
+		boolean north = this.canConnectTo(northstate, northstate.isSolidSide(worldIn, northpos, Direction.SOUTH), Direction.SOUTH);
+		boolean east = this.canConnectTo(eaststate, eaststate.isSolidSide(worldIn, eastpos, Direction.WEST), Direction.WEST);
+		boolean south = this.canConnectTo(southstate, southstate.isSolidSide(worldIn, southpos, Direction.NORTH), Direction.NORTH);
+		boolean west = this.canConnectTo(weststate, weststate.isSolidSide(worldIn, westpos, Direction.EAST), Direction.EAST);
+				
+		return this.getDefaultState().with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west)
+				.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+	
+	/* Connect the blocks. GLASSDOOR, SHOUJI, FUSUMA, WINDOW, RANMA, KOUSHI, SAMA, PaneBlock, FenceGate */
+	private boolean canConnectTo(BlockState state, boolean sturdy, Direction direction) {
+		Block block = state.getBlock();
+		boolean flag = block instanceof FenceGateBlock && FenceGateBlock.isParallel(state, direction);
+		return state.isIn(BlockTags.WALLS) || !cannotAttach(block) && sturdy || block instanceof PaneBlock || flag;
 	}
 
 	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true;
-		}
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		else { return Fluids.EMPTY; }
-	}
-
-	/* Update BlockState. */
-	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
-
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
+		
 		BlockPos northpos = pos.north();
 		BlockPos eastpos = pos.east();
 		BlockPos southpos = pos.south();
@@ -168,22 +140,22 @@ public class Base_Wall extends Block implements IWaterLoggable {
 		BlockState southstate = worldIn.getBlockState(southpos);
 		BlockState weststate = worldIn.getBlockState(westpos);
 
-		boolean north = canConnectTo(northstate, northstate.isFaceSturdy(worldIn, northpos, Direction.SOUTH), Direction.SOUTH);
-		boolean east = canConnectTo(eaststate, eaststate.isFaceSturdy(worldIn, eastpos, Direction.WEST), Direction.WEST);
-		boolean south = canConnectTo(southstate, southstate.isFaceSturdy(worldIn, southpos, Direction.NORTH), Direction.NORTH);
-		boolean west = canConnectTo(weststate, weststate.isFaceSturdy(worldIn, westpos, Direction.EAST), Direction.EAST);
+		boolean north = canConnectTo(northstate, northstate.isSolidSide(worldIn, northpos, Direction.SOUTH), Direction.SOUTH);
+		boolean east = canConnectTo(eaststate, eaststate.isSolidSide(worldIn, eastpos, Direction.WEST), Direction.WEST);
+		boolean south = canConnectTo(southstate, southstate.isSolidSide(worldIn, southpos, Direction.NORTH), Direction.NORTH);
+		boolean west = canConnectTo(weststate, weststate.isSolidSide(worldIn, westpos, Direction.EAST), Direction.EAST);
 		
-		return stateIn.setValue(NORTH, north).setValue(EAST, east).setValue(SOUTH, south).setValue(WEST, west);
+		return stateIn.with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
 	}
-
+	
 	/* Collision */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 
-		boolean north = state.getValue(NORTH).booleanValue();
-		boolean east = state.getValue(EAST).booleanValue();
-		boolean south = state.getValue(SOUTH).booleanValue();
-		boolean west = state.getValue(WEST).booleanValue();
+		boolean north = state.get(NORTH).booleanValue();
+		boolean east = state.get(EAST).booleanValue();
+		boolean south = state.get(SOUTH).booleanValue();
+		boolean west = state.get(WEST).booleanValue();
 
 		VoxelShape shape = AABB_CENTER;
 
@@ -216,14 +188,33 @@ public class Base_Wall extends Block implements IWaterLoggable {
 
 		return shape;
 	}
-
+	
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(NORTH, EAST, SOUTH, WEST, WATERLOGGED, CRACK);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
+		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED, CRACK);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+	
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

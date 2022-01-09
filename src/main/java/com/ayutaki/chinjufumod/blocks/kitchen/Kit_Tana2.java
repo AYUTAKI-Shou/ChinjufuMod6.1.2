@@ -9,10 +9,10 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,91 +34,91 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Kit_Tana2 extends BaseFacingWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 12.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(4.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 12.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(4.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 12.0D, 16.0D, 16.0D);
 
-	public Kit_Tana2(AbstractBlock.Properties properties) {
+	public Kit_Tana2(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
 		if (item == Items_Teatime.NAMASAKEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_SAKENAMA.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKENAMA.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.SAKEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_SAKE.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKE.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.JUKUSAKEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_SAKEJUKU.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_SAKEJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.CIDERBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_CIDER.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_CIDER.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.JUKUCIDERBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_CIDERJUKU.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_CIDERJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.WINEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_WINE.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_WINE.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.JUKUWINEBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_WINEJUKU.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_WINEJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.MEADBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_MEAD.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_MEAD.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
 
 		if (item == Items_Teatime.JUKUMEADBOT) {
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundDishPlace(worldIn, pos);
 			
-			worldIn.setBlock(pos, Kitchen_Blocks.KIT_MEADJUKU.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Base_WineTana.STAGE_1_4, Integer.valueOf(1)), 3); }
-
+			worldIn.setBlockState(pos, Kitchen_Blocks.KIT_MEADJUKU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(Base_WineTana.STAGE_1_4, Integer.valueOf(1))); }
+		
 		if (item != Items_Teatime.NAMASAKEBOT && item != Items_Teatime.SAKEBOT && item != Items_Teatime.JUKUSAKEBOT &&
 				item != Items_Teatime.CIDERBOT && item != Items_Teatime.JUKUCIDERBOT &&
 				item != Items_Teatime.WINEBOT && item != Items_Teatime.JUKUWINEBOT &&
 				item != Items_Teatime.MEADBOT && item != Items_Teatime.JUKUMEADBOT) {
 			CMEvents.textNotHave(worldIn, pos, playerIn); }
-		
+
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
@@ -126,26 +126,45 @@ public class Kit_Tana2 extends BaseFacingWater {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kit2_tana")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_kit2_tana")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

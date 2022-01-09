@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 public class Chinjufu_Fuel200 extends BlockNamedItem {
 
 	public Chinjufu_Fuel200(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.CHINJUFU));
+		super(block, builder.group(ItemGroups_CM.CHINJUFU));
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
 		return 200;

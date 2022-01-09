@@ -38,7 +38,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.state.Property;
+import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
@@ -65,17 +65,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 /* BucketItem に BlockItem を追加して、設置処理で分岐。BlockItem への BucketItem は大釜問題にぶつかる*/
 public class Mizuoke_Item extends BucketItem {
 
-	private final Fluid content;
+	private final Fluid containedBlock;
 	private final Block block;
 
 	@SuppressWarnings("deprecation")
 	public Mizuoke_Item(Fluid containedFluidIn, Block blockIn, Item.Properties builder) {
-		super(containedFluidIn, builder.tab(ItemGroups_CM.TEATIME));
+		super(containedFluidIn, builder.group(ItemGroups_CM.TEATIME));
 		this.block = blockIn;
-		this.content = containedFluidIn;
+		this.containedBlock = containedFluidIn;
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 	@Override
 	public int getBurnTime(ItemStack stackIn) {
 		Item item = stackIn.getItem();
@@ -86,67 +86,67 @@ public class Mizuoke_Item extends BucketItem {
 
 	/* 水を入れる BucketItem */
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		ItemStack stackIn = playerIn.getItemInHand(handIn);
-		RayTraceResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, this.content == Fluids.EMPTY ? RayTraceContext.FluidMode.SOURCE_ONLY : RayTraceContext.FluidMode.NONE);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		ItemStack stackIn = playerIn.getHeldItem(handIn);
+		RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, this.containedBlock == Fluids.EMPTY ? RayTraceContext.FluidMode.SOURCE_ONLY : RayTraceContext.FluidMode.NONE);
 		ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(playerIn, worldIn, stackIn, raytraceresult);
 
-		boolean mode = playerIn.abilities.instabuild;
+		boolean mode = playerIn.abilities.isCreativeMode;
 
 		BlockRayTraceResult blockResult = (BlockRayTraceResult)raytraceresult;
-		BlockPos posIn = blockResult.getBlockPos();
-		Direction direction = blockResult.getDirection();
-		BlockPos posIn_1 = posIn.relative(direction);
+		BlockPos posIn = blockResult.getPos();
+		Direction direction = blockResult.getFace();
+		BlockPos posIn_1 = posIn.offset(direction);
 		BlockState stateIn_1 = worldIn.getBlockState(posIn);
 		Block block = stateIn_1.getBlock();
 
 		if (ret != null) return ret;
 
-		if (raytraceresult.getType() == RayTraceResult.Type.MISS) { return ActionResult.pass(stackIn); }
+		if (raytraceresult.getType() == RayTraceResult.Type.MISS) { return ActionResult.resultPass(stackIn); }
 
-		if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) { return ActionResult.pass(stackIn); }
+		if (raytraceresult.getType() != RayTraceResult.Type.BLOCK) { return ActionResult.resultPass(stackIn); }
 
 		else {
-			if (!playerIn.isCrouching()) {
-				if (worldIn.mayInteract(playerIn, posIn) && playerIn.mayUseItemAt(posIn_1, direction, stackIn)) {
+			if (!playerIn.isSneaking()) {
+				if (worldIn.isBlockModifiable(playerIn, posIn) && playerIn.canPlayerEdit(posIn_1, direction, stackIn)) {
 
-					if (this.content == Fluids.EMPTY) {
+					if (this.containedBlock == Fluids.EMPTY) {
 						/** 大釜からの給水 **/
 						if (stateIn_1.getBlock() == Blocks.CAULDRON) {
-							int level = stateIn_1.getValue(CauldronBlock.LEVEL);
+							int level = stateIn_1.get(CauldronBlock.LEVEL);
 
 							if (level >= 2) {
-								playerIn.awardStat(Stats.USE_CAULDRON);
+								playerIn.addStat(Stats.USE_CAULDRON);
 
-								worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+								worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 								((CauldronBlock)block).setWaterLevel(worldIn, posIn, stateIn_1, level - 2);
-								if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE_full))) {
-									playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE_full), false); }
+								if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE_full))) {
+									playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE_full), false); }
 
 								if (!mode) { stackIn.shrink(1); }
 								if (mode) { }
-								return ActionResult.success(stackIn);
+								return ActionResult.resultSuccess(stackIn);
 							}
 
 							if (level == 1) {
-								playerIn.awardStat(Stats.USE_CAULDRON);
-								worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+								playerIn.addStat(Stats.USE_CAULDRON);
+								worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 								((CauldronBlock)block).setWaterLevel(worldIn, posIn, stateIn_1, 0);
-								return ActionResult.success(stackIn);
+								return ActionResult.resultSuccess(stackIn);
 							}
-							return ActionResult.pass(stackIn);
+							return ActionResult.resultPass(stackIn);
 						}
 
 						/** 溶岩と水 **/
 						if (stateIn_1.getBlock() instanceof IBucketPickupHandler) {
 
-							Fluid fluid = ((IBucketPickupHandler)stateIn_1.getBlock()).takeLiquid(worldIn, posIn, stateIn_1);
+							Fluid fluid = ((IBucketPickupHandler)stateIn_1.getBlock()).pickupFluid(worldIn, posIn, stateIn_1);
 							if (fluid != Fluids.EMPTY) {
 
 								if (fluid == Fluids.LAVA) {
-									worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
-									worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundCategory.PLAYERS, 0.8F, 1.0F);
-									playerIn.addEffect(new EffectInstance(Effects.HARM, 1, 0));
+									worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
+									worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_GENERIC_BURN, SoundCategory.PLAYERS, 1.0F, 1.0F);
+									playerIn.addPotionEffect(new EffectInstance(Effects.INSTANT_DAMAGE, 1, 0));
 
 									int i = posIn.getX();
 									int j = posIn.getY();
@@ -155,23 +155,23 @@ public class Mizuoke_Item extends BucketItem {
 									for(int l = 0; l < 8; ++l) {
 										worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double)i + Math.random(), (double)j + Math.random(), (double)k + Math.random(), 0.0D, 0.0D, 0.0D); }
 
-									if (!playerIn.inventory.add(new ItemStack(Items.AIR))) {
-										playerIn.drop(new ItemStack(Items.AIR), false); }
+									if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items.AIR))) {
+										playerIn.dropItem(new ItemStack(Items.AIR), false); }
 
 									if (!mode) { stackIn.shrink(1); }
 									if (mode) { }
 								}
 
 								else {
-									playerIn.awardStat(Stats.ITEM_USED.get(this));
-									worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-									if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE_full))) {
-										playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE_full), false); }
+									playerIn.addStat(Stats.ITEM_USED.get(this));
+										worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+									if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE_full))) {
+										playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE_full), false); }
 
 									if (!mode) { stackIn.shrink(1); }
 									if (mode) { }
 								}
-								return ActionResult.success(stackIn);
+								return ActionResult.resultSuccess(stackIn);
 							}
 						}
 					}//empty
@@ -180,197 +180,194 @@ public class Mizuoke_Item extends BucketItem {
 					else {
 						/** 砂を塩田に変える **/
 						if (stateIn_1.getBlock() == Blocks.SAND && direction == Direction.UP) {
-							worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-							worldIn.setBlock(posIn, Crop_Blocks.ENDEN.defaultBlockState().setValue(Enden.WET_1_9, Integer.valueOf(1)), 3);
+							worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							worldIn.setBlockState(posIn, Crop_Blocks.ENDEN.getDefaultState().with(Enden.WET_1_9, Integer.valueOf(1)), 3);
 
 							if (!mode) { stackIn.shrink(1);
-								if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE))) {
-									playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE), false); } }
+								if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE))) {
+									playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE), false); } }
 							if (mode) { }
-							return ActionResult.success(stackIn);
+							return ActionResult.resultSuccess(stackIn);
 						}
 
 						/** 大釜への注水 **/
 						if (stateIn_1.getBlock() == Blocks.CAULDRON) {
-							int level = stateIn_1.getValue(CauldronBlock.LEVEL);
+							int level = stateIn_1.get(CauldronBlock.LEVEL);
 
 							if (level != 3) {
-								playerIn.awardStat(Stats.FILL_CAULDRON);
-								worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+								playerIn.addStat(Stats.FILL_CAULDRON);
+								worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
 								if (level == 2) { ((CauldronBlock)block).setWaterLevel(worldIn, posIn, stateIn_1, 3); }
 								else { ((CauldronBlock)block).setWaterLevel(worldIn, posIn, stateIn_1, level + 2); }
 
 								if (!mode) { stackIn.shrink(1);
-									if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE))) {
-										playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE), false); } }
+									if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE))) {
+										playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE), false); } }
 								if (mode) { }
-								return ActionResult.success(stackIn);
+								return ActionResult.resultSuccess(stackIn);
 							}
-							return ActionResult.pass(stackIn);
+							return ActionResult.resultPass(stackIn);
 						}
 
 						else {
 							BlockState stateIn_2 = worldIn.getBlockState(posIn);
 							BlockPos posIn_2 = canBlockContainFluid(worldIn, posIn, stateIn_2) ? posIn : posIn_1;
 
-							if (this.placeWater(playerIn, worldIn, posIn_2, blockResult)) {
+							if (this.emptyBucket(playerIn, worldIn, posIn_2, blockResult)) {
 								this.checkExtraContent(worldIn, stackIn, posIn_2);
 
-								if (playerIn instanceof ServerPlayerEntity) { CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, posIn_2, stackIn); }
-								playerIn.awardStat(Stats.ITEM_USED.get(this));
+								if (playerIn instanceof ServerPlayerEntity) {
+									CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, posIn_2, stackIn); }
 
+								playerIn.addStat(Stats.ITEM_USED.get(this));
 								if (!mode) { stackIn.shrink(1);
-									if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE))) {
-											playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE), false); } }
+									if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE))) {
+										playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE), false); } }
 								if (mode) { }
 
-								return ActionResult.success(stackIn);
-							}
-							else { return ActionResult.pass(stackIn); }
+								return ActionResult.resultSuccess(stackIn); }
+
+							else { return ActionResult.resultPass(stackIn); }
 						}
 					}//water
 
 				}
 			}//!sneaking
 
-			return ActionResult.pass(stackIn);
+			return ActionResult.resultPass(stackIn);
 		}
 	}
 
-	@Override
 	public void checkExtraContent(World worldIn, ItemStack stackIn, BlockPos posIn) { }
 
 	private boolean canBlockContainFluid(World worldIn, BlockPos posIn, BlockState stateIn) {
-		return stateIn.getBlock() instanceof ILiquidContainer && ((ILiquidContainer)stateIn.getBlock()).canPlaceLiquid(worldIn, posIn, stateIn, this.content);
+		return stateIn.getBlock() instanceof ILiquidContainer && ((ILiquidContainer)stateIn.getBlock()).canContainFluid(worldIn, posIn, stateIn, this.containedBlock);
 	}
 
-	public boolean placeWater(@Nullable PlayerEntity playerIn, World worldIn, BlockPos posIn, @Nullable BlockRayTraceResult result) {
-		if (!(this.content instanceof FlowingFluid)) {
+	@SuppressWarnings("deprecation")
+	public boolean emptyBucket(@Nullable PlayerEntity playerIn, World worldIn, BlockPos posIn, @Nullable BlockRayTraceResult result) {
+		if (!(this.containedBlock instanceof FlowingFluid)) {
 			return false;
 		}
+
 		else {
 			BlockState stateIn = worldIn.getBlockState(posIn);
-			Block block = stateIn.getBlock();
 			Material material = stateIn.getMaterial();
-			boolean flag = stateIn.canBeReplaced(this.content);
-			@SuppressWarnings("deprecation")
-			boolean flag1 = stateIn.isAir() || flag || block instanceof ILiquidContainer && ((ILiquidContainer)block).canPlaceLiquid(worldIn, posIn, stateIn, this.content);
+			boolean flag = stateIn.isReplaceable(this.containedBlock);
+			boolean canContainFluid = canBlockContainFluid(worldIn, posIn, stateIn);
 
-			if (!flag1) {
-				return result != null && this.placeWater(playerIn, worldIn, result.getBlockPos().relative(result.getDirection()), (BlockRayTraceResult)null);
-			}
+			if (stateIn.isAir() || flag || canContainFluid) {
 
-			/** in Nether **/
-			else if (worldIn.dimensionType().ultraWarm() && this.content.is(FluidTags.WATER)) {
-				int i = posIn.getX();
-				int j = posIn.getY();
-				int k = posIn.getZ();
-				worldIn.playSound(playerIn, posIn, SoundEvents.FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.random.nextFloat() - worldIn.random.nextFloat()) * 0.8F);
+				/** in Nether **/
+				if (worldIn.dimension.doesWaterVaporize() && this.containedBlock.isIn(FluidTags.WATER)) {
+					int i = posIn.getX();
+					int j = posIn.getY();
+					int k = posIn.getZ();
+					worldIn.playSound(playerIn, posIn, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
-				for(int l = 0; l < 8; ++l) {
-					worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double)i + Math.random(), (double)j + Math.random(), (double)k + Math.random(), 0.0D, 0.0D, 0.0D);
+					for(int l = 0; l < 8; ++l) {
+						worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double)i + Math.random(), (double)j + Math.random(), (double)k + Math.random(), 0.0D, 0.0D, 0.0D);
+					}
+				}
+
+				/** WATERLOGGED **/
+				else if (canContainFluid) {
+					if (((ILiquidContainer)stateIn.getBlock()).receiveFluid(worldIn, posIn, stateIn, ((FlowingFluid)this.containedBlock).getStillFluidState(false))) {
+						worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					}
+				}
+
+				else {
+					if (!worldIn.isRemote && flag && !material.isLiquid()) { worldIn.destroyBlock(posIn, true); }
+
+					worldIn.playSound(playerIn, posIn, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					worldIn.setBlockState(posIn, this.containedBlock.getDefaultState().getBlockState(), 11);
 				}
 				return true;
 			}
 
-			/** WATERLOGGED **/
-			else if (block instanceof ILiquidContainer && ((ILiquidContainer)block).canPlaceLiquid(worldIn, posIn, stateIn,content)) {
-				((ILiquidContainer)block).placeLiquid(worldIn, posIn, stateIn, ((FlowingFluid)this.content).getSource(false));
-				worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return true;
-			}
-
 			else {
-				if (!worldIn.isClientSide && flag && !material.isLiquid()) { worldIn.destroyBlock(posIn, true); }
-
-				if (!worldIn.setBlock(posIn, this.content.defaultFluidState().createLegacyBlock(), 11) && !stateIn.getFluidState().isSource()) { return false; }
-
-				else { worldIn.playSound(playerIn, posIn, SoundEvents.BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return true; }
+				return result == null ? false : this.tryPlaceContainedLiquid(playerIn, worldIn, result.getPos().offset(result.getFace()), (BlockRayTraceResult)null);
 			}
 		}
 	}
 
-	/* Get the MIZUOKE_Milk. ShearsItem, CowEntity */
+	/* 牛乳を汲む ShearsItem, CowEntity */
 	@Override
-	public net.minecraft.util.ActionResultType interactLivingEntity(ItemStack stackIn, net.minecraft.entity.player.PlayerEntity playerIn, LivingEntity entity, net.minecraft.util.Hand handIn) {
+	public boolean itemInteractionForEntity(ItemStack stackIn, net.minecraft.entity.player.PlayerEntity playerIn, LivingEntity entity, net.minecraft.util.Hand handIn) {
 
-		boolean mode = playerIn.abilities.instabuild;
+		boolean mode = playerIn.abilities.isCreativeMode;
 
-		if (entity.level.isClientSide) return net.minecraft.util.ActionResultType.PASS;
+		if (entity.world.isRemote) return false;
 
 		if (stackIn.getItem() == Items_Teatime.MIZUOKE) {
 
-			if (entity instanceof CowEntity && !mode && !entity.isBaby()) {
+			if (entity instanceof CowEntity && !mode && !entity.isChild()) {
 
-				entity.playSound(SoundEvents.COW_MILK, 2.0F, 1.0F);
-				if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE_Milk))) {
-					playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE_Milk), false); }
+				entity.playSound(SoundEvents.ENTITY_COW_MILK, 2.0F, 1.0F);
+
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE_Milk))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE_Milk), false); }
 
 				/* 消費を最後に回す */
 				stackIn.shrink(1);
-				return net.minecraft.util.ActionResultType.SUCCESS;
+				return true;
 			}
-
-			return net.minecraft.util.ActionResultType.PASS;
+			return false;
 		}
-		return net.minecraft.util.ActionResultType.PASS;
+		return false;
 	}
-
 
 
 	//////* BlockItem *///////////////////////////////////////////////
 	/** 設置処理の分岐 **/
-	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity playerIn = context.getPlayer();
 
-		if (context.getClickedFace() == Direction.UP && playerIn.isCrouching()) {
-			return this.place(new BlockItemUseContext(context)); }
+		if (context.getFace() == Direction.UP && playerIn.isSneaking()) {
+			return this.tryPlace(new BlockItemUseContext(context)); }
 
 		else {
-			return this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult(); }
+			return this.onItemRightClick(context.getWorld(), context.getPlayer(), context.getHand()).getType(); }
 	}
 
-	public ActionResultType place(BlockItemUseContext context) {
+	public ActionResultType tryPlace(BlockItemUseContext context) {
 
 		if (!context.canPlace()) { return ActionResultType.FAIL; }
 
 		else {
-			BlockItemUseContext blockcontext = this.updatePlacementContext(context);
+			BlockItemUseContext blockitemusecontext = this.getBlockItemUseContext(context);
 
-			if (blockcontext == null) { return ActionResultType.FAIL; }
+			if (blockitemusecontext == null) { return ActionResultType.FAIL; }
 
 			else {
-				BlockState stateIn = this.getPlacementState(blockcontext);
+				BlockState stateIn = this.getStateForPlacement(blockitemusecontext);
 
 				if (stateIn == null) { return ActionResultType.FAIL; }
 
-				else if (!this.placeBlock(blockcontext, stateIn)) { return ActionResultType.FAIL; }
+				else if (!this.placeBlock(blockitemusecontext, stateIn)) { return ActionResultType.FAIL; }
 
 				else {
-					BlockPos posIn_1 = blockcontext.getClickedPos();
-					World worldIn = blockcontext.getLevel();
-					PlayerEntity playerIn = blockcontext.getPlayer();
-					ItemStack stackIn = blockcontext.getItemInHand();
-					BlockState stateIn_1 = worldIn.getBlockState(posIn_1);
+					BlockPos posIn = blockitemusecontext.getPos();
+					World world = blockitemusecontext.getWorld();
+					PlayerEntity playerIn = blockitemusecontext.getPlayer();
+					ItemStack stackIn = blockitemusecontext.getItem();
+					BlockState stateIn_1 = world.getBlockState(posIn);
 					Block block = stateIn_1.getBlock();
 					if (block == stateIn.getBlock()) {
-						stateIn_1 = this.updateBlockStateFromTag(posIn_1, worldIn, stackIn, stateIn_1);
-						this.updateCustomBlockEntityTag(posIn_1, worldIn, playerIn, stackIn, stateIn_1);
-						block.setPlacedBy(worldIn, posIn_1, stateIn_1, playerIn, stackIn);
+						stateIn_1 = this.getBlockStateTag(posIn, world, stackIn, stateIn_1);
+						this.onBlockPlaced(posIn, world, playerIn, stackIn, stateIn_1);
+						block.onBlockPlacedBy(world, posIn, stateIn_1, playerIn, stackIn);
 						if (playerIn instanceof ServerPlayerEntity) {
-							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, posIn_1, stackIn);
+							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, posIn, stackIn);
 						}
 					}
 
-					SoundType soundtype = stateIn_1.getSoundType(worldIn, posIn_1, context.getPlayer());
-					worldIn.playSound(playerIn, posIn_1, this.getPlaceSound(stateIn_1, worldIn, posIn_1, context.getPlayer()), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-
-					if (playerIn == null || !playerIn.abilities.instabuild) { stackIn.shrink(1); }
-
-					return ActionResultType.sidedSuccess(worldIn.isClientSide);
+					SoundType soundtype = stateIn_1.getSoundType(world, posIn, context.getPlayer());
+					world.playSound(playerIn, posIn, this.getPlaceSound(stateIn_1, world, posIn, context.getPlayer()), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					stackIn.shrink(1);
+					return ActionResultType.SUCCESS;
 				}
 			}
 		}
@@ -381,92 +378,92 @@ public class Mizuoke_Item extends BucketItem {
 		return state.getSoundType().getPlaceSound();
 	}
 
-	protected SoundEvent getPlaceSound(BlockState state, World worldIn, BlockPos pos, PlayerEntity entity) {
-		return state.getSoundType(worldIn, pos, entity).getPlaceSound();
+	protected SoundEvent getPlaceSound(BlockState state, World world, BlockPos pos, PlayerEntity entity) {
+		return state.getSoundType(world, pos, entity).getPlaceSound();
 	}
 
 	@Nullable
-	public BlockItemUseContext updatePlacementContext(BlockItemUseContext context) {
+	public BlockItemUseContext getBlockItemUseContext(BlockItemUseContext context) {
 		return context;
 	}
 
-	protected boolean updateCustomBlockEntityTag(BlockPos pos, World worldIn, @Nullable PlayerEntity playerIn, ItemStack stack, BlockState state) {
-		return updateCustomBlockEntityTag(worldIn, playerIn, pos, stack);
+	protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity playerIn, ItemStack stack, BlockState state) {
+		return setTileEntityNBT(worldIn, playerIn, pos, stack);
 	}
 
 	@Nullable
-	protected BlockState getPlacementState(BlockItemUseContext context) {
+	protected BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockState stateIn = this.getBlock().getStateForPlacement(context);
 		return stateIn != null && this.canPlace(context, stateIn) ? stateIn : null;
 	}
 
-	private BlockState updateBlockStateFromTag(BlockPos pos, World worldIn, ItemStack stack, BlockState state) {
+	private BlockState getBlockStateTag(BlockPos pos, World worldIn, ItemStack stack, BlockState state) {
 		BlockState stateIn = state;
 		CompoundNBT compoundnbt = stack.getTag();
 		if (compoundnbt != null) {
 			CompoundNBT compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
-			StateContainer<Block, BlockState> statecontainer = state.getBlock().getStateDefinition();
+			StateContainer<Block, BlockState> statecontainer = state.getBlock().getStateContainer();
 
-			for(String s : compoundnbt1.getAllKeys()) {
-				Property<?> iproperty = statecontainer.getProperty(s);
+			for(String s : compoundnbt1.keySet()) {
+				IProperty<?> iproperty = statecontainer.getProperty(s);
 				if (iproperty != null) {
-					String s1 = compoundnbt1.get(s).getAsString();
-					stateIn = updateState(stateIn, iproperty, s1);
+					String s1 = compoundnbt1.get(s).getString();
+					stateIn = comBlockState(stateIn, iproperty, s1);
 				}
 			}
 		}
 
 		if (stateIn != state) {
-			worldIn.setBlock(pos, stateIn, 2);
+			worldIn.setBlockState(pos, stateIn, 2);
 		}
 
 		return stateIn;
 	}
 
-	private static <T extends Comparable<T>> BlockState updateState(BlockState state, Property<T> property, String string) {
-		return property.getValue(string).map((mapper) -> {
-			return state.setValue(property, mapper);
+	private static <T extends Comparable<T>> BlockState comBlockState(BlockState state, IProperty<T> property, String string) {
+		return property.parseValue(string).map((mapper) -> {
+			return state.with(property, mapper);
 		}).orElse(state);
 	}
 
 	protected boolean canPlace(BlockItemUseContext context, BlockState state) {
 		PlayerEntity playerIn = context.getPlayer();
-		ISelectionContext iselectioncontext = playerIn == null ? ISelectionContext.empty() : ISelectionContext.of(playerIn);
-		return (!this.mustSurvive() || state.canSurvive(context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(state, context.getClickedPos(), iselectioncontext);
+		ISelectionContext iselectioncontext = playerIn == null ? ISelectionContext.dummy() : ISelectionContext.forEntity(playerIn);
+		return (!this.checkPosition() || state.isValidPosition(context.getWorld(), context.getPos())) && context.getWorld().func_226663_a_(state, context.getPos(), iselectioncontext);
 	}
 
-	protected boolean mustSurvive() {
+	protected boolean checkPosition() {
 		return true;
 	}
 
 	protected boolean placeBlock(BlockItemUseContext context, BlockState state) {
-		return context.getLevel().setBlock(context.getClickedPos(), state, 11);
+		return context.getWorld().setBlockState(context.getPos(), state, 11);
 	}
 
-	public static boolean updateCustomBlockEntityTag(World worldIn, @Nullable PlayerEntity playerIn, BlockPos pos, ItemStack stackIn) {
+	public static boolean setTileEntityNBT(World worldIn, @Nullable PlayerEntity playerIn, BlockPos pos, ItemStack stackIn) {
 		MinecraftServer minecraftserver = worldIn.getServer();
 		if (minecraftserver == null) {
 			return false;
 		}
 
 		else {
-			CompoundNBT compoundnbt = stackIn.getTagElement("BlockEntityTag");
+			CompoundNBT compoundnbt = stackIn.getChildTag("BlockEntityTag");
 			if (compoundnbt != null) {
-				TileEntity tileentity = worldIn.getBlockEntity(pos);
+				TileEntity tileentity = worldIn.getTileEntity(pos);
 				if (tileentity != null) {
-					if (!worldIn.isClientSide && tileentity.onlyOpCanSetNbt() && (playerIn == null || !playerIn.canUseGameMasterBlocks())) {
+					if (!worldIn.isRemote && tileentity.onlyOpsCanSetNbt() && (playerIn == null || !playerIn.canUseCommandBlock())) {
 						return false;
 					}
 
-					CompoundNBT compoundnbt1 = tileentity.save(new CompoundNBT());
+					CompoundNBT compoundnbt1 = tileentity.write(new CompoundNBT());
 					CompoundNBT compoundnbt2 = compoundnbt1.copy();
 					compoundnbt1.merge(compoundnbt);
 					compoundnbt1.putInt("x", pos.getX());
 					compoundnbt1.putInt("y", pos.getY());
 					compoundnbt1.putInt("z", pos.getZ());
 					if (!compoundnbt1.equals(compoundnbt2)) {
-						tileentity.load(worldIn.getBlockState(pos), compoundnbt1);
-						tileentity.setChanged();
+						tileentity.read(compoundnbt1);
+						tileentity.markDirty();
 						return true;
 					}
 				}
@@ -495,7 +492,7 @@ public class Mizuoke_Item extends BucketItem {
 		return this.block;
 	}
 
-	public void registerBlocks(Map<Block, Item> blockToItemMap, Item itemIn) {
+	public void addToBlockToItemMap(Map<Block, Item> blockToItemMap, Item itemIn) {
 		blockToItemMap.put(this.getBlock(), itemIn);
 	}
 
@@ -503,11 +500,12 @@ public class Mizuoke_Item extends BucketItem {
 		blockToItemMap.remove(this.getBlock());
 	}
 
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_mizuoke")).withStyle(TextFormatting.GRAY));
-		tooltip.add((new TranslationTextComponent("tips.block_simpledish")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_mizuoke")).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add((new TranslationTextComponent("tips.block_simpledish")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

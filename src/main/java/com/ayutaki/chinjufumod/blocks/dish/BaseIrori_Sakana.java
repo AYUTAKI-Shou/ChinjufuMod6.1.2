@@ -4,14 +4,13 @@ import java.util.Random;
 
 import com.ayutaki.chinjufumod.blocks.furnace.Irori;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -19,7 +18,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -40,98 +38,93 @@ public class BaseIrori_Sakana extends Block implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.box(6.0D, -5.0D, 10.75D, 10.0D, 3.5D, 14.5D),
-			Block.box(6.0D, -5.0D, 1.5D, 10.0D, 3.5D, 5.25D),
-			Block.box(1.5D, -5.0D, 6.0D, 5.25D, 3.5D, 10.0D),
-			Block.box(10.5D, -5.0D, 6.0D, 14.75D, 3.5D, 10.0D));
+	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.makeCuboidShape(6.0D, -5.0D, 10.75D, 10.0D, 3.5D, 14.5D),
+			Block.makeCuboidShape(6.0D, -5.0D, 1.5D, 10.0D, 3.5D, 5.25D),
+			Block.makeCuboidShape(1.5D, -5.0D, 6.0D, 5.25D, 3.5D, 10.0D),
+			Block.makeCuboidShape(10.5D, -5.0D, 6.0D, 14.75D, 3.5D, 10.0D));
 
-	public BaseIrori_Sakana(AbstractBlock.Properties properties) {
+	public BaseIrori_Sakana(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState()
-				.setValue(STAGE_0_15, Integer.valueOf(0))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState()
+				.with(STAGE_0_15, Integer.valueOf(0))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* Gives a value when placed. */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER));
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	/* Connect the blocks. */
-	protected boolean isCooking(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.relative(face);
+	protected boolean connectLitIrori(IBlockReader worldIn, BlockPos pos, Direction face) {
+		BlockPos newPos = pos.offset(face);
 		BlockState state = worldIn.getBlockState(newPos);
 		Block block = state.getBlock();
-		return (block instanceof Irori && state.getValue(Irori.LIT));
+		return (block instanceof Irori && state.get(Irori.LIT));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
-		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	/* Distinguish LOST from WATERLOGGED. */
 	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.getValue(WATERLOGGED)) { return true; }
+		if (state.get(WATERLOGGED)) { return true; }
 		return false;
 	}
 	
 	/* Update BlockState. */
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	@Override
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
-		if (isCooking(worldIn, pos, Direction.DOWN)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1000); }
+		if (connectLitIrori(worldIn, pos, Direction.DOWN)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1000); }
+
+		if (inWater(state, worldIn, pos)) { 
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60); }
 		
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
-
-		return !state.canSurvive(worldIn, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return !state.isValidPosition(worldIn, pos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockState downstate = worldIn.getBlockState(pos.below());
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		BlockState downstate = worldIn.getBlockState(pos.down());
 		Block downblock = downstate.getBlock();
 		return downblock instanceof Irori;
 	}
 
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(STAGE_0_15, WATERLOGGED);
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 	/* Collisions for each property. */
@@ -142,21 +135,21 @@ public class BaseIrori_Sakana extends Block implements IWaterLoggable {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items.AIR);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		if (isCooking(worldIn, pos, Direction.DOWN)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1000); }
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		if (connectLitIrori(worldIn, pos, Direction.DOWN)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1000); }
 		
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
+		if (inWater(state, worldIn, pos)) { 
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60); }
 	}
 
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
@@ -166,10 +159,10 @@ public class BaseIrori_Sakana extends Block implements IWaterLoggable {
 		double d4 = rand.nextDouble() * 0.6D - 0.3D;
 		double d6 = rand.nextDouble() * 6.0D / 16.0D;
 
-		if (isCooking(worldIn, pos, Direction.DOWN)) {
+		if (connectLitIrori(worldIn, pos, Direction.DOWN)) {
 
 			if (rand.nextDouble() < 0.1D) {
-				worldIn.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false); }
+				worldIn.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false); }
 
 			if (rand.nextDouble() < 0.1D) {
 				/** 種類, 座標x, y, z, 速度x, y, z **/

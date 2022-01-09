@@ -12,7 +12,6 @@ import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Sakura;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlaster_Spruce;
 import com.ayutaki.chinjufumod.blocks.kamoislab.Kamoi_DirtWall;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -23,7 +22,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KamoiPlaster_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block KAMOI_dirt_oak = register("block_ka_dirt_oak", kamoiDirtWall());
 	public static Block KAMOI_dirt_spru = register("block_ka_dirt_spru", kamoiDirtWall());
@@ -191,44 +191,44 @@ public class KamoiPlaster_Blocks {
 
 	/* Share variables */
 	private static Kamoi_DirtWall kamoiDirtWall() {
-		return new Kamoi_DirtWall(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new Kamoi_DirtWall(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 
 	private static KamoiPlaster_Oak kamoiPlasterOak() {
-		return new KamoiPlaster_Oak(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Oak(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Spruce kamoiPlasterSpruce() {
-		return new KamoiPlaster_Spruce(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Spruce(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Birch kamoiPlasterBirch() {
-		return new KamoiPlaster_Birch(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Birch(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Jungle kamoiPlasterJungle() {
-		return new KamoiPlaster_Jungle(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Jungle(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Acacia kamoiPlasterAcacia() {
-		return new KamoiPlaster_Acacia(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Acacia(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_DarkOak kamoiPlasterDarkOak() {
-		return new KamoiPlaster_DarkOak(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_DarkOak(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Sakura kamoiPlasterSakura() {
-		return new KamoiPlaster_Sakura(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Sakura(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Kaede kamoiPlasterKaede() {
-		return new KamoiPlaster_Kaede(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Kaede(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 	private static KamoiPlaster_Ichoh kamoiPlasterIchoh() {
-		return new KamoiPlaster_Ichoh(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 4.2F).sound(SoundType.STONE));
+		return new KamoiPlaster_Ichoh(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 4.2F).sound(SoundType.STONE));
 	}
 
 

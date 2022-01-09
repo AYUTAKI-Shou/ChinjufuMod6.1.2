@@ -8,9 +8,9 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -21,53 +21,71 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class SconeSet_1 extends BaseStage8_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 10.5D, 13.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 10.5D, 13.0D);
 
-	public SconeSet_1(AbstractBlock.Properties properties) {
+	public SconeSet_1(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_1_8);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_1_8);
 
 		/** Hand is empty. **/
 		if (itemstack.isEmpty()) {
 
 			CMEvents.soundTake_Pick(worldIn, pos);
+			if (i < 8) {
+				if (i == 1) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.EGGSAND)); }
+				if (i == 2) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHICKENSAND)); }
+				if (i == 3) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.EGGSAND)); }
+				if (i == 4) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHICKENSAND)); }
 
-			if (i != 8) {
-				if (i == 1) { playerIn.inventory.add(new ItemStack(Items_Teatime.EGGSAND)); }
-				if (i == 2) { playerIn.inventory.add(new ItemStack(Items_Teatime.CHICKENSAND)); }
-				if (i == 3) { playerIn.inventory.add(new ItemStack(Items_Teatime.EGGSAND)); }
-				if (i == 4) { playerIn.inventory.add(new ItemStack(Items_Teatime.CHICKENSAND)); }
+				if (i == 5) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SCONE)); }
+				if (i == 6) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SCONE)); }
+				if (i == 7) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CAKE)); }
 
-				if (i == 5) { playerIn.inventory.add(new ItemStack(Items_Teatime.SCONE)); }
-				if (i == 6) { playerIn.inventory.add(new ItemStack(Items_Teatime.SCONE)); }
-				if (i == 7) { playerIn.inventory.add(new ItemStack(Items_Teatime.CAKE)); }
-
-				worldIn.setBlock(pos, state.setValue(STAGE_1_8, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_8, Integer.valueOf(i + 1))); }
 
 			if (i == 8) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CAKE));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CAKE));
 
-				worldIn.setBlock(pos, Dish_Blocks.SCONESET_kara.defaultBlockState()
-						.setValue(BaseFacingWater.H_FACING, state.getValue(H_FACING)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.SCONESET_kara.getDefaultState()
+						.with(BaseFacingWater.H_FACING, state.get(H_FACING))); }
 		}
 		
 		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 	/* Collisions for each property. */
@@ -78,26 +96,31 @@ public class SconeSet_1 extends BaseStage8_FaceWater {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_8);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_8);
 		return (i == 1)? new ItemStack(Items_Teatime.SCONESET_1) : new ItemStack(Items_Teatime.SCONESET_kara);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+	public int tickRate(IWorldReader world) {
+		return 60;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		if (state.getValue(WATERLOGGED) == true) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+		if (state.get(WATERLOGGED)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.SCONESET_kara.defaultBlockState()
-					.setValue(SconeSet_kara.H_FACING, state.getValue(H_FACING))
-					.setValue(SconeSet_kara.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
+			worldIn.setBlockState(pos, Dish_Blocks.SCONESET_kara.getDefaultState()
+					.with(SconeSet_kara.H_FACING, state.get(H_FACING))
+					.with(SconeSet_kara.WATERLOGGED, state.get(WATERLOGGED)), 3);
 			this.dropRottenfood(worldIn, pos); }
 		
 		else { }
@@ -105,7 +128,7 @@ public class SconeSet_1 extends BaseStage8_FaceWater {
 
 	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 
 }

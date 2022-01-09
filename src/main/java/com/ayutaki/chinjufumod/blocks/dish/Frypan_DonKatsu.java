@@ -10,7 +10,7 @@ import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -33,17 +33,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Frypan_DonKatsu extends BaseFrypan_Stage2 {
 
-	public Frypan_DonKatsu(AbstractBlock.Properties properties) {
+	public Frypan_DonKatsu(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 
 		if (i != 1) {
 			if (item == Items_Teatime.DONBURI_MESHI) {
@@ -51,14 +51,14 @@ public class Frypan_DonKatsu extends BaseFrypan_Stage2 {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundTake(worldIn, pos);
 	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.DONBURI_KATSU)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.DONBURI_KATSU))) {
-					playerIn.drop(new ItemStack(Items_Teatime.DONBURI_KATSU), false); }
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DONBURI_KATSU)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DONBURI_KATSU))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.DONBURI_KATSU), false); }
 	
 				/** Get EXP. **/
-				worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
+				worldIn.addEntity(new ExperienceOrbEntity(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 1));
 	
-				worldIn.setBlock(pos, Dish_Blocks.FRYPAN_kara.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.FRYPAN_kara.getDefaultState().with(H_FACING, state.get(H_FACING))); }
 			
 			if (item != Items_Teatime.DONBURI_MESHI) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -69,11 +69,11 @@ public class Frypan_DonKatsu extends BaseFrypan_Stage2 {
 		return ActionResultType.SUCCESS;
 	}
 
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 
 		double d0 = (double)pos.getX() + 0.5D;
 		double d1 = (double)pos.getY() + 0.8D;
@@ -84,7 +84,7 @@ public class Frypan_DonKatsu extends BaseFrypan_Stage2 {
 		if (isCooking(worldIn, pos)) {
 
 			if (rand.nextDouble() < 0.1D) {
-				worldIn.playLocalSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
+				worldIn.playSound(d0, d1, d2, SoundEvents_CM.GUTSUGUTSU, SoundCategory.BLOCKS, 0.5F, 0.7F, false); }
 
 			if (i ==2 && rand.nextDouble() < 0.25D) {
 				/** 種類, 座標x, y, z, 速度x, y, z **/
@@ -94,10 +94,10 @@ public class Frypan_DonKatsu extends BaseFrypan_Stage2 {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_frypan")).withStyle(TextFormatting.GRAY));
-		tooltip.add((new TranslationTextComponent("tips.block_food_frypan_donburi")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_frypan")).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add((new TranslationTextComponent("tips.block_food_frypan_donburi")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

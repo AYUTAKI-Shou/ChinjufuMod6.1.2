@@ -3,7 +3,6 @@ package com.ayutaki.chinjufumod.blocks.hakkou;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,19 +21,19 @@ import net.minecraft.world.World;
 public class Glass_Amazake extends Base_Glass {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(6.8D, 0.0D, 6.8D, 9.2D, 3.2D, 9.2D);
-	protected static final VoxelShape AABB_DOWN = Block.box(6.8D, -8.0D, 6.8D, 9.2D, 0.1D, 9.2D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(6.8D, 0.0D, 6.8D, 9.2D, 3.2D, 9.2D);
+	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(6.8D, -8.0D, 6.8D, 9.2D, 0.1D, 9.2D);
 
-	public Glass_Amazake(AbstractBlock.Properties properties) {
+	public Glass_Amazake(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_0_2);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_0_2);
 
 		if (i != 2) {
 			/** Hand is empty. **/
@@ -42,11 +41,11 @@ public class Glass_Amazake extends Base_Glass {
 				CMEvents.soundDrink(worldIn, pos);
 	
 				if (i == 0) {
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0)); }
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0)); }
 				if (i == 1) {
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0)); }
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0)); }
 	
-				worldIn.setBlock(pos, state.setValue(Base_Glass.STAGE_0_2, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(Base_Glass.STAGE_0_2, Integer.valueOf(i + 1))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -59,15 +58,15 @@ public class Glass_Amazake extends Base_Glass {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_0_2);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_0_2);
 		return (i == 0)? new ItemStack(Items_Teatime.AMAZAKEGLASS) : new ItemStack(Items_Teatime.YUNOMI);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
 
 		/** !down= true : false **/
 		return flag? AABB_BOX : AABB_DOWN;

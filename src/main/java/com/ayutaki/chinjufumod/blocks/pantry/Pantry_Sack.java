@@ -7,9 +7,9 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Pantry_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -21,84 +21,90 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class Pantry_Sack extends BaseFacingSlab_Water {
 
 	/* Collision */
-	protected static final VoxelShape SACK_BOTTOM = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
-	protected static final VoxelShape SACK_TOP = VoxelShapes.or(Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.5D, 7.5D, 0.5D, 15.5D, 8.0D, 15.5D),
-			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 0.5D),
-			Block.box(0.0D, 0.0D, 15.5D, 16.0D, 8.0D, 16.0D),
-			Block.box(0.0D, 0.0D, 0.0D, 0.5D, 8.0D, 16.0D),
-			Block.box(15.5D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
+	protected static final VoxelShape SACK_BOTTOM = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+	protected static final VoxelShape SACK_TOP = VoxelShapes.or(Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.5D, 7.5D, 0.5D, 15.5D, 8.0D, 15.5D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 0.5D),
+			Block.makeCuboidShape(0.0D, 0.0D, 15.5D, 16.0D, 8.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.5D, 8.0D, 16.0D),
+			Block.makeCuboidShape(15.5D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D));
 
-	public Pantry_Sack(AbstractBlock.Properties properties) {
+	public Pantry_Sack(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Distinguish LOST from WATERLOGGED. */
 	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.getValue(WATERLOGGED)) { return true; }
+		if (state.get(WATERLOGGED)) { return true; }
 		return false;
 	}
 	
 	/* Update BlockState. */
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
-		}
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if (stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
 		if (inWater(stateIn, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn)); }
 
-		return super.updateShape(stateIn, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+	public int tickRate(IWorldReader world) {
+		return 60;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		SlabType slabtype = state.getValue(TYPE);
-		
+		SlabType slabtype = state.get(TYPE);
+
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 			CMEvents.soundSnowBreak(worldIn, pos);
 
 			if (slabtype != SlabType.DOUBLE) { this.dropRottenfood(worldIn, pos); }
 			if (slabtype == SlabType.DOUBLE) { this.dropRottenfood2(worldIn, pos); }
 
-			worldIn.setBlock(pos, Pantry_Blocks.BOX_H_EMPTY3.defaultBlockState()
-					.setValue(BaseFacingSlab_Water.H_FACING, state.getValue(H_FACING))
-					.setValue(BaseFacingSlab_Water.TYPE, state.getValue(TYPE))
-					.setValue(BaseFacingSlab_Water.WATERLOGGED, state.getValue(WATERLOGGED)), 3); }
+			worldIn.setBlockState(pos, Pantry_Blocks.BOX_H_EMPTY3.getDefaultState()
+					.with(BaseFacingSlab_Water.H_FACING, state.get(H_FACING))
+					.with(BaseFacingSlab_Water.TYPE, state.get(TYPE))
+					.with(BaseFacingSlab_Water.WATERLOGGED, state.get(WATERLOGGED)));
+		}
 
 		else { }
 	}
 
 	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 
 	protected void dropRottenfood2(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD, 2);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 	/* Collisions for each property. */
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		SlabType slabtype = state.getValue(TYPE);
-		switch (slabtype) {
+		SlabType slabtype = state.get(TYPE);
+		switch(slabtype) {
 		case DOUBLE:
-			return VoxelShapes.block();
+			return VoxelShapes.fullCube();
 		case TOP:
 			return SACK_TOP;
 		default:
@@ -106,14 +112,22 @@ public class Pantry_Sack extends BaseFacingSlab_Water {
 		}
 	}
 
-	/* Flammable Block */
+	/* 窒息 */
 	@Override
-	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return true; }
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
 
+	/* 立方体 */
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 5; }
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return true;
+	}
 
+	/* モブ湧き */
 	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) { return 20; }
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
 
 }

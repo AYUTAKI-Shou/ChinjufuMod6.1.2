@@ -1,7 +1,6 @@
 package com.ayutaki.chinjufumod.registry;
 
 import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.blocks.kamoi.Base_Kamoi;
 import com.ayutaki.chinjufumod.blocks.kamoi.Kamoi_Ichoh;
 import com.ayutaki.chinjufumod.blocks.kamoi.Kamoi_Kaede;
 import com.ayutaki.chinjufumod.blocks.kamoi.Kamoi_Sakura;
@@ -26,17 +25,10 @@ import com.ayutaki.chinjufumod.blocks.wood.WoodPlanks_CM;
 import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
 import com.ayutaki.chinjufumod.blocks.wood.WoodStairs_CM;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -44,29 +36,32 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Wood_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block SUIDEN = register("block_suiden", new Suiden(AbstractBlock.Properties.of(Material.DIRT).randomTicks().strength(1.0F, 5.0F).sound(SoundType.GRASS)
-			.isValidSpawn(Wood_Blocks::neverEntity)));
-	public static Block FALL_LEAF = register("block_fall_leaf", new FallLeaf(AbstractBlock.Properties.of(Material.DIRT).randomTicks().strength(0.75F, 5.0F).sound(SoundType.GRASS)));
+	public static Block SUIDEN = register("block_suiden", new Suiden(Block.Properties.create(Material.EARTH).tickRandomly()
+			.hardnessAndResistance(1.0F, 5.0F).sound(SoundType.PLANT)));
+	/**バイオームの土壌として使う際は Material.EARTH **/
+	public static Block FALL_LEAF = register("block_fall_leaf", new FallLeaf(Block.Properties.create(Material.EARTH).tickRandomly()
+			.hardnessAndResistance(0.75F, 5.0F).sound(SoundType.PLANT)));
 
 	public static Block SAKURA_log = register("block_tree_sakura_log", logPillar());
 	public static Block KAEDE_log = register("block_tree_kaede_log", logPillar());
 	public static Block ICHOH_log = register("block_tree_ichoh_log", logPillar());
 
-	public static Block SAKURA_flow = register("block_tree_sakura_flow", leaves_cm());
-	public static Block KAEDE_leaf = register("block_tree_kaede_leaf", leaves_cm());
-	public static Block ICHOH_leaf = register("block_tree_ichoh_leaf", leaves_cm());
-	public static Block OAKKARE_leaf = register("block_tree_oakkare_leaf", leaves_cm());
+	public static Block SAKURA_flow = register("block_tree_sakura_flow", leaves());
+	public static Block KAEDE_leaf = register("block_tree_kaede_leaf", leaves());
+	public static Block ICHOH_leaf = register("block_tree_ichoh_leaf", leaves());
+	public static Block OAKKARE_leaf = register("block_tree_oakkare_leaf", leaves());
 
-	public static Block SAKURA_nae = register("block_tree_sakura_nae", new CM_SaplingBlock(new Tree_Sakura(), Block.Properties.of(Material.WOOD).noCollission().randomTicks().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never)));
-	public static Block KAEDE_nae = register("block_tree_kaede_nae", new CM_SaplingBlock(new Tree_Kaede(), Block.Properties.of(Material.WOOD).noCollission().randomTicks().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never)));
-	public static Block ICHOH_nae = register("block_tree_ichoh_nae", new CM_SaplingBlock(new Tree_Ichoh(), Block.Properties.of(Material.WOOD).noCollission().randomTicks().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never)));
-	public static Block OAKKARE_nae = register("block_tree_oakkare_nae", new CM_SaplingBlock(new Tree_AutumnOak(), Block.Properties.of(Material.WOOD).noCollission().randomTicks().strength(1.0F, 1.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never)));
+	public static Block SAKURA_nae = register("block_tree_sakura_nae", new CM_SaplingBlock(new Tree_Sakura(), Block.Properties.create(Material.WOOD)
+			.doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block KAEDE_nae = register("block_tree_kaede_nae", new CM_SaplingBlock(new Tree_Kaede(), Block.Properties.create(Material.WOOD)
+			.doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block ICHOH_nae = register("block_tree_ichoh_nae", new CM_SaplingBlock(new Tree_Ichoh(), Block.Properties.create(Material.WOOD)
+			.doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block OAKKARE_nae = register("block_tree_oakkare_nae", new CM_SaplingBlock(new Tree_AutumnOak(), Block.Properties.create(Material.WOOD)
+			.doesNotBlockMovement().tickRandomly().hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block SAKURA_planks = register("block_planks_sakura", planks());
 	public static Block KAEDE_planks = register("block_planks_kaede", planks());
@@ -84,12 +79,12 @@ public class Wood_Blocks {
 	public static Block PILLAR_kae = register("block_pillar_kaede", logPillar());
 	public static Block PILLAR_ich = register("block_pillar_ichoh", logPillar());
 
-	public static Block PILLARSLAB_saku = register("block_kamoi_sakura", new Kamoi_Sakura(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntityKamoi).isSuffocating(Wood_Blocks::never)));
-	public static Block PILLARSLAB_kae = register("block_kamoi_kaede", new Kamoi_Kaede(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntityKamoi).isSuffocating(Wood_Blocks::never)));
-	public static Block PILLARSLAB_ich = register("block_kamoi_ichoh", new Kamoi_Ichoh(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Wood_Blocks::neverEntityKamoi).isSuffocating(Wood_Blocks::never)));
+	public static Block PILLARSLAB_saku = register("block_kamoi_sakura", new Kamoi_Sakura(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_kae = register("block_kamoi_kaede", new Kamoi_Kaede(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block PILLARSLAB_ich = register("block_kamoi_ichoh", new Kamoi_Ichoh(Block.Properties.create(Material.WOOD, MaterialColor.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block SAKURA_FENCE = register("block_fence_sakura", woodenFence());
 	public static Block KAEDE_FENCE = register("block_fence_kaede", woodenFence());
@@ -122,95 +117,58 @@ public class Wood_Blocks {
 	public static Block WP_PLANK_ichoh = register("block_wp_plank_ichoh", wallPaneStage4());
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
-	private static boolean neverSlab(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return (state.getValue(WoodSlabWater_CM.TYPE) == SlabType.DOUBLE)? true : false;
-	}
-
-	private static Boolean neverEntitySlab(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodSlabWater_CM.TYPE) == SlabType.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityStairs(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodStairs_CM.HALF) == Half.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityKamoi(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(Base_Kamoi.STAGE_1_4) != 4)? (boolean)false : (boolean)true;
-	}
-
-	private static boolean ocelotOrParrot(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return entity == EntityType.OCELOT || entity == EntityType.PARROT;
-	}
-
 	private static WoodPillar_CM logPillar() {
-		return new WoodPillar_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new WoodPillar_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
-	private static WoodLeaf_CM leaves_cm() {
-		return new WoodLeaf_CM(AbstractBlock.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(Wood_Blocks::ocelotOrParrot).isSuffocating(Wood_Blocks::never).isViewBlocking(Wood_Blocks::never));
+	private static WoodLeaf_CM leaves() {
+		return new WoodLeaf_CM(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT).notSolid());
 	}
 
 	private static Block planks() {
-		return new WoodPlanks_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new WoodPlanks_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static WoodSlabWater_CM woodenSlab() {
-		return new WoodSlabWater_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntitySlab).isSuffocating(Wood_Blocks::neverSlab));
+		return new WoodSlabWater_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WoodStairs_CM woodenStairs() {
-		return new WoodStairs_CM(SAKURA_planks.defaultBlockState(), Block.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntityStairs).isSuffocating(Wood_Blocks::never));
+		return new WoodStairs_CM(SAKURA_planks.getDefaultState(), Block.Properties.create(Material.WOOD)
+				.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WoodFence_CM woodenFence() {
-		return new WoodFence_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new WoodFence_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WoodFenceGate_CM woodenFenceGate() {
-		return new WoodFenceGate_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new WoodFenceGate_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static TrapDoor_CM trapDoor() {
-		return new TrapDoor_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new TrapDoor_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static PressurePlate_CM pressurePlate() {
-		return new PressurePlate_CM(PressurePlate_CM.Sensitivity.EVERYTHING, AbstractBlock.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new PressurePlate_CM(PressurePlate_CM.Sensitivity.EVERYTHING, Block.Properties.create(Material.WOOD)
+				.hardnessAndResistance(0.5F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WoodButton_CM woodenButton() {
-		return new WoodButton_CM(AbstractBlock.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)
-				.noCollission().noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new WoodButton_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Carpet_CM carpetLeaf() {
-		return new Carpet_CM(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new Carpet_CM(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.PLANT).notSolid());
 	}
 
 	private static WallPane_Stage3 wallPaneStage3() {
-		return new WallPane_Stage3(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new WallPane_Stage3(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WallPane_Stage4 wallPaneStage4() {
-		return new WallPane_Stage4(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Wood_Blocks::neverEntity).isSuffocating(Wood_Blocks::never));
+		return new WallPane_Stage4(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	///* Register *///

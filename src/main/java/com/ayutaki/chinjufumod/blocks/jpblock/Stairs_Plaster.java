@@ -25,11 +25,10 @@ public class Stairs_Plaster extends Base_Stairs_JP {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
 		if (this != JP_Blocks.DIRTWALL_stairs) {
-			tooltip.add((new TranslationTextComponent("tips.block_plaster")).withStyle(TextFormatting.GRAY)); }
+			tooltip.add((new TranslationTextComponent("tips.block_plaster")).applyTextStyle(TextFormatting.GRAY)); }
 	}
-
-
+	
 }

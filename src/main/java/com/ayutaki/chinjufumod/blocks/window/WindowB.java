@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
@@ -32,44 +32,44 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class WindowB extends BaseStage4_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape FRAME_SOUTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
-	protected static final VoxelShape FRAME_WEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
-	protected static final VoxelShape FRAME_NORTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
-	protected static final VoxelShape FRAME_EAST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
+	protected static final VoxelShape FRAME_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
+	protected static final VoxelShape FRAME_WEST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
+	protected static final VoxelShape FRAME_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
+	protected static final VoxelShape FRAME_EAST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
 
-	protected static final VoxelShape CLOSE_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(0.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
-	protected static final VoxelShape CLOSE_WEST = VoxelShapes.or(FRAME_WEST, Block.box(7.25D, 0.0D, 0.0D, 8.75D, 16.0D, 16.0D));
-	protected static final VoxelShape CLOSE_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(0.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
-	protected static final VoxelShape CLOSE_EAST = VoxelShapes.or(FRAME_EAST, Block.box(7.25D, 0.0D, 0.0D, 8.75D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSE_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(0.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
+	protected static final VoxelShape CLOSE_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(7.25D, 0.0D, 0.0D, 8.75D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSE_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(0.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
+	protected static final VoxelShape CLOSE_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(7.25D, 0.0D, 0.0D, 8.75D, 16.0D, 16.0D));
 
-	protected static final VoxelShape OPENR_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(8.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
-	protected static final VoxelShape OPENR_WEST = VoxelShapes.or(FRAME_WEST, Block.box(7.25D, 0.0D, 8.0D, 8.75D, 16.0D, 16.0D));
-	protected static final VoxelShape OPENR_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(0.0D, 0.0D, 7.25D, 8.0D, 16.0D, 8.75D));
-	protected static final VoxelShape OPENR_EAST = VoxelShapes.or(FRAME_EAST, Block.box(7.25D, 0.0D, 0.1D, 8.75D, 16.0D, 8.0D));
+	protected static final VoxelShape OPENR_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(8.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
+	protected static final VoxelShape OPENR_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(7.25D, 0.0D, 8.0D, 8.75D, 16.0D, 16.0D));
+	protected static final VoxelShape OPENR_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(0.0D, 0.0D, 7.25D, 8.0D, 16.0D, 8.75D));
+	protected static final VoxelShape OPENR_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(7.25D, 0.0D, 0.1D, 8.75D, 16.0D, 8.0D));
 
-	protected static final VoxelShape OPENL_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(0.0D, 0.0D, 7.25D, 8.0D, 16.0D, 8.75D));
-	protected static final VoxelShape OPENL_WEST = VoxelShapes.or(FRAME_WEST, Block.box(7.25D, 0.0D, 0.0D, 8.75D, 16.0D, 8.0D));
-	protected static final VoxelShape OPENL_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(8.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
-	protected static final VoxelShape OPENL_EAST = VoxelShapes.or(FRAME_EAST, Block.box(7.25D, 0.0D, 8.0D, 8.75D, 16.0D, 16.0D));
+	protected static final VoxelShape OPENL_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(0.0D, 0.0D, 7.25D, 8.0D, 16.0D, 8.75D));
+	protected static final VoxelShape OPENL_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(7.25D, 0.0D, 0.0D, 8.75D, 16.0D, 8.0D));
+	protected static final VoxelShape OPENL_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(8.0D, 0.0D, 7.25D, 16.0D, 16.0D, 8.75D));
+	protected static final VoxelShape OPENL_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(7.25D, 0.0D, 8.0D, 8.75D, 16.0D, 16.0D));
 
-	public WindowB(AbstractBlock.Properties properties) {
+	public WindowB(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
+		Direction direction = state.get(H_FACING);
 
 		/** 1=Close、2=Open Left、3=Open Right、4=Open **/
-		switch (direction) {
-		case NORTH:
-		default:
-			return CLOSE_NORTH;
+		switch(direction) {
 		case SOUTH:
 			return CLOSE_SOUTH;
 		case WEST:
 			return CLOSE_WEST;
+		case NORTH:
+		default:
+			return CLOSE_NORTH;
 		case EAST:
 			return CLOSE_EAST;
 		}
@@ -77,8 +77,8 @@ public class WindowB extends BaseStage4_FaceWater {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		int i = state.getValue(STAGE_1_4);
+		Direction direction = state.get(H_FACING);
+		int i = state.get(STAGE_1_4);
 
 		/** 1=Close、2=Open Left、3=Open Right、4=Open **/
 		if (i < 4) {
@@ -114,12 +114,12 @@ public class WindowB extends BaseStage4_FaceWater {
 	}
 
 	/* RightClick Action */
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
 		/** 1=Close、2=Open Left、3=Open Right、4=Open **/
-		int i = state.getValue(STAGE_1_4);
-		Direction direction = state.getValue(H_FACING);
-		Direction facing = playerIn.getDirection();
+		int i = state.get(STAGE_1_4);
+		Direction direction = state.get(H_FACING);
+		Direction facing = playerIn.getHorizontalFacing();
 
 		switch (i) {
 		case 1 :
@@ -128,43 +128,43 @@ public class WindowB extends BaseStage4_FaceWater {
 			switch (direction) {
 			case NORTH :
 			default :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 				break;
 
 			case SOUTH :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 				break;
 
 			case EAST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 				break;
 				
 			case WEST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 				break;
 			} // switch
 			break;
@@ -174,43 +174,43 @@ public class WindowB extends BaseStage4_FaceWater {
 			switch (direction) {
 			case NORTH :
 			default :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 				break;
 
 			case SOUTH :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 				break;
 
 			case EAST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 				break;
 				
 			case WEST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 2))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 				break;
 			} // switch
 			break;
@@ -220,43 +220,43 @@ public class WindowB extends BaseStage4_FaceWater {
 			switch (direction) {
 			case NORTH :
 			default :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 				break;
 
 			case SOUTH :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 				break;
 
 			case EAST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 				break;
 				
 			case WEST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Open(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 				break;
 			} // switch
 			break;
@@ -266,43 +266,43 @@ public class WindowB extends BaseStage4_FaceWater {
 			switch (direction) {
 			case NORTH :
 			default :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i- 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i- 1))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 				break;
 
 			case SOUTH :
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() < 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 
-				if ((facing == Direction.NORTH && (hit.getLocation().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getLocation().x - (double)pos.getX() > 0.5D))) {
+				if ((facing == Direction.NORTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D)) || (facing == Direction.SOUTH && (hit.getHitVec().x - (double)pos.getX() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 				break;
 
 			case EAST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 				break;
 				
 			case WEST :
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() < 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() < 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 2)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 2))); }
 
-				if ((facing == Direction.EAST && (hit.getLocation().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getLocation().z - (double)pos.getZ() > 0.5D))) {
+				if ((facing == Direction.EAST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D)) || (facing == Direction.WEST && (hit.getHitVec().z - (double)pos.getZ() > 0.5D))) {
 					CMEvents.soundWin_Close(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 				break;
 			} // switch
 			break;
@@ -311,12 +311,29 @@ public class WindowB extends BaseStage4_FaceWater {
 		return ActionResultType.SUCCESS;
 	}
 
-	
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_windowb")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_windowb")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

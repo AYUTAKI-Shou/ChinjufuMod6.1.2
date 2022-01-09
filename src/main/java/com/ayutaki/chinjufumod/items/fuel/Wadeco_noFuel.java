@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 public class Wadeco_noFuel extends BlockNamedItem {
 
 	public Wadeco_noFuel(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.WADECO));
+		super(block, builder.group(ItemGroups_CM.WADECO));
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 
 }

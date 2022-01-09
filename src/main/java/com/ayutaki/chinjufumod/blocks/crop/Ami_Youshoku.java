@@ -7,7 +7,7 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,8 +16,8 @@ import net.minecraft.entity.passive.fish.CodEntity;
 import net.minecraft.entity.passive.fish.SalmonEntity;
 import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,25 +36,25 @@ import net.minecraft.world.server.ServerWorld;
 
 public class Ami_Youshoku extends Base_YoushokuAmi {
 
-	public Ami_Youshoku(AbstractBlock.Properties properties) {
+	public Ami_Youshoku(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 		
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int stage = state.getValue(STAGE_1_9);
-		int age = state.getValue(AGE_1_12);
+		int stage = state.get(STAGE_1_9);
+		int age = state.get(AGE_1_12);
 		
 		if (stage == 5) {
 			
 			if (item == Items.STRING || item == Items_Seasonal.ORIITO) {
 				
 				/* 5 times */
-				if (playerIn.totalExperience >= 15) {
+				if (playerIn.experienceTotal >= 15) {
 					
 					if (age >= 4) {
 						CMEvents.Consume_1Item(playerIn, hand);
@@ -65,90 +65,90 @@ public class Ami_Youshoku extends Base_YoushokuAmi {
 						double y = (double) pos.getY();
 						double z = (double) pos.getZ();
 						
-						worldIn.setBlock(pos, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x - 1, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(1))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(2))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x + 1, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(3))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x - 1, y, z), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(4))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x + 1, y, z), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(6))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x - 1, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(7))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(8))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-						worldIn.setBlock(new BlockPos(x + 1, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(9))
-								.setValue(AGE_1_12, Integer.valueOf(age - 3))
-								.setValue(DOWN, state.getValue(DOWN))
-								.setValue(UP, state.getValue(UP))
-								.setValue(WAKE, state.getValue(WAKE))
-								.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3); }
+						worldIn.setBlockState(pos, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x - 1, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(1))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(2))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x + 1, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(3))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x - 1, y, z), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(4))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x + 1, y, z), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(6))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x - 1, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(7))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(8))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+						worldIn.setBlockState(new BlockPos(x + 1, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(9))
+								.with(AGE_1_12, Integer.valueOf(age - 3))
+								.with(DOWN, state.get(DOWN))
+								.with(UP, state.get(UP))
+								.with(WAKE, state.get(WAKE))
+								.with(WATERLOGGED, state.get(WATERLOGGED)), 3); }
 					
 					if (age < 4) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 				}
 				
 				/** Not enough EXP **/
-				if (playerIn.totalExperience < 15) { CMEvents.textNotEnough_EXP(worldIn, pos, playerIn); }
+				if (playerIn.experienceTotal < 15) { CMEvents.textNotEnough_EXP(worldIn, pos, playerIn); }
 			} //COBWEB
 
 			if (item == Items.COD_BUCKET) {
-				if (state.getValue(WATERLOGGED)) {
+				if (state.get(WATERLOGGED)) {
 					spawnCod(worldIn, pos);
 					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand); }
 				
-				if (!state.getValue(WATERLOGGED)) { CMEvents.textNoPlace(worldIn, pos, playerIn); }
+				if (!state.get(WATERLOGGED)) { CMEvents.textNoPlace(worldIn, pos, playerIn); }
 			}
 			
 			if (item == Items.SALMON_BUCKET) {
-				if (state.getValue(WATERLOGGED)) {
+				if (state.get(WATERLOGGED)) {
 					spawnSalmon(worldIn, pos);
 					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand); }
 				
-				if (!state.getValue(WATERLOGGED)) { CMEvents.textNoPlace(worldIn, pos, playerIn); }
+				if (!state.get(WATERLOGGED)) { CMEvents.textNoPlace(worldIn, pos, playerIn); }
 			}
 			
 			if (item == Items.TROPICAL_FISH_BUCKET) {
-				if (state.getValue(WATERLOGGED)) {
+				if (state.get(WATERLOGGED)) {
 					spawnTropicalFish(worldIn, pos);
 					CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand); }
 				
-				if (!state.getValue(WATERLOGGED)) { CMEvents.textNoPlace(worldIn, pos, playerIn); }
+				if (!state.get(WATERLOGGED)) { CMEvents.textNoPlace(worldIn, pos, playerIn); }
 			}
 			
 			if (item == Items_Teatime.YOUSHOKU_AMI) { return ActionResultType.FAIL; }
@@ -167,140 +167,140 @@ public class Ami_Youshoku extends Base_YoushokuAmi {
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader worldIn = context.getLevel();
-		BlockPos pos = context.getClickedPos();
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+		IBlockReader worldIn = context.getWorld();
+		BlockPos pos = context.getPos();
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
 	
-		ItemStack itemstack = context.getItemInHand();
+		ItemStack itemstack = context.getItem();
 		
 		double x = (double) pos.getX();
 		double y = (double) pos.getY();
 		double z = (double) pos.getZ();
 		
-		if (context.getLevel().getBlockState(new BlockPos(x - 1, y, z - 1)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x, y, z - 1)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x + 1, y, z - 1)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x + 1, y, z)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x - 1, y, z)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x + 1, y, z + 1)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x, y, z + 1)).canBeReplaced(context) &&
-				context.getLevel().getBlockState(new BlockPos(x - 1, y, z + 1)).canBeReplaced(context)) {
+		if (context.getWorld().getBlockState(new BlockPos(x - 1, y, z - 1)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x, y, z - 1)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x + 1, y, z - 1)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x + 1, y, z)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x - 1, y, z)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x + 1, y, z + 1)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x, y, z + 1)).isReplaceable(context) &&
+				context.getWorld().getBlockState(new BlockPos(x - 1, y, z + 1)).isReplaceable(context)) {
 
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 12) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 11)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(2))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 12) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 11)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(2))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 11) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 10)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(3))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 11) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 10)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(3))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 10) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 9)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(4))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 10) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 9)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(4))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 9) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 8)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(5))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 9) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 8)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(5))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 8) &&
-					(itemstack.getDamageValue() < itemstack.getMaxDamage() - 6)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(6))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 8) &&
+					(itemstack.getDamage() < itemstack.getMaxDamage() - 6)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(6))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if (itemstack.getDamageValue() == itemstack.getMaxDamage() - 6) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(7))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if (itemstack.getDamage() == itemstack.getMaxDamage() - 6) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(7))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 6) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 5)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(8))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 6) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 5)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(8))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 5) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 4)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(9))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 5) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 4)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(9))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 4) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 3)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(10))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 4) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 3)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(10))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if ((itemstack.getDamageValue() > itemstack.getMaxDamage() - 3) &&
-					(itemstack.getDamageValue() <= itemstack.getMaxDamage() - 2)) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(11))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if ((itemstack.getDamage() > itemstack.getMaxDamage() - 3) &&
+					(itemstack.getDamage() <= itemstack.getMaxDamage() - 2)) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(11))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
-			if (itemstack.getDamageValue() > itemstack.getMaxDamage() - 2) {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(12))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+			if (itemstack.getDamage() > itemstack.getMaxDamage() - 2) {
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(12))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 			
 			else {
-				return this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-						.setValue(AGE_1_12, Integer.valueOf(1))
-						.setValue(DOWN, connectThis(worldIn, pos, Direction.DOWN))
-						.setValue(UP, connectAir(worldIn, pos, Direction.UP))
-						.setValue(WAKE, Boolean.valueOf(false))
-						.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+				return this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+						.with(AGE_1_12, Integer.valueOf(1))
+						.with(DOWN, connectThis(worldIn, pos, Direction.DOWN))
+						.with(UP, connectAir(worldIn, pos, Direction.UP))
+						.with(WAKE, Boolean.valueOf(false))
+						.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)); }
 		}
 		
 		else { 
-			CMEvents.textNoPlace(context.getLevel(), context.getClickedPos(), context.getPlayer());
+			CMEvents.textNoPlace(context.getWorld(), context.getPos(), context.getPlayer());
 			return null; }
 	}
 
 	/* Add other Blocks. */
 	@Override
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemstack) {
-		FluidState fluid = worldIn.getFluidState(pos);
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		IFluidState fluidState = worldIn.getFluidState(pos);
 		
 		double x = (double) pos.getX();
 		double y = (double) pos.getY();
@@ -315,62 +315,62 @@ public class Ami_Youshoku extends Base_YoushokuAmi {
 		BlockPos pos8 = new BlockPos(x, y, z + 1);
 		BlockPos pos9 = new BlockPos(x + 1, y, z + 1);
 		
-		worldIn.setBlock(pos1, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(1))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos1, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos1, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos2, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(2))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos2, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos2, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos3, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(3))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos3, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos3, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos4, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(4))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos4, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos4, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos6, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(6))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos6, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos6, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos7, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(7))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos7, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos7, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos8, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(8))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos8, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos8, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
-		worldIn.setBlock(pos9, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(9))
-				.setValue(AGE_1_12, Integer.valueOf(state.getValue(AGE_1_12)))
-				.setValue(DOWN, connectThis(worldIn, pos9, Direction.DOWN))
-				.setValue(UP, connectAir(worldIn, pos9, Direction.UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos1, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(1))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos1, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos1, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos2, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(2))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos2, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos2, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos3, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(3))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos3, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos3, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos4, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(4))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos4, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos4, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos6, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(6))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos6, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos6, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos7, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(7))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos7, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos7, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos8, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(8))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos8, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos8, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
+		worldIn.setBlockState(pos9, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(9))
+				.with(AGE_1_12, Integer.valueOf(state.get(AGE_1_12)))
+				.with(DOWN, connectThis(worldIn, pos9, Direction.DOWN))
+				.with(UP, connectAir(worldIn, pos9, Direction.UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER)), 3);
 	}
 	
 	/* Increase fish. */
 	@Override
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int stage = state.getValue(STAGE_1_9);
-		int age = state.getValue(AGE_1_12);
-		boolean wake = state.getValue(WAKE);
+		int stage = state.get(STAGE_1_9);
+		int age = state.get(AGE_1_12);
+		boolean wake = state.get(WAKE);
 		
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 		
@@ -381,10 +381,10 @@ public class Ami_Youshoku extends Base_YoushokuAmi {
 		case 4 : break;
 		case 5 :
 		default : 
-			if (!state.getValue(WATERLOGGED)) {
+			if (!state.get(WATERLOGGED)) {
 				if (rand.nextInt(1) == 0) { worldIn.destroyBlock(pos, true); } }
 			
-			if (state.getValue(WATERLOGGED)) {
+			if (state.get(WATERLOGGED)) {
 				if (!wake) {
 					if (rand.nextInt(4) == 0) { wakeUp(state, worldIn, pos); } }
 				
@@ -405,10 +405,10 @@ public class Ami_Youshoku extends Base_YoushokuAmi {
 						AxisAlignedBB AABB_SPAWN = new AxisAlignedBB(pos.getX() - 1, pos.getY(), pos.getZ() - 1, pos.getX() + 2, pos.getY() + 1, pos.getZ() + 2);
 						AxisAlignedBB AABB_CHECK = new AxisAlignedBB(pos.getX() - 1, pos.getY() - 0.5, pos.getZ() - 1, pos.getX() + 2, pos.getY() + 1.5, pos.getZ() + 2);
 						
-						List<CodEntity> listCod = worldIn.getEntitiesOfClass(CodEntity.class, AABB_SPAWN);
-						List<SalmonEntity> listSalmon = worldIn.getEntitiesOfClass(SalmonEntity.class, AABB_SPAWN);
-						List<TropicalFishEntity> listTropicalFish = worldIn.getEntitiesOfClass(TropicalFishEntity.class, AABB_SPAWN);
-						List<AbstractFishEntity> listFish = worldIn.getEntitiesOfClass(AbstractFishEntity.class, AABB_CHECK);
+						List<CodEntity> listCod = worldIn.getEntitiesWithinAABB(CodEntity.class, AABB_SPAWN);
+						List<SalmonEntity> listSalmon = worldIn.getEntitiesWithinAABB(SalmonEntity.class, AABB_SPAWN);
+						List<TropicalFishEntity> listTropicalFish = worldIn.getEntitiesWithinAABB(TropicalFishEntity.class, AABB_SPAWN);
+						List<AbstractFishEntity> listFish = worldIn.getEntitiesWithinAABB(AbstractFishEntity.class, AABB_CHECK);
 						/** age1=2, age2=3, age3=4, age4=5, age5=6, age6=7 **/
 						
 						if (listFish.size() >= 5) { }
@@ -446,154 +446,160 @@ public class Ami_Youshoku extends Base_YoushokuAmi {
 	/* Spawn fish */
 	private void spawnCod(World worldIn, BlockPos pos) {
 		CodEntity cod = new CodEntity(EntityType.COD, worldIn);
-		cod.setPos(pos.getX(), pos.getY(), pos.getZ());
+		cod.setPosition(pos.getX(), pos.getY(), pos.getZ());
 		cod.setCustomName(codName);
-		worldIn.addFreshEntity(cod);
+		worldIn.addEntity(cod);
 		CMEvents.soundFish(worldIn, pos);
 	}
 	
 	private void spawnSalmon(World worldIn, BlockPos pos) {
 		SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, worldIn);
-		salmon.setPos(pos.getX(), pos.getY(), pos.getZ());
+		salmon.setPosition(pos.getX(), pos.getY(), pos.getZ());
 		salmon.setCustomName(salmonName);
-		worldIn.addFreshEntity(salmon);
+		worldIn.addEntity(salmon);
 		CMEvents.soundFish(worldIn, pos);
 	}
 	
 	private void spawnTropicalFish(World worldIn, BlockPos pos) {
 		TropicalFishEntity tropical = new TropicalFishEntity(EntityType.TROPICAL_FISH, worldIn);
-		tropical.setPos(pos.getX(), pos.getY(), pos.getZ());
+		tropical.setPosition(pos.getX(), pos.getY(), pos.getZ());
 		tropical.setCustomName(tropicalName);
-		worldIn.addFreshEntity(tropical);
+		worldIn.addEntity(tropical);
 		CMEvents.soundFish(worldIn, pos);
 	}
 	
 	
 	/* Net state changes. */
 	private void agingNet(BlockState state, World worldIn, BlockPos pos) {
-		int age = state.getValue(AGE_1_12);
+		int age = state.get(AGE_1_12);
 
 		double x = (double) pos.getX();
 		double y = (double) pos.getY();
 		double z = (double) pos.getZ();
 		
-		worldIn.setBlock(pos, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x - 1, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(1))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(2))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x + 1, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(3))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x - 1, y, z), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(4))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x + 1, y, z), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(6))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x - 1, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(7))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(8))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x + 1, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(9))
-				.setValue(AGE_1_12, Integer.valueOf(age + 1))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
+		worldIn.setBlockState(pos, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x - 1, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(1))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(2))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x + 1, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(3))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x - 1, y, z), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(4))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x + 1, y, z), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(6))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x - 1, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(7))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(8))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x + 1, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(9))
+				.with(AGE_1_12, Integer.valueOf(age + 1))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(false))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
 	}
 	
 	private void wakeUp(BlockState state, World worldIn, BlockPos pos) {
-		int age = state.getValue(AGE_1_12);
+		int age = state.get(AGE_1_12);
 
 		double x = (double) pos.getX();
 		double y = (double) pos.getY();
 		double z = (double) pos.getZ();
 		
-		worldIn.setBlock(pos, this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(5))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x - 1, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(1))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(2))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x + 1, y, z - 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(3))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x - 1, y, z), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(4))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x + 1, y, z), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(6))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x - 1, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(7))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(8))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
-		worldIn.setBlock(new BlockPos(x + 1, y, z + 1), this.defaultBlockState().setValue(STAGE_1_9, Integer.valueOf(9))
-				.setValue(AGE_1_12, Integer.valueOf(age))
-				.setValue(DOWN, state.getValue(DOWN))
-				.setValue(UP, state.getValue(UP))
-				.setValue(WAKE, Boolean.valueOf(true))
-				.setValue(WATERLOGGED, state.getValue(WATERLOGGED)), 3);
+		worldIn.setBlockState(pos, this.getDefaultState().with(STAGE_1_9, Integer.valueOf(5))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x - 1, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(1))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(2))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x + 1, y, z - 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(3))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x - 1, y, z), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(4))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x + 1, y, z), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(6))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x - 1, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(7))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(8))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
+		worldIn.setBlockState(new BlockPos(x + 1, y, z + 1), this.getDefaultState().with(STAGE_1_9, Integer.valueOf(9))
+				.with(AGE_1_12, Integer.valueOf(age))
+				.with(DOWN, state.get(DOWN))
+				.with(UP, state.get(UP))
+				.with(WAKE, Boolean.valueOf(true))
+				.with(WATERLOGGED, state.get(WATERLOGGED)), 3);
 	}
 
+	/* Clone Item in Creative. */
+	@Override
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		return new ItemStack(Items_Teatime.YOUSHOKU_AMI);
+	}
+	
 }

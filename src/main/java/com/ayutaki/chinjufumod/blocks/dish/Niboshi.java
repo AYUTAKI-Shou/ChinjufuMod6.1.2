@@ -10,7 +10,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -42,32 +41,32 @@ public class Niboshi extends BaseStage4_FaceWater {
 
 	/* Property 1=生、2=生、3=生、4=乾燥*/
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D);
 
-	public Niboshi(AbstractBlock.Properties properties) {
+	public Niboshi(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 
 		if (i == 4) {
 			if (item == Items.GLASS_BOTTLE) {
 				/** Collect with an Item **/
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundTake(worldIn, pos);
-	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.DASHI_bot_1)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.DASHI_bot_1))) {
-					playerIn.drop(new ItemStack(Items_Teatime.DASHI_bot_1), false); }
-	
-				worldIn.setBlock(pos, Dish_Blocks.SCONESET_kara.defaultBlockState()
-						.setValue(SconeSet_kara.STAGE_1_2, Integer.valueOf(2)), 3); }
+
+			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DASHI_bot_1)); }
+			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DASHI_bot_1))) {
+				playerIn.dropItem(new ItemStack(Items_Teatime.DASHI_bot_1), false); }
+
+			worldIn.setBlockState(pos, Dish_Blocks.SCONESET_kara.getDefaultState()
+					.with(SconeSet_kara.STAGE_1_2, Integer.valueOf(2))); }
 			
 			if (item != Items.GLASS_BOTTLE) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -78,59 +77,53 @@ public class Niboshi extends BaseStage4_FaceWater {
 		return ActionResultType.SUCCESS;
 	}
 
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.getValue(WATERLOGGED)) { return true; }
-		return false;
-	}
-
 	protected boolean hasWater(IWorldReader worldIn, BlockPos pos) {
-		for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-2, -2, -2), pos.offset(2, 2, 2))) {
-			if (worldIn.getFluidState(blockpos).is(FluidTags.WATER)) {
+		for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-2, -2, -2), pos.add(2, 2, 2))) {
+			if (worldIn.getFluidState(blockpos).isTagged(FluidTags.WATER)) {
 				return true;
 			}
 		}
 		return false;
 	}
-
+	
+	/* Distinguish LOST from WATERLOGGED. */
+	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		if (state.get(WATERLOGGED)) { return true; }
+		return false;
+	}
+	
+	/* Update BlockState. */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100); }
+		if (inWater(state, worldIn, pos) == true) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
 
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100); }
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
-
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100);
-			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.destroyBlock(pos, true); }
-
-		else { }
-	}
-
-	@Override
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 
 		if (i < 4 && !hasWater(worldIn, pos) && rand.nextInt(4) == 0) {
-			worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
+
+		if (inWater(state, worldIn, pos)) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100);
+			CMEvents.soundSnowBreak(worldIn, pos);
+			worldIn.destroyBlock(pos, true); }
 
 		else { }
 	}
@@ -143,9 +136,9 @@ public class Niboshi extends BaseStage4_FaceWater {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_niboshi_boiled")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_niboshi_boiled")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

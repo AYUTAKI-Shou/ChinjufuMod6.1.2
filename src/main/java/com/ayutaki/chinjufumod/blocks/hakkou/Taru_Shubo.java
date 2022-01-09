@@ -8,7 +8,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,22 +33,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Taru_Shubo extends BaseTaru_Stage05 {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.25D, 8.0D, 0.25D, 15.75D, 12.0D, 15.75D),
-			Block.box(0.5D, 4.0D, 0.5D, 15.5D, 8.0D, 15.5D),
-			Block.box(0.75D, 0.0D, 0.75D, 15.25D, 4.0D, 15.25D));
+	protected static final VoxelShape AABB_BOX = VoxelShapes.or(Block.makeCuboidShape(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.25D, 8.0D, 0.25D, 15.75D, 12.0D, 15.75D),
+			Block.makeCuboidShape(0.5D, 4.0D, 0.5D, 15.5D, 8.0D, 15.5D),
+			Block.makeCuboidShape(0.75D, 0.0D, 0.75D, 15.25D, 4.0D, 15.25D));
 
-	public Taru_Shubo(AbstractBlock.Properties properties) {
+	public Taru_Shubo(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_0_5);
+		int i = state.get(STAGE_0_5);
 
 		/** Too early to collect **/
 		if (i != 5) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
@@ -60,13 +59,12 @@ public class Taru_Shubo extends BaseTaru_Stage05 {
 				/** Collect with an Item **/
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundBowlFill(worldIn, pos);
+
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SHUBO)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SHUBO))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.SHUBO), false); }
 	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.SHUBO)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.SHUBO))) {
-					playerIn.drop(new ItemStack(Items_Teatime.SHUBO), false); }
-	
-				worldIn.setBlock(pos, Hakkou_Blocks.HAKKOU_TARU.defaultBlockState()
-						.setValue(Taru_Hakkou.STAGE_0_5, Integer.valueOf(0)), 3); }
+				worldIn.setBlockState(pos, Hakkou_Blocks.HAKKOU_TARU.getDefaultState().with(Taru_Hakkou.STAGE_0_5, Integer.valueOf(0))); }
 			
 			if (item != Items.BOWL) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -83,9 +81,9 @@ public class Taru_Shubo extends BaseTaru_Stage05 {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_taru_shubo")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_taru_shubo")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

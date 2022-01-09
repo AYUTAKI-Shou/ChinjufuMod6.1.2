@@ -7,9 +7,10 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.ItemGroups_CM;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CampfireBlock;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
+import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -18,12 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,36 +35,35 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Match_Item extends Item {
 
 	public Match_Item(Item.Properties builder) {
-		super(builder.tab(ItemGroups_CM.TEATIME));
+		super(builder.group(ItemGroups_CM.TEATIME));
 	}
 
 	/* FlintAndSteel */
-	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity playerIn = context.getPlayer();
-		World worldIn = context.getLevel();
-		BlockPos blockpos = context.getClickedPos();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		ItemStack itemstack = context.getItemInHand();
-		boolean mode = playerIn.abilities.instabuild;
+		IWorld iworld = context.getWorld();
+		BlockPos blockpos = context.getPos();
+		BlockState blockstate = iworld.getBlockState(blockpos);
+		ItemStack itemstack = context.getItem();
+		boolean mode = playerIn.abilities.isCreativeMode;
 
-		if (CampfireBlock.canLight(blockstate)) {
-			worldIn.playSound(playerIn, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
-			worldIn.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
+		if (isUnlitCampfire(blockstate)) {
+			iworld.playSound(playerIn, blockpos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+			iworld.setBlockState(blockpos, blockstate.with(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
 
 			if (!mode) { itemstack.shrink(1); }
 			if (mode) { }
 
-			return ActionResultType.sidedSuccess(worldIn.isClientSide());
+			return ActionResultType.SUCCESS;
 		}
 
 		else {
-			BlockPos blockpos1 = blockpos.relative(context.getClickedFace());
+			BlockPos blockpos1 = blockpos.offset(context.getFace());
 
-			if (AbstractFireBlock.canBePlacedAt(worldIn, blockpos1, context.getHorizontalDirection())) {
-				worldIn.playSound(playerIn, blockpos1, SoundEvents.FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
-				BlockState blockstate1 = AbstractFireBlock.getState(worldIn, blockpos1);
-				worldIn.setBlock(blockpos1, blockstate1, 11);
+			if (canSetFire(iworld.getBlockState(blockpos1), iworld, blockpos1)) {
+				iworld.playSound(playerIn, blockpos1, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+				BlockState blockstate1 = ((FireBlock)Blocks.FIRE).getStateForPlacement(iworld, blockpos1);
+				iworld.setBlockState(blockpos1, blockstate1, 11);
 
 				if (playerIn instanceof ServerPlayerEntity) {
 					CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, blockpos1, itemstack);
@@ -70,7 +72,7 @@ public class Match_Item extends Item {
 					if (mode) { }
 				}
 
-				return ActionResultType.sidedSuccess(worldIn.isClientSide());
+				return ActionResultType.SUCCESS;
 			}
 			else {
 				return ActionResultType.FAIL;
@@ -78,10 +80,29 @@ public class Match_Item extends Item {
 		}
 	}
 
+	public static boolean isUnlitCampfire(BlockState state) {
+		return state.getBlock() == Blocks.CAMPFIRE && !state.get(BlockStateProperties.WATERLOGGED) && !state.get(BlockStateProperties.LIT);
+	}
+
+	@SuppressWarnings("deprecation")
+	public static boolean canSetFire(BlockState existingState, IWorld worldIn, BlockPos posIn) {
+		BlockState blockstate = ((FireBlock)Blocks.FIRE).getStateForPlacement(worldIn, posIn);
+		boolean flag = false;
+
+		for(Direction direction : Direction.Plane.HORIZONTAL) {
+		BlockPos framePos = posIn.offset(direction);
+			if (worldIn.getBlockState(framePos).isPortalFrame(worldIn, framePos) && ((NetherPortalBlock)Blocks.NETHER_PORTAL).isPortal(worldIn, posIn) != null) {
+				flag = true;
+			}
+		}
+
+		return existingState.isAir() && (blockstate.isValidPosition(worldIn, posIn) || flag);
+	}
+
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_match_cm")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_match_cm")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

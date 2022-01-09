@@ -11,7 +11,6 @@ import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Oak;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Sakura;
 import com.ayutaki.chinjufumod.blocks.kamoislab.KamoiPlanks_Spruce;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -22,7 +21,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KamoiPlanks_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block KAMOI_oak_oak = register("block_ka_oak_oak", kamoiOak());
 	public static Block KAMOI_spru_oak = register("block_ka_spru_oak", kamoiOak());
@@ -116,39 +116,39 @@ public class KamoiPlanks_Blocks {
 
 	/* Share variables */
 	private static KamoiPlanks_Oak kamoiOak() {
-		return new KamoiPlanks_Oak(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Oak(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Spruce kamoiSpruce() {
-		return new KamoiPlanks_Spruce(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Spruce(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Birch kamoiBirch() {
-		return new KamoiPlanks_Birch(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Birch(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Jungle kamoiJungle() {
-		return new KamoiPlanks_Jungle(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Jungle(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Acacia kamoiAcacia() {
-		return new KamoiPlanks_Acacia(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Acacia(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_DarkOak kamoiDarkOak() {
-		return new KamoiPlanks_DarkOak(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_DarkOak(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Sakura kamoiSakura() {
-		return new KamoiPlanks_Sakura(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Sakura(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Kaede kamoiKaede() {
-		return new KamoiPlanks_Kaede(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Kaede(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	private static KamoiPlanks_Ichoh kamoiIchoh() {
-		return new KamoiPlanks_Ichoh(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD));
+		return new KamoiPlanks_Ichoh(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD));
 	}
 
 

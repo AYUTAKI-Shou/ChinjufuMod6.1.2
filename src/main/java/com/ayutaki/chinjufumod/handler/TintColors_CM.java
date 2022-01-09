@@ -19,11 +19,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class TintColors_CM {
 
-	/* TintIndex of Block. Small values version. */
+	/* TintIndex によるブロック色 0は使わずに1以降から */
 	public static void registerBlockColors() {
 		/** 20 Water=1, 35 CornSoup=2 **/
 		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? BiomeColors.getAverageWaterColor(worldIn, pos) : ((tint == 2)? 16441700 : -1); },
+			return (tint == 1)? BiomeColors.getWaterColor(worldIn, pos) : ((tint == 2)? 16441700 : -1); },
 				Garden_Blocks.CHOUZUBACHI,
 				Garden_Blocks.CHOUZUBACHI_gra,
 				Garden_Blocks.CHOUZUBACHI_dio,
@@ -44,7 +44,7 @@ public class TintColors_CM {
 				Dish_Blocks.KETTLE_full,
 				Dish_Blocks.ZUNDOU_MIZU,
 				Dish_Blocks.ZUNDOU_SHIO,
-				Dish_Blocks.ZUNDOU_NCURRY,
+				Dish_Blocks.ZUNDOU_NCURRY, 
 				Dish_Blocks.ZUNDOU_FISH,
 				Dish_Blocks.ZUNDOU_UDON,
 				Dish_Blocks.ZUNDOU_PASTA,
@@ -56,7 +56,7 @@ public class TintColors_CM {
 				Dish_Blocks.NABECORN,
 				Dish_Blocks.CORNSOUP,
 				Dish_Blocks.EGGBURGSET );
-
+		
 		/** 21 Raw_Sake **/
 		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { return (tint == 1)? 12509680 : -1; },
 				Hakkou_Blocks.NAMASAKEGLASS );
@@ -129,7 +129,7 @@ public class TintColors_CM {
 
 		/** 20 Water=1, 34 AMAZAKE=2 **/
 		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> { 
-			return (tint == 1)? BiomeColors.getAverageWaterColor(worldIn, pos) : ((tint == 2)? 16443100 : -1); },
+			return (tint == 1)? BiomeColors.getWaterColor(worldIn, pos) : ((tint == 2)? 16443100 : -1); },
 				Hakkou_Blocks.NABEAMAZAKE_nama,
 				Hakkou_Blocks.NABEAMAZAKE,
 				Hakkou_Blocks.AMAZAKEGLASS );
@@ -151,15 +151,15 @@ public class TintColors_CM {
 		
 		/** 2 Spruce **/
 		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.getEvergreenColor() : -1; },
+			return (tint == 1)? FoliageColors.getSpruce() : -1; },
 				Garden_Blocks.BONSAI_spru,
 				Garden_Blocks.KANYOU_spruce,
 				Garden_Blocks.IKEGAKILONG_spruce,
 				Garden_Blocks.IKEGAKI_spruce );
-
+		
 		/** 3 Birch **/
 		Minecraft.getInstance().getBlockColors().register((state, worldIn, pos, tint) -> {
-			return (tint == 1)? FoliageColors.getBirchColor() : -1; },
+			return (tint == 1)? FoliageColors.getBirch() : -1; },
 				Garden_Blocks.BONSAI_bir,
 				Garden_Blocks.KANYOU_birch,
 				Garden_Blocks.IKEGAKILONG_birch,
@@ -210,10 +210,9 @@ public class TintColors_CM {
 				Wood_Blocks.OCHIBA_carpet );
 	}
 
-	
-	/* TintIndex of ItemBlock */
+	/* TintIndex によるアイテム色 */
 	public static void registerItemColors() {
-
+		
 		/** 20 Water waterColor(4159204) from Biome=1, 35 CornSoup=2 **/
 		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
 			return (tint == 1)? 4159204 : ((tint == 2)? 16441700 : -1); },
@@ -249,7 +248,7 @@ public class TintColors_CM {
 				Items_Teatime.NABECORN,
 				Items_Teatime.CORNSOUP,
 				Items_Teatime.EGGBURGSET );
-
+		
 		/** 21 Raw_Sake **/
 		Minecraft.getInstance().getItemColors().register((stack, tint) -> { return (tint == 1)? 12509680 : -1; },
 				Items_Teatime.NAMASAKEGLASS );
@@ -342,7 +341,7 @@ public class TintColors_CM {
 		
 		/** 2 Spruce **/
 		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.getEvergreenColor() : -1; },
+			return (tint == 1)? FoliageColors.getSpruce() : -1; },
 				Items_Wadeco.BONSAI_spru,
 				Items_Wadeco.KANYOU_spruce,
 				Items_Wadeco.IKEGAKILONG_spruce,
@@ -350,7 +349,7 @@ public class TintColors_CM {
 
 		/** 3 Birch **/
 		Minecraft.getInstance().getItemColors().register((stack, tint) -> {
-			return (tint == 1)? FoliageColors.getBirchColor() : -1; },
+			return (tint == 1)? FoliageColors.getBirch() : -1; },
 				Items_Wadeco.BONSAI_bir,
 				Items_Wadeco.KANYOU_birch,
 				Items_Wadeco.IKEGAKILONG_birch,

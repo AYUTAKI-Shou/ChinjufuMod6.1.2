@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.items.armor.model.GisouModel;
-import com.ayutaki.chinjufumod.registry.ChinjufuModBlocks;
 import com.ayutaki.chinjufumod.registry.Items_Armor;
+import com.ayutaki.chinjufumod.registry.ChinjufuModBlocks;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.entity.model.BipedModel;
@@ -38,12 +38,12 @@ public class ShigureArmor_Kai extends ArmorItem {
 		if(entity instanceof PlayerEntity) {
 			PlayerEntity playerIn = (PlayerEntity)entity;
 
-			if(playerIn.getItemBySlot(EquipmentSlotType.FEET).getItem() == Items_Armor.SHIGURE_BOOTS_KAI) {
+			if(playerIn.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == Items_Armor.SHIGURE_BOOTS_KAI) {
 
 				/** 着水時の落下が多いため範囲を拡大 **/
-				double x = (double) playerIn.getX();
-				double y = (double) playerIn.getY();
-				double z = (double) playerIn.getZ();
+				double x = (double) playerIn.prevPosX;
+				double y = (double) playerIn.prevPosY;
+				double z = (double) playerIn.prevPosZ;
 				for(double i = -1.3D; i <= 1.3D; i++)
 				for(double j = -1.3D; j <= 1.3D; j++)
 
@@ -54,7 +54,7 @@ public class ShigureArmor_Kai extends ArmorItem {
 						if (worldIn.getBlockState(new BlockPos(x - i, y, z -j)).getBlock() != Blocks.AIR) { }
 
 							else if (worldIn.getBlockState(new BlockPos(x - i, y, z -j)).getBlock() == Blocks.AIR) {
-							worldIn.setBlockAndUpdate(new BlockPos(x - i, y, z -j), ChinjufuModBlocks.WAKE_WATER1.defaultBlockState());
+							worldIn.setBlockState(new BlockPos(x - i, y, z -j), ChinjufuModBlocks.WAKE_WATER1.getDefaultState());
 					}
 				}
 			}
@@ -72,19 +72,19 @@ public class ShigureArmor_Kai extends ArmorItem {
 		if (itemStack != null) {
 
 			if (armorModel != null) {
-				armorModel.head.visible = armorSlot == EquipmentSlotType.HEAD;
-				armorModel.hat.visible = armorSlot == EquipmentSlotType.HEAD;
-				armorModel.body.visible = (armorSlot == EquipmentSlotType.CHEST) || (armorSlot == EquipmentSlotType.CHEST);
-				armorModel.rightArm.visible = armorSlot == EquipmentSlotType.CHEST;
-				armorModel.leftArm.visible = armorSlot == EquipmentSlotType.CHEST;
-				armorModelLegs.rightLeg.visible = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
-				armorModelLegs.leftLeg.visible = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
+				armorModel.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
+				armorModel.bipedHeadwear.showModel = armorSlot == EquipmentSlotType.HEAD;
+				armorModel.bipedBody.showModel = (armorSlot == EquipmentSlotType.CHEST) || (armorSlot == EquipmentSlotType.CHEST);
+				armorModel.bipedRightArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+				armorModel.bipedLeftArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+				armorModelLegs.bipedRightLeg.showModel = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
+				armorModelLegs.bipedLeftLeg.showModel = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
 
-				armorModel.crouching = entityLiving.isCrouching();
-				armorModel.young = entityLiving.isBaby();
+				armorModel.isSneak = entityLiving.isSneaking();
+				armorModel.isChild = entityLiving.isChild();
 
-				armorModelLegs.crouching = entityLiving.isCrouching();
-				armorModelLegs.young = entityLiving.isBaby();
+				armorModelLegs.isSneak = entityLiving.isSneaking();
+				armorModelLegs.isChild = entityLiving.isChild();
 			}
 			return (Armor)armorModel;
 		}
@@ -92,9 +92,9 @@ public class ShigureArmor_Kai extends ArmorItem {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_suijou_boots")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_suijou_boots")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

@@ -9,21 +9,19 @@ import com.ayutaki.chinjufumod.blocks.unitblock.LowDesk;
 import com.ayutaki.chinjufumod.blocks.wood.WoodSlabWater_CM;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -33,6 +31,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -45,141 +44,142 @@ public class Base_Bottle extends Block implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-	protected static final VoxelShape AABB_DOWN = Block.box(5.0D, -8.0D, 5.0D, 11.0D, 8.0D, 11.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(5.0D, -8.0D, 5.0D, 11.0D, 8.0D, 11.0D);
 
-	public Base_Bottle(AbstractBlock.Properties properties) {
+	public Base_Bottle(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(STAGE_1_5, Integer.valueOf(1))
-				.setValue(DOWN, Boolean.valueOf(false))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(STAGE_1_5, Integer.valueOf(1))
+				.with(DOWN, Boolean.valueOf(false))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader worldIn = context.getLevel();
-		BlockPos pos = context.getClickedPos();
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection().getOpposite())
-				.setValue(DOWN, this.connectHalf(worldIn, pos, Direction.DOWN))
-				.setValue(WATERLOGGED, Boolean.valueOf(Boolean.valueOf(fluid.getType() == Fluids.WATER)));
+		IBlockReader worldIn = context.getWorld();
+		BlockPos pos = context.getPos();
+		IFluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
+				.with(DOWN, this.connectHalf(worldIn, pos, Direction.DOWN))
+				.with(WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
 	}
 
 	/* Connect the blocks. */
 	protected boolean connectHalf(IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockPos newPos = pos.relative(face);
+		BlockPos newPos = pos.offset(face);
 		BlockState state = worldIn.getBlockState(newPos);
 		Block block = state.getBlock();
 
-		return ((block instanceof SlabBlock && state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof WoodSlabWater_CM && state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM) ||
-				(block instanceof BaseFacingSlab_Water && state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM) ||
+		return ((block instanceof SlabBlock && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
+				(block instanceof WoodSlabWater_CM && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
+				(block instanceof BaseFacingSlab_Water && state.get(SlabBlock.TYPE) == SlabType.BOTTOM) ||
 				block instanceof LowDesk || block instanceof Chabudai || block instanceof Kotatsu);
+	}
+
+	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		BlockState upstate = worldIn.getBlockState(pos.up());
+		Block upblock = upstate.getBlock();
+
+		if ((upblock == Blocks.WATER && state.get(WATERLOGGED)) || (state.get(DOWN) && state.get(WATERLOGGED))) { return true; }
+		return false;
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true;
-		}
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		else { return Fluids.EMPTY; }
-	}
-
-	/* Distinguish LOST from WATERLOGGED. */
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		BlockState upstate = worldIn.getBlockState(pos.above());
-		Block upblock = upstate.getBlock();
-
-		if ((upblock == Blocks.WATER && state.getValue(WATERLOGGED)) || (state.getValue(DOWN) && state.getValue(WATERLOGGED))) { return true; }
-		return false;
-	}
-	
 	/* Update BlockState. */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
-		}
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn)); }
 
 		boolean down = connectHalf(worldIn, pos, Direction.DOWN);
-		return state.setValue(DOWN, down);
+		return state.with(DOWN, down);
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+	public int tickRate(IWorldReader world) {
+		return 60;
 	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+	}
+
 
 	/* TickRandom */
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-
-		if (state.getValue(STAGE_1_5) != 1 && state.getValue(STAGE_1_5) != 5) {
+		int i = state.get(STAGE_1_5);
+		
+		if (i != 1 && i != 5) {
 			
 			if (inWater(state, worldIn, pos)) {
-				worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 				CMEvents.soundBubble(worldIn, pos);
-				worldIn.setBlock(pos, state.setValue(STAGE_1_5, Integer.valueOf(5)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_5, Integer.valueOf(5))); }
 			
 			else { }
 		}
 		
-		if (state.getValue(STAGE_1_5) == 1 || state.getValue(STAGE_1_5) == 5) { }
+		if (i == 1 || i == 5) { }
+	}
+
+	/* HORIZONTAL Property */
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
-	}
-
-	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(DOWN, H_FACING, STAGE_1_5, WATERLOGGED);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
 
 		/** !down= true : false **/
 		return flag? AABB_BOX : AABB_DOWN;
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 }

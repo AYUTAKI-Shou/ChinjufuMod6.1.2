@@ -8,13 +8,13 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Wadeco;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.ChickenEntity;
@@ -22,14 +22,12 @@ import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.passive.ParrotEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
@@ -54,85 +52,76 @@ public class Makibishi extends FallingBlock implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public Makibishi(AbstractBlock.Properties properties) {
+	public Makibishi(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
-	
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 		CMEvents.soundTouchBlock(worldIn, pos);
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
 	
-	/* Gives a value when placed. +180 .getOpposite() */
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER));
-	}
-
-	/* Waterlogged */
-	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
-		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
-	}
-
-	/* Update BlockState. */
-	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
-		
-		worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelayAfterPlace());
-		
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
-	}
-
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB_BOX;
 	}
 
+	/* Gives a value when placed. */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+	}
+
+	/* Waterlogged */
+	@SuppressWarnings("deprecation")
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
+		
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+		
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
+	}
+
+	/* Create Blockstate */
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+	
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -145,7 +134,7 @@ public class Makibishi extends FallingBlock implements IWaterLoggable {
 	}
 
 	/* 上を歩くとダメージを受ける */
-	public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 		Random rand = new Random();
 		
 		if (entityIn instanceof LivingEntity) {
@@ -154,26 +143,26 @@ public class Makibishi extends FallingBlock implements IWaterLoggable {
 					entityIn instanceof GolemEntity) { }
 			
 			if (entityIn instanceof ChickenEntity && rand.nextInt(60) == 0) {
-				entityIn.hurt(DamageSource.GENERIC, 0.5F); }
+				entityIn.attackEntityFrom(DamageSource.GENERIC, 0.5F); }
 			
 			if (!(entityIn instanceof CatEntity) && !(entityIn instanceof OcelotEntity) && !(entityIn instanceof ParrotEntity) &&
 					!(entityIn instanceof GolemEntity) && !(entityIn instanceof ChickenEntity)) {
-				entityIn.hurt(DamageSource.GENERIC, 0.5F); } }
+				entityIn.attackEntityFrom(DamageSource.GENERIC, 0.5F); } }
 		
 		if (!(entityIn instanceof LivingEntity)) { }
 	}
 	
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Wadeco.MAKIBISHI);
 	}
 	
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_makibishi")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_makibishi")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

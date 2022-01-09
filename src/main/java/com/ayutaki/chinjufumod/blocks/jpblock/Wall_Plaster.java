@@ -1,10 +1,10 @@
 package com.ayutaki.chinjufumod.blocks.jpblock;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 
 public class Wall_Plaster extends Base_Wall {
-	
-	public Wall_Plaster(AbstractBlock.Properties properties) {
+
+	public Wall_Plaster(Block.Properties properties) {
 		super(properties);
 	}
 

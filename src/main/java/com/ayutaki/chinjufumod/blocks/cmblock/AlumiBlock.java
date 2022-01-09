@@ -2,13 +2,13 @@ package com.ayutaki.chinjufumod.blocks.cmblock;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
@@ -16,7 +16,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
@@ -37,122 +36,110 @@ public class AlumiBlock extends Block implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOTTOM = Block.box(0.5D, 0.0D, 0.5D, 15.5D, 8.0D, 15.5D);
-	protected static final VoxelShape AABB_BOX = Block.box(0.5D, 0.0D, 0.5D, 15.5D, 16.0D, 15.5D);
+	protected static final VoxelShape AABB_BOTTOM = Block.makeCuboidShape(0.5D, 0.0D, 0.5D, 15.5D, 8.0D, 15.5D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(0.5D, 0.0D, 0.5D, 15.5D, 16.0D, 15.5D);
 
-	public AlumiBlock(AbstractBlock.Properties properties) {
+	public AlumiBlock(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(TYPE, AlumiType.BOTTOM)
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(TYPE, AlumiType.BOTTOM)
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getClickedPos();
-		BlockState blockstate = context.getLevel().getBlockState(blockpos);
+		BlockPos blockpos = context.getPos();
+		BlockState blockstate = context.getWorld().getBlockState(blockpos);
 
 		if (blockstate.getBlock() == this) {
-			/** Change to SlabType.DOUBLE. **/
-			return blockstate.setValue(TYPE, AlumiType.DOUBLE).setValue(WATERLOGGED, Boolean.valueOf(false));
+			/** それの blockstate を拾った上で DOUBLE にする **/
+			return blockstate.with(TYPE, AlumiType.DOUBLE).with(WATERLOGGED, Boolean.valueOf(false));
 		}
 
 		else {
-			FluidState fluid = context.getLevel().getFluidState(blockpos);
-			BlockState blockState2 = this.defaultBlockState().setValue(TYPE, AlumiType.BOTTOM).setValue(WATERLOGGED, Boolean.valueOf(Boolean.valueOf(fluid.getType() == Fluids.WATER)))
-					.setValue(H_FACING, context.getHorizontalDirection().getOpposite());
-			Direction direction = context.getClickedFace();
+			IFluidState ifluidstate = context.getWorld().getFluidState(blockpos);
+			BlockState blockState2 = this.getDefaultState().with(TYPE, AlumiType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER))
+					.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
+			Direction direction = context.getFace();
 
-			return direction != Direction.DOWN && (direction == Direction.UP || context.getClickLocation().y - (double)blockpos.getY() <= 0.5D) ? blockState2 : blockState2;
+			return direction != Direction.DOWN && (direction == Direction.UP || context.getHitVec().y - (double)blockpos.getY() <= 0.5D) ? blockState2 : blockState2;
 		}
 	}
 
 	/* DOUBLE への置き換え boolean t/f */
 	@Override
-	public boolean canBeReplaced(BlockState state, BlockItemUseContext context) {
-		ItemStack itemstack = context.getItemInHand();
-		AlumiType slabtype = state.getValue(TYPE);
+	public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
+		ItemStack itemstack = useContext.getItem();
+		AlumiType slabtype = state.get(TYPE);
 
 		/** DOUBLE でない時 かつ これをアイテム(アイテムブロック)として使う時 **/
 		if (slabtype != AlumiType.DOUBLE && itemstack.getItem() == this.asItem()) {
 
-			if (context.replacingClickedOnBlock()) {
-				boolean flag = context.getClickLocation().y - (double)context.getClickedPos().getY() > 0.5D;
-				Direction direction = context.getClickedFace();
+			if (useContext.replacingClickedOnBlock()) {
+				boolean flag = useContext.getHitVec().y - (double)useContext.getPos().getY() > 0.5D;
+				Direction direction = useContext.getFace();
 
 				if (slabtype == AlumiType.BOTTOM) {
-					return direction == Direction.UP || flag && direction.getAxis().isHorizontal(); }
-				
-				else { return false; }
+					return direction == Direction.UP || flag && direction.getAxis().isHorizontal();
+				}
+				else {
+					return false;
+				}
 			}
-			
-			else { return true; }
+			else {
+				return true;
+			}
 		}
 
 		/** それ以外 **/
-		else { return false; }
+		else {
+			return false;
+		}
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
+	public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidState) {
+		return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidState);
 	}
 
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
-		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
+	public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
+		return IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluid);
 	}
 
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if (state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		switch (type) {
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+		switch(type) {
 		case LAND:
 			return false;
 		case WATER:
-			return worldIn.getFluidState(pos).is(FluidTags.WATER);
+			return worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
 		case AIR:
 			return false;
 		default:
@@ -161,20 +148,19 @@ public class AlumiBlock extends Block implements IWaterLoggable {
 	}
 
 	/* Create Blockstate */
-	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(H_FACING, TYPE, WATERLOGGED);
 	}
 
-	@Override
-	public boolean useShapeForLightOcclusion(BlockState state) {
-		return state.getValue(TYPE) != AlumiType.DOUBLE;
+	public boolean isTransparent(BlockState state) {
+		return state.get(TYPE) != AlumiType.DOUBLE;
 	}
 
 	/* Collisions for each property. */
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		AlumiType slabtype = state.getValue(TYPE);
-		switch (slabtype) {
+		AlumiType slabtype = state.get(TYPE);
+		switch(slabtype) {
 		case DOUBLE:
 			return AABB_BOX;
 		default:
@@ -182,7 +168,7 @@ public class AlumiBlock extends Block implements IWaterLoggable {
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -194,17 +180,42 @@ public class AlumiBlock extends Block implements IWaterLoggable {
 		return 0;
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		if (state.get(TYPE) != AlumiType.DOUBLE) { return false; }
+		return true;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	public enum AlumiType implements IStringSerializable {
 		BOTTOM("bottom"),
 		DOUBLE("double");
 
 		private final String name;
 
-		private AlumiType(String name) { this.name = name; }
+		private AlumiType(String name) {
+			this.name = name;
+		}
 
-		public String toString() { return this.name; }
+		public String toString() {
+			return this.name;
+		}
 
-		public String getSerializedName() { return this.name; }
+		public String getName() {
+			return this.name;
+		}
 	}
 
 }

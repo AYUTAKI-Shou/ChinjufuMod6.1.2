@@ -19,16 +19,9 @@ import com.ayutaki.chinjufumod.blocks.season.Wataame;
 import com.ayutaki.chinjufumod.blocks.season.XmasTree;
 import com.ayutaki.chinjufumod.blocks.wood.WoodStairs_CM;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -36,12 +29,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Seasonal_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block KUSATABA = register("block_tabakusa", new KusaTaba(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)));
-	public static Block WARATABA = register("block_tabawara", new KusaTaba(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)));
-	public static Block KAYATABA = register("block_tabakaya", new KusaTaba(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)));
-	public static Block KUSATABADUMMY = register("block_tabakusadummy", new Block(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)));
+	public static Block KUSATABA = register("block_tabakusa", new KusaTaba(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT)));
+	public static Block WARATABA = register("block_tabawara", new KusaTaba(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT)));
+	public static Block KAYATABA = register("block_tabakaya", new KusaTaba(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT)));
+	public static Block KUSATABADUMMY = register("block_tabakusadummy", new Block(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT)));
 
 	public static Block KUSATABA_RF = register("block_tabakusa_roof", kusaRoof());
 	public static Block WARATABA_RF = register("block_tabawara_roof", kusaRoof());
@@ -51,17 +49,17 @@ public class Seasonal_Blocks {
 	public static Block WARATABA_STAIRS = register("block_tabawara_stairs", kusaStairs());
 	public static Block KAYATABA_STAIRS = register("block_tabakaya_stairs", kusaStairs());
 
-	public static Block KADOMATSU = register("block_kadomatsu", new Kadomatsu(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
-	public static Block SHIMENAWA = register("block_shimenawa", new Shimenawa(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
-	public static Block KAGAMIMOCHI = register("block_kagamimochi", new Kagamimochi(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
+	public static Block KADOMATSU = register("block_kadomatsu", new Kadomatsu(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block SHIMENAWA = register("block_shimenawa", new Shimenawa(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid()));
+	public static Block KAGAMIMOCHI = register("block_kagamimochi", new Kagamimochi(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
-	public static Block HINAKAZARI = register("block_hinakazari", new Hinakazari(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
-	public static Block HINADAN = register("block_hinadan", new Hinadan(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
+	public static Block HINAKAZARI = register("block_hinakazari", new Hinakazari(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block HINADAN = register("block_hinadan", new Hinadan(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block XMASTREE = register("block_xmastree", xmasTree());
 	public static Block XMASTREE_W = register("block_xmastree_w", xmasTree());
@@ -97,76 +95,50 @@ public class Seasonal_Blocks {
 	public static Block WATAGASHI_yellow = register("block_watagashi_yellow", wataame());
 	public static Block WATAGASHI_green = register("block_watagashi_green", wataame());
 
-	public static Block KAKIGOURI_hata = register("block_kakigouri_hata", new Kouri_Hata(AbstractBlock.Properties.of(Material.WOOL).strength(1.0F, 1.0F).sound(SoundType.WOOL)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
+	public static Block KAKIGOURI_hata = register("block_kakigouri_hata", new Kouri_Hata(Block.Properties.create(Material.WOOL)
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.CLOTH).notSolid()));
 	public static Block KAKIGOURI_block = register("block_kakigouri_block1", kakigouri());
 	public static Block KAKIGOURI_pink = register("block_kakigouri_pink1", kakigouri());
 	public static Block KAKIGOURI_red = register("block_kakigouri_red1", kakigouri());
 	public static Block KAKIGOURI_yellow = register("block_kakigouri_yellow1", kakigouri());
 	public static Block KAKIGOURI_green = register("block_kakigouri_green1", kakigouri());
-	
-	public static Block SNOWCORE = register("block_snowcore", new SnowCore(15792895, AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.SNOW)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
-	public static Block SNOWMAN = register("block_snowman", new SnowMan(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.SNOW)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
-	public static Block SNOWMAN_COLOR = register("block_snowman_color", new SnowMan_Color(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.SNOW)
-			.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never)));
-	
+
+	public static Block SNOWCORE = register("block_snowcore", new SnowCore(15792895, Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.SNOW).notSolid()));
+	public static Block SNOWMAN = register("block_snowman", new SnowMan(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.SNOW).notSolid()));
+	public static Block SNOWMAN_COLOR = register("block_snowman_color", new SnowMan_Color(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.SNOW).notSolid()));
 	
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
-	private static boolean neverSlab(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return (state.getValue(KusaRoof.TYPE) == SlabType.DOUBLE)? true : false;
-	}
-
-	private static Boolean neverEntitySlab(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(KusaRoof.TYPE) == SlabType.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
-	private static Boolean neverEntityStairs(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (state.getValue(WoodStairs_CM.HALF) == Half.BOTTOM)? (boolean)false : (boolean)true;
-	}
-
 	private static KusaRoof kusaRoof() {
-		return new KusaRoof(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntitySlab).isSuffocating(Seasonal_Blocks::neverSlab));
+		return new KusaRoof(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid());
 	}
 
 	private static WoodStairs_CM kusaStairs() {
-		return new WoodStairs_CM(KUSATABADUMMY.defaultBlockState(), Block.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntityStairs).isSuffocating(Seasonal_Blocks::never));
+		return new WoodStairs_CM(KUSATABADUMMY.getDefaultState(), Block.Properties.create(Material.WOOD)
+				.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid());
 	}
 
 	private static XmasTree xmasTree() {
-		return new XmasTree(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never));
+		return new XmasTree(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Present present() {
-		return new Present(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never));
+		return new Present(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Uchiwa uchiwa() {
-		return new Uchiwa(AbstractBlock.Properties.of(Material.WOOL).strength(1.0F, 1.0F).sound(SoundType.WOOL)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never));
+		return new Uchiwa(Block.Properties.create(Material.WOOL).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.CLOTH).notSolid());
 	}
 
 	private static Wataame wataame() {
-		return new Wataame(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never));
+		return new Wataame(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Kakigouri kakigouri() {
-		return new Kakigouri(AbstractBlock.Properties.of(Material.STONE).noCollission().strength(1.0F, 1.0F).sound(SoundType.STONE)
-				.noOcclusion().isValidSpawn(Seasonal_Blocks::neverEntity).isSuffocating(Seasonal_Blocks::never));
+		return new Kakigouri(Block.Properties.create(Material.WOOD).doesNotBlockMovement()
+				.hardnessAndResistance(1.0F, 1.0F).sound(SoundType.STONE).notSolid());
 	}
 
 	///* Register *///

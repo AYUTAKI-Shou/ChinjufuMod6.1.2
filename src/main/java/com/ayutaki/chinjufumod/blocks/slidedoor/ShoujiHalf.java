@@ -4,16 +4,17 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.ayutaki.chinjufumod.Config_CM;
 import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
@@ -35,49 +36,54 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ShoujiHalf extends BaseStage4_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape FRAME_SOUTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
-	protected static final VoxelShape FRAME_WEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
-	protected static final VoxelShape FRAME_NORTH = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
-	protected static final VoxelShape FRAME_EAST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
+	protected static final VoxelShape FRAME_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
+	protected static final VoxelShape FRAME_WEST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
+	protected static final VoxelShape FRAME_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 16.0D, 0.01D, 9.0D);
+	protected static final VoxelShape FRAME_EAST = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 0.01D, 16.0D);
 	
-	protected static final VoxelShape CLOSE1_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 9.5D));
-	protected static final VoxelShape CLOSE1_WEST = VoxelShapes.or(FRAME_WEST, Block.box(6.5D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D));
-	protected static final VoxelShape CLOSE1_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(0.0D, 0.0D, 6.5D, 16.0D, 16.0D, 8.0D));
-	protected static final VoxelShape CLOSE1_EAST = VoxelShapes.or(FRAME_EAST, Block.box(8.0D, 0.0D, 0.0D, 9.5D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSE1_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 9.5D));
+	protected static final VoxelShape CLOSE1_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(6.5D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSE1_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(0.0D, 0.0D, 6.5D, 16.0D, 16.0D, 8.0D));
+	protected static final VoxelShape CLOSE1_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 9.5D, 16.0D, 16.0D));
 
-	protected static final VoxelShape OPEN2_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(-14.0D, 0.0D, 8.0D, 2.0D, 16.0D, 9.5D));
-	protected static final VoxelShape OPEN2_WEST = VoxelShapes.or(FRAME_WEST, Block.box(6.5D, 0.0D, -14.0D, 8.0D, 16.0D, 2.0D));
-	protected static final VoxelShape OPEN2_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(14.0D, 0.0D, 6.5D, 30.0D, 16.0D, 8.0D));
-	protected static final VoxelShape OPEN2_EAST = VoxelShapes.or(FRAME_EAST, Block.box(8.0D, 0.0D, 14.0D, 9.5D, 16.0D, 30.0D));
+	protected static final VoxelShape OPEN2_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(-14.0D, 0.0D, 8.0D, 2.0D, 16.0D, 9.5D));
+	protected static final VoxelShape OPEN2_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(6.5D, 0.0D, -14.0D, 8.0D, 16.0D, 2.0D));
+	protected static final VoxelShape OPEN2_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(14.0D, 0.0D, 6.5D, 30.0D, 16.0D, 8.0D));
+	protected static final VoxelShape OPEN2_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(8.0D, 0.0D, 14.0D, 9.5D, 16.0D, 30.0D));
 
-	protected static final VoxelShape CLOSE3_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(0.0D, 0.0D, 6.5D, 16.0D, 16.0D, 8.0D));
-	protected static final VoxelShape CLOSE3_WEST = VoxelShapes.or(FRAME_WEST, Block.box(8.0D, 0.0D, 0.0D, 9.5D, 16.0D, 16.0D));
-	protected static final VoxelShape CLOSE3_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 9.5D));
-	protected static final VoxelShape CLOSE3_EAST = VoxelShapes.or(FRAME_EAST, Block.box(6.5D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSE3_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(0.0D, 0.0D, 6.5D, 16.0D, 16.0D, 8.0D));
+	protected static final VoxelShape CLOSE3_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 9.5D, 16.0D, 16.0D));
+	protected static final VoxelShape CLOSE3_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 9.5D));
+	protected static final VoxelShape CLOSE3_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(6.5D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D));
 
-	protected static final VoxelShape OPEN4_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.box(14.0D, 0.0D, 6.5D, 30.0D, 16.0D, 8.0D));
-	protected static final VoxelShape OPEN4_WEST = VoxelShapes.or(FRAME_WEST, Block.box(8.0D, 0.0D, 14.0D, 9.5D, 16.0D, 30.0D));
-	protected static final VoxelShape OPEN4_NORTH = VoxelShapes.or(FRAME_NORTH, Block.box(-14.0D, 0.0D, 8.0D, 2.0D, 16.0D, 9.5D));
-	protected static final VoxelShape OPEN4_EAST = VoxelShapes.or(FRAME_EAST, Block.box(6.5D, 0.0D, -14.0D, 8.0D, 16.0D, 2.0D));
+	protected static final VoxelShape OPEN4_SOUTH = VoxelShapes.or(FRAME_SOUTH, Block.makeCuboidShape(14.0D, 0.0D, 6.5D, 30.0D, 16.0D, 8.0D));
+	protected static final VoxelShape OPEN4_WEST = VoxelShapes.or(FRAME_WEST, Block.makeCuboidShape(8.0D, 0.0D, 14.0D, 9.5D, 16.0D, 30.0D));
+	protected static final VoxelShape OPEN4_NORTH = VoxelShapes.or(FRAME_NORTH, Block.makeCuboidShape(-14.0D, 0.0D, 8.0D, 2.0D, 16.0D, 9.5D));
+	protected static final VoxelShape OPEN4_EAST = VoxelShapes.or(FRAME_EAST, Block.makeCuboidShape(6.5D, 0.0D, -14.0D, 8.0D, 16.0D, 2.0D));
 
 
-	public ShoujiHalf(AbstractBlock.Properties properties) {
+	public ShoujiHalf(Block.Properties properties) {
 		super(properties);
 	}
 
+	/* 影対策 */
+	public int getLightValue(BlockState state) {
+		return (Config_CM.getInstance().antiShadow() == true)? 1 : 0;
+	}
+
 	/* RightClick Action */
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
 		/** 1=Close、2=Open、3=Close、4=Open **/
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 
 		if (i == 1 || i == 3) {
 			CMEvents.soundFusumaS(worldIn, pos);
-			worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); }
 
 		if (i == 2 || i == 4) {
 			CMEvents.soundFusumaS(worldIn, pos);
-			worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i - 1)), 3); }
+			worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i - 1))); }
 
 		return ActionResultType.SUCCESS;
 	}
@@ -85,42 +91,60 @@ public class ShoujiHalf extends BaseStage4_FaceWater {
 	/* Gives a value when placed. */
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
 		PlayerEntity playerIn = context.getPlayer();
 
-		if (playerIn.isCrouching()) {
-			return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection().getOpposite())
-					.setValue(STAGE_1_4, Integer.valueOf(3)).setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER)); }
+		if (playerIn.isSneaking()) {
+			return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
+					.with(STAGE_1_4, Integer.valueOf(3)).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER); }
 
-		return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection().getOpposite())
-				.setValue(STAGE_1_4, Integer.valueOf(1)).setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER));
+		return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite())
+				.with(STAGE_1_4, Integer.valueOf(1)).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		int i = state.getValue(STAGE_1_4);
+		Direction direction = state.get(H_FACING);
+		int i = state.get(STAGE_1_4);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return (i == 1)? CLOSE1_NORTH : ((i == 2)? OPEN2_NORTH : ((i == 3)? CLOSE3_NORTH : OPEN4_NORTH));
+		switch(direction) {
 		case SOUTH:
 			return (i == 1)? CLOSE1_SOUTH : ((i == 2)? OPEN2_SOUTH : ((i == 3)? CLOSE3_SOUTH : OPEN4_SOUTH));
 		case WEST:
 			return (i == 1)? CLOSE1_WEST : ((i == 2)? OPEN2_WEST : ((i == 3)? CLOSE3_WEST : OPEN4_WEST));
+		case NORTH:
+		default:
+			return (i == 1)? CLOSE1_NORTH : ((i == 2)? OPEN2_NORTH : ((i == 3)? CLOSE3_NORTH : OPEN4_NORTH));
 		case EAST:
 			return (i == 1)? CLOSE1_EAST : ((i == 2)? OPEN2_EAST : ((i == 3)? CLOSE3_EAST : OPEN4_EAST));
 		}
 	}
 
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_shoujihalf")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_shoujihalf")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

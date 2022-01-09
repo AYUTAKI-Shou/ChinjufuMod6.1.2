@@ -22,25 +22,24 @@ public class Kushiyaki_Item extends Item {
 	}
 
 	/* アイテム消費時の処理 */
-	@Override
-	public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
 
 		PlayerEntity playerIn = entityLiving instanceof PlayerEntity ? (PlayerEntity)entityLiving : null;
 
 		/** 満腹度をここで処理 **/
 		if (this == Items_Teatime.KUSHI_SAKANA_C) {
-			entityLiving.addEffect(new EffectInstance(Effects.DIG_SPEED, 1000, 0));
-			entityLiving.addEffect(new EffectInstance(Effects.SATURATION, 5, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.HASTE, 1000, 0));
+			entityLiving.addPotionEffect(new EffectInstance(Effects.SATURATION, 5, 0)); }
 
 		/** アイテムの返し **/
 		if (playerIn != null) {
-			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			playerIn.addStat(Stats.ITEM_USED.get(this));
 
-			if (!playerIn.abilities.instabuild) {
+			if (!playerIn.abilities.isCreativeMode) {
 
 				if (stack.isEmpty()) { return new ItemStack(Items.STICK); }
-				else if (!playerIn.inventory.add(new ItemStack(Items.STICK))) {
-					playerIn.drop(new ItemStack(Items.STICK), false); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items.STICK))) {
+					playerIn.dropItem(new ItemStack(Items.STICK), false); }
 
 				stack.shrink(1);
 			}
@@ -48,24 +47,23 @@ public class Kushiyaki_Item extends Item {
 		return stack;
 	}
 
-	@Override
 	public int getUseDuration(ItemStack stack) {
 		return 32;
 	}
 
-	@Override
-	public UseAction getUseAnimation(ItemStack stack) {
+	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.EAT;
 	}
 
-	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
+
 		/** 食物が必要な時だけ成功 **/
-		if (playerIn.getFoodData().needsFood()) {
-			playerIn.startUsingItem(hand);
-			return ActionResult.consume(playerIn.getItemInHand(hand));
+		if (playerIn.getFoodStats().needFood() == true) {
+			playerIn.setActiveHand(hand);
+			return ActionResult.resultSuccess(playerIn.getHeldItem(hand));
 		}
-		return ActionResult.fail(playerIn.getItemInHand(hand));
+
+		return ActionResult.resultFail(playerIn.getHeldItem(hand));
 	}
 
 }

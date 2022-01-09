@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,26 +29,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Frypan_Katsu extends BaseFrypan_Stage2 {
 
-	public Frypan_Katsu(AbstractBlock.Properties properties) {
+	public Frypan_Katsu(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 		
 		if (i == 1) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
 	
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 
 		double d0 = (double)pos.getX() + 0.5D;
 		double d1 = (double)pos.getY() + 0.8D;
@@ -59,7 +59,7 @@ public class Frypan_Katsu extends BaseFrypan_Stage2 {
 		if (isCooking(worldIn, pos)) {
 
 			if (rand.nextDouble() < 0.1D) {
-				worldIn.playLocalSound(d0, d1, d2, SoundEvents_CM.JUU, SoundCategory.BLOCKS, 0.2F, 1.0F, false); }
+				worldIn.playSound(d0, d1, d2, SoundEvents_CM.JUU, SoundCategory.BLOCKS, 0.2F, 1.0F, false); }
 
 			if (i ==2 && rand.nextDouble() < 0.25D) {
 				/** 種類, 座標x, y, z, 速度x, y, z **/
@@ -69,9 +69,9 @@ public class Frypan_Katsu extends BaseFrypan_Stage2 {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_frypan")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_frypan")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

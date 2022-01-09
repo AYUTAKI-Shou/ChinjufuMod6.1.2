@@ -6,14 +6,9 @@ import com.ayutaki.chinjufumod.blocks.ranma.Noren;
 import com.ayutaki.chinjufumod.blocks.ranma.Ranma;
 import com.ayutaki.chinjufumod.blocks.ranma.Ranma_noInfo;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,7 +16,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Ranma_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block RANMA_oak = register("block_ranma_oak", ranma());
 	public static Block RANMA_spruce = register("block_ranma_spru", ranma());
@@ -101,32 +97,20 @@ public class Ranma_Blocks {
 	public static Block NOREN_black = register("block_noren_black", noren());
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static Ranma ranma() {
-		return new Ranma(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Ranma_Blocks::neverEntity).isSuffocating(Ranma_Blocks::never));
+		return new Ranma(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Ranma_noInfo ranmaNoInfo() {
-		return new Ranma_noInfo(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Ranma_Blocks::neverEntity).isSuffocating(Ranma_Blocks::never));
+		return new Ranma_noInfo(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Koushi_B koushiBtype() {
-		return new Koushi_B(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Ranma_Blocks::neverEntity).isSuffocating(Ranma_Blocks::never));
+		return new Koushi_B(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Noren noren() {
-		return new Noren(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Ranma_Blocks::neverEntity).isSuffocating(Ranma_Blocks::never));
+		return new Noren(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	///* Register *///

@@ -20,20 +20,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Chinjufu {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
 
-	/* Chinjufu */
 	public static Item EMBLEM_C = register("item_emblem_c", new Item(new Item.Properties()));
-	public static Item ADMIRAL_STAMP = register("item_admiralstamp", new AdmiralStamp(new Item.Properties().durability(16)));
-	public static Item ADMIRAL_STAMPB = register("item_admiralstamp_b", new AdmiralStamp(new Item.Properties().durability(16).tab(ItemGroups_CM.CHINJUFU)));
-	public static Item WORK_ORDER = register("item_workorder", new Item(new Item.Properties().tab(ItemGroups_CM.CHINJUFU)));
-	
-	public static Item SHOUHOU_empty = register("item_shouhou_empty", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.CHINJUFU)));
-	public static Item SHOUHOU = register("item_shouhou", new Shouhou(new Item.Properties().tab(ItemGroups_CM.CHINJUFU)));
+	public static Item ADMIRAL_STAMP = register("item_admiralstamp", new AdmiralStamp(new Item.Properties().maxStackSize(1).maxDamage(16)));
+	public static Item ADMIRAL_STAMP_B = register("item_admiralstamp_b", new AdmiralStamp(new Item.Properties().maxStackSize(1).maxDamage(16).group(ItemGroups_CM.CHINJUFU)));
+	public static Item WORK_ORDER = register("item_workorder", new Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
 
-	public static Item BAUXITE = register("item_bauxite", new Item(new Item.Properties().tab(ItemGroups_CM.CHINJUFU)));
-	public static Item ALUMINUM = register("item_ingot_alumi", new Item(new Item.Properties().tab(ItemGroups_CM.CHINJUFU)));
-	public static Item SUMI = register("item_sumi_c", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.CHINJUFU)));
+	public static Item SHOUHOU_empty = register("item_shouhou_empty", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
+	public static Item SHOUHOU = register("item_shouhou", new Shouhou(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
+	
+	public static Item BAUXITE = register("item_bauxite", new Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
+	public static Item ALUMINUM = register("item_ingot_alumi", new Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
+	public static Item SUMI = register("item_sumi_c", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.CHINJUFU)));
 
 	public static Item BAUXITE_ORE = register("block_bauxite_ore", new Chinjufu_noFuel(ChinjufuModBlocks.BAUXITE_ORE, new Item.Properties()));
 
@@ -280,7 +280,6 @@ public class Items_Chinjufu {
 	public static Item TRUSS_green = register("block_ctruss_green", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_green, new Item.Properties()));
 	public static Item TRUSS_red = register("block_ctruss_red", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_red, new Item.Properties()));
 	public static Item TRUSS_black = register("block_ctruss_black", new Chinjufu_noFuel(Harbor_Blocks.TRUSS_black, new Item.Properties()));
-
 
 	///* Register *///
 	private static Item register(String name, Item item) {

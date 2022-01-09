@@ -53,7 +53,7 @@ public class EntityRender_CM {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TYPE97_2, renderManager -> new RenderKK_Type97_2(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TYPE97_3, renderManager -> new RenderKK_Type97_3(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TYPE97_4, renderManager -> new RenderKK_Type97_4(renderManager, Minecraft.getInstance().getItemRenderer()));
-		
+				
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TENZAN, renderManager -> new RenderKK_Tenzan(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TENZAN2, renderManager -> new RenderKK_Tenzan2(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TENZAN3, renderManager -> new RenderKK_Tenzan3(renderManager, Minecraft.getInstance().getItemRenderer()));
@@ -73,17 +73,17 @@ public class EntityRender_CM {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TBF2, renderManager -> new RenderKK_TBF2(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TBF3, renderManager -> new RenderKK_TBF3(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TBF4, renderManager -> new RenderKK_TBF4(renderManager, Minecraft.getInstance().getItemRenderer()));
-		
+				
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.SWORDFISH, renderManager -> new RenderKK_Swordfish(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.SWORDFISH2, renderManager -> new RenderKK_Swordfish2(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.SWORDFISH3, renderManager -> new RenderKK_Swordfish3(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.SWORDFISH4, renderManager -> new RenderKK_Swordfish4(renderManager, Minecraft.getInstance().getItemRenderer()));
-	
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.GYORAI61, renderManager -> new RenderGyorai61cm(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.GYORAI61_2, renderManager -> new RenderGyorai61cm2(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.GYORAI61_3, renderManager -> new RenderGyorai61cm3(renderManager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.GYORAI61_4, renderManager -> new RenderGyorai61cm4(renderManager, Minecraft.getInstance().getItemRenderer()));
-		
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes_CM.TOAMI, renderManager -> new ToamiRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
 	}
 

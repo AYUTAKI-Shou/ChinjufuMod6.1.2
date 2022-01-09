@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -28,34 +27,36 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GlassDoor extends BaseSlidedoor {
 
-	public GlassDoor(AbstractBlock.Properties properties) {
+	public GlassDoor(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		CMEvents.soundHikidoL(worldIn, pos);
-		worldIn.setBlock(pos, state.cycle(OPEN), 3);
+		worldIn.setBlockState(pos, state.cycle(OPEN));
+
+		if (state.get(OPEN) == true) { CMEvents.soundHikidoL(worldIn, pos); }
+		if (state.get(OPEN) != true) { CMEvents.soundHikidoL(worldIn, pos); }
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void setOpen(BlockState state, World worldIn, BlockPos pos, boolean open) {
+	public void toggleDoor(BlockState state, World worldIn, BlockPos pos, boolean open) {
 		BlockState blockstate = worldIn.getBlockState(pos);
-		if (blockstate.getBlock() == this && blockstate.getValue(OPEN) != open) {
-			worldIn.setBlock(pos, blockstate.setValue(OPEN, Boolean.valueOf(open)), 10);
+		if (blockstate.getBlock() == this && blockstate.get(OPEN) != open) {
+			worldIn.setBlockState(pos, blockstate.with(OPEN, Boolean.valueOf(open)), 10);
 			this.moveSound(worldIn, pos, open);
 		}
 	}
 
-	/* Get POWER. */
+	/* 隣接ブロックの変化 */
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		boolean flag = worldIn.hasNeighborSignal(pos) || worldIn.hasNeighborSignal(pos.relative(state.getValue(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
+		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.offset(state.get(HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN));
 
-		if (block != this && flag != state.getValue(POWERED)) {
-			if (flag != state.getValue(OPEN)) { this.moveSound(worldIn, pos, flag); }
-			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(flag)).setValue(OPEN, Boolean.valueOf(flag)), 2);
+		if (block != this && flag != state.get(POWERED)) {
+			if (flag != state.get(OPEN)) { this.moveSound(worldIn, pos, flag); }
+			worldIn.setBlockState(pos, state.with(POWERED, Boolean.valueOf(flag)).with(OPEN, Boolean.valueOf(flag)), 2);
 		}
 	}
 
@@ -67,9 +68,9 @@ public class GlassDoor extends BaseSlidedoor {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_garasudo")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_garasudo")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

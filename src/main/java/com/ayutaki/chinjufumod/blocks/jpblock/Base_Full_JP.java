@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,44 +24,45 @@ public class Base_Full_JP extends Block {
 	/* Property */
 	public static final BooleanProperty CRACK = BooleanProperty.create("cra");
 
-	public Base_Full_JP(AbstractBlock.Properties properties) {
+	public Base_Full_JP(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(CRACK, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(CRACK, Boolean.valueOf(false)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
 		if (item instanceof Base_ItemHake) { return ActionResultType.PASS; }
 
 		else {
 			if (itemstack.isEmpty()) {
-				if (playerIn.isCrouching()) {
+				if (playerIn.isSneaking()) {
 					CMEvents.soundStonePlace(worldIn, pos);
-					worldIn.setBlock(pos, state.cycle(CRACK), 3);
+					worldIn.setBlockState(pos, state.cycle(CRACK));
 					return ActionResultType.SUCCESS; }
-				
-				if (!playerIn.isCrouching()) {
+			
+				if (!playerIn.isSneaking()) {
 					CMEvents.textNotSneak(worldIn, pos, playerIn);
 					return ActionResultType.SUCCESS; }
 			}
-
+			
 			return ActionResultType.PASS;
 		}
 	}
 
 	/* Create Blockstate */
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(CRACK);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

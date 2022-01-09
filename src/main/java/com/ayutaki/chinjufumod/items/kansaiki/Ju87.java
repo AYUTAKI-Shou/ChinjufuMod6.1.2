@@ -9,19 +9,15 @@ import com.ayutaki.chinjufumod.entity.KK_Ju87Entity2;
 import com.ayutaki.chinjufumod.entity.KK_Ju87Entity3;
 import com.ayutaki.chinjufumod.entity.KK_Ju87Entity4;
 import com.ayutaki.chinjufumod.handler.CMEvents;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
@@ -35,15 +31,9 @@ public class Ju87 extends BaseKansaiki {
 
 	private final float attackDamage = 9.0F - 1.0F;
 	private final float attackSpeed = -2.4F;
-	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-	public Ju87(Item.Properties properties) {
-		super(properties);
-
-		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.attackDamage, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)this.attackSpeed, AttributeModifier.Operation.ADDITION));
-		this.defaultModifiers = builder.build();
+	public Ju87(Properties builder) {
+		super(builder);
 	}
 
 	public float getAttackDamage() {
@@ -51,19 +41,26 @@ public class Ju87 extends BaseKansaiki {
 	}
 
 	@SuppressWarnings("deprecation")
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType slotType) {
-		return slotType == EquipmentSlotType.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slotType);
+	@Override
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
+
+		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, AttributeModifier.Operation.ADDITION));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)this.attackSpeed, AttributeModifier.Operation.ADDITION));
+		}
+		return multimap;
 	}
 
 	/* 投げて使用 */
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand hand) {
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		boolean mode = playerIn.abilities.instabuild;
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		boolean mode = playerIn.abilities.isCreativeMode;
 		
-		if (!worldIn.isClientSide) {
+		if (!worldIn.isRemote) {
 			
-			if (!playerIn.isUnderWater()) {
+			if (!playerIn.areEyesInFluid(FluidTags.WATER, true)) {
 				/** Entity の速度≒飛距離 **/
 				int j = 6;
 
@@ -72,77 +69,71 @@ public class Ju87 extends BaseKansaiki {
 					/** レベルに応じた Entity発艦 **/
 					if (playerIn.experienceLevel < 12) {
 						KK_Ju87Entity kansaiki = new KK_Ju87Entity(playerIn, worldIn, itemstack);
-						kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-						worldIn.addFreshEntity(kansaiki); }
+						kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+						worldIn.addEntity(kansaiki); }
 					
 					if (playerIn.experienceLevel >= 12 && playerIn.experienceLevel < 19) {
 						KK_Ju87Entity2 kansaiki = new KK_Ju87Entity2(playerIn, worldIn, itemstack);
-						kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-						worldIn.addFreshEntity(kansaiki); }
+						kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+						worldIn.addEntity(kansaiki); }
 					
 					if (playerIn.experienceLevel >= 19 && playerIn.experienceLevel < 25) {
 						KK_Ju87Entity3 kansaiki = new KK_Ju87Entity3(playerIn, worldIn, itemstack);
-						kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-						worldIn.addFreshEntity(kansaiki); }
+						kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+						worldIn.addEntity(kansaiki); }
 					
 					if (playerIn.experienceLevel >= 25) {
 						KK_Ju87Entity4 kansaiki = new KK_Ju87Entity4(playerIn, worldIn, itemstack);
-						kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-						worldIn.addFreshEntity(kansaiki); }
-					
-					playerIn.awardStat(Stats.ITEM_USED.get(this));
-					playerIn.inventory.removeItem(itemstack); 
-				} // World is CreativeMode.
-				
-				if (!mode) {
-					if (itemstack.getDamageValue() >= (itemstack.getMaxDamage() - 1)) {
-						CMEvents.soundKKBreak(worldIn, playerIn);
+						kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+						worldIn.addEntity(kansaiki); }
+
+					playerIn.inventory.deleteStack(itemstack); } // World is CreativeMode.
 	
-						playerIn.awardStat(Stats.ITEM_USED.get(this));
+				if (!mode) {
+					if (itemstack.getDamage() >= (itemstack.getMaxDamage() - 1)) {
+						CMEvents.soundKKBreak(worldIn, playerIn);
 						itemstack.shrink(1); }
-					
+	
 					else {
 						/** 発艦時に耐久消費 **/
-						itemstack.hurtAndBreak(1, playerIn, (user) -> { user.broadcastBreakEvent(playerIn.getUsedItemHand()); } );
+						itemstack.damageItem(1, playerIn, (user) -> { user.sendBreakAnimation(playerIn.getActiveHand()); } );
 	
 						/** レベルに応じた Entity発艦 **/
 						if (playerIn.experienceLevel < 12) {
 							KK_Ju87Entity kansaiki = new KK_Ju87Entity(playerIn, worldIn, itemstack);
-							kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-							worldIn.addFreshEntity(kansaiki); }
+							kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+							worldIn.addEntity(kansaiki); }
 						
 						if (playerIn.experienceLevel >= 12 && playerIn.experienceLevel < 19) {
 							KK_Ju87Entity2 kansaiki = new KK_Ju87Entity2(playerIn, worldIn, itemstack);
-							kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-							worldIn.addFreshEntity(kansaiki); }
+							kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+							worldIn.addEntity(kansaiki); }
 						
 						if (playerIn.experienceLevel >= 19 && playerIn.experienceLevel < 25) {
 							KK_Ju87Entity3 kansaiki = new KK_Ju87Entity3(playerIn, worldIn, itemstack);
-							kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-							worldIn.addFreshEntity(kansaiki); }
+							kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+							worldIn.addEntity(kansaiki); }
 						
 						if (playerIn.experienceLevel >= 25) {
 							KK_Ju87Entity4 kansaiki = new KK_Ju87Entity4(playerIn, worldIn, itemstack);
-							kansaiki.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.25F * j, 1.0F);
-							worldIn.addFreshEntity(kansaiki); }
-	
-						playerIn.awardStat(Stats.ITEM_USED.get(this));
+							kansaiki.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.25F * j, 1.0F);
+							worldIn.addEntity(kansaiki); }
+						
 						itemstack.shrink(1); } } // World is not CreativeMode.
 			} // Player is not under the Water.
-
-			if (playerIn.isUnderWater()) {
-				CMEvents.textKKError(worldIn, playerIn);
+			
+			if (playerIn.areEyesInFluid(FluidTags.WATER, true)) { 
+				CMEvents.textKKError(worldIn, playerIn); 
 			} // Player is under the Water.
 		}
-		
-		return ActionResult.sidedSuccess(itemstack, worldIn.isClientSide());
+		return ActionResult.resultSuccess(itemstack);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_kk")).withStyle(TextFormatting.GRAY));
-		tooltip.add((new TranslationTextComponent("tips.item_kk_ju87")).withStyle(TextFormatting.DARK_GREEN));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_kk")).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add((new TranslationTextComponent("tips.item_kk_ju87")).applyTextStyle(TextFormatting.DARK_GREEN));
 	}
 
 }

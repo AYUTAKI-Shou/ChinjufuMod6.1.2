@@ -4,7 +4,6 @@ import com.ayutaki.chinjufumod.entity.SitableEntity;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,67 +23,68 @@ import net.minecraft.world.World;
 public class Sofa extends BaseSofa {
 
 	/* Collision */
-	protected static final VoxelShape DEFAULT_SOUTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D),
-			Block.box(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D),
-			Block.box(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
-	protected static final VoxelShape DEFAULT_WEST = VoxelShapes.or(Block.box(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
-	protected static final VoxelShape DEFAULT_NORTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D),
-			Block.box(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D),
-			Block.box(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
-	protected static final VoxelShape DEFAULT_EAST = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
+	protected static final VoxelShape DEFAULT_SOUTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
+	protected static final VoxelShape DEFAULT_WEST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
+	protected static final VoxelShape DEFAULT_NORTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
+	protected static final VoxelShape DEFAULT_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
 	
-	protected static final VoxelShape LEFT_SOUTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D),
-			Block.box(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
-	protected static final VoxelShape LEFT_WEST = VoxelShapes.or(Block.box(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
-	protected static final VoxelShape LEFT_NORTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D),
-			Block.box(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D));
-	protected static final VoxelShape LEFT_EAST = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D));
+	protected static final VoxelShape LEFT_SOUTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
+	protected static final VoxelShape LEFT_WEST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
+	protected static final VoxelShape LEFT_NORTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D));
+	protected static final VoxelShape LEFT_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D));
 	
-	protected static final VoxelShape RIGHT_SOUTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D),
-			Block.box(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D));
-	protected static final VoxelShape RIGHT_WEST = VoxelShapes.or(Block.box(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D));
-	protected static final VoxelShape RIGHT_NORTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
-	protected static final VoxelShape RIGHT_EAST = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D),
-			Block.box(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
+	protected static final VoxelShape RIGHT_SOUTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 2.0D, 16.0D, 12.0D, 14.0D));
+	protected static final VoxelShape RIGHT_WEST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 14.0D, 14.0D, 12.0D, 16.0D));
+	protected static final VoxelShape RIGHT_NORTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 2.0D, 2.0D, 12.0D, 14.0D));
+	protected static final VoxelShape RIGHT_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, 6.0D, 0.0D, 14.0D, 12.0D, 2.0D));
 	
-	protected static final VoxelShape BOTH_SOUTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D));
-	protected static final VoxelShape BOTH_WEST = VoxelShapes.or(Block.box(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D));
-	protected static final VoxelShape BOTH_NORTH = VoxelShapes.or(Block.box(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D));
-	protected static final VoxelShape BOTH_EAST = VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
-			Block.box(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D));
+	protected static final VoxelShape BOTH_SOUTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 14.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 2.0D));
+	protected static final VoxelShape BOTH_WEST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D));
+	protected static final VoxelShape BOTH_NORTH = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 14.0D, 16.0D, 12.0D, 16.0D));
+	protected static final VoxelShape BOTH_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 14.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 6.0D, 0.0D, 2.0D, 12.0D, 16.0D));
 
-	public Sofa(AbstractBlock.Properties properties) {
+
+	public Sofa(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
 		if (item instanceof Base_ItemHake) { return ActionResultType.PASS; }
@@ -98,8 +98,8 @@ public class Sofa extends BaseSofa {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		Type type = state.getValue(TYPE);
+		Direction direction = state.get(H_FACING);
+		Type type = state.get(TYPE);
 
 		switch (type) {
 		case DEFAULT:

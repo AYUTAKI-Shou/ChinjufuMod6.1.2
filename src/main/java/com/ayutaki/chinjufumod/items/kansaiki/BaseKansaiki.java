@@ -19,23 +19,23 @@ public class BaseKansaiki extends Item {
 
 	/* 手に持って使用 */
 	@Override
-	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.hurtAndBreak(1, attacker, (user) -> {
-			user.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		stack.damageItem(1, attacker, (user) -> {
+			user.sendBreakAnimation(EquipmentSlotType.MAINHAND);
 		});
 		return true;
 	}
 
 	@Override
-	public boolean canAttackBlock(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn) {
+	public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn) {
 		return !playerIn.isCreative();
 	}
 
 	@Override
-	public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity attacker) {
-		if ((double)state.getDestroySpeed(worldIn, pos) != 0.0D) {
-			stack.hurtAndBreak(2, attacker, (user) -> {
-				user.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+	public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity attacker) {
+		if ((double)state.getBlockHardness(worldIn, pos) != 0.0D) {
+			stack.damageItem(2, attacker, (user) -> {
+				user.sendBreakAnimation(EquipmentSlotType.MAINHAND);
 			});
 		}
 		return true;
@@ -43,13 +43,13 @@ public class BaseKansaiki extends Item {
 
 	/* Return the enchantability factor of the item, most of the time is based on material. */
 	@Override
-	public int getEnchantmentValue() {
+	public int getItemEnchantability() {
 		return 1;
 	}
 
 	/* 修理 燃料・弾薬は自動補給で耐久値は修理が必要 */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		return material.getItem() == Items_Chinjufu.ALUMINUM;
 	}
 

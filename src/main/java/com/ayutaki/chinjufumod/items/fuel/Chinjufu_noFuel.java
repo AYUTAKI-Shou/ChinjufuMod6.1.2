@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 public class Chinjufu_noFuel extends BlockNamedItem {
 
 	public Chinjufu_noFuel(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.CHINJUFU));
+		super(block, builder.group(ItemGroups_CM.CHINJUFU));
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 
 }

@@ -15,36 +15,36 @@ import net.minecraft.util.SoundEvents;
 public class ZundouKara_Item extends BlockNamedItem {
 
 	public ZundouKara_Item(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.TEATIME));
+		super(block, builder.group(ItemGroups_CM.TEATIME));
 	}
 
 	/* 水を入れる ItemBucket 淡水を使う為、ヤカンと寸胴は適用外 */
 
 	/* 牛乳を汲む ShearsItem, CowEntity */
 	@Override
-	public net.minecraft.util.ActionResultType interactLivingEntity(ItemStack itemstack, net.minecraft.entity.player.PlayerEntity playerIn, LivingEntity entity, net.minecraft.util.Hand handIn) {
+	public boolean itemInteractionForEntity(ItemStack itemstack, net.minecraft.entity.player.PlayerEntity playerIn, LivingEntity entity, net.minecraft.util.Hand handIn) {
 
-		boolean mode = playerIn.abilities.instabuild;
+		boolean mode = playerIn.abilities.isCreativeMode;
 
-		if (entity.level.isClientSide) return net.minecraft.util.ActionResultType.PASS;
+		if (entity.world.isRemote) return false;
 
 		if (itemstack.getItem() == Items_Teatime.ZUNDOU) {
 
-			if (entity instanceof CowEntity && !mode && !entity.isBaby()) {
+			if (entity instanceof CowEntity && !mode && !entity.isChild()) {
 
-				entity.playSound(SoundEvents.COW_MILK, 2.0F, 1.0F);
+				entity.playSound(SoundEvents.ENTITY_COW_MILK, 2.0F, 1.0F);
 
-				if (!playerIn.inventory.add(new ItemStack(Items_Teatime.ZUNDOU_MILK))) {
-					playerIn.drop(new ItemStack(Items_Teatime.ZUNDOU_MILK), false); }
+				if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.ZUNDOU_MILK))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.ZUNDOU_MILK), false); }
 
 				/* 消費を最後に回す */
 				itemstack.shrink(1);
-				return net.minecraft.util.ActionResultType.SUCCESS;
+				return true;
 			}
 
-			return net.minecraft.util.ActionResultType.PASS;
+			return false;
 		}
-		return net.minecraft.util.ActionResultType.PASS;
+		return false;
 	}
 
 }

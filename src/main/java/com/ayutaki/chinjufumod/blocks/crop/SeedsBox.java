@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -32,27 +32,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class SeedsBox extends BaseFacingWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(4.0D, 0.0D, 6.0D, 12.0D, 8.0D, 10.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 8.0D, 12.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(4.0D, 0.0D, 6.0D, 12.0D, 8.0D, 10.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 8.0D, 12.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(4.0D, 0.0D, 6.0D, 12.0D, 8.0D, 10.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(6.0D, 0.0D, 4.0D, 10.0D, 8.0D, 12.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(4.0D, 0.0D, 6.0D, 12.0D, 8.0D, 10.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(6.0D, 0.0D, 4.0D, 10.0D, 8.0D, 12.0D);
 
-	public SeedsBox(AbstractBlock.Properties properties) {
+	public SeedsBox(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		switch (direction) {
+		Direction direction = state.get(H_FACING);
+		switch(direction) {
+		case SOUTH:
+			return AABB_SOUTH;
+		case WEST:
+			return AABB_WEST;
 		case NORTH:
 		default:
 			return AABB_NORTH;
-		case SOUTH:
-				return AABB_SOUTH;
-		case WEST:
-			return AABB_WEST;
 		case EAST:
 			return AABB_EAST;
 		}
@@ -64,46 +64,64 @@ public class SeedsBox extends BaseFacingWater {
 		return true;
 	}
 
-	/* Distinguish LOST from WATERLOGGED. */
-	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.getValue(WATERLOGGED)) { return true; }
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return false;
 	}
 
-	/* TickRandom */
+	/* 立方体 */
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
+	/* Distinguish LOST from WATERLOGGED. */
+	protected boolean inWater(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		if (state.get(WATERLOGGED)) { return true; }
+		return false;
+	}
+
+	/* Update BlockState. */
+	@Override
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60); }
 
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60); }
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
-			worldIn.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundCategory.BLOCKS, 1.0F, 0.8F);
-			worldIn.destroyBlock(pos, true); }
-		
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 1.0F, 0.8F);
+			worldIn.destroyBlock(pos, true);
+		}
 		else { }
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_seedsbox")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_seedsbox")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

@@ -9,7 +9,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,22 +33,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Tana_Koucha extends BaseTana_Stage05 {
 
 	/* Collision */
-	protected static final VoxelShape AABB_TANA = VoxelShapes.or(Block.box(0.0D, 2.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-			Block.box(0.0D, 0.0D, 0.0D, 2.0D, 2.0D, 2.0D),
-			Block.box(0.0D, 0.0D, 14.0D, 2.0D, 2.0D, 16.0D),
-			Block.box(14.0D, 0.0D, 0.0D, 16.0D, 2.0D, 2.0D),
-			Block.box(14.0D, 0.0D, 14.0D, 16.0D, 2.0D, 16.0D));
+	protected static final VoxelShape AABB_TANA = VoxelShapes.or(Block.makeCuboidShape(0.0D, 2.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 2.0D, 2.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 2.0D, 16.0D),
+			Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 2.0D, 2.0D),
+			Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 2.0D, 16.0D));
 
-	public Tana_Koucha(AbstractBlock.Properties properties) {
+	public Tana_Koucha(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_0_5);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_0_5);
 
 		/** Too early to collect **/
 		if (i != 5) { CMEvents.textEarlyCollect(worldIn, pos, playerIn); }
@@ -60,10 +59,10 @@ public class Tana_Koucha extends BaseTana_Stage05 {
 			if (itemstack.isEmpty()) {
 				
 				CMEvents.soundTake_Pick(worldIn, pos);
-				playerIn.inventory.add(new ItemStack(Items_Teatime.CHABA_RED, 8));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.CHABA_RED, 8));
 	
-				worldIn.setBlock(pos, Hakkou_Blocks.HAKKOU_TARU.defaultBlockState().setValue(Taru_Hakkou.STAGE_0_5, Integer.valueOf(3)), 3); }
-			
+				worldIn.setBlockState(pos, Hakkou_Blocks.HAKKOU_TARU.getDefaultState().with(Taru_Hakkou.STAGE_0_5, Integer.valueOf(3))); }
+				
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
 		
@@ -84,11 +83,11 @@ public class Tana_Koucha extends BaseTana_Stage05 {
 		if (!worldIn.isAreaLoaded(pos, 2)) return;
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100);
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Hakkou_Blocks.HAKKOU_TARU.defaultBlockState()
-					.setValue(Taru_Hakkou.STAGE_0_5, Integer.valueOf(3))
-					.setValue(Taru_Hakkou.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
+			worldIn.setBlockState(pos, Hakkou_Blocks.HAKKOU_TARU.getDefaultState()
+					.with(Taru_Hakkou.STAGE_0_5, Integer.valueOf(3))
+					.with(Taru_Hakkou.WATERLOGGED, state.get(WATERLOGGED)), 3);
 			this.dropRottenfood(worldIn, pos); }
 
 		else { }
@@ -99,19 +98,19 @@ public class Tana_Koucha extends BaseTana_Stage05 {
 
 		if (!worldIn.isAreaLoaded(pos, 2)) return;
 
-		int i = state.getValue(STAGE_0_5);
+		int i = state.get(STAGE_0_5);
 
 		if (i < 5 && !hasWater(worldIn, pos) && rand.nextInt(4) == 0) {
-				worldIn.setBlock(pos, state.setValue(STAGE_0_5, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_0_5, Integer.valueOf(i + 1))); }
 
 		else { }
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_taru_koucha")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_taru_koucha")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

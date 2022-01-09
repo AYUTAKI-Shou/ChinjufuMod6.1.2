@@ -4,7 +4,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,37 +22,37 @@ import net.minecraft.world.World;
 public class Kit_TanaYunomi_1 extends Base_Tana7 {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 10.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(6.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 10.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(6.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
 
-	public Kit_TanaYunomi_1(AbstractBlock.Properties properties) {
+	public Kit_TanaYunomi_1(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_7);
+		int i = state.get(STAGE_1_7);
 
 		if (item != Items_Teatime.YUNOMI && item != Items_Teatime.KYUSU_kara) {
 			if (itemstack.isEmpty()) {
 				if (i != 7) {
-					playerIn.inventory.add(new ItemStack(Items_Teatime.YUNOMI));
+					playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.YUNOMI));
 					CMEvents.soundItemPick(worldIn, pos);
 					
-					if (i != 1) { worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(i - 1)), 3); }
-					if (i == 1) { worldIn.setBlock(pos, Kitchen_Blocks.KIT_TANA.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING)), 3); } }
+					if (i != 1) { worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i - 1))); }
+					if (i == 1) { worldIn.setBlockState(pos, Kitchen_Blocks.KIT_TANA.getDefaultState().with(H_FACING, state.get(H_FACING))); } }
 		
 				if (i == 7) {
-					playerIn.inventory.add(new ItemStack(Items_Teatime.KYUSU_kara));
+					playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.KYUSU_kara));
 					CMEvents.soundItemPick(worldIn, pos);
 					
-					worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(i - 1)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i - 1))); } }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -63,8 +62,8 @@ public class Kit_TanaYunomi_1 extends Base_Tana7 {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundDishPlace(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(i + 1)), 3); }
-		
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i + 1))); }
+			
 			if (i >= 6) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
 		
@@ -73,7 +72,7 @@ public class Kit_TanaYunomi_1 extends Base_Tana7 {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundDishPlace(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_7, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_7, Integer.valueOf(i + 1))); }
 			
 			if (i != 6) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -85,16 +84,17 @@ public class Kit_TanaYunomi_1 extends Base_Tana7 {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
@@ -102,7 +102,7 @@ public class Kit_TanaYunomi_1 extends Base_Tana7 {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.KIT_TANA);
 	}
 

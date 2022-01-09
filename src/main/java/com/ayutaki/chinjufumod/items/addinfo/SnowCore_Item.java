@@ -20,14 +20,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SnowCore_Item extends BlockNamedItem {
 
-	public SnowCore_Item(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.SEASONAL));
+	public SnowCore_Item(Block blockIn, Item.Properties builder) {
+		super(blockIn, builder.group(ItemGroups_CM.SEASONAL));
 	}
 
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_snowcore")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_snowcore")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

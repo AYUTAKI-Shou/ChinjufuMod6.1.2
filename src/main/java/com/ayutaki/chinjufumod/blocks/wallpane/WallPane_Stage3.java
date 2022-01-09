@@ -6,10 +6,9 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.blocks.base.BaseStage3_FaceWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
-import com.ayutaki.chinjufumod.registry.WallPanel_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
 import com.ayutaki.chinjufumod.registry.Wood_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,36 +33,36 @@ import net.minecraftforge.common.ToolType;
 public class WallPane_Stage3 extends BaseStage3_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
 
-	public WallPane_Stage3(AbstractBlock.Properties properties) {
+	public WallPane_Stage3(Block.Properties properties) {
 		super(properties);
 	}
 
-	/* RightClick Action*/
+	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 
 		if (itemstack.isEmpty()) {
-			
-			if (playerIn.isCrouching()) {
-				if (this == WallPanel_Blocks.WP_LOG_oak || this == WallPanel_Blocks.WP_LOG_spru || this == WallPanel_Blocks.
-						WP_LOG_bir || this == WallPanel_Blocks.WP_LOG_jun || this == WallPanel_Blocks.WP_LOG_aca || this == WallPanel_Blocks
+			if (playerIn.isSneaking()) {
+
+				if (this == WallPane_Blocks.WP_LOG_oak || this == WallPane_Blocks.WP_LOG_spru || this == WallPane_Blocks.
+						WP_LOG_bir || this == WallPane_Blocks.WP_LOG_jun || this == WallPane_Blocks.WP_LOG_aca || this == WallPane_Blocks
 						.WP_LOG_doak || this == Wood_Blocks.WP_LOG_sakura || this == Wood_Blocks.WP_LOG_kaede || this == Wood_Blocks
-						.WP_LOG_ichoh || this == WallPanel_Blocks.WP_BAMBOO || this == WallPanel_Blocks.WP_BAMBOO_Y || this == WallPanel_Blocks.WP_BAMBOO_K) {
+						.WP_LOG_ichoh || this == WallPane_Blocks.WP_BAMBOO || this == WallPane_Blocks.WP_BAMBOO_Y || this == WallPane_Blocks.WP_BAMBOO_K) {
 					CMEvents.soundWoodPlace(worldIn, pos); }
 	
 				else { CMEvents.soundStonePlace(worldIn, pos); }
 	
-				worldIn.setBlock(pos, state.cycle(STAGE_1_3), 3);
+				worldIn.setBlockState(pos, state.cycle(STAGE_1_3));
 				return ActionResultType.SUCCESS; }
 			
-			if (!playerIn.isCrouching()) {
+			if (!playerIn.isSneaking()) {
 				CMEvents.textNotSneak(worldIn, pos, playerIn);
 				return ActionResultType.SUCCESS; }
 		}
@@ -74,22 +73,22 @@ public class WallPane_Stage3 extends BaseStage3_FaceWater {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -103,9 +102,9 @@ public class WallPane_Stage3 extends BaseStage3_FaceWater {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.wp_stage3")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.wp_stage3")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

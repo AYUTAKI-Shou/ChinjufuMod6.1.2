@@ -6,14 +6,14 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.handler.CMEvents;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -49,55 +49,56 @@ public class Kit_Kanki extends Block implements IWaterLoggable {
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 
 	/* Collision */
-	protected static final VoxelShape S1_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 5.0D);
-	protected static final VoxelShape S1_WEST = Block.box(11.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape S1_NORTH = Block.box(0.0D, 0.0D, 11.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape S1_EAST = Block.box(0.0D, 0.0D, 0.0D, 5.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S1_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 5.0D);
+	protected static final VoxelShape S1_WEST = Block.makeCuboidShape(11.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S1_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 11.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S1_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 5.0D, 16.0D, 16.0D);
 
-	protected static final VoxelShape S23_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape S23_WEST = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape S23_NORTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape S23_EAST = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S23_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S23_WEST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S23_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape S23_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public Kit_Kanki(AbstractBlock.Properties properties) {
+	public Kit_Kanki(Block.Properties properties) {
 		super(properties);
 
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(LIT, Boolean.valueOf(false))
-				.setValue(STAGE_1_3, Integer.valueOf(1))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(LIT, Boolean.valueOf(false))
+				.with(STAGE_1_3, Integer.valueOf(1))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		
 		if (itemstack.isEmpty()) {
-			if (playerIn.isCrouching()) {
-				worldIn.playSound(null, pos, SoundEvents.METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
-				worldIn.setBlock(pos, state.cycle(STAGE_1_3), 3);
-				return ActionResultType.SUCCESS; }
-			
-			if (!playerIn.isCrouching()) {
+			if (playerIn.isSneaking()) {
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+				worldIn.setBlockState(pos, state.cycle(STAGE_1_3)); }
+	
+			if (!playerIn.isSneaking()) {
 				
-				if (state.getValue(LIT) == false) {
-					if (!state.getValue(WATERLOGGED)) {
+				if (state.get(LIT) == false) {
+					if (!state.get(WATERLOGGED)) {
 						CMEvents.soundStoneButton_On(worldIn, pos);
-						worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(true)), 10); }
+						worldIn.setBlockState(pos, state.with(LIT, Boolean.valueOf(true)), 10); }
 					
-					if (state.getValue(WATERLOGGED)) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); }
-				}
+					if (state.get(WATERLOGGED)) {
+						CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 				
-				if (state.getValue(LIT) != false) {
+				if (state.get(LIT) != false) {
 					CMEvents.soundStoneButton_Off(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(false)), 10); }
+					worldIn.setBlockState(pos, state.with(LIT, Boolean.valueOf(false)), 10); }
 			}
 		}
-
-		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
+		
+		if (!itemstack.isEmpty()) {
+			CMEvents.textFullItem(worldIn, pos, playerIn);
+		}
 		
 		return ActionResultType.SUCCESS;
 	}
@@ -105,51 +106,69 @@ public class Kit_Kanki extends Block implements IWaterLoggable {
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER))
-				.setValue(H_FACING, context.getHorizontalDirection().getOpposite());
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
-		}
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
+		
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 
-		int i = state.getValue(STAGE_1_3);
-		Direction direction = state.getValue(H_FACING);
+		int i = state.get(STAGE_1_3);
+		Direction direction = state.get(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return (i == 1)? S1_NORTH : S23_NORTH;
+		switch(direction) {
 		case SOUTH:
 			return (i == 1)? S1_SOUTH : S23_SOUTH;
 		case WEST:
 			return (i == 1)? S1_WEST : S23_WEST;
+		case NORTH:
+		default:
+			return (i == 1)? S1_NORTH : S23_NORTH;
 		case EAST:
 			return (i == 1)? S1_EAST : S23_EAST;
 		}
@@ -157,15 +176,16 @@ public class Kit_Kanki extends Block implements IWaterLoggable {
 
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(H_FACING, LIT, STAGE_1_3, WATERLOGGED);
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_kit_kanki")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_kit_kanki")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

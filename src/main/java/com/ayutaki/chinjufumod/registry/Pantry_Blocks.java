@@ -8,14 +8,9 @@ import com.ayutaki.chinjufumod.blocks.pantry.Pantry_Empty;
 import com.ayutaki.chinjufumod.blocks.pantry.Pantry_Sack;
 import com.ayutaki.chinjufumod.blocks.pantry.Tawara;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,14 +18,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Pantry_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block BOX_H_EMPTY = register("block_boxh_empty", new Pantry_Empty(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never)));
-	public static Block BOX_H_EMPTY2 = register("block_boxh_empty2", new Pantry_Empty(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never)));
-	public static Block BOX_H_EMPTY3 = register("block_boxh_empty3", new Pantry_Empty(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-			.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never)));
+	public static Block BOX_H_EMPTY = register("block_boxh_empty", new Pantry_Empty(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block BOX_H_EMPTY2 = register("block_boxh_empty2", new Pantry_Empty(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block BOX_H_EMPTY3 = register("block_boxh_empty3", new Pantry_Empty(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid()));
 
 	public static Block BOX_H_APPLE = register("block_boxh_apple", pantryBox());
 	public static Block BOX_H_BEEF = register("block_boxh_beef", pantryBox());
@@ -67,30 +63,20 @@ public class Pantry_Blocks {
 	public static Block BOX_H_TGREEN = register("block_boxh_tgreen", pantrySack());
 	public static Block BOX_H_TRED = register("block_boxh_tred", pantrySack());
 
-	public static Block CHADUTSU = register("block_tea_chadutsu", new Chadutsu(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never)));
-	public static Block CANTEA = register("block_tea_can", new CanTea(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never)));
-	public static Block TAWARA = register("block_tawara_cm", new Tawara(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-			.noOcclusion().isSuffocating(Pantry_Blocks::never)));
+	public static Block CHADUTSU = register("block_tea_chadutsu", new Chadutsu(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid()));
+	public static Block CANTEA = register("block_tea_can", new CanTea(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.STONE).notSolid()));
+	public static Block TAWARA = register("block_tawara_cm", new Tawara(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid()));
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static Pantry_Box pantryBox() {
-		return new Pantry_Box(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never));
+		return new Pantry_Box(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Pantry_Sack pantrySack() {
-		return new Pantry_Sack(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.GRASS)
-				.noOcclusion().isValidSpawn(Pantry_Blocks::neverEntity).isSuffocating(Pantry_Blocks::never));
+		return new Pantry_Sack(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.PLANT).notSolid());
 	}
 
 	///* Register *///

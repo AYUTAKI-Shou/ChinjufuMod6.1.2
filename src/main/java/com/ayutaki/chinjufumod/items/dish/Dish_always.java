@@ -39,50 +39,49 @@ public class Dish_always extends BlockNamedItem {
 	}
 
 	/* アイテム消費時の処理 */
-	@Override
-	public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
 
 		PlayerEntity playerIn = entityLiving instanceof PlayerEntity ? (PlayerEntity)entityLiving : null;
 
 		/** 追加効果 **/
 		if (this == Items_Teatime.JPTEACUP) {
 			/** ポーションエフェクトの追加 一口100 通常 120 **/
-			entityLiving.addEffect(new EffectInstance(Effects.DIG_SPEED, 2000, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.HASTE, 2000, 0)); }
 
 		if (this == Items_Teatime.ICECREAM) {
-			entityLiving.addEffect(new EffectInstance(Effects.LUCK, 3750, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.LUCK, 3750, 0)); }
 
 		if (this == Items_Seasonal.KAKIGOURI_block) {
-			entityLiving.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 1250, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.SPEED, 1250, 0)); }
 
 		if (this == Items_Seasonal.KAKIGOURI_pink) {
-			entityLiving.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 1900, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1900, 0)); }
 
 		if (this == Items_Seasonal.KAKIGOURI_red) {
-			entityLiving.addEffect(new EffectInstance(Effects.NIGHT_VISION, 1900, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 1900, 0)); }
 
 		if (this == Items_Seasonal.KAKIGOURI_yellow) {
-			entityLiving.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 1900, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 1900, 0)); }
 
 		if (this == Items_Seasonal.KAKIGOURI_green) {
-			entityLiving.addEffect(new EffectInstance(Effects.DIG_SPEED, 1900, 0)); }
+			entityLiving.addPotionEffect(new EffectInstance(Effects.HASTE, 1900, 0)); }
 
 		/** アイテムの返し **/
 		if (playerIn != null) {
-			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			playerIn.addStat(Stats.ITEM_USED.get(this));
 
-			if (!playerIn.abilities.instabuild) {
+			if (!playerIn.abilities.isCreativeMode) {
 
 				if (this == Items_Teatime.JPTEACUP) {
 					if (stack.isEmpty()) { return new ItemStack(Items_Teatime.YUNOMI); }
-					else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.YUNOMI))) { playerIn.drop(new ItemStack(Items_Teatime.YUNOMI), false); }
-				}
+					else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.YUNOMI))) {
+						playerIn.dropItem(new ItemStack(Items_Teatime.YUNOMI), false); } }
 
 				else if (this == Items_Teatime.ICECREAM || this == Items_Seasonal.KAKIGOURI_block || this == Items_Seasonal.KAKIGOURI_pink ||
 						this == Items_Seasonal.KAKIGOURI_red || this == Items_Seasonal.KAKIGOURI_yellow || this == Items_Seasonal.KAKIGOURI_green) {
-
 					if (stack.isEmpty()) { return new ItemStack(Items_Teatime.DRINKGLASS); }
-					else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.DRINKGLASS))) { playerIn.drop(new ItemStack(Items_Teatime.DRINKGLASS), false); } }
+					else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.DRINKGLASS))) {
+						playerIn.dropItem(new ItemStack(Items_Teatime.DRINKGLASS), false); } }
 
 				stack.shrink(1);
 			}
@@ -90,41 +89,38 @@ public class Dish_always extends BlockNamedItem {
 		return stack;
 	}
 
-	@Override
 	public int getUseDuration(ItemStack stack) {
 		return 32;
 	}
 
-	@Override
-	public UseAction getUseAnimation(ItemStack stack) {
+	public UseAction getUseAction(ItemStack stack) {
 		if (this == Items_Teatime.JPTEACUP) {
 			return UseAction.DRINK;
 		}
 		return UseAction.EAT;
 	}
 
-	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand hand) {
-		playerIn.startUsingItem(hand);
-		return ActionResult.consume(playerIn.getItemInHand(hand));
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
+		playerIn.setActiveHand(hand);
+		return ActionResult.resultSuccess(playerIn.getHeldItem(hand));
 	}
 
-	/* 設置処理の分岐 スニーク時 playerIn.isCrouching() 座っている時 playerIn.isPassenger() */
-	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	/* 設置処理の分岐 スニーク時 playerIn.isSneaking() 座っている時 playerIn.isPassenger() */
+	public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity playerIn = context.getPlayer();
 
-		if (context.getClickedFace() == Direction.UP && (playerIn.isCrouching() || playerIn.isPassenger())) {
-			return this.place(new BlockItemUseContext(context)); }
+		if (context.getFace() == Direction.UP && (playerIn.isSneaking() || playerIn.isPassenger()) ) {
+			return this.tryPlace(new BlockItemUseContext(context)); }
 
 		else {
-			return this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult(); }
+			return this.onItemRightClick(context.getWorld(), context.getPlayer(), context.getHand()).getType(); }
 	}
 
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_simpledish")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_simpledish")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

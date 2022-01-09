@@ -20,28 +20,28 @@ public class BambooPressurePlate extends PressurePlateBlock {
 	public BambooPressurePlate(PressurePlateBlock.Sensitivity sensitivity, Block.Properties properties) {
 		super(sensitivity, properties);
 
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(POWERED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(POWERED, Boolean.valueOf(false)));
 	}
 
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.defaultBlockState().setValue(H_FACING, context.getHorizontalDirection().getOpposite());
+		return this.getDefaultState().with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(H_FACING, POWERED);
 	}
 

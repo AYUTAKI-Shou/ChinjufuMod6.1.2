@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import com.ayutaki.chinjufumod.tileentity.Tansu_TileEntity;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +19,7 @@ public abstract class AbstractTansu<E extends TileEntity> extends ContainerBlock
 
 	protected final Supplier<TileEntityType<? extends E>> blockEntityType;
 
-	protected AbstractTansu(AbstractBlock.Properties properties, Supplier<TileEntityType<? extends E>> tileEntity) {
+	protected AbstractTansu(Block.Properties properties, Supplier<TileEntityType<? extends E>> tileEntity) {
 		super(properties);
 		this.blockEntityType = tileEntity;
 	}

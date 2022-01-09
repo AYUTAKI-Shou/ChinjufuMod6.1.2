@@ -27,11 +27,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Seasonal {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
 
-	public static Item WARAHAI = register("item_warahai", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item ORIITO = register("item_oriito", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TANMONO = register("item_tanmono", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item WARAHAI = register("item_warahai", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item ORIITO = register("item_oriito", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TANMONO = register("item_tanmono", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
 	public static Item ZUNDOU_AKU = register("block_zundou_aku", new Seasonal_noFuel(Dish_Blocks.ZUNDOU_AKU, new Item.Properties()));
 
@@ -220,21 +221,21 @@ public class Items_Seasonal {
 	public static Item PRESENT_chc = register("block_present_chc", new Seasonal_noFuel(Seasonal_Blocks.PRESENT_chc, new Item.Properties()));
 	public static Item PRESENT_chh = register("block_present_chh", new Seasonal_noFuel(Seasonal_Blocks.PRESENT_chh, new Item.Properties()));
 
+	public static Item COCOA_F = register("item_cocoa_ferm", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item COCOA_R = register("item_cocoa_roast", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item COCOA_M = register("item_cocoa_mass", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item CHOCO_raw = register("item_choco_raw", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).containerItem(Items.BOWL)));
+	public static Item COCOA_TARU = register("block_taru_cocoa_f", new Seasonal_noFuel(Hakkou_Blocks.COCOA_TARU, new Item.Properties()));
+
 	public static Item SNOWCORE = register("block_snowcore", new SnowCore_Item(Seasonal_Blocks.SNOWCORE, new Item.Properties()));
 	public static Item SNOWMAN = register("block_snowman", new SnowMan_Item(Seasonal_Blocks.SNOWMAN, new Item.Properties()));
 	
-	public static Item COCOA_F = register("item_cocoa_ferm", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item COCOA_R = register("item_cocoa_roast", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item COCOA_M = register("item_cocoa_mass", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item CHOCO_raw = register("item_choco_raw", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).craftRemainder(Items.BOWL)));
-	public static Item COCOA_TARU = register("block_taru_cocoa_f", new Seasonal_noFuel(Hakkou_Blocks.COCOA_TARU, new Item.Properties()));
-
-	public static Item FOOD_CHOCO = register("item_food_choco", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO)));
-	public static Item FOOD_CHOCO_A = register("item_food_choco_apple", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_A)));
-	public static Item FOOD_CHOCO_C = register("item_food_choco_cherry", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_C)));
-	public static Item FOOD_CHOCO_G = register("item_food_choco_grape", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_G)));
-	public static Item FOOD_CHOCO_T = register("item_food_choco_greentea", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_T)));
-	public static Item FOOD_CHOCO_H = register("item_food_choco_heart", new Item(new Item.Properties().tab(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_H)));
+	public static Item FOOD_CHOCO = register("item_food_choco", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO)));
+	public static Item FOOD_CHOCO_A = register("item_food_choco_apple", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_A)));
+	public static Item FOOD_CHOCO_C = register("item_food_choco_cherry", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_C)));
+	public static Item FOOD_CHOCO_G = register("item_food_choco_grape", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_G)));
+	public static Item FOOD_CHOCO_T = register("item_food_choco_greentea", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_T)));
+	public static Item FOOD_CHOCO_H = register("item_food_choco_heart", new Item(new Item.Properties().group(ItemGroups_CM.SEASONAL).food(FoodBuilders.CHOCO_H)));
 
 	public static Item UCHIWA_white = register("block_uchiwa_white", new Seasonal_noFuel(Seasonal_Blocks.UCHIWA_white, new Item.Properties()));
 	public static Item UCHIWA_orange = register("block_uchiwa_orange", new Seasonal_noFuel(Seasonal_Blocks.UCHIWA_orange, new Item.Properties()));
@@ -253,11 +254,11 @@ public class Items_Seasonal {
 	public static Item UCHIWA_red = register("block_uchiwa_red", new Seasonal_noFuel(Seasonal_Blocks.UCHIWA_red, new Item.Properties()));
 	public static Item UCHIWA_black = register("block_uchiwa_black", new Seasonal_noFuel(Seasonal_Blocks.UCHIWA_black, new Item.Properties()));
 
-	public static Item FOOD_WATAGASHI = register("item_food_watagashi", new Food_addItem(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item FOOD_WATAGASHI_A = register("item_food_watagashi_y", new Food_addItem(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item FOOD_WATAGASHI_C = register("item_food_watagashi_p", new Food_addItem(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item FOOD_WATAGASHI_G = register("item_food_watagashi_r", new Food_addItem(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item FOOD_WATAGASHI_T = register("item_food_watagashi_g", new Food_addItem(new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item FOOD_WATAGASHI = register("item_food_watagashi", new Food_addItem(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item FOOD_WATAGASHI_A = register("item_food_watagashi_y", new Food_addItem(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item FOOD_WATAGASHI_C = register("item_food_watagashi_p", new Food_addItem(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item FOOD_WATAGASHI_G = register("item_food_watagashi_r", new Food_addItem(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item FOOD_WATAGASHI_T = register("item_food_watagashi_g", new Food_addItem(new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 	public static Item WATAGASHI_block = register("block_watagashi", new Seasonal_noFuel(Seasonal_Blocks.WATAGASHI_block, new Item.Properties()));
 	public static Item WATAGASHI_pink = register("block_watagashi_pink", new Seasonal_noFuel(Seasonal_Blocks.WATAGASHI_pink, new Item.Properties()));
 	public static Item WATAGASHI_red = register("block_watagashi_red", new Seasonal_noFuel(Seasonal_Blocks.WATAGASHI_red, new Item.Properties()));
@@ -265,72 +266,71 @@ public class Items_Seasonal {
 	public static Item WATAGASHI_green = register("block_watagashi_green", new Seasonal_noFuel(Seasonal_Blocks.WATAGASHI_green, new Item.Properties()));
 
 	public static Item KAKIGOURI_hata = register("block_kakigouri_hata", new Seasonal_noFuel(Seasonal_Blocks.KAKIGOURI_hata, new Item.Properties()));
-	public static Item KAKIGOURI_block = register("block_kakigouri_block1", new Dish_always(Seasonal_Blocks.KAKIGOURI_block, (new Item.Properties()).tab(ItemGroups_CM.SEASONAL)));
-	public static Item KAKIGOURI_pink = register("block_kakigouri_pink1", new Dish_always(Seasonal_Blocks.KAKIGOURI_pink, (new Item.Properties()).tab(ItemGroups_CM.SEASONAL)));
-	public static Item KAKIGOURI_red = register("block_kakigouri_red1", new Dish_always(Seasonal_Blocks.KAKIGOURI_red, (new Item.Properties()).tab(ItemGroups_CM.SEASONAL)));
-	public static Item KAKIGOURI_yellow = register("block_kakigouri_yellow1", new Dish_always(Seasonal_Blocks.KAKIGOURI_yellow, (new Item.Properties()).tab(ItemGroups_CM.SEASONAL)));
-	public static Item KAKIGOURI_green = register("block_kakigouri_green1", new Dish_always(Seasonal_Blocks.KAKIGOURI_green, (new Item.Properties()).tab(ItemGroups_CM.SEASONAL)));
+	public static Item KAKIGOURI_block = register("block_kakigouri_block1", new Dish_always(Seasonal_Blocks.KAKIGOURI_block, (new Item.Properties()).group(ItemGroups_CM.SEASONAL)));
+	public static Item KAKIGOURI_pink = register("block_kakigouri_pink1", new Dish_always(Seasonal_Blocks.KAKIGOURI_pink, (new Item.Properties()).group(ItemGroups_CM.SEASONAL)));
+	public static Item KAKIGOURI_red = register("block_kakigouri_red1", new Dish_always(Seasonal_Blocks.KAKIGOURI_red, (new Item.Properties()).group(ItemGroups_CM.SEASONAL)));
+	public static Item KAKIGOURI_yellow = register("block_kakigouri_yellow1", new Dish_always(Seasonal_Blocks.KAKIGOURI_yellow, (new Item.Properties()).group(ItemGroups_CM.SEASONAL)));
+	public static Item KAKIGOURI_green = register("block_kakigouri_green1", new Dish_always(Seasonal_Blocks.KAKIGOURI_green, (new Item.Properties()).group(ItemGroups_CM.SEASONAL)));
 
 	/* YUKATA*/
-	public static Item YKTD_GETA = register("item_ykt_getadoak", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item YKTO_GETA = register("item_ykt_getaoak", new Yukata(CMArmorMaterial.TTOKUYKT, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item YKTD_GETA = register("item_ykt_getadoak", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item YKTO_GETA = register("item_ykt_getaoak", new Yukata(CMArmorMaterial.TTOKUYKT, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item IKADUCHIYKT_HELMET = register("item_ykt_ikaduchi_kazari", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item IKADUCHIYKT_CHESTPLATE = register("item_ykt_ikaduchi_mini", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item IKADUCHIYKT_LEGGINGS = register("item_ykt_ikaduchi_long", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item IKADUCHIYKT_HELMET = register("item_ykt_ikaduchi_kazari", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item IKADUCHIYKT_CHESTPLATE = register("item_ykt_ikaduchi_mini", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item IKADUCHIYKT_LEGGINGS = register("item_ykt_ikaduchi_long", new Yukata(CMArmorMaterial.IKADUCHIYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item INADUMAYKT_HELMET = register("item_ykt_inaduma_kazari", new Yukata(CMArmorMaterial.INADUMAYKT, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item INADUMAYKT_CHESTPLATE = register("item_ykt_inaduma_mini", new Yukata(CMArmorMaterial.INADUMAYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item INADUMAYKT_LEGGINGS = register("item_ykt_inaduma_long", new Yukata(CMArmorMaterial.INADUMAYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item INADUMAYKT_HELMET = register("item_ykt_inaduma_kazari", new Yukata(CMArmorMaterial.INADUMAYKT, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item INADUMAYKT_CHESTPLATE = register("item_ykt_inaduma_mini", new Yukata(CMArmorMaterial.INADUMAYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item INADUMAYKT_LEGGINGS = register("item_ykt_inaduma_long", new Yukata(CMArmorMaterial.INADUMAYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item HAMAKAZEYKT_HELMET = register("item_ykt_hamakaze_kazari", new Yukata(CMArmorMaterial.HAMAKAZEYKT, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item HAMAKAZEYKT_CHESTPLATE = register("item_ykt_hamakaze_mini", new Yukata(CMArmorMaterial.HAMAKAZEYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item HAMAKAZEYKT_LEGGINGS = register("item_ykt_hamakaze_long", new Yukata(CMArmorMaterial.HAMAKAZEYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item HAMAKAZEYKT_HELMET = register("item_ykt_hamakaze_kazari", new Yukata(CMArmorMaterial.HAMAKAZEYKT, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item HAMAKAZEYKT_CHESTPLATE = register("item_ykt_hamakaze_mini", new Yukata(CMArmorMaterial.HAMAKAZEYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item HAMAKAZEYKT_LEGGINGS = register("item_ykt_hamakaze_long", new Yukata(CMArmorMaterial.HAMAKAZEYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item URAKAZEYKT_HELMET = register("item_ykt_urakaze_kazari", new Yukata(CMArmorMaterial.URAKAZEYKT, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item URAKAZEYKT_CHESTPLATE = register("item_ykt_urakaze_mini", new Yukata(CMArmorMaterial.URAKAZEYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item URAKAZEYKT_LEGGINGS = register("item_ykt_urakaze_long", new Yukata(CMArmorMaterial.URAKAZEYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item URAKAZEYKT_HELMET = register("item_ykt_urakaze_kazari", new Yukata(CMArmorMaterial.URAKAZEYKT, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item URAKAZEYKT_CHESTPLATE = register("item_ykt_urakaze_mini", new Yukata(CMArmorMaterial.URAKAZEYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item URAKAZEYKT_LEGGINGS = register("item_ykt_urakaze_long", new Yukata(CMArmorMaterial.URAKAZEYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item KAWAKAZEYKT_HELMET = register("item_ykt_kawakaze_kazari", new Yukata(CMArmorMaterial.KAWAKAZEYKT, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item KAWAKAZEYKT_CHESTPLATE = register("item_ykt_kawakaze_mini", new Yukata(CMArmorMaterial.KAWAKAZEYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item KAWAKAZEYKT_LEGGINGS = register("item_ykt_kawakaze_long", new Yukata(CMArmorMaterial.KAWAKAZEYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item KAWAKAZEYKT_HELMET = register("item_ykt_kawakaze_kazari", new Yukata(CMArmorMaterial.KAWAKAZEYKT, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item KAWAKAZEYKT_CHESTPLATE = register("item_ykt_kawakaze_mini", new Yukata(CMArmorMaterial.KAWAKAZEYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item KAWAKAZEYKT_LEGGINGS = register("item_ykt_kawakaze_long", new Yukata(CMArmorMaterial.KAWAKAZEYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item OBOROYKT_HELMET = register("item_ykt_oboro_kazari", new Yukata(CMArmorMaterial.OBOROYKT, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item OBOROYKT_CHESTPLATE = register("item_ykt_oboro_mini", new Yukata(CMArmorMaterial.OBOROYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item OBOROYKT_LEGGINGS = register("item_ykt_oboro_long", new Yukata(CMArmorMaterial.OBOROYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item OBOROYKT_HELMET = register("item_ykt_oboro_kazari", new Yukata(CMArmorMaterial.OBOROYKT, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item OBOROYKT_CHESTPLATE = register("item_ykt_oboro_mini", new Yukata(CMArmorMaterial.OBOROYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item OBOROYKT_LEGGINGS = register("item_ykt_oboro_long", new Yukata(CMArmorMaterial.OBOROYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item TTOKUYKT_CHESTPLATE = register("item_ykt_ttoku_mini", new Yukata(CMArmorMaterial.TTOKUYKT, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TTOKUYKT_LEGGINGS = register("item_ykt_ttoku_long", new Yukata(CMArmorMaterial.TTOKUYKT, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TTOKUYKTB_CHESTPLATE = register("item_ykt_ttokub_mini", new Yukata(CMArmorMaterial.TTOKUYKTB, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TTOKUYKTB_LEGGINGS = register("item_ykt_ttokub_long", new Yukata(CMArmorMaterial.TTOKUYKTB, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item TTOKUYKT_CHESTPLATE = register("item_ykt_ttoku_mini", new Yukata(CMArmorMaterial.TTOKUYKT, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TTOKUYKT_LEGGINGS = register("item_ykt_ttoku_long", new Yukata(CMArmorMaterial.TTOKUYKT, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TTOKUYKTB_CHESTPLATE = register("item_ykt_ttokub_mini", new Yukata(CMArmorMaterial.TTOKUYKTB, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TTOKUYKTB_LEGGINGS = register("item_ykt_ttokub_long", new Yukata(CMArmorMaterial.TTOKUYKTB, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
 	/* SantaCos*/
-	public static Item AKASHISANTA_HELMET = register("item_santaakashi_helmet", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item AKASHISANTA_CHESTPLATE = register("item_santaakashi_chestplate", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item AKASHISANTA_LEGGINGS = register("item_santaakashi_leggings", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item AKASHISANTA_BOOTS = register("item_santaakashi_boots", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item AKASHISANTA_HELMET = register("item_santaakashi_helmet", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item AKASHISANTA_CHESTPLATE = register("item_santaakashi_chestplate", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item AKASHISANTA_LEGGINGS = register("item_santaakashi_leggings", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item AKASHISANTA_BOOTS = register("item_santaakashi_boots", new SantaCos(CMArmorMaterial.AKASHISANTA, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item SUZUYASANTA_HELMET = register("item_santasuzuya_helmet", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item SUZUYASANTA_CHESTPLATE = register("item_santasuzuya_chestplate", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item SUZUYASANTA_LEGGINGS = register("item_santasuzuya_leggings", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item SUZUYASANTA_BOOTS = register("item_santasuzuya_boots", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item SUZUYASANTA_HELMET = register("item_santasuzuya_helmet", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item SUZUYASANTA_CHESTPLATE = register("item_santasuzuya_chestplate", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item SUZUYASANTA_LEGGINGS = register("item_santasuzuya_leggings", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item SUZUYASANTA_BOOTS = register("item_santasuzuya_boots", new SantaCos(CMArmorMaterial.SUZUYASANTA, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item KUMANOSANTA_HELMET = register("item_santakumano_helmet", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item KUMANOSANTA_CHESTPLATE = register("item_santakumano_chestplate", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item KUMANOSANTA_LEGGINGS = register("item_santakumano_leggings", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item KUMANOSANTA_BOOTS = register("item_santakumano_boots", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item KUMANOSANTA_HELMET = register("item_santakumano_helmet", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item KUMANOSANTA_CHESTPLATE = register("item_santakumano_chestplate", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item KUMANOSANTA_LEGGINGS = register("item_santakumano_leggings", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item KUMANOSANTA_BOOTS = register("item_santakumano_boots", new SantaCos(CMArmorMaterial.KUMANOSANTA, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item RYUJOUSANTA_HELMET = register("item_santaryujou_helmet", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item RYUJOUSANTA_CHESTPLATE = register("item_santaryujou_chestplate", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item RYUJOUSANTA_LEGGINGS = register("item_santaryujou_leggings", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item RYUJOUSANTA_BOOTS = register("item_santaryujou_boots", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
+	public static Item RYUJOUSANTA_HELMET = register("item_santaryujou_helmet", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item RYUJOUSANTA_CHESTPLATE = register("item_santaryujou_chestplate", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item RYUJOUSANTA_LEGGINGS = register("item_santaryujou_leggings", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item RYUJOUSANTA_BOOTS = register("item_santaryujou_boots", new SantaCos(CMArmorMaterial.RYUJOUSANTA, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
 
-	public static Item TEITOKUSANTA_HELMET = register("item_santattk_helmet", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TEITOKUSANTA_CHESTPLATE = register("item_santattk_chestplate", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.CHEST, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TEITOKUSANTA_LEGGINGS = register("item_santattk_leggings", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.LEGS, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	public static Item TEITOKUSANTA_BOOTS = register("item_santattk_boots", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.FEET, new Item.Properties().tab(ItemGroups_CM.SEASONAL)));
-	
-	
+	public static Item TEITOKUSANTA_HELMET = register("item_santattk_helmet", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TEITOKUSANTA_CHESTPLATE = register("item_santattk_chestplate", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.CHEST, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TEITOKUSANTA_LEGGINGS = register("item_santattk_leggings", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.LEGS, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+	public static Item TEITOKUSANTA_BOOTS = register("item_santattk_boots", new SantaCos(CMArmorMaterial.TEITOKUSANTA, EquipmentSlotType.FEET, new Item.Properties().group(ItemGroups_CM.SEASONAL)));
+
 	///* Register *///
 	private static Item register(String name, Item item) {
 		ITEMS.register(name, () -> item);

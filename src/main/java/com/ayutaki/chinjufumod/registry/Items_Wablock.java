@@ -13,10 +13,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Items_Wablock {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, ChinjufuMod.MOD_ID);
 
-	public static Item CLAYKAWARA = register("item_claykawara", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.WABLOCK)));
-	public static Item SHOUSEKKAI = register("item_shousekkai_c", new AddInfo_Item(new Item.Properties().tab(ItemGroups_CM.WABLOCK)));
+	public static Item CLAYKAWARA = register("item_claykawara", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.WABLOCK)));
+	public static Item SHOUSEKKAI = register("item_shousekkai_c", new AddInfo_Item(new Item.Properties().group(ItemGroups_CM.WABLOCK)));
 
 	public static Item KAWARA_white = register("block_kawara_white", new Wablock_noFuel(JP_Blocks.KAWARA_white, new Item.Properties()));
 	public static Item KAWARA_orange = register("block_kawara_orange", new Wablock_noFuel(JP_Blocks.KAWARA_orange, new Item.Properties()));
@@ -225,7 +226,7 @@ public class Items_Wablock {
 	public static Item NAMAKOB_SH_green = register("block_nsh_b_green", new Wablock_noFuel(JP_Blocks.NAMAKOB_SH_green, new Item.Properties()));
 	public static Item NAMAKOB_SH_red = register("block_nsh_b_red", new Wablock_noFuel(JP_Blocks.NAMAKOB_SH_red, new Item.Properties()));
 	public static Item NAMAKOB_SH_black = register("block_nsh_b_black", new Wablock_noFuel(JP_Blocks.NAMAKOB_SH_black, new Item.Properties()));
-	
+
 	public static Item DIRTWALL_WALL = register("block_dirtwall_wall", new Wablock_noFuel(JP_Blocks.DIRTWALL_WALL, new Item.Properties()));
 	public static Item SHIKKUI_WALL_white = register("block_pwall_white", new Wablock_noFuel(JP_Blocks.SHIKKUI_WALL_white, new Item.Properties()));
 	public static Item SHIKKUI_WALL_orange = register("block_pwall_orange", new Wablock_noFuel(JP_Blocks.SHIKKUI_WALL_orange, new Item.Properties()));

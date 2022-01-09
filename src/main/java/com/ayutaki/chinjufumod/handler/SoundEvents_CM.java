@@ -11,7 +11,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SoundEvents_CM {
 
-	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, ChinjufuMod.MOD_ID);
 
 	public static SoundEvent AM_CARTRIDGE = register("am_cartridge");
 	public static SoundEvent AM_FIRE = register("am_fire");
@@ -62,7 +63,7 @@ public class SoundEvents_CM {
 
 	public static SoundEvent WADAIKO_TOP = register("wadaiko_top");
 	public static SoundEvent WADAIKO_SIDE = register("wadaiko_side");
-	
+
 	public static SoundEvent WRITE_REPORT = register("write_report");
 	public static SoundEvent OPEN = register("open");
 	public static SoundEvent OPEN_OVEN = register("open_oven");
@@ -70,8 +71,6 @@ public class SoundEvents_CM {
 	public static SoundEvent THROW = register("throw");
 	public static SoundEvent ERROR = register("error");
 	
-	
-	///* Register *///
 	private static SoundEvent register(String name) {
 		ResourceLocation location = new ResourceLocation(ChinjufuMod.MOD_ID, name);
 		SoundEvent event = new SoundEvent(location);

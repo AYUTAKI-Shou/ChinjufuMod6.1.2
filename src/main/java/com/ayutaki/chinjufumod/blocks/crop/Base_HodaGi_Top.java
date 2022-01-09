@@ -5,14 +5,13 @@ import java.util.Random;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -20,7 +19,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -38,112 +36,88 @@ public class Base_HodaGi_Top extends Block implements IWaterLoggable {
 	public static final DirectionProperty H_FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final IntegerProperty STAGE_1_4 = IntegerProperty.create("stage", 1, 4);
 	public static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
-	
+
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(5.0D, -4.0D, 0.0D, 11.0D, 8.0D, 10.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(6.0D, -4.0D, 5.0D, 16.0D, 8.0D, 11.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(5.0D, -4.0D, 6.0D, 11.0D, 8.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, -4.0D, 5.0D, 10.0D, 8.0D, 11.0D);
-	
-	public Base_HodaGi_Top(AbstractBlock.Properties properties) {
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(5.0D, -4.0D, 0.0D, 11.0D, 8.0D, 10.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(6.0D, -4.0D, 5.0D, 16.0D, 8.0D, 11.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(5.0D, -4.0D, 6.0D, 11.0D, 8.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, -4.0D, 5.0D, 10.0D, 8.0D, 11.0D);
+
+	public Base_HodaGi_Top(Block.Properties properties) {
 		super(properties);
 		
 		/** Default blockstate **/
-		registerDefaultState(this.defaultBlockState().setValue(H_FACING, Direction.NORTH)
-				.setValue(STAGE_1_4, Integer.valueOf(1))
-				.setValue(WATERLOGGED, Boolean.valueOf(false)));
+		setDefaultState(this.stateContainer.getBaseState().with(H_FACING, Direction.NORTH)
+				.with(STAGE_1_4, Integer.valueOf(1))
+				.with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/* Gives a value when placed. +180 .getOpposite() */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluid.getType() == Fluids.WATER))
-				.setValue(H_FACING, context.getHorizontalDirection().getOpposite());
+		IFluidState fluidState = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+				.with(H_FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	/* HORIZONTAL Property */
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(H_FACING, rotation.rotate(state.getValue(H_FACING)));
+		return state.with(H_FACING, rotation.rotate(state.get(H_FACING)));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(H_FACING)));
+		return state.rotate(mirror.toRotation(state.get(H_FACING)));
 	}
 
 	/* Waterlogged */
 	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluid) {
-		return !state.getValue(BlockStateProperties.WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluid) {
-		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.getType() == Fluids.WATER) {
-			if (!worldIn.isClientSide()) {
-				worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 3);
-				worldIn.getLiquidTicks().scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(worldIn)); }
-			return true; }
-		
-		else { return false; }
-	}
-
-	@Override
-	public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-			worldIn.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(false)), 3);
-			return Fluids.WATER; }
-		
-		else { return Fluids.EMPTY; }
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		if ((Boolean)state.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn)); }
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		if ((Boolean)state.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn)); }
 		
-		return super.updateShape(state, facing, facingState, worldIn, pos, facingPos);
+		return super.updatePostPlacement(state, facing, facingState, worldIn, pos, facingPos);
 	}
-	
+
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(H_FACING, STAGE_1_4, WATERLOGGED);
 	}
 
 	/* TickRandom */
 	private boolean inShade(ServerWorld worldIn, BlockPos pos) {
-		return ((worldIn.canSeeSky(pos) && !worldIn.isDay()) || (!worldIn.canSeeSky(pos) && worldIn.getRawBrightness(pos, 0) <= 11));
+		return ((worldIn.canSeeSky(pos) && !worldIn.isDaytime()) || (!worldIn.canSeeSky(pos) && worldIn.getLightSubtracted(pos, 0) <= 11));
 	}
 
-	/* 個体差は大きいが簡易な .tickRandomly() 一晩当たりの成長速度から rand.nextInt(8) == 0 */
 	@Override
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
 
-		if (state.getValue(WATERLOGGED) == false) {
+		if (!state.get(WATERLOGGED)) {
 			if (i != 4) {
 				if (inShade(worldIn, pos) && rand.nextInt(8) == 0) {
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(i + 1)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(i + 1))); } }
 			
 			if (i == 4) { }
 		}
+		
 
-		if (state.getValue(WATERLOGGED) != false) {
+		if (state.get(WATERLOGGED)) {
 			if (i != 1) {
 				if (rand.nextInt(2) == 0) {
 					CMEvents.soundSnowBreak(worldIn, pos);
-					worldIn.setBlock(pos, state.setValue(STAGE_1_4, Integer.valueOf(1)), 3);
+					worldIn.setBlockState(pos, state.with(STAGE_1_4, Integer.valueOf(1)));
 					this.dropRottenfood(worldIn, pos); } }
 			
 			if (i == 1) { }
@@ -152,42 +126,60 @@ public class Base_HodaGi_Top extends Block implements IWaterLoggable {
 
 	protected void dropRottenfood(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
-	
+
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
 	}
 
-	/* Destroy at the same time. & Drop item. */
-	@Override
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
-
-		BlockState downstate = worldIn.getBlockState(pos.below());
-		/** False is not Drop. **/
-		if (downstate.getBlock() instanceof Base_HodaGi_Bot) {
-			worldIn.destroyBlock(pos.below(), false);
-		}
-		super.playerWillDestroy(worldIn, pos, state, playerIn);
-	}
-	
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.HODAGI);
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
+	/* Destroy at the same time. & Drop item. */
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn) {
+
+		BlockState blockstate = worldIn.getBlockState(pos.down());
+		/** if 内のブロックを同時に破壊。false だと同時破壊側のドロップは無し **/
+		if (blockstate.getBlock() instanceof Base_HodaGi_Bot) {
+			worldIn.destroyBlock(pos.down(), false); }
+		
+		super.onBlockHarvested(worldIn, pos, state, playerIn);
 	}
 
 }

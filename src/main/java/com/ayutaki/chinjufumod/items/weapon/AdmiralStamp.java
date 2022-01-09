@@ -21,7 +21,7 @@ public class AdmiralStamp extends Item {
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
+	public boolean hasContainerItem() {
 		return true;
 	}
 
@@ -29,35 +29,24 @@ public class AdmiralStamp extends Item {
 	@Nullable
 	public ItemStack getContainerItem(ItemStack itemStack) {
 
-		ItemStack copy = itemStack.copy();
-		if (itemStack.isDamageableItem()) {
-			copy.setDamageValue(copy.getDamageValue() + 1);
-			int damage = copy.getMaxDamage() - copy.getDamageValue();
-			if(damage <= 0) { return ItemStack.EMPTY; }
+		ItemStack stack = itemStack.copy();
+		if (stack.attemptDamageItem(1, random, null)) {
+			stack.shrink(1);
+			stack.setDamage(0);
 		}
-		return copy;
+	 return stack;
 	}
 
 	@Override
-	public boolean isRepairable(ItemStack stack) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		return false;
 	}
-		
-	/* ToolTip ...Item.class 222(1.16.5) */
+	
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_admiral_stamp")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_admiral_stamp")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }
-/*
-決裁印はチェストからの回収とする
-・ボーナスチェストは進捗判定にしない Bアイテム
-・海図チェストは確定で 1個
-・宝チェストは 0-1個(1は回収した印を保管して沈んだ船)
-・前哨基地および森の洋館は 0-2個(印を使っている集団と使っていない集団が混在)
-
-工廠指示書はゾンビからのドロップとする
-村の鍛冶屋で 0-3枚(1-3枚は取引があった鍛冶屋)
-*/

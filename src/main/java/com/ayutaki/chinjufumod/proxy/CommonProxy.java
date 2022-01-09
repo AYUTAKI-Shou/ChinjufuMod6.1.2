@@ -4,7 +4,7 @@ import com.ayutaki.chinjufumod.ChinjufuMod;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-public class ServerProxy implements IProxy {
+public class CommonProxy implements IProxy {
 
 	public void setup(final FMLCommonSetupEvent event) {
 		/** some preinit code **/

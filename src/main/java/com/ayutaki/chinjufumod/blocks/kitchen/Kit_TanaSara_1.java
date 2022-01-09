@@ -4,7 +4,7 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -18,46 +18,46 @@ import net.minecraft.world.World;
 
 public class Kit_TanaSara_1 extends Base_Tana6 {
 
-	public Kit_TanaSara_1(AbstractBlock.Properties properties) {
+	public Kit_TanaSara_1(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_6);
+		int i = state.get(STAGE_1_6);
 
 		if (item != Items_Teatime.SARA) {
 			if (itemstack.isEmpty()) {
-				playerIn.inventory.add(new ItemStack(Items_Teatime.SARA));
+				playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.SARA));
 				CMEvents.soundItemPick(worldIn, pos);
-
-				if (i != 1) { worldIn.setBlock(pos, state.setValue(STAGE_1_6, Integer.valueOf(i - 1)), 3); }
-				if (i == 1) { worldIn.setBlock(pos, Kitchen_Blocks.KIT_TANA.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING)), 3); } }
-
+	
+				if (i != 1) { worldIn.setBlockState(pos, state.with(STAGE_1_6, Integer.valueOf(i - 1))); }
+				if (i == 1) { worldIn.setBlockState(pos, Kitchen_Blocks.KIT_TANA.getDefaultState().with(H_FACING, state.get(H_FACING))); } }
+			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
-		
+
 		if (item == Items_Teatime.SARA) {
 			if (i != 6) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundDishPlace(worldIn, pos);
 				
-				worldIn.setBlock(pos, state.setValue(STAGE_1_6, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_6, Integer.valueOf(i + 1))); }
 			
 			if (i == 6) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
-		
+
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.KIT_TANA);
 	}
 

@@ -14,7 +14,7 @@ public class BrickStairs_CM extends StairsBlock {
 		super(state, properties);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

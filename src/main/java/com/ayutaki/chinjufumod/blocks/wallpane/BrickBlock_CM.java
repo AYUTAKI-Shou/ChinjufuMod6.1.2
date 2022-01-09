@@ -2,18 +2,17 @@ package com.ayutaki.chinjufumod.blocks.wallpane;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraftforge.common.ToolType;
 
 public class BrickBlock_CM extends Block {
 
-	public BrickBlock_CM(AbstractBlock.Properties properties) {
+	public BrickBlock_CM(Block.Properties properties) {
 		super(properties);
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

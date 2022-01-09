@@ -6,7 +6,7 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -23,23 +23,23 @@ import net.minecraft.world.server.ServerWorld;
 
 public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 
-	public Irori_Sakana_R1(AbstractBlock.Properties properties) {
+	public Irori_Sakana_R1(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_0_15);
-		boolean waterlogged = state.getValue(WATERLOGGED);
+		int i = state.get(STAGE_0_15);
+		boolean waterlogged = state.get(WATERLOGGED);
 
-		boolean hitnorth = (hit.getLocation().x - (double)pos.getX() > 0.3D) && (hit.getLocation().x - (double)pos.getX() < 0.7D) && (hit.getLocation().z - (double)pos.getZ() < 0.3D);
-		boolean hitsouth = (hit.getLocation().x - (double)pos.getX() > 0.3D) && (hit.getLocation().x - (double)pos.getX() < 0.7D) && (hit.getLocation().z - (double)pos.getZ() > 0.7D);
-		boolean hiteast = (hit.getLocation().x - (double)pos.getX() > 0.7D) && (hit.getLocation().z - (double)pos.getZ() > 0.3D) && (hit.getLocation().z - (double)pos.getZ() < 0.7D);
-		boolean hitwest = (hit.getLocation().x - (double)pos.getX() < 0.3D) && (hit.getLocation().z - (double)pos.getZ() > 0.3D) && (hit.getLocation().z - (double)pos.getZ() < 0.7D);
+		boolean hitnorth = (hit.getHitVec().x - (double)pos.getX() > 0.3D) && (hit.getHitVec().x - (double)pos.getX() < 0.7D) && (hit.getHitVec().z - (double)pos.getZ() < 0.3D);
+		boolean hitsouth = (hit.getHitVec().x - (double)pos.getX() > 0.3D) && (hit.getHitVec().x - (double)pos.getX() < 0.7D) && (hit.getHitVec().z - (double)pos.getZ() > 0.7D);
+		boolean hiteast = (hit.getHitVec().x - (double)pos.getX() > 0.7D) && (hit.getHitVec().z - (double)pos.getZ() > 0.3D) && (hit.getHitVec().z - (double)pos.getZ() < 0.7D);
+		boolean hitwest = (hit.getHitVec().x - (double)pos.getX() < 0.3D) && (hit.getHitVec().z - (double)pos.getZ() > 0.3D) && (hit.getHitVec().z - (double)pos.getZ() < 0.7D);
 
 		switch (i) {
 		case 0 : //00 RECE 北東南西
@@ -52,8 +52,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitsouth) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(10)), 3); } }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(10)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -63,11 +63,11 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hiteast) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(9)), 3); }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(9)), 3); }
 					
 					if (hitwest) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(1)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(1)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -83,8 +83,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitsouth) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(11)), 3); } }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(11)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -94,7 +94,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hiteast) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(10)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(10)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -110,12 +110,12 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitsouth) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(12)), 3); }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(12)), 3); }
 
 				if (hitwest) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(0)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(0)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -125,7 +125,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hiteast) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(11)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(11)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -147,11 +147,11 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitsouth) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(6)), 3); }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(6)), 3); }
 					
 					if (hitwest) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(4)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(4)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -173,7 +173,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitsouth) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(7)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(7)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -189,7 +189,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitwest) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(3)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(3)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -199,7 +199,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitsouth) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(8)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(8)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -221,7 +221,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitwest) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(7)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(7)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -248,7 +248,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitwest) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(6)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(6)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -266,7 +266,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitsouth) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(3)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(3)), 3); }
 				
 				if (hitwest) { CMEvents.textNotHave(worldIn, pos, playerIn); } }
 			
@@ -278,7 +278,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitwest) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(10)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(10)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -292,7 +292,7 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitsouth) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(4)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(4)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -310,11 +310,11 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hitsouth) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(5)), 3); }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(5)), 3); }
 
 				if (hitwest) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(9)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(9)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -332,8 +332,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hiteast) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(10)), 3); }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(10)), 3); }
 				
 				if (hitsouth || hitwest) { CMEvents.textNotHave(worldIn, pos, playerIn); } }
 			
@@ -345,11 +345,11 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitsouth) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(15)), 3); }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(15)), 3); }
 					
 					if (hitwest) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(13)), 3); } }
+						worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(13)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -363,8 +363,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hiteast) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(11)), 3); }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(11)), 3); }
 				
 				if (hitsouth) { CMEvents.textNotHave(worldIn, pos, playerIn); } }
 			
@@ -376,8 +376,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitsouth) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_R2.defaultBlockState()
-								.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(0)), 3); } }
+						worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_R2.getDefaultState()
+								.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(0)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -391,14 +391,14 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hiteast) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(12)), 3); }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(12)), 3); }
 				
 				if (hitsouth) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 				
 				if (hitwest) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, state.setValue(STAGE_0_15, Integer.valueOf(12)), 3); } }
+					worldIn.setBlockState(pos, state.with(STAGE_0_15, Integer.valueOf(12)), 3); } }
 			
 			/** Place it. **/
 			if (!itemstack.isEmpty() && item == Items_Teatime.KUSHI_SAKANA) {
@@ -408,8 +408,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitsouth) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_R2.defaultBlockState()
-								.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(1)), 3); } }
+						worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_R2.getDefaultState()
+								.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(1)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
@@ -423,8 +423,8 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				
 				if (hiteast) {
 					CMEvents.takeSakana(worldIn, pos, playerIn);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_E2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(13)), 3); }
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_E2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(13)), 3); }
 				
 				if (hitwest) { CMEvents.textNotHave(worldIn, pos, playerIn); } }
 			
@@ -436,15 +436,15 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 					
 					if (hitwest) {
 						CMEvents.Consume_SoundSnow(worldIn, pos, playerIn, hand);
-						worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_R2.defaultBlockState()
-								.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(0)), 3); } }
+						worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_R2.getDefaultState()
+								.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(0)), 3); } }
 				
 				if (waterlogged) { CMEvents.textIsWaterlogged(worldIn, pos, playerIn); } }
 			
 			if (!itemstack.isEmpty() && item != Items_Teatime.KUSHI_SAKANA) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 			break;
 		} // switch
-	
+		
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
@@ -454,56 +454,56 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_0_15);
+		int i = state.get(STAGE_0_15);
 
 		if (!inWater(state, worldIn, pos)) {
-			if (isCooking(worldIn, pos, Direction.DOWN)) {
+			if (connectLitIrori(worldIn, pos, Direction.DOWN)) {
 	
 				if (i == 0) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 1000);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_R2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(11)), 3); }//11 CECE
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_R2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(11))); }//11 CECE
 	
 				if (i == 1 || i == 2) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 1000);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_R2.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(13)), 3); }//13 CECC
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_R2.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(13))); }//13 CECC
 	
 				if (i == 3 || i == 12) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 1000);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_C.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(7)), 3); }//7 CCEE
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_C.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(7))); }//7 CCEE
 	
 				if (i == 4 || i == 5 || i == 13 || i == 14) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 1000);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_C.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(9)), 3); }//9 CCEC
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_C.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(9))); }//9 CCEC
 	
 				if (i == 6 || i == 9 || i == 15) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 1000);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_C.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(13)), 3); }//13 CCCE,
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_C.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(13))); }//13 CCCE,
 	
 				if (i == 7 || i == 8 || i == 10 || i == 11) {
-					worldIn.getBlockTicks().scheduleTick(pos, this, 1000);
-					worldIn.setBlock(pos, Dish_Blocks.IRORISAKANA_C.defaultBlockState()
-							.setValue(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(15)), 3); }//15 CCCC
+					worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+					worldIn.setBlockState(pos, Dish_Blocks.IRORISAKANA_C.getDefaultState()
+							.with(BaseIrori_Sakana.STAGE_0_15, Integer.valueOf(15))); }//15 CCCC
 	
 				else { }
 			}
 	
-			if (!isCooking(worldIn, pos, Direction.DOWN)) { }
+			if (!connectLitIrori(worldIn, pos, Direction.DOWN)) { }
 		}
 		
-		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+		if (inWater(state, worldIn, pos)) { 
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60);
 			CMEvents.soundSnowBreak(worldIn, pos);
 			
 			if (i == 7 || i == 8 || i == 10 || i == 11) {
 				this.dropRottenfood4(worldIn, pos);
 				this.dropStick4(worldIn, pos);
 				worldIn.destroyBlock(pos, false); }
-	
+
 			if (i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 9 || i == 13 || i == 14 || i == 15) {
 				this.dropRottenfood3(worldIn, pos);
 				this.dropStick3(worldIn, pos);
@@ -515,35 +515,35 @@ public class Irori_Sakana_R1 extends BaseIrori_Sakana {
 				worldIn.destroyBlock(pos, false); }
 		}
 	}
-
+	
 	protected void dropRottenfood2(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD, 2);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 	protected void dropStick2(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items.STICK, 2);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 	protected void dropRottenfood3(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD, 3);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 	protected void dropStick3(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items.STICK, 3);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 	protected void dropRottenfood4(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items_Teatime.ROTTEN_FOOD, 4);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 	protected void dropStick4(ServerWorld worldIn, BlockPos pos) {
 		ItemStack itemstack = new ItemStack(Items.STICK, 4);
-		InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 	}
 	
 }

@@ -5,7 +5,6 @@ import java.util.Random;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,19 +24,19 @@ import net.minecraft.world.server.ServerWorld;
 public class TeaCup extends BaseFood_Stage3Water {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 2.0D, 10.0D);
-	protected static final VoxelShape AABB_DOWN = Block.box(6.0D, -8.0D, 6.0D, 10.0D, 0.1D, 10.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 2.0D, 10.0D);
+	protected static final VoxelShape AABB_DOWN = Block.makeCuboidShape(6.0D, -8.0D, 6.0D, 10.0D, 0.1D, 10.0D);
 
-	public TeaCup(AbstractBlock.Properties properties) {
+	public TeaCup(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
-		int i = state.getValue(STAGE_1_3);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
+		int i = state.get(STAGE_1_3);
 
 		if (i != 3) {
 			/** Hand is empty. **/
@@ -45,14 +44,14 @@ public class TeaCup extends BaseFood_Stage3Water {
 				CMEvents.soundDrink(worldIn, pos);
 	
 				if (i == 1) {
-					worldIn.setBlock(pos, state.setValue(STAGE_1_3, Integer.valueOf(2)), 3);
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0)); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_3, Integer.valueOf(2)));
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0)); }
 	
 				if (i == 2) {
-					worldIn.setBlock(pos, state.setValue(STAGE_1_3, Integer.valueOf(3)), 3);
-					playerIn.addEffect(new EffectInstance(Effects.DIG_SPEED, 1200, 0)); }
+					worldIn.setBlockState(pos, state.with(STAGE_1_3, Integer.valueOf(3)));
+					playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200, 0)); }
 	
-				worldIn.setBlock(pos, state.setValue(STAGE_1_3, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(STAGE_1_3, Integer.valueOf(i + 1))); }
 			
 			if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
 		}
@@ -66,31 +65,32 @@ public class TeaCup extends BaseFood_Stage3Water {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		boolean flag= !((Boolean)state.getValue(DOWN)).booleanValue();
+		boolean flag= !((Boolean)state.get(DOWN)).booleanValue();
 		return flag? AABB_BOX : AABB_DOWN;
 	}
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_3);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_3);
 		return (i == 1)? new ItemStack(Items_Teatime.TEACUP) : new ItemStack(Items_Teatime.TCUP_kara);
 	}
 
 	/* TickRandom */
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int i = state.getValue(STAGE_1_3);
+		int i = state.get(STAGE_1_3);
 		
 		if (i != 3) {
 			if (inWater(state, worldIn, pos)) {
-				worldIn.getBlockTicks().scheduleTick(pos, this, 60);
-				CMEvents.soundBubble(worldIn, pos);
-				worldIn.setBlock(pos, state.setValue(STAGE_1_3, Integer.valueOf(3)), 3); }
-
-			else { } }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+			CMEvents.soundBubble(worldIn, pos);
+			worldIn.setBlockState(pos, state.with(STAGE_1_3, Integer.valueOf(3))); }
+			
+			else { }
+		}
 		
 		if (i == 3) { }
 	}
-	
+
 }

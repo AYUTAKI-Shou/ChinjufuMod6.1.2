@@ -5,14 +5,9 @@ import com.ayutaki.chinjufumod.blocks.harbor.CTruss;
 import com.ayutaki.chinjufumod.blocks.harbor.Keikai;
 import com.ayutaki.chinjufumod.blocks.harbor.Keiryu;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,15 +15,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Harbor_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block KEIKAIBLOCK = register("block_keikai", new Keikai(AbstractBlock.Properties.of(Material.STONE).strength(1.0F, 6.0F).sound(SoundType.STONE)
-			.noOcclusion().isValidSpawn(Harbor_Blocks::neverEntity).isSuffocating(Harbor_Blocks::never)));
+	public static Block KEIKAIBLOCK = register("block_keikai", new Keikai(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.STONE).notSolid()));
 
-	public static Block KEIRYUKUI = register("block_keiryukui", new Keiryu(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(Harbor_Blocks::neverEntity).isSuffocating(Harbor_Blocks::never)));
-	public static Block KEIRYUKUI_b = register("block_keiryukui_b", new Keiryu(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(Harbor_Blocks::neverEntity).isSuffocating(Harbor_Blocks::never)));
+	public static Block KEIRYUKUI = register("block_keiryukui", new Keiryu(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
+	public static Block KEIRYUKUI_b = register("block_keiryukui_b", new Keiryu(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
 
 	public static Block TRUSS = register("block_ctruss", truss());
 	public static Block TRUSS_white = register("block_ctruss_white", truss());
@@ -48,17 +44,8 @@ public class Harbor_Blocks {
 	public static Block TRUSS_black = register("block_ctruss_black", truss());
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static CTruss truss() {
-		return new CTruss(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL)
-				.noOcclusion().isValidSpawn(Harbor_Blocks::neverEntity).isSuffocating(Harbor_Blocks::never));
+		return new CTruss(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid());
 	}
 
 	///* Register *///

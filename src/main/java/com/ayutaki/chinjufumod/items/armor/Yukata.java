@@ -39,19 +39,19 @@ public class Yukata extends ArmorItem {
 		if (itemStack != null) {
 
 			if (armorModel != null) {
-				armorModel.head.visible = armorSlot == EquipmentSlotType.HEAD;
-				armorModel.hat.visible = armorSlot == EquipmentSlotType.HEAD;
-				armorModel.body.visible = (armorSlot == EquipmentSlotType.CHEST) || (armorSlot == EquipmentSlotType.CHEST);
-				armorModel.rightArm.visible = armorSlot == EquipmentSlotType.CHEST;
-				armorModel.leftArm.visible = armorSlot == EquipmentSlotType.CHEST;
-				armorModelLegs.rightLeg.visible = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
-				armorModelLegs.leftLeg.visible = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
+				armorModel.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
+				armorModel.bipedHeadwear.showModel = armorSlot == EquipmentSlotType.HEAD;
+				armorModel.bipedBody.showModel = (armorSlot == EquipmentSlotType.CHEST) || (armorSlot == EquipmentSlotType.CHEST);
+				armorModel.bipedRightArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+				armorModel.bipedLeftArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+				armorModelLegs.bipedRightLeg.showModel = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
+				armorModelLegs.bipedLeftLeg.showModel = (armorSlot == EquipmentSlotType.LEGS) || (armorSlot == EquipmentSlotType.FEET);
 
-				armorModel.crouching = entityLiving.isCrouching();
-				armorModel.young = entityLiving.isBaby();
+				armorModel.isSneak = entityLiving.isSneaking();
+				armorModel.isChild = entityLiving.isChild();
 
-				armorModelLegs.crouching = entityLiving.isCrouching();
-				armorModelLegs.young = entityLiving.isBaby();
+				armorModelLegs.isSneak = entityLiving.isSneaking();
+				armorModelLegs.isChild = entityLiving.isChild();
 			}
 			return (Armor)armorModel;
 		}
@@ -60,7 +60,7 @@ public class Yukata extends ArmorItem {
 
 	/* Items needed for repair. */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		if (this == Items_Seasonal.YKTD_GETA) { return material.getItem() == Items.DARK_OAK_SLAB; }
 
 		if (this == Items_Seasonal.YKTO_GETA) { return material.getItem() == Items.OAK_SLAB; }
@@ -79,15 +79,15 @@ public class Yukata extends ArmorItem {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
 
 		if (this != Items_Seasonal.YKTD_GETA && this != Items_Seasonal.YKTO_GETA &&
 			this != Items_Seasonal.IKADUCHIYKT_HELMET && this != Items_Seasonal.INADUMAYKT_HELMET &&
 			this != Items_Seasonal.KAWAKAZEYKT_HELMET && this != Items_Seasonal.URAKAZEYKT_HELMET &&
 			this != Items_Seasonal.OBOROYKT_HELMET && this != Items_Seasonal.HAMAKAZEYKT_HELMET) {
 
-			tooltip.add((new TranslationTextComponent("tips.item_ykt")).withStyle(TextFormatting.GRAY)); }
+			tooltip.add((new TranslationTextComponent("tips.item_ykt")).applyTextStyle(TextFormatting.GRAY)); }
 	}
 
 }

@@ -10,10 +10,10 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.items.color.Base_ItemHake;
 import com.ayutaki.chinjufumod.registry.JPChair_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,30 +36,48 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Zabuton extends BaseWaterLoggable {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 3.0D, 15.0D);
-	protected static final VoxelShape AABB_WARA = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 3.0D, 15.0D);
+	protected static final VoxelShape AABB_WARA = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
 
-	public Zabuton(AbstractBlock.Properties properties) {
+	public Zabuton(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
-		if (item instanceof Base_ItemHake && this != JPChair_Blocks.WARAZABUTON) {
+		if (item instanceof Base_ItemHake && this != JPChair_Blocks.WARAZABUTON) { 
 			return ActionResultType.PASS; }
 
 		else {
 			if (this == JPChair_Blocks.WARAZABUTON) {
-				worldIn.playSound(null, pos, SoundEvents.GRASS_STEP, SoundCategory.BLOCKS, 0.3F, 0.5F); }
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_STEP, SoundCategory.BLOCKS, 0.3F, 0.5F); }
 
 			CMEvents.soundKinuzure(worldIn, pos);
 			return SitableEntity.create(worldIn, pos, 0.0, playerIn);
 		}
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 	/* Collisions for each property. */
@@ -71,9 +89,9 @@ public class Zabuton extends BaseWaterLoggable {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_mzabuton")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_mzabuton")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

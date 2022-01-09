@@ -9,14 +9,9 @@ import com.ayutaki.chinjufumod.blocks.chair.LogChair;
 import com.ayutaki.chinjufumod.blocks.chair.Sofa;
 import com.ayutaki.chinjufumod.blocks.chair.Sofa_leather;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,12 +19,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Chair_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block ADMIRALCHAIR = register("block_admiralchair", new AdmiralChair(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never)));
-	public static Block ADMIRALCHAIR_red = register("block_admiralchair_red", new AdmiralChair(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never)));
+	public static Block ADMIRALCHAIR = register("block_admiralchair", new AdmiralChair(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
+	public static Block ADMIRALCHAIR_red = register("block_admiralchair_red", new AdmiralChair(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block DININGCHAIR = register("block_diningchair", diningChair());
 	public static Block DININGCHAIR_spruce = register("block_diningchair_s", diningChair());
@@ -68,8 +62,7 @@ public class Chair_Blocks {
 	public static Block CAFECHAIR_red = register("block_cafechair_red", cafeChair());
 	public static Block CAFECHAIR_black = register("block_cafechair_black", cafeChair());
 
-	public static Block SOFA_leather = register("block_sofa_leather", new Sofa_leather(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never)));
+	public static Block SOFA_leather = register("block_sofa_leather", new Sofa_leather(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	public static Block SOFA_white = register("block_sofa_white", sofa());
 	public static Block SOFA_orange = register("block_sofa_orange", sofa());
 	public static Block SOFA_magenta = register("block_sofa_magenta", sofa());
@@ -98,37 +91,24 @@ public class Chair_Blocks {
 	public static Block BENCH_ichoh = register("block_bench_ich", bench());
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static DiningChair diningChair() {
-		return new DiningChair(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never));
+		return new DiningChair(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static LogChair logChair() {
-		return new LogChair(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never));
+		return new LogChair(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static CafeChair cafeChair() {
-		return new CafeChair(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never));
+		return new CafeChair(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Sofa sofa() {
-		return new Sofa(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never));
+		return new Sofa(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static Bench bench() {
-		return new Bench(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Chair_Blocks::neverEntity).isSuffocating(Chair_Blocks::never));
+		return new Bench(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	///* Register *///
@@ -138,3 +118,24 @@ public class Chair_Blocks {
 	}
 
 }
+/**
+* Utility class to help with managing registry entries.
+* Maintains a list of all suppliers for entries and registers them during the proper Register event.
+* Suppliers should return NEW instances every time.
+*
+*Example Usage:
+*<pre>
+* private static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
+* private static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
+*
+* public static final RegistryObject<Block> ROCK_BLOCK = BLOCKS.register("rock", () -> new Block(Block.Properties.create(Material.ROCK)));
+* public static final RegistryObject<Item> ROCK_ITEM = ITEMS.register("rock", () -> new BlockItem(ROCK_BLOCK.get(), new Item.Properties().group(ItemGroup.MISC)));
+*
+* public ExampleMod() {
+* ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+* BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+* }
+*</pre>
+*
+* @param <T> The base registry type, must be a concrete base class, do not use subclasses or wild cards.
+*/

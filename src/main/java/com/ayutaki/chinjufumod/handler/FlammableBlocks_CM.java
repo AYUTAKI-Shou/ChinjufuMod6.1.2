@@ -1,9 +1,22 @@
 package com.ayutaki.chinjufumod.handler;
 
+import com.ayutaki.chinjufumod.registry.ChinjufuModBlocks;
+import com.ayutaki.chinjufumod.registry.JPdeco_Blocks;
+import com.ayutaki.chinjufumod.registry.Garden_Blocks;
+import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
+import com.ayutaki.chinjufumod.registry.Pantry_Blocks;
+import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
+import com.ayutaki.chinjufumod.registry.Unit_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
+import com.ayutaki.chinjufumod.registry.Wood_Blocks;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
+
 public class FlammableBlocks_CM {
 
-	/** 1.16.5 setFlammable が不可視の為 IForgeBlock.class の state を使って個別対応 **/
-	/* FireBlock を参考に 立方体・半ブロック・階段に絞る
+	/* FireBlock を参考に 立方体・半ブロック・階段に絞る */
 	public static void setup() {
 
 		registerFlammable(ChinjufuModBlocks.OIL_DRUM, 5, 5);
@@ -131,7 +144,6 @@ public class FlammableBlocks_CM {
 		registerFlammable(Pantry_Blocks.BOX_H_TOMATO, 5, 20);
 		registerFlammable(Pantry_Blocks.BOX_H_TGREEN, 5, 20);
 		registerFlammable(Pantry_Blocks.BOX_H_TRED, 5, 20);
-		registerFlammable(Pantry_Blocks.TAWARA, 5, 20);
 
 		registerFlammable(Seasonal_Blocks.KUSATABA, 5, 20);
 		registerFlammable(Seasonal_Blocks.KUSATABA_STAIRS, 5, 20);
@@ -201,10 +213,10 @@ public class FlammableBlocks_CM {
 		registerFlammable(Wood_Blocks.OCHIBA_carpet, 60, 20);
 
 	}
-	getFireSpreadSpeed, getFlammability
+
 	public static void registerFlammable(Block block, int encouragement, int flammability) {
 		FireBlock fireblock = (FireBlock)Blocks.FIRE;
 		fireblock.setFireInfo(block, encouragement, flammability);
-	} */
+	}
 
 }

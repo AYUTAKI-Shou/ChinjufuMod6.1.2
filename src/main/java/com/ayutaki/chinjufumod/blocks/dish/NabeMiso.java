@@ -9,7 +9,7 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,33 +30,33 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NabeMiso extends BaseNabe {
 
-	public NabeMiso(AbstractBlock.Properties properties) {
+	public NabeMiso(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_4);
+		int i = state.get(STAGE_1_4);
 
 		if (item == Items_Teatime.SHIKKI) {
 			/** Collect with an Item **/
 			CMEvents.Consume_1Item(playerIn, hand);
 			CMEvents.soundTake(worldIn, pos);
 
-			if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.MISOSOUP)); }
-			else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MISOSOUP))) {
-				playerIn.drop(new ItemStack(Items_Teatime.MISOSOUP), false); }
+			if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MISOSOUP)); }
+			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MISOSOUP))) {
+				playerIn.dropItem(new ItemStack(Items_Teatime.MISOSOUP), false); }
 
-			if (i != 4) { worldIn.setBlock(pos, state.setValue(BaseNabe.STAGE_1_4, Integer.valueOf(i + 1)), 3); }
+			if (i != 4) { worldIn.setBlockState(pos, state.with(BaseNabe.STAGE_1_4, Integer.valueOf(i + 1))); }
 
 			if (i == 4) {
-				worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState().setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(COOK, state.getValue(COOK)).setValue(DOWN, state.getValue(DOWN))
-						.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(2)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(COOK, state.get(COOK)).with(DOWN, state.get(DOWN))
+						.with(Nabe_kara.STAGE_1_4, Integer.valueOf(2))); }
 		}
 		
 		if (item != Items_Teatime.SHIKKI) { CMEvents.textNotHave(worldIn, pos, playerIn); }
@@ -67,8 +67,8 @@ public class NabeMiso extends BaseNabe {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_4);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_4);
 		return (i == 1)? new ItemStack(Items_Teatime.NABEMISO) : new ItemStack(Items_Teatime.NABE_kara);
 	}
 
@@ -77,14 +77,14 @@ public class NabeMiso extends BaseNabe {
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 			CMEvents.soundSnowBreak(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.NABE_kara.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(COOK, state.getValue(COOK))
-					.setValue(DOWN, state.getValue(DOWN))
-					.setValue(Nabe_kara.STAGE_1_4, Integer.valueOf(2))
-					.setValue(Nabe_kara.WATERLOGGED, state.getValue(WATERLOGGED)), 3);
+			worldIn.setBlockState(pos, Dish_Blocks.NABE_kara.getDefaultState()
+					.with(H_FACING, state.get(H_FACING))
+					.with(COOK, state.get(COOK))
+					.with(DOWN, state.get(DOWN))
+					.with(Nabe_kara.STAGE_1_4, Integer.valueOf(2))
+					.with(Nabe_kara.WATERLOGGED, state.get(WATERLOGGED)), 3);
 			this.dropRottenfood(worldIn, pos); }
 		
 		else { }
@@ -92,9 +92,9 @@ public class NabeMiso extends BaseNabe {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_food_nabemiso_1")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_food_nabemiso_1")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

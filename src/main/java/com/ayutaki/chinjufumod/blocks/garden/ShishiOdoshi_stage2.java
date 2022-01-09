@@ -6,7 +6,6 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.handler.SoundEvents_CM;
 import com.ayutaki.chinjufumod.registry.Garden_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +18,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,49 +26,55 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ShishiOdoshi_stage2 extends BaseShishiOdoshi {
 
-	public ShishiOdoshi_stage2(AbstractBlock.Properties properties) {
+	public ShishiOdoshi_stage2(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 
-		if (itemstack.isEmpty() && state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+		if (itemstack.isEmpty() && state.get(HALF) == DoubleBlockHalf.LOWER) {
 			
 			CMEvents.soundStoneButton_Off(worldIn, pos);
-			worldIn.setBlock(pos, Garden_Blocks.SHISHIODOSHI.defaultBlockState()
-							.setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-							.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.LOWER)
-							.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-							.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(1)), 3);
+			worldIn.setBlockState(pos, Garden_Blocks.SHISHIODOSHI.getDefaultState()
+							.with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+							.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.LOWER)
+							.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+							.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(1)));
 
-			worldIn.setBlock(pos.above(), Garden_Blocks.SHISHIODOSHI.defaultBlockState()
-							.setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-							.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
-							.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-							.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos.up(), Garden_Blocks.SHISHIODOSHI.getDefaultState()
+							.with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+							.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
+							.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+							.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(1))); }
 		
-		if (!itemstack.isEmpty()) { CMEvents.textFullItem(worldIn, pos, playerIn); }
-
+		if (!itemstack.isEmpty()) {
+			CMEvents.textFullItem(worldIn, pos, playerIn); }
+		
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
 
 	/* TickRandom */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 30);
+	public int tickRate(IWorldReader world) {
+		return 30;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_4);
-		Direction direction = state.getValue(H_FACING);
-		DoubleBlockHalf half = state.getValue(HALF);
+		int i = state.get(STAGE_1_4);
+		Direction direction = state.get(H_FACING);
+		DoubleBlockHalf half = state.get(HALF);
 		
 		BlockState northstate = worldIn.getBlockState(pos.north());
 		BlockState southstate = worldIn.getBlockState(pos.south());
@@ -80,153 +86,152 @@ public class ShishiOdoshi_stage2 extends BaseShishiOdoshi {
 		Block westblock = weststate.getBlock();
 
 		if (!worldIn.isAreaLoaded(pos, 1)) { return; }
-		
+
 		switch (half) {
 		case LOWER :
 		default :
-
+			
 			switch (i) {
 			case 1 :
 			default :
-				worldIn.setBlock(pos, state.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)), 3);
-				worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-						.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-						.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)), 3);
-
-				worldIn.getBlockTicks().scheduleTick(pos, this, 30);
+				worldIn.setBlockState(pos, state.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)));
+				worldIn.setBlockState(pos.up(), this.getDefaultState().with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+						.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+						.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)));
+				
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 				break;
 
 			case 2 :
-				worldIn.setBlock(pos, state.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)), 3);
-				worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-						.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-						.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)), 3);
+				worldIn.setBlockState(pos, state.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)));
+				worldIn.setBlockState(pos.up(), this.getDefaultState().with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+						.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+						.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)));
 				
-				/* state.getValue(WHICH) == false 空=0,1,2,3=満,4=溢 */
-				if (direction == Direction.NORTH && state.getValue(WHICH) == false) {
-					if (eastblock instanceof Chouzubachi && eaststate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.east(), eaststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(eaststate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				/* state.get(WHICH) == false 空=0,1,2,3=満,4=溢 */
+				if (direction == Direction.NORTH && state.get(WHICH) == false) {
+					if (eastblock instanceof Chouzubachi && eaststate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.east(), eaststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(eaststate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				if (direction == Direction.SOUTH && state.getValue(WHICH) == false) {
-					if (westblock instanceof Chouzubachi && weststate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.west(), weststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(weststate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				if (direction == Direction.SOUTH && state.get(WHICH) == false) {
+					if (westblock instanceof Chouzubachi && weststate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.west(), weststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(weststate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				if (direction == Direction.EAST && state.getValue(WHICH) == false) {
-					if (southblock instanceof Chouzubachi && southstate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.south(), southstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(southstate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				if (direction == Direction.EAST && state.get(WHICH) == false) {
+					if (southblock instanceof Chouzubachi && southstate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.south(), southstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(southstate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				if (direction == Direction.WEST && state.getValue(WHICH) == false) {
-					if (northblock instanceof Chouzubachi && northstate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.north(), northstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(northstate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				if (direction == Direction.WEST && state.get(WHICH) == false) {
+					if (northblock instanceof Chouzubachi && northstate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.north(), northstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(northstate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				/* state.getValue(WHICH) == true */
-				if (direction == Direction.NORTH && state.getValue(WHICH) == true) {
-					if (westblock instanceof Chouzubachi && weststate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.west(), weststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(weststate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				/* state.get(WHICH) == true */
+				if (direction == Direction.NORTH && state.get(WHICH) == true) {
+					if (westblock instanceof Chouzubachi && weststate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.west(), weststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(weststate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				if (direction == Direction.SOUTH && state.getValue(WHICH) == true) {
-					if (eastblock instanceof Chouzubachi && eaststate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.east(), eaststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(eaststate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				if (direction == Direction.SOUTH && state.get(WHICH) == true) {
+					if (eastblock instanceof Chouzubachi && eaststate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.east(), eaststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(eaststate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				if (direction == Direction.EAST && state.getValue(WHICH) == true) {
-					if (northblock instanceof Chouzubachi && northstate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.north(), northstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(northstate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				if (direction == Direction.EAST && state.get(WHICH) == true) {
+					if (northblock instanceof Chouzubachi && northstate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.north(), northstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(northstate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 
-				if (direction == Direction.WEST && state.getValue(WHICH) == true) {
-					if (southblock instanceof Chouzubachi && southstate.getValue(Chouzubachi.STAGE_0_3) < 3) {
-						worldIn.setBlock(pos.south(), southstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(southstate.getValue(Chouzubachi.STAGE_0_3) + 1)), 3); }
+				if (direction == Direction.WEST && state.get(WHICH) == true) {
+					if (southblock instanceof Chouzubachi && southstate.get(Chouzubachi.STAGE_0_3) < 3) {
+						worldIn.setBlockState(pos.south(), southstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(southstate.get(Chouzubachi.STAGE_0_3) + 1))); }
 					else { } }
 				
-				worldIn.getBlockTicks().scheduleTick(pos, this, 30);
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 				break;
 
 			case 3 :
-				worldIn.setBlock(pos, state.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)), 3);
-				worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-						.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-						.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)), 3);
+				worldIn.setBlockState(pos, state.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)));
+				worldIn.setBlockState(pos.up(), this.getDefaultState().with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+						.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+						.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(i + 1)));
 				
-				/* state.getValue(WHICH) == false */
-				if (direction == Direction.NORTH && state.getValue(WHICH) == false) {
+				/* state.get(WHICH) == false */
+				if (direction == Direction.NORTH && state.get(WHICH) == false) {
 					if (eastblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.east(), eaststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.east(), eaststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				if (direction == Direction.SOUTH && state.getValue(WHICH) == false) {
+				if (direction == Direction.SOUTH && state.get(WHICH) == false) {
 					if (westblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.west(), weststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.west(), weststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				if (direction == Direction.EAST && state.getValue(WHICH) == false) {
+				if (direction == Direction.EAST && state.get(WHICH) == false) {
 					if (southblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.south(), southstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.south(), southstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				if (direction == Direction.WEST && state.getValue(WHICH) == false) {
+				if (direction == Direction.WEST && state.get(WHICH) == false) {
 					if (northblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.north(), northstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.north(), northstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				/* state.getValue(WHICH) == true */
-				if (direction == Direction.NORTH && state.getValue(WHICH) == true) {
+				/* state.get(WHICH) == true */
+				if (direction == Direction.NORTH && state.get(WHICH) == true) {
 					if (westblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.west(), weststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.west(), weststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				if (direction == Direction.SOUTH && state.getValue(WHICH) == true) {
+				if (direction == Direction.SOUTH && state.get(WHICH) == true) {
 					if (eastblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.east(), eaststate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.east(), eaststate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				if (direction == Direction.EAST && state.getValue(WHICH) == true) {
+				if (direction == Direction.EAST && state.get(WHICH) == true) {
 					if (northblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.north(), northstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.north(), northstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 
-				if (direction == Direction.WEST && state.getValue(WHICH) == true) {
+				if (direction == Direction.WEST && state.get(WHICH) == true) {
 					if (southblock instanceof Chouzubachi) {
-						worldIn.setBlock(pos.south(), southstate.setValue(Chouzubachi.STAGE_0_3, Integer.valueOf(3)), 3); }
+						worldIn.setBlockState(pos.south(), southstate.with(Chouzubachi.STAGE_0_3, Integer.valueOf(3))); }
 					else { } }
 				
-				worldIn.getBlockTicks().scheduleTick(pos, this, 30);
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 				break;
 				
 			case 4 :
 				worldIn.playSound(null, pos, SoundEvents_CM.SHISHIODOSHI, SoundCategory.BLOCKS, 0.5F, 1.0F);
 				
-				worldIn.setBlock(pos, Garden_Blocks.SHISHIODOSHI.defaultBlockState()
-							.setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-							.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-							.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.LOWER)
-							.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(2)), 3);
-				worldIn.setBlock(pos.above(), Garden_Blocks.SHISHIODOSHI.defaultBlockState()
-						.setValue(BaseShishiOdoshi.H_FACING, state.getValue(H_FACING))
-						.setValue(BaseShishiOdoshi.WHICH, state.getValue(WHICH))
-						.setValue(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
-						.setValue(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(2)), 3);
+				worldIn.setBlockState(pos, Garden_Blocks.SHISHIODOSHI.getDefaultState()
+							.with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+							.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+							.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.LOWER)
+							.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(2)));
+				worldIn.setBlockState(pos.up(), Garden_Blocks.SHISHIODOSHI.getDefaultState()
+						.with(BaseShishiOdoshi.H_FACING, state.get(H_FACING))
+						.with(BaseShishiOdoshi.WHICH, state.get(WHICH))
+						.with(BaseShishiOdoshi.HALF, DoubleBlockHalf.UPPER)
+						.with(BaseShishiOdoshi.STAGE_1_4, Integer.valueOf(2)));
 				
-				worldIn.getBlockTicks().scheduleTick(pos, this, 30);
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 				break;
-			} // STAGE_1_4
+			} // switch
 			break;
 
 		case UPPER :
 			break;
-		} // HALF
-
+		} // switch LOWER-UPPER
 	}
 
-	/* Play Sound・Particle */
+	/* 効果音・パーティクル */
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand) {
 
@@ -234,7 +239,7 @@ public class ShishiOdoshi_stage2 extends BaseShishiOdoshi {
 		double d1 = (double)pos.getY() + 0.5D;
 		double d2 = (double)pos.getZ() + 0.5D;
 
-		worldIn.playLocalSound(d0, d1, d2, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, rand.nextFloat() * 0.25F, rand.nextFloat() + 0.75F, false);
+		worldIn.playSound(d0, d1, d2, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, rand.nextFloat() * 0.25F, rand.nextFloat() + 0.75F, false);
 	}
 
 }

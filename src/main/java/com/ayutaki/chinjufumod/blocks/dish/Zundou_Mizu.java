@@ -10,7 +10,7 @@ import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Seasonal;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,18 +33,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Zundou_Mizu extends BaseZundou_2Stage {
 
 	/** 1=水、2=湯 **/
-	public Zundou_Mizu(AbstractBlock.Properties properties) {
+	public Zundou_Mizu(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 		/** 1=水、2=湯 **/
 
 		/** 1=塩水、2=塩湯 **/
@@ -53,17 +53,15 @@ public class Zundou_Mizu extends BaseZundou_2Stage {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
 				
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_SHIO.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(STAGE_1_2, Integer.valueOf(1)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_SHIO.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(STAGE_1_2, Integer.valueOf(1))); }
 	
 			if (i == 2) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
 				
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_SHIO.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(STAGE_1_2, Integer.valueOf(2)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_SHIO.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(STAGE_1_2, Integer.valueOf(2))); }
 		}
 		
 		/** 1=灰汁水、2=灰汁湯 **/
@@ -72,17 +70,15 @@ public class Zundou_Mizu extends BaseZundou_2Stage {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
 				
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_AKU.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(STAGE_1_2, Integer.valueOf(1)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_AKU.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(STAGE_1_2, Integer.valueOf(1))); }
 	
 			if (i == 2) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
 				
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_AKU.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(STAGE_1_2, Integer.valueOf(2)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_AKU.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(STAGE_1_2, Integer.valueOf(2))); }
 		}
 		
 		/** 出汁へ **/
@@ -90,14 +86,13 @@ public class Zundou_Mizu extends BaseZundou_2Stage {
 			if (i == 2) {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
-	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items.GLASS_BOTTLE)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items.GLASS_BOTTLE))) {
-					playerIn.drop(new ItemStack(Items.GLASS_BOTTLE), false); }
+
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE))) {
+					playerIn.dropItem(new ItemStack(Items.GLASS_BOTTLE), false); }
 				
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_DASHI.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseZundou_4Stage.STAGE_1_4, Integer.valueOf(1)), 3); }
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_DASHI.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(BaseZundou_4Stage.STAGE_1_4, Integer.valueOf(1))); }
 			
 			/** Too early to use **/
 			if (i != 2) { CMEvents.textEarlyUse(worldIn, pos, playerIn); }
@@ -109,16 +104,16 @@ public class Zundou_Mizu extends BaseZundou_2Stage {
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundWaterUse(worldIn, pos);
 				
-				worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_UDON.defaultBlockState()
-						.setValue(H_FACING, state.getValue(H_FACING))
-						.setValue(BaseZundou_4Stage.STAGE_1_4, Integer.valueOf(2)), 3);
-						/** 1=生うどん水、2=生うどん湯、3＝茹でうどん水、4=茹でうどん湯 **/ }
-			
+				worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_UDON.getDefaultState().with(H_FACING, state.get(H_FACING))
+						.with(BaseZundou_4Stage.STAGE_1_4, Integer.valueOf(2)));
+					/** 1=生うどん水、2=生うどん湯、3＝茹でうどん水、4=茹でうどん湯 **/ }
+		
 			/** Too early to use **/
 			if (i != 2) { CMEvents.textEarlyUse(worldIn, pos, playerIn); }
 		}
 		
-		if (item != Items_Teatime.SHIO && item != Items_Seasonal.WARAHAI && item != Items_Teatime.DASHI_bot_1 && item != Items_Teatime.UDON_nama) {
+		if (item != Items_Teatime.SHIO && item != Items_Seasonal.WARAHAI && 
+				item != Items_Teatime.DASHI_bot_1 && item != Items_Teatime.UDON_nama) {
 			CMEvents.textNotHave(worldIn, pos, playerIn); }
 		
 		/** SUCCESS to not put anything on top. **/
@@ -129,36 +124,32 @@ public class Zundou_Mizu extends BaseZundou_2Stage {
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(STAGE_1_2);
+		int i = state.get(STAGE_1_2);
 
 		if (isCooking(worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 1200 + (20 * rand.nextInt(5)));
-
-			if (i == 1) { worldIn.setBlock(pos, state.setValue(STAGE_1_2, Integer.valueOf(2)), 3); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (20 * rand.nextInt(5)));
+			if (i == 1) { worldIn.setBlockState(pos, state.with(STAGE_1_2, Integer.valueOf(2))); }
 			if (i != 1) { } }
 
 		if (!isCooking(worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 100);
-
-			if (i == 2) { worldIn.setBlock(pos, state.setValue(STAGE_1_2, Integer.valueOf(1)), 3); }
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 100);
+			if (i == 2) { worldIn.setBlockState(pos, state.with(STAGE_1_2, Integer.valueOf(1))); }
 			if (i != 2) { } }
 
 		if (inWater(state, worldIn, pos)) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 60);
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 60);
 			CMEvents.soundBubble(worldIn, pos);
-			worldIn.setBlock(pos, Dish_Blocks.ZUNDOU.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(Zundou.STAGE_1_2, Integer.valueOf(2))
-					.setValue(Zundou.WATERLOGGED, state.getValue(WATERLOGGED)), 3); }
-
-		else { }
+			worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU.getDefaultState()
+					.with(H_FACING, state.get(H_FACING))
+					.with(Zundou.STAGE_1_2, Integer.valueOf(2))
+					.with(Zundou.WATERLOGGED, state.get(WATERLOGGED)), 3); }
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_frypan")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_frypan")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

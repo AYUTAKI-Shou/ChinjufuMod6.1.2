@@ -1,24 +1,15 @@
 package com.ayutaki.chinjufumod.registry;
 
-import java.util.function.ToIntFunction;
-
 import com.ayutaki.chinjufumod.ChinjufuMod;
-import com.ayutaki.chinjufumod.Config_CM;
-import com.ayutaki.chinjufumod.blocks.base.BaseStage3_FaceWater;
 import com.ayutaki.chinjufumod.blocks.window.Window;
 import com.ayutaki.chinjufumod.blocks.window.WindowB;
 import com.ayutaki.chinjufumod.blocks.window.WindowTall;
 import com.ayutaki.chinjufumod.blocks.window.WindowTall_Bot;
 import com.ayutaki.chinjufumod.blocks.window.WindowTall_Top;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,7 +17,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Window_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
 	public static Block WINDOW_oak = register("block_window", window());
 	public static Block WINDOW_spruce = register("block_window_spruce", window());
@@ -79,41 +71,24 @@ public class Window_Blocks {
 	public static Block WINDOWTALL_ichoh = register("block_windowtall_ichoh", windowTall());
 
 	/* Share variables */
-	private static ToIntFunction<BlockState> litBlockEmission(int value) {
-		return (state) -> { return (Config_CM.getInstance().antiShadow() == true && state.getValue(BaseStage3_FaceWater.STAGE_1_3) == 3) ? value : 0; };
-	}
-
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
 	private static Window window() {
-		return new Window(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Window_Blocks::neverEntity).isSuffocating(Window_Blocks::never));
+		return new Window(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WindowB windowBtype() {
-		return new WindowB(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Window_Blocks::neverEntity).isSuffocating(Window_Blocks::never));
+		return new WindowB(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WindowTall_Bot windowTallBot() {
-		return new WindowTall_Bot(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Window_Blocks::neverEntity).isSuffocating(Window_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new WindowTall_Bot(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WindowTall_Top windowTallTop() {
-		return new WindowTall_Top(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Window_Blocks::neverEntity).isSuffocating(Window_Blocks::never).lightLevel(litBlockEmission(1)));
+		return new WindowTall_Top(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static WindowTall windowTall() {
-		return new WindowTall(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 1.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(Window_Blocks::neverEntity).isSuffocating(Window_Blocks::never));
+		return new WindowTall(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 1.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	///* Register *///

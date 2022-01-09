@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,29 +27,29 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Bottle_CiderJuku extends Base_Bottle {
 
-	public Bottle_CiderJuku(AbstractBlock.Properties properties) {
+	public Bottle_CiderJuku(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
-		int i = state.getValue(STAGE_1_5);
+		int i = state.get(STAGE_1_5);
 
 		if (i != 5) {
 			if (item == Items_Teatime.DRINKGLASS) {
 				/** Collect with an Item **/
 				CMEvents.Consume_1Item(playerIn, hand);
 				CMEvents.soundSakeGlassFill(worldIn, pos);
+
+				if (itemstack.isEmpty()) { playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.JUKUCIDERGLASS)); }
+				else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.JUKUCIDERGLASS))) {
+					playerIn.dropItem(new ItemStack(Items_Teatime.JUKUCIDERGLASS), false); }
 	
-				if (itemstack.isEmpty()) { playerIn.inventory.add(new ItemStack(Items_Teatime.JUKUCIDERGLASS)); }
-				else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.JUKUCIDERGLASS))) {
-					playerIn.drop(new ItemStack(Items_Teatime.JUKUCIDERGLASS), false); }
-	
-				worldIn.setBlock(pos, state.setValue(Base_Bottle.STAGE_1_5, Integer.valueOf(i + 1)), 3); }
+				worldIn.setBlockState(pos, state.with(Base_Bottle.STAGE_1_5, Integer.valueOf(i + 1))); }
 			
 			if (item != Items_Teatime.DRINKGLASS) { CMEvents.textNotHave(worldIn, pos, playerIn); }
 		}
@@ -62,16 +62,16 @@ public class Bottle_CiderJuku extends Base_Bottle {
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
-		int i = state.getValue(STAGE_1_5);
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		int i = state.get(STAGE_1_5);
 		return (i == 1)? new ItemStack(Items_Teatime.JUKUCIDERBOT) : new ItemStack(Items_Teatime.SAKEBOTTLE);
 	}
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.block_bot_sake")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.block_bot_sake")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

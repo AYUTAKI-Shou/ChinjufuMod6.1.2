@@ -8,14 +8,14 @@ import com.ayutaki.chinjufumod.registry.Garden_Blocks;
 import com.ayutaki.chinjufumod.registry.Gate_Blocks;
 import com.ayutaki.chinjufumod.registry.Hakkou_Blocks;
 import com.ayutaki.chinjufumod.registry.Harbor_Blocks;
-import com.ayutaki.chinjufumod.registry.JPDeco_Blocks;
+import com.ayutaki.chinjufumod.registry.JPdeco_Blocks;
 import com.ayutaki.chinjufumod.registry.Kitchen_Blocks;
 import com.ayutaki.chinjufumod.registry.Ranma_Blocks;
 import com.ayutaki.chinjufumod.registry.School_Blocks;
 import com.ayutaki.chinjufumod.registry.Seasonal_Blocks;
 import com.ayutaki.chinjufumod.registry.Slidedoor_Blocks;
 import com.ayutaki.chinjufumod.registry.Unit_Blocks;
-import com.ayutaki.chinjufumod.registry.WallPanel_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
 import com.ayutaki.chinjufumod.registry.Window_Blocks;
 import com.ayutaki.chinjufumod.registry.Wood_Blocks;
 
@@ -29,9 +29,9 @@ public class RenderTypes_CM {
 
 	public static void register() {
 
-		RenderType cutout = RenderType.cutout();
-		RenderType trans = RenderType.translucent();
-		RenderType light = RenderType.cutoutMipped();
+		RenderType cutout = RenderType.getCutout();
+		RenderType trans = RenderType.getTranslucent();
+		RenderType light = RenderType.getCutoutMipped();
 
 		RenderTypeLookup.setRenderLayer(ChinjufuModBlocks.WAKE_WATER1, cutout);
 		RenderTypeLookup.setRenderLayer(ChinjufuModBlocks.WAKE_WATER2, cutout);
@@ -288,22 +288,22 @@ public class RenderTypes_CM {
 		RenderTypeLookup.setRenderLayer(Slidedoor_Blocks.GARASUDOH_KAE, cutout);
 		RenderTypeLookup.setRenderLayer(Slidedoor_Blocks.GARASUDOH_ICH, cutout);
 
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_white, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_orange, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_magenta, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_lightb, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_yellow, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_lime, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_pink, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_gray, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_lightg, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_cyan, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_purple, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_blue, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_brown, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_green, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_red, cutout);
-		RenderTypeLookup.setRenderLayer(JPDeco_Blocks.ANDON_black, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_white, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_orange, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_magenta, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_lightb, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_yellow, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_lime, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_pink, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_gray, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_lightg, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_cyan, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_purple, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_blue, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_brown, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_green, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_red, cutout);
+		RenderTypeLookup.setRenderLayer(JPdeco_Blocks.ANDON_black, cutout);
 
 		RenderTypeLookup.setRenderLayer(Unit_Blocks.KASA_white, cutout);
 		RenderTypeLookup.setRenderLayer(Unit_Blocks.KASA_orange, cutout);
@@ -322,23 +322,23 @@ public class RenderTypes_CM {
 		RenderTypeLookup.setRenderLayer(Unit_Blocks.KASA_red, cutout);
 		RenderTypeLookup.setRenderLayer(Unit_Blocks.KASA_black, cutout);
 
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS, cutout);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_white, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_orange, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_magenta, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_lightb, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_yellow, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_lime, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_pink, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_gray, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_lightg, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_cyan, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_purple, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_blue, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_brown, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_green, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_red, trans);
-		RenderTypeLookup.setRenderLayer(WallPanel_Blocks.WP_GLASS_black, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS, cutout);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_white, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_orange, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_magenta, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_lightb, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_yellow, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_lime, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_pink, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_gray, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_lightg, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_cyan, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_purple, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_blue, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_brown, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_green, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_red, trans);
+		RenderTypeLookup.setRenderLayer(WallPane_Blocks.WP_GLASS_black, trans);
 
 		RenderTypeLookup.setRenderLayer(Window_Blocks.WINDOW_oak, cutout);
 		RenderTypeLookup.setRenderLayer(Window_Blocks.WINDOW_spruce, cutout);

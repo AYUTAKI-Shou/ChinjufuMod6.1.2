@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 public class Wablock_noFuel extends BlockNamedItem {
 
 	public Wablock_noFuel(Block block, Item.Properties builder) {
-		super(block, builder.tab(ItemGroups_CM.WABLOCK));
+		super(block, builder.group(ItemGroups_CM.WABLOCK));
 	}
 
-	/* BurnTime in a Furnace */
+	/* かまど燃焼時間 */
 
 }

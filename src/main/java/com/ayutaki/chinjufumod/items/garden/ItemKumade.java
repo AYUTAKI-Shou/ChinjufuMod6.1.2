@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.ayutaki.chinjufumod.ItemGroups_CM;
 import com.ayutaki.chinjufumod.blocks.garden.Samon;
 import com.ayutaki.chinjufumod.registry.Garden_Blocks;
 
@@ -32,35 +31,36 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ItemKumade extends Item {
 
 	public ItemKumade(Properties builder) {
-		super(builder.durability(128).tab(ItemGroups_CM.WADECO));
+		super(builder);
 	}
 
 	/* FlintAndSteel */
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public ActionResultType onItemUse(ItemUseContext context) {
 		PlayerEntity playerIn = context.getPlayer();
-		IWorld iworld = context.getLevel();
-		BlockPos blockpos = context.getClickedPos();
+		IWorld iworld = context.getWorld();
+		BlockPos blockpos = context.getPos();
 		BlockState blockstate = iworld.getBlockState(blockpos);
 		Block block = blockstate.getBlock();
 
-		ItemStack itemstack = context.getItemInHand();
+		ItemStack itemstack = context.getItem();
 
+		/** 砂 **/
 		if (block == Blocks.SAND) {
 
-			iworld.playSound(playerIn, blockpos, SoundEvents.SAND_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
-			iworld.setBlock(blockpos, Garden_Blocks.SAMON.defaultBlockState().setValue(Samon.STAGE_0_7, Integer.valueOf(0)), 3);
+			iworld.playSound(playerIn, blockpos, SoundEvents.BLOCK_SAND_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+			iworld.setBlockState(blockpos, Garden_Blocks.SAMON.getDefaultState().with(Samon.STAGE_0_7, Integer.valueOf(0)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> { user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS; }
 
 		if (block == Blocks.GRAVEL) {
 
-			iworld.playSound(playerIn, blockpos, SoundEvents.SAND_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
-			iworld.setBlock(blockpos, Garden_Blocks.SAMON_B.defaultBlockState().setValue(Samon.STAGE_0_7, Integer.valueOf(0)), 3);
+			iworld.playSound(playerIn, blockpos, SoundEvents.BLOCK_SAND_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+			iworld.setBlockState(blockpos, Garden_Blocks.SAMON_B.getDefaultState().with(Samon.STAGE_0_7, Integer.valueOf(0)), 3);
 
-			itemstack.hurtAndBreak(1, playerIn, user -> { user.broadcastBreakEvent(context.getHand()); } );
+			itemstack.damageItem(1, playerIn, user -> { user.sendBreakAnimation(context.getHand()); } );
 
 			return ActionResultType.SUCCESS; }
 		
@@ -69,14 +69,14 @@ public class ItemKumade extends Item {
 
 	/* Items needed for repair. */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		return material.getItem() == Items.STICK;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_kumade")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_kumade")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

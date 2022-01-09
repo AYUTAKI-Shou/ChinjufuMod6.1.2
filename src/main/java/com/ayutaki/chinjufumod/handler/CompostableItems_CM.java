@@ -5,111 +5,117 @@ import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
 import net.minecraft.block.ComposterBlock;
 import net.minecraft.item.Items;
+import net.minecraft.util.IItemProvider;
 
 public class CompostableItems_CM {
 
-	public static void register() {
+	public static void setup() {
 
-		ComposterBlock.COMPOSTABLES.put(Items.POISONOUS_POTATO, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_CABBAGE, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_HAKUSAI, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_CORN, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_ONION, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_RICE, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_SOY, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_SPINACH, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_TOMATO, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SEEDS_CHERRY, 0.3F);
+		registerCompostable(0.3F, Items.POISONOUS_POTATO);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_CABBAGE);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_HAKUSAI);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_CORN);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_ONION);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_RICE);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_SOY);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_SPINACH);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_TOMATO);
+		registerCompostable(0.3F, Items_Teatime.SEEDS_CHERRY);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CAKE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.BUN, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SCONE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SENBEI, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.TOUFU, 0.5F);
+		registerCompostable(0.5F, Items_Teatime.CAKE);
+		registerCompostable(0.5F, Items_Teatime.BUN);
+		registerCompostable(0.5F, Items_Teatime.SCONE);
+		registerCompostable(0.5F, Items_Teatime.SENBEI);
+		registerCompostable(0.5F, Items_Teatime.TOUFU);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CHICKENSAND, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.EGGSAND, 0.5F);
+		registerCompostable(0.5F, Items_Teatime.CHICKENSAND);
+		registerCompostable(0.5F, Items_Teatime.EGGSAND);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_CABBAGE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_HAKUSAI, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_CORN, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_ONION, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_SPINACH, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_TOMATO, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_GRAPE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_CHERRY, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_MIKAN, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_CORN_B, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FOOD_HAKUSAI2, 0.5F);
+		registerCompostable(0.5F, Items_Teatime.FOOD_CABBAGE);
+		registerCompostable(0.5F, Items_Teatime.FOOD_HAKUSAI);
+		registerCompostable(0.5F, Items_Teatime.FOOD_CORN);
+		registerCompostable(0.5F, Items_Teatime.FOOD_ONION);
+		registerCompostable(0.5F, Items_Teatime.FOOD_SPINACH);
+		registerCompostable(0.5F, Items_Teatime.FOOD_TOMATO);
+		registerCompostable(0.5F, Items_Teatime.FOOD_GRAPE);
+		registerCompostable(0.5F, Items_Teatime.FOOD_CHERRY);
+		registerCompostable(0.5F, Items_Teatime.FOOD_MIKAN);
+		registerCompostable(0.5F, Items_Teatime.FOOD_CORN_B);
+		registerCompostable(0.5F, Items_Teatime.FOOD_HAKUSAI2);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FCHEESE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.PC_CHEESE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.PC_PIZZA, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIRIMI_S, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIRIMI_F, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIRIMI_B, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIRIMI_T, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SUSHI_S, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SUSHI_F, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SUSHI_B, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SUSHI_T, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SHOUYUSUSHI_S, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SHOUYUSUSHI_F, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SHOUYUSUSHI_B, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SHOUYUSUSHI_T, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.NORI_N, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.NORI_I, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.ONIGIRI, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.ONIGIRI_SHAKE, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.FUTOMAKI, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KUSHI_SAKANA, 0.5F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KUSHI_SAKANA_C, 0.5F);
+		registerCompostable(0.5F, Items_Teatime.FCHEESE);
+		registerCompostable(0.5F, Items_Teatime.PC_CHEESE);
+		registerCompostable(0.5F, Items_Teatime.PC_PIZZA);
+		registerCompostable(0.3F, Items_Teatime.KIRIMI_S);
+		registerCompostable(0.3F, Items_Teatime.KIRIMI_F);
+		registerCompostable(0.3F, Items_Teatime.KIRIMI_B);
+		registerCompostable(0.3F, Items_Teatime.KIRIMI_T);
+		registerCompostable(0.5F, Items_Teatime.SUSHI_S);
+		registerCompostable(0.5F, Items_Teatime.SUSHI_F);
+		registerCompostable(0.5F, Items_Teatime.SUSHI_B);
+		registerCompostable(0.5F, Items_Teatime.SUSHI_T);
+		registerCompostable(0.5F, Items_Teatime.SHOUYUSUSHI_S);
+		registerCompostable(0.5F, Items_Teatime.SHOUYUSUSHI_F);
+		registerCompostable(0.5F, Items_Teatime.SHOUYUSUSHI_B);
+		registerCompostable(0.5F, Items_Teatime.SHOUYUSUSHI_T);
+		registerCompostable(0.3F, Items_Teatime.NORI_N);
+		registerCompostable(0.3F, Items_Teatime.NORI_I);
+		registerCompostable(0.5F, Items_Teatime.ONIGIRI);
+		registerCompostable(0.5F, Items_Teatime.ONIGIRI_SHAKE);
+		registerCompostable(0.5F, Items_Teatime.FUTOMAKI);
+		registerCompostable(0.5F, Items_Teatime.KUSHI_SAKANA);
+		registerCompostable(0.5F, Items_Teatime.KUSHI_SAKANA_C);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_CHOCO, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_CHOCO_A, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_CHOCO_C, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_CHOCO_G, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_CHOCO_T, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_CHOCO_H, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_WATAGASHI, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_WATAGASHI_A, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_WATAGASHI_C, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_WATAGASHI_G, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Seasonal.FOOD_WATAGASHI_T, 0.3F);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_CHOCO);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_CHOCO_A);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_CHOCO_C);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_CHOCO_G);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_CHOCO_T);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_CHOCO_H);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_WATAGASHI);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_WATAGASHI_A);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_WATAGASHI_C);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_WATAGASHI_G);
+		registerCompostable(0.3F, Items_Seasonal.FOOD_WATAGASHI_T);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.ROTTEN_FOOD, 0.5F);
+		registerCompostable(0.5F, Items_Teatime.ROTTEN_FOOD);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CHABA, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CHABA_GREEN, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CHABA_RED, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.INEWARA, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.INE, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KOME, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SAYA, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SOY, 0.3F);
+		registerCompostable(0.3F, Items_Teatime.CHABA);
+		registerCompostable(0.3F, Items_Teatime.CHABA_GREEN);
+		registerCompostable(0.3F, Items_Teatime.CHABA_RED);
+		registerCompostable(0.3F, Items_Teatime.INEWARA);
+		registerCompostable(0.3F, Items_Teatime.INE);
+		registerCompostable(0.3F, Items_Teatime.KOME);
+		registerCompostable(0.3F, Items_Teatime.SAYA);
+		registerCompostable(0.3F, Items_Teatime.SOY);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.RENNET, 0.3F);
+		registerCompostable(0.3F, Items_Teatime.RENNET);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.MUSHIGOME, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KOMEKOUJI, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SHUBO, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.SAKEKASU, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.MOROMI, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.NIMAME, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.MISO, 0.3F);
+		registerCompostable(0.3F, Items_Teatime.MUSHIGOME);
+		registerCompostable(0.3F, Items_Teatime.KOMEKOUJI);
+		registerCompostable(0.3F, Items_Teatime.SHUBO);
+		registerCompostable(0.3F, Items_Teatime.SAKEKASU);
+		registerCompostable(0.3F, Items_Teatime.MOROMI);
+		registerCompostable(0.3F, Items_Teatime.NIMAME);
+		registerCompostable(0.3F, Items_Teatime.MISO);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KOMUGI, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.BUTTER, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIJI_BUN, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIJI_BURG, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIJI_SCONE, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIJI_SENBEI, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.KIJI_PIZA, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.PIZZA_nama, 0.3F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.PIZZA, 1.0F);
+		registerCompostable(0.3F, Items_Teatime.KOMUGI);
+		registerCompostable(0.3F, Items_Teatime.BUTTER);
+		registerCompostable(0.3F, Items_Teatime.KIJI_BUN);
+		registerCompostable(0.3F, Items_Teatime.KIJI_BURG);
+		registerCompostable(0.3F, Items_Teatime.KIJI_SCONE);
+		registerCompostable(0.3F, Items_Teatime.KIJI_SENBEI);
+		registerCompostable(0.3F, Items_Teatime.KIJI_PIZA);
+		registerCompostable(0.3F, Items_Teatime.PIZZA_nama);
+		registerCompostable(1.0F, Items_Teatime.PIZZA);
 
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CHEESE_CURD, 1.0F);
-		ComposterBlock.COMPOSTABLES.put(Items_Teatime.CHEESE, 1.0F);
+		registerCompostable(1.0F, Items_Teatime.CHEESE_CURD);
+		registerCompostable(1.0F, Items_Teatime.CHEESE);
+
+	}
+
+	public static void registerCompostable(float chance, IItemProvider item) {
+		ComposterBlock.CHANCES.put(item.asItem(), chance);
 	}
 
 }

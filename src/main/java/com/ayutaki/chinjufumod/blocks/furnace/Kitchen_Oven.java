@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.tileentity.Oven_TileEntity;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,21 +23,21 @@ import net.minecraftforge.common.ToolType;
 public class Kitchen_Oven extends AbstractOvenBlock {
 
 	/* Collision */
-	protected static final VoxelShape TOP = Block.box(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(TOP, Block.box(0.5D, 0.0D, 1.0D, 15.5D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(TOP, Block.box(1.0D, 0.0D, 0.5D, 15.0D, 15.0D, 15.5D));
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(TOP, Block.box(0.5D, 0.0D, 1.0D, 15.5D, 15.0D, 15.0D));
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(TOP, Block.box(1.0D, 0.0D, 0.5D, 15.0D, 15.0D, 15.5D));
+	protected static final VoxelShape TOP = Block.makeCuboidShape(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public Kitchen_Oven(AbstractBlock.Properties properties) {
+	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(TOP, Block.makeCuboidShape(0.5D, 0.0D, 1.0D, 15.5D, 15.0D, 15.0D));
+	protected static final VoxelShape AABB_WEST = VoxelShapes.or(TOP, Block.makeCuboidShape(1.0D, 0.0D, 0.5D, 15.0D, 15.0D, 15.5D));
+	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(TOP, Block.makeCuboidShape(0.5D, 0.0D, 1.0D, 15.5D, 15.0D, 15.0D));
+	protected static final VoxelShape AABB_EAST = VoxelShapes.or(TOP, Block.makeCuboidShape(1.0D, 0.0D, 0.5D, 15.0D, 15.0D, 15.5D));
+
+	public Kitchen_Oven(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
+		Direction direction = state.get(H_FACING);
 
 		switch (direction) {
 		case NORTH :
@@ -50,19 +49,19 @@ public class Kitchen_Oven extends AbstractOvenBlock {
 	}
 
 	/* 生成する TileEntity */
-	public TileEntity newBlockEntity(IBlockReader world) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new Oven_TileEntity();
 	}
 
-	protected void openContainer(World worldIn, BlockPos pos, PlayerEntity playerIn) {
-		TileEntity tileentity = worldIn.getBlockEntity(pos);
+	protected void interactWith(World worldIn, BlockPos pos, PlayerEntity playerIn) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof Oven_TileEntity) {
-			playerIn.openMenu((INamedContainerProvider)tileentity);
-			playerIn.awardStat(Stats.INTERACT_WITH_FURNACE);
+			playerIn.openContainer((INamedContainerProvider)tileentity);
+			playerIn.addStat(Stats.INTERACT_WITH_FURNACE);
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

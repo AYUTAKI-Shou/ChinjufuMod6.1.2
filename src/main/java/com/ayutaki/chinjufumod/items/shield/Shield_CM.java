@@ -23,7 +23,7 @@ public class Shield_CM extends ShieldItem {
 		super(builder);
 		/** 336×3 =1008, ×5=1680, ×7=2352, ×9=3024 **/
 	}
-		
+
 	/* 盾として消耗処理 */
 	@Override
 	public boolean isShield(ItemStack stack, LivingEntity entity) {
@@ -32,14 +32,14 @@ public class Shield_CM extends ShieldItem {
 
 	/* Items needed for repair. */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		return material.getItem() == Items.IRON_INGOT;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_shield")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_shield")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

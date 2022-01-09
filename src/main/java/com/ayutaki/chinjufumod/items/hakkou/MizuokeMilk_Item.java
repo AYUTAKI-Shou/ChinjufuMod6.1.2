@@ -27,27 +27,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class MizuokeMilk_Item extends MilkBucketItem {
 
 	public MizuokeMilk_Item(Item.Properties builder) {
-		super(builder.tab(ItemGroups_CM.TEATIME));
+		super(builder.group(ItemGroups_CM.TEATIME));
 	}
 
-	@Override
-	public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
 
 		/** 牛乳入りバケツの効果を呼び出す **/
-		if (!worldIn.isClientSide) entityLiving.curePotionEffects(new ItemStack(Items.MILK_BUCKET));
+		if (!worldIn.isRemote) entityLiving.curePotionEffects(new ItemStack(Items.MILK_BUCKET));
 
 		if (entityLiving instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)entityLiving;
 			CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, stack);
-			serverplayerentity.awardStat(Stats.ITEM_USED.get(this));
+			serverplayerentity.addStat(Stats.ITEM_USED.get(this));
 		}
 
-		if (entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).abilities.instabuild) {
+		if (entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).abilities.isCreativeMode) {
 			PlayerEntity playerIn = entityLiving instanceof PlayerEntity ? (PlayerEntity)entityLiving : null;
 
 			if (stack.isEmpty()) { return new ItemStack(Items_Teatime.MIZUOKE); }
-			else if (!playerIn.inventory.add(new ItemStack(Items_Teatime.MIZUOKE))) {
-				playerIn.drop(new ItemStack(Items_Teatime.MIZUOKE), false); }
+			else if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Items_Teatime.MIZUOKE))) {
+				playerIn.dropItem(new ItemStack(Items_Teatime.MIZUOKE), false); }
 
 			stack.shrink(1);
 		}
@@ -55,10 +54,11 @@ public class MizuokeMilk_Item extends MilkBucketItem {
 		return stack;
 	}
 
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_mizuoke_milk")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_mizuoke_milk")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

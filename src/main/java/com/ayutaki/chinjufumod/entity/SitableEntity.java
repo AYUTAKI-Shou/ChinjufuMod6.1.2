@@ -21,43 +21,43 @@ public class SitableEntity extends Entity {
 
 	public SitableEntity(EntityType<SitableEntity> type, World worldIn) {
 		super(type, worldIn);
-		this.noPhysics = true;
+		this.noClip = true;
 	}
 
 	private SitableEntity(EntityType<SitableEntity> type, World worldIn, BlockPos source, double yOffset) {
 		this(type, worldIn);
 		this.source = source;
-		this.setPos(source.getX() + 0.5, source.getY() + yOffset, source.getZ() + 0.5);
+		this.setPosition(source.getX() + 0.5, source.getY() + yOffset, source.getZ() + 0.5);
 	}
 
 	@Override
-	protected void defineSynchedData() { }
+	protected void registerData() { }
 
 	@Override
 	public void tick() {
 
 		super.tick();
 		if(source == null) {
-			source = this.blockPosition();
+			source = this.getPosition();
 		}
 
-		if(!level.isClientSide) {
+		if(!this.world.isRemote) {
 
-			if(this.getPassengers().isEmpty() || this.level.isEmptyBlock(source)) {
+			if(this.getPassengers().isEmpty() || this.world.isAirBlock(source)) {
 				this.remove();
-				this.level.updateNeighbourForOutputSignal(blockPosition(), this.level.getBlockState(blockPosition()).getBlock());
+				world.updateComparatorOutputLevel(getPosition(), world.getBlockState(getPosition()).getBlock());
 			}
 		}
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundNBT compound) { }
+	protected void readAdditional(CompoundNBT compound) { }
 
 	@Override
-	protected void addAdditionalSaveData(CompoundNBT compound) { }
+	protected void writeAdditional(CompoundNBT compound) { }
 
 	@Override
-	public double getPassengersRidingOffset() {
+	public double getMountedYOffset() {
 		return 0.0;
 	}
 
@@ -66,24 +66,24 @@ public class SitableEntity extends Entity {
 	}
 
 	@Override
-	protected boolean canAddPassenger(Entity entity) {
+	protected boolean canBeRidden(Entity entity) {
 		return true;
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	public static ActionResultType create(World worldIn, BlockPos pos, double yOffset, PlayerEntity playerIn) {
 
-		if(!worldIn.isClientSide) {
+		if(!worldIn.isRemote) {
 
-			List<SitableEntity> seats = worldIn.getEntitiesOfClass(SitableEntity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0));
+			List<SitableEntity> seats = worldIn.getEntitiesWithinAABB(SitableEntity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0));
 
 			if(seats.isEmpty()) {
 				SitableEntity seat = new SitableEntity(EntityTypes_CM.SITABLE, worldIn, pos, yOffset);
-				worldIn.addFreshEntity(seat);
+				worldIn.addEntity(seat);
 				playerIn.startRiding(seat, false);
 			}
 		}

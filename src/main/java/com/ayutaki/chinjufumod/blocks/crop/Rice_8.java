@@ -5,7 +5,6 @@ import java.util.Random;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 import com.ayutaki.chinjufumod.registry.Wood_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -31,87 +30,93 @@ public class Rice_8 extends Block implements IGrowable {
 	public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 8);
 
 	/* Collision */
-	protected static final VoxelShape[] SHAPES = new VoxelShape[]{ Block.box(0.0D, -3.0D, 0.0D, 16.0D, 1.0D, 16.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 3.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 5.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 9.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
-			Block.box(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D) };
+	protected static final VoxelShape[] SHAPES = new VoxelShape[]{ Block.makeCuboidShape(0.0D, -3.0D, 0.0D, 16.0D, 1.0D, 16.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 3.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 5.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 9.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D),
+			Block.makeCuboidShape(2.0D, -3.0D, 2.0D, 14.0D, 13.0D, 14.0D) };
 
-	public Rice_8(AbstractBlock.Properties properties) {
+	public Rice_8(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(this.defaultBlockState().setValue(AGE, Integer.valueOf(0)));
+		setDefaultState(this.stateContainer.getBaseState().with(AGE, Integer.valueOf(0)));
 	}
 
-	/* Limit the place. */
-	protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	/* 設置制限 */
+	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return state.getBlock() == Wood_Blocks.SUIDEN;
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
-		int i = stateIn.getValue(AGE);
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
+		int i = stateIn.get(AGE);
 
-		if (i < 8 && worldIn.getRawBrightness(pos, 0) >= 9) {
-			worldIn.getBlockTicks().scheduleTick(pos, this, 4500 + (300 * worldIn.getRandom().nextInt(5))); }
+		if (i < 8 && worldIn.getLightSubtracted(pos, 0) >= 9) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (300 * worldIn.getRandom().nextInt(5)));
+		}
 
-		return !stateIn.canSurvive(worldIn, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, pos, facingPos);
+		return !stateIn.isValidPosition(worldIn, pos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, pos, facingPos);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos downpos = pos.below();
-		if (worldIn.getRawBrightness(pos, 0) >= 8 || worldIn.canSeeSky(pos)) {
-			return this.mayPlaceOn(worldIn.getBlockState(downpos), worldIn, downpos); }
-		
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		BlockPos downpos = pos.down();
+		if (worldIn.getLightSubtracted(pos, 0) >= 8 || worldIn.canSeeSky(pos)) {
+			return this.isValidGround(worldIn.getBlockState(downpos), worldIn, downpos);
+		}
 		return false;
 	}
 
 	/* Gives a value when placed. */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.defaultBlockState();
+		return this.getDefaultState();
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return SHAPES[state.getValue(this.getAgeProperty())];
+		return SHAPES[state.get(this.getAgeProperty())];
 	}
 
-	/* TickRandom 個体差回避の為 PendingBlockTicks() を採用 */
+	/* 時間経過 個体差回避の為 PendingBlockTicks() を採用 */
 	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 4500 + (500 * worldIn.random.nextInt(5)));
+	public int tickRate(IWorldReader world) {
+		return 4500;
+	}
+
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (500 * worldIn.rand.nextInt(5)));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 
-		int i = state.getValue(AGE);
+		int i = state.get(AGE);
 
 		if (!worldIn.isAreaLoaded(pos, 2)) { return; }
 
-		if (i < 8 && worldIn.getRawBrightness(pos, 0) >= 9) {
-			worldIn.setBlock(pos, state.setValue(AGE, Integer.valueOf(i + 1)), 3);
-			worldIn.getBlockTicks().scheduleTick(pos, this, 4500 + (500 * rand.nextInt(5))); }
-		
+		if (i < 8 && worldIn.getLightSubtracted(pos, 0) >= 9) {
+			worldIn.setBlockState(pos, state.with(AGE, Integer.valueOf(i + 1)));
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn) + (500 * rand.nextInt(5)));
+		}
 		else { }
 	}
 
 	/* Clone Item in Creative. */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Items_Teatime.SEEDS_RICE);
 	}
 
 	/* Create Blockstate */
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(AGE);
 	}
 
@@ -125,15 +130,15 @@ public class Rice_8 extends Block implements IGrowable {
 	}
 
 	protected int getAge(BlockState state) {
-		return state.getValue(this.getAgeProperty());
+		return state.get(this.getAgeProperty());
 	}
 
 	public BlockState withAge(int age) {
-		return this.defaultBlockState().setValue(this.getAgeProperty(), Integer.valueOf(age));
+		return this.getDefaultState().with(this.getAgeProperty(), Integer.valueOf(age));
 	}
 
 	public boolean isMaxAge(BlockState state) {
-		return state.getValue(this.getAgeProperty()) >= this.getMaxAge();
+		return state.get(this.getAgeProperty()) >= this.getMaxAge();
 	}
 
 	public void grow(World worldIn, BlockPos pos, BlockState state) {
@@ -142,35 +147,23 @@ public class Rice_8 extends Block implements IGrowable {
 		if (i > j) {
 			i = j;
 		}
-		worldIn.setBlock(pos, this.withAge(i), 2);
+		worldIn.setBlockState(pos, this.withAge(i), 2);
 	}
 
 	protected int getBonemealAgeIncrease(World worldIn) {
-		return MathHelper.nextInt(worldIn.random, 2, 5);
+		return MathHelper.nextInt(worldIn.rand, 2, 5);
 	}
 
 	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
 		return !this.isMaxAge(state);
 	}
 
-	public void growCrops(World worldIn, BlockPos pos, BlockState state) {
-		this.grow(worldIn, pos, state);
-	}
-
-	/* 自動生成されたメソッド */
-	@Override
-	public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean tf) {
-		return !this.isMaxAge(state);
-	}
-
-	@Override
-	public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state) {
+	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
 		return true;
 	}
 
-	@Override
-	public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
-		this.growCrops(worldIn, pos, state);
+	public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
+		this.grow(worldIn, pos, state);
 	}
 
 }

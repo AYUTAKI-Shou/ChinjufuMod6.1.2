@@ -1,7 +1,5 @@
 package com.ayutaki.chinjufumod.registry;
 
-import java.util.function.ToIntFunction;
-
 import com.ayutaki.chinjufumod.ChinjufuMod;
 import com.ayutaki.chinjufumod.blocks.furnace.CStove_Bot;
 import com.ayutaki.chinjufumod.blocks.furnace.CStove_Top;
@@ -13,15 +11,9 @@ import com.ayutaki.chinjufumod.blocks.school.StoveChimney_joint;
 import com.ayutaki.chinjufumod.blocks.school.StoveChimney_top;
 import com.ayutaki.chinjufumod.blocks.school.TeacherDesk;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,10 +21,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = ChinjufuMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class School_Blocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
+	@SuppressWarnings("deprecation")
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, ChinjufuMod.MOD_ID);
 
-	public static Block BLACKBOARD = register( "block_blackboard", new BlackBoard(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-			.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never)));
+	public static Block BLACKBOARD = register( "block_blackboard", new BlackBoard(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	public static Block SCHOOLCHAIR = register("block_schoolchair", schoolChair());
 	public static Block SCHOOLCHAIR_spruce = register("block_schoolchair_s", schoolChair());
@@ -64,44 +57,29 @@ public class School_Blocks {
 	public static Block TEACHERDESK_kaede = register("block_teacherdesk_kae", teacherDesk());
 	public static Block TEACHERDESK_ichoh = register("block_teacherdesk_ich", teacherDesk());
 
-	public static Block STOVECHIMNEY = register("block_stovechimney", new StoveChimney(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never)));
-	public static Block STOVECHIMNEY_joint = register("block_stovechimney_joint", new StoveChimney_joint(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never)));
-	public static Block STOVECHIMNEY_topk = register("block_stovechimney_topk", new StoveChimney_top(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 6.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never)));
+	public static Block STOVECHIMNEY = register("block_stovechimney", new StoveChimney(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
+	public static Block STOVECHIMNEY_joint = register("block_stovechimney_joint", new StoveChimney_joint(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
+	public static Block STOVECHIMNEY_topk = register("block_stovechimney_topk", new StoveChimney_top(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 6.0F).sound(SoundType.METAL).notSolid()));
 
-	public static Block CSTOVE_top = register("block_cstove_top", new CStove_Top(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never).lightLevel(litBlockEmission(14))));
-	public static Block CSTOVE_bot = register("block_cstove_bot", new CStove_Bot(AbstractBlock.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL)
-			.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never)));
+	public static Block CSTOVE_top = register("block_cstove_top", new CStove_Top(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL).notSolid()));
+	public static Block CSTOVE_bot = register("block_cstove_bot", new CStove_Bot(Block.Properties.create(Material.WOOD)
+			.hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL).notSolid()));
 
 	/* Share variables */
-	private static boolean never(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return false;
-	}
-
-	private static Boolean neverEntity(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> entity) {
-		return (boolean)false;
-	}
-
-	private static ToIntFunction<BlockState> litBlockEmission(int value) {
-		return (state) -> { return state.getValue(BlockStateProperties.LIT) ? value : 0; };
-	}
-
 	private static SchoolChair schoolChair() {
-		return new SchoolChair(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never));
+		return new SchoolChair(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static SchoolDesk schoolDesk() {
-		return new SchoolDesk(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never));
+		return new SchoolDesk(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	private static TeacherDesk teacherDesk() {
-		return new TeacherDesk(AbstractBlock.Properties.of(Material.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD)
-				.noOcclusion().isValidSpawn(School_Blocks::neverEntity).isSuffocating(School_Blocks::never));
+		return new TeacherDesk(Block.Properties.create(Material.WOOD).hardnessAndResistance(1.0F, 3.0F).sound(SoundType.WOOD).notSolid());
 	}
 
 	///* Register *///

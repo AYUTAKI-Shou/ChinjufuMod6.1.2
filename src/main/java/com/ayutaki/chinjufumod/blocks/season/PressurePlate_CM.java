@@ -15,7 +15,7 @@ public class PressurePlate_CM extends PressurePlateBlock {
 		super(sensitivity, properties);
 	}
 
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(POWERED);
 	}
 

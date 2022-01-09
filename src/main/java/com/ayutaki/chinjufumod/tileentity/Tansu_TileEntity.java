@@ -8,14 +8,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
@@ -34,18 +32,19 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
-public class Tansu_TileEntity extends LockableLootTileEntity implements IChestLid, ITickableTileEntity {
+public class Tansu_TileEntity extends LockableLootTileEntity implements ITickableTileEntity {
 
-	private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
-	protected float openness;
-	protected float oOpenness;
-	protected int openCount;
-	private int tickInterval;
+	private NonNullList<ItemStack> chestContents = NonNullList.withSize(27, ItemStack.EMPTY);
+	protected float lidAngle;
+	protected float prevLidAngle;
+	private int ticksSinceSync;
+	protected int numPlayersUsing;
 	private net.minecraftforge.common.util.LazyOptional<net.minecraftforge.items.IItemHandlerModifiable> chestHandler;
 
-	protected Tansu_TileEntity(TileEntityType<?> typeIn) {
+	public Tansu_TileEntity(TileEntityType<?> typeIn) {
 		super(typeIn);
 	}
 
@@ -53,84 +52,100 @@ public class Tansu_TileEntity extends LockableLootTileEntity implements IChestLi
 		this(TileEntity_CM.TANSU);
 	}
 
-	public int getContainerSize() {
+	/* インベントリ数 */
+	@Override
+	public int getSizeInventory() {
 		return 27;
 	}
 
+	/* GUI */
+	@Override
 	protected ITextComponent getDefaultName() {
 		return new TranslationTextComponent("container.chest");
 	}
 
+	protected Container createMenu(int id, PlayerInventory playerIn) {
+		return ChestContainer.createGeneric9X3(id, playerIn, this);
+	}
+
+	/* 収納したアイテムの処理 */
 	@Override
-	public void load(BlockState state, CompoundNBT compound) {
-		super.load(state, compound);
-		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-		if (!this.tryLoadLootTable(compound)) {
-			ItemStackHelper.loadAllItems(compound, this.items);
-		}
+	public NonNullList<ItemStack> getItems() {
+		return this.chestContents;
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT compound) {
-		super.save(compound);
-		if (!this.trySaveLootTable(compound)) {
-			ItemStackHelper.saveAllItems(compound, this.items);
+	public void setItems(NonNullList<ItemStack> itemsIn) {
+		this.chestContents = itemsIn;
+	}
+
+	@Override
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
+		if (!this.checkLootAndWrite(compound)) {
+			ItemStackHelper.saveAllItems(compound, this.chestContents);
 		}
 		return compound;
 	}
 
+	@Override
+	public void read(CompoundNBT compound) {
+		super.read(compound);
+		this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+		if (!this.checkLootAndRead(compound)) {
+			ItemStackHelper.loadAllItems(compound, this.chestContents);
+		}
+	}
+
+	/* 効果音 ITickableTileEntity */
 	public void tick() {
-		int i = this.worldPosition.getX();
-		int j = this.worldPosition.getY();
-		int k = this.worldPosition.getZ();
-		++this.tickInterval;
-		this.openCount = getOpenCount(this.level, this, this.tickInterval, i, j, k, this.openCount);
-		this.oOpenness = this.openness;
-		//float f = 0.1F;
-		if (this.openCount > 0 && this.openness == 0.0F) {
+		int i = this.pos.getX();
+		int j = this.pos.getY();
+		int k = this.pos.getZ();
+		++this.ticksSinceSync;
+		this.numPlayersUsing = calculatePlayersUsingSync(this.world, this, this.ticksSinceSync, i, j, k, this.numPlayersUsing);
+		this.prevLidAngle = this.lidAngle;
+
+		if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
 			this.playSound(SoundEvents_CM.TANSU_OPEN);
 		}
 
-		if (this.openCount == 0 && this.openness > 0.0F || this.openCount > 0 && this.openness < 1.0F) {
-			float f1 = this.openness;
-			if (this.openCount > 0) {
-				this.openness += 0.1F;
+		if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
+			float f1 = this.lidAngle;
+			if (this.numPlayersUsing > 0) {
+				this.lidAngle += 0.1F;
 			} else {
-				this.openness -= 0.1F;
+				this.lidAngle -= 0.1F;
 			}
 
-			if (this.openness > 1.0F) {
-				this.openness = 1.0F;
+			if (this.lidAngle > 1.0F) {
+				this.lidAngle = 1.0F;
 			}
 
-			float f2 = 0.5F;
-			if (this.openness < f2 && f1 >= f2) {
+			if (this.lidAngle < 0.5F && f1 >= 0.5F) {
 				this.playSound(SoundEvents_CM.TANSU_CLOSE);
 			}
 
-			if (this.openness < 0.0F) {
-				this.openness = 0.0F;
+			if (this.lidAngle < 0.0F) {
+				this.lidAngle = 0.0F;
 			}
 		}
-
 	}
 
-	public static int getOpenCount(World worldIn, LockableTileEntity lTileEntity, int ticksSinceSync, int x, int y, int z, int numPlayerUsing) {
-		if (!worldIn.isClientSide && numPlayerUsing != 0 && (ticksSinceSync + x + y + z) % 200 == 0) {
-			numPlayerUsing = getOpenCount(worldIn, lTileEntity, x, y, z);
+	public static int calculatePlayersUsingSync(World worldIn, LockableTileEntity lTileEntity, int ticksSinceSync, int x, int y, int z, int numPlayerUsing) {
+		if (!worldIn.isRemote && numPlayerUsing != 0 && (ticksSinceSync + x + y + z) % 200 == 0) {
+			numPlayerUsing = calculatePlayersUsing(worldIn, lTileEntity, x, y, z);
 		}
-
 		return numPlayerUsing;
 	}
 
-	public static int getOpenCount(World worldIn, LockableTileEntity lTileEntity, int x, int y, int z) {
+	public static int calculatePlayersUsing(World worldIn, LockableTileEntity lTileEntity, int x, int y, int z) {
 		int i = 0;
-		float f = 5.0F;
 
-		for(PlayerEntity playerIn : worldIn.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB((double)((float)x - f), (double)((float)y - f), (double)((float)z - f), (double)((float)(x + 1) + f), (double)((float)(y + 1) + f), (double)((float)(z + 1) + f)))) {
-			if (playerIn.containerMenu instanceof ChestContainer) {
-				IInventory iinventory = ((ChestContainer)playerIn.containerMenu).getContainer();
-				if (iinventory == lTileEntity || iinventory instanceof DoubleSidedInventory && ((DoubleSidedInventory)iinventory).contains(lTileEntity)) {
+		for(PlayerEntity playerIn : worldIn.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double)((float)x - 5.0F), (double)((float)y - 5.0F), (double)((float)z - 5.0F), (double)((float)(x + 1) + 5.0F), (double)((float)(y + 1) + 5.0F), (double)((float)(z + 1) + 5.0F)))) {
+			if (playerIn.openContainer instanceof ChestContainer) {
+				IInventory iinventory = ((ChestContainer)playerIn.openContainer).getLowerChestInventory();
+				if (iinventory == lTileEntity) {
 					++i;
 				}
 			}
@@ -139,121 +154,100 @@ public class Tansu_TileEntity extends LockableLootTileEntity implements IChestLi
 	}
 
 	private void playSound(SoundEvent sound) {
-		double d0 = (double)this.worldPosition.getX() + 0.5D;
-		double d1 = (double)this.worldPosition.getY() + 0.5D;
-		double d2 = (double)this.worldPosition.getZ() + 0.5D;
-
-		this.level.playSound((PlayerEntity)null, d0, d1, d2, sound, SoundCategory.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+		double dx = (double) this.pos.getX() + 0.5D;
+		double dy = (double) this.pos.getY() + 0.5D;
+		double dz = (double) this.pos.getZ() + 0.5D;
+		this.world.playSound((PlayerEntity) null, dx, dy, dz, sound, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 
 	@Override
-	public boolean triggerEvent(int id, int type) {
+	public boolean receiveClientEvent(int id, int type) {
 		if (id == 1) {
-			this.openCount = type;
+			this.numPlayersUsing = type;
 			return true;
 		} else {
-			return super.triggerEvent(id, type);
+			return super.receiveClientEvent(id, type);
 		}
 	}
 
 	@Override
-	public void startOpen(PlayerEntity playerIn) {
+	public void openInventory(PlayerEntity playerIn) {
 		if (!playerIn.isSpectator()) {
-			if (this.openCount < 0) {
-				this.openCount = 0;
+			if (this.numPlayersUsing < 0) {
+				this.numPlayersUsing = 0;
 			}
 
-			++this.openCount;
-			this.signalOpenCount();
+			++this.numPlayersUsing;
+			this.onOpenOrClose();
 		}
 	}
 
-	public void stopOpen(PlayerEntity playerIn) {
+	@Override
+	public void closeInventory(PlayerEntity playerIn) {
 		if (!playerIn.isSpectator()) {
-			--this.openCount;
-			this.signalOpenCount();
+			--this.numPlayersUsing;
+			this.onOpenOrClose();
 		}
-
 	}
 
-	protected void signalOpenCount() {
+	protected void onOpenOrClose() {
 		Block block = this.getBlockState().getBlock();
 		if (block instanceof Tansu) {
-			this.level.blockEvent(this.worldPosition, block, 1, this.openCount);
-			this.level.updateNeighborsAt(this.worldPosition, block);
+			this.world.addBlockEvent(this.pos, block, 1, this.numPlayersUsing);
+			this.world.notifyNeighborsOfStateChange(this.pos, block);
 		}
-	}
-
-	protected NonNullList<ItemStack> getItems() {
-		return this.items;
-	}
-
-	protected void setItems(NonNullList<ItemStack> stack) {
-		this.items = stack;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public float getOpenNess(float count) {
-		return MathHelper.lerp(count, this.oOpenness, this.openness);
+	public float getLidAngle(float partialTicks) {
+		return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
 	}
 
-	public static int getOpenCount(IBlockReader blockreader, BlockPos pos) {
-		BlockState blockstate = blockreader.getBlockState(pos);
+	public static int getPlayersUsing(IBlockReader reader, BlockPos pos) {
+		BlockState blockstate = reader.getBlockState(pos);
 		if (blockstate.hasTileEntity()) {
-			TileEntity tileentity = blockreader.getBlockEntity(pos);
+			TileEntity tileentity = reader.getTileEntity(pos);
 			if (tileentity instanceof Tansu_TileEntity) {
-				return ((Tansu_TileEntity)tileentity).openCount;
+				return ((Tansu_TileEntity) tileentity).numPlayersUsing;
 			}
 		}
-
 		return 0;
 	}
 
-	public static void swapContents(Tansu_TileEntity tileEntity, Tansu_TileEntity otherTileEntity) {
-		NonNullList<ItemStack> nonnulllist = tileEntity.getItems();
-		tileEntity.setItems(otherTileEntity.getItems());
-		otherTileEntity.setItems(nonnulllist);
-	}
-
-	protected Container createMenu(int count, PlayerInventory inventory) {
-		return ChestContainer.threeRows(count, inventory, this);
+	public static void swapContents(Tansu_TileEntity te, Tansu_TileEntity otherTe) {
+		NonNullList<ItemStack> list = te.getItems();
+		te.setItems(otherTe.getItems());
+		otherTe.setItems(list);
 	}
 
 	@Override
-	public void clearCache() {
-		super.clearCache();
+	public void updateContainingBlockInfo() {
+		super.updateContainingBlockInfo();
 		if (this.chestHandler != null) {
-			net.minecraftforge.common.util.LazyOptional<?> oldHandler = this.chestHandler;
+			this.chestHandler.invalidate();
 			this.chestHandler = null;
-			oldHandler.invalidate();
 		}
 	}
 
 	@Override
 	public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> cap, Direction side) {
-		 if (!this.remove && cap == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			 if (this.chestHandler == null)
-				 this.chestHandler = net.minecraftforge.common.util.LazyOptional.of(this::createHandler);
-			 return this.chestHandler.cast();
-		 }
-		 return super.getCapability(cap, side);
+		if (!this.removed && cap == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			if (this.chestHandler == null)
+				this.chestHandler = net.minecraftforge.common.util.LazyOptional.of(this::createHandler);
+			return this.chestHandler.cast();
+		}
+		return super.getCapability(cap, side);
 	}
 
-	////////////////////////
-	private net.minecraftforge.items.IItemHandlerModifiable createHandler() {
-		BlockState state = this.getBlockState();
-		if (!(state.getBlock() instanceof Tansu)) {
-			return new net.minecraftforge.items.wrapper.InvWrapper(this);
-		}
-		IInventory inv = Tansu.getContainer((Tansu) state.getBlock(), state, getLevel(), getBlockPos(), true);
-		return new net.minecraftforge.items.wrapper.InvWrapper(inv == null ? this : inv);
+	private IItemHandlerModifiable createHandler() {
+		return new InvWrapper(this);
 	}
 
 	@Override
-	protected void invalidateCaps() {
-		super.invalidateCaps();
+	public void remove() {
+		super.remove();
 		if (chestHandler != null)
-		 chestHandler.invalidate();
+			chestHandler.invalidate();
 	}
 
 }

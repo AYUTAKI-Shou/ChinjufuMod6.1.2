@@ -5,8 +5,8 @@ import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -16,15 +16,15 @@ public class SakuraParticle extends SpriteTexturedParticle {
 
 	private final float rotSpeed;
 
-	private SakuraParticle(ClientWorld worldIn, double xCoordIn, double yCoordIn, double zCoordIn,
+	private SakuraParticle(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn,
 			double xSpeed, double ySpeed, double zSpeed) {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn);
 
-		this.quadSize *= 0.5F;
+		this.particleScale *= 0.5F;
 		int i = (int)(32.0D / (Math.random() * 0.8D + 0.2D));
-		this.lifetime = (int)Math.max((float)i * 1.8F, 2.0F);
+		this.maxAge = (int)Math.max((float)i * 1.8F, 2.0F);
 		this.rotSpeed = ((float)Math.random() - 0.5F) * 0.1F;
-		this.roll = (float)Math.random() * ((float)Math.PI * 2F);
+		this.particleAngle = (float)Math.random() * ((float)Math.PI * 2F);
 	}
 
 	public IParticleRenderType getRenderType() {
@@ -32,25 +32,25 @@ public class SakuraParticle extends SpriteTexturedParticle {
 	}
 
 	public void tick() {
-		this.xo = this.x;
-		this.yo = this.y;
-		this.zo = this.z;
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
 
-		if (this.age++ >= this.lifetime) {
-			this.remove();
+		if (this.age++ >= this.maxAge) {
+			this.setExpired();
 		}
 
 		else {
-			this.move(this.xd, this.yd, this.zd);
-			this.yd -= (double)0.002F;
-			this.yd = Math.max(this.yd, (double)-0.1F);
+			this.move(this.motionX, this.motionY, this.motionZ);
+			this.motionY -= (double)0.002F;
+			this.motionY = Math.max(this.motionY, (double)-0.1F);
 
-			this.oRoll = this.roll;
+			this.prevParticleAngle = this.particleAngle;
 			if (!this.onGround) {
-				this.roll += (float)Math.PI * this.rotSpeed * 1.6F;
+				this.particleAngle += (float)Math.PI * this.rotSpeed * 1.6F;
 			}
 			else {
-				this.yd = 0.0D;
+				this.motionY = 0.0D;
 			}
 		}
 	}
@@ -58,18 +58,18 @@ public class SakuraParticle extends SpriteTexturedParticle {
 	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements IParticleFactory<BasicParticleType> {
 
-		private final IAnimatedSprite sprite;
+		private final IAnimatedSprite spriteSet;
 
 		public Factory(IAnimatedSprite sprite) {
-			this.sprite = sprite;
+			this.spriteSet = sprite;
 		}
 
 		/** BubbleColumnUpParticle **/
-		public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z,
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z,
 				double xSpeed, double ySpeed, double zSpeed) {
 
 			SakuraParticle particle = new SakuraParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.sprite);
+			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;
 		}
 	}

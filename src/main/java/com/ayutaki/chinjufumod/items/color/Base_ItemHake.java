@@ -19,25 +19,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Base_ItemHake extends Item {
 
 	public Base_ItemHake(Properties builder) {
-		super(builder.durability(128).tab(ItemGroups_CM.WADECO));
+		super(builder.maxStackSize(1).maxDamage(128).group(ItemGroups_CM.WADECO));
 	} //127
 
-	@Override
-	public boolean isRepairable(ItemStack stack) {
-		return false;
-	}
-	
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_hake_color")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_hake_color")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }
-/*
-public Item.Properties durability(int maxDamage) {
-	this.maxDamage = maxDamage;
-	this.maxStackSize = 1;
-	return this;
-}
-*/

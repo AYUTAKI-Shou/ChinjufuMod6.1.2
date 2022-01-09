@@ -16,7 +16,7 @@ public class SantaCos extends ArmorItem {
 
 	/* Items needed for repair. */
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack material) {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack material) {
 		if (this == Items_Seasonal.AKASHISANTA_BOOTS || this == Items_Seasonal.SUZUYASANTA_BOOTS || this == Items_Seasonal
 				.KUMANOSANTA_BOOTS || this == Items_Seasonal.RYUJOUSANTA_BOOTS || this == Items_Seasonal.TEITOKUSANTA_BOOTS) {
 			return material.getItem() == Items.BLACK_CARPET;

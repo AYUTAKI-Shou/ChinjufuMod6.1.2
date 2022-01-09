@@ -4,9 +4,9 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.blocks.base.BaseFacingWater;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -18,23 +18,23 @@ import net.minecraftforge.common.ToolType;
 public class Keiryu extends BaseFacingWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.box(3.0D, 6.0D, 0.0D, 13.0D, 11.0D, 12.0D),
-			Block.box(3.0D, 0.0D, 0.0D, 13.0D, 6.0D, 7.0D));
-	protected static final VoxelShape AABB_WEST = VoxelShapes.or(Block.box(4.0D, 6.0D, 3.0D, 16.0D, 11.0D, 13.0D),
-					Block.box(9.0D, 0.0D, 3.0D, 16.0D, 6.0D, 13.0D));
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.box(3.0D, 6.0D, 4.0D, 13.0D, 11.0D, 16.0D),
-			Block.box(3.0D, 0.0D, 9.0D, 13.0D, 6.0D, 16.0D));
-	protected static final VoxelShape AABB_EAST = VoxelShapes.or(Block.box(0.0D, 6.0D, 3.0D, 12.0D, 11.0D, 13.0D),
-			Block.box(0.0D, 0.0D, 3.0D, 7.0D, 6.0D, 13.0D));
+	protected static final VoxelShape AABB_SOUTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 6.0D, 0.0D, 13.0D, 11.0D, 12.0D),
+			Block.makeCuboidShape(3.0D, 0.0D, 0.0D, 13.0D, 6.0D, 7.0D));
+	protected static final VoxelShape AABB_WEST = VoxelShapes.or(Block.makeCuboidShape(4.0D, 6.0D, 3.0D, 16.0D, 11.0D, 13.0D),
+					Block.makeCuboidShape(9.0D, 0.0D, 3.0D, 16.0D, 6.0D, 13.0D));
+	protected static final VoxelShape AABB_NORTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 6.0D, 4.0D, 13.0D, 11.0D, 16.0D),
+			Block.makeCuboidShape(3.0D, 0.0D, 9.0D, 13.0D, 6.0D, 16.0D));
+	protected static final VoxelShape AABB_EAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 6.0D, 3.0D, 12.0D, 11.0D, 13.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 3.0D, 7.0D, 6.0D, 13.0D));
 
-	public Keiryu(AbstractBlock.Properties properties) {
+	public Keiryu(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
+		Direction direction = state.get(H_FACING);
 
 		switch (direction) {
 		case NORTH :
@@ -45,7 +45,25 @@ public class Keiryu extends BaseFacingWater {
 		} // switch
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return true;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {

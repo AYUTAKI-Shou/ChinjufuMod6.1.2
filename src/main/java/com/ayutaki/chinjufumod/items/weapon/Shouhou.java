@@ -28,25 +28,25 @@ public class Shouhou extends Item {
 
 	/* RightClick Action */
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand hand) {
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
-		if (!worldIn.isClientSide) {
-			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundCategory.PLAYERS, 1.2F, 1.0F);
-			
-			worldIn.addFreshEntity(new ExperienceOrbEntity(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), 100));
+		if (!worldIn.isRemote) {
+			worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.PLAYERS, 1.2F, 1.0F);
+
+			worldIn.addEntity(new ExperienceOrbEntity(worldIn, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), 100));
 			itemstack.shrink(1);
 			
-			return ActionResult.success(itemstack);
+			return ActionResult.resultSuccess(itemstack);
 		}
-		return ActionResult.success(itemstack);
+		return ActionResult.resultSuccess(itemstack);
 	}
 	
-	/* ToolTip ...Item.class 222(1.16.5) */
+	/* アイテムは @Nullable World worldIn、ブロックは @Nullable IBlockReader worldIn*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.item_shouhou")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.item_shouhou")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

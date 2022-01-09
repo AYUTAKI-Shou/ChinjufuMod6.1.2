@@ -6,9 +6,8 @@ import javax.annotation.Nullable;
 
 import com.ayutaki.chinjufumod.blocks.base.BaseStage4_FaceWater;
 import com.ayutaki.chinjufumod.handler.CMEvents;
-import com.ayutaki.chinjufumod.registry.WallPanel_Blocks;
+import com.ayutaki.chinjufumod.registry.WallPane_Blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -33,34 +32,34 @@ import net.minecraftforge.common.ToolType;
 public class WallPane_Stage4 extends BaseStage4_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
-	protected static final VoxelShape AABB_WEST = Block.box(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_NORTH = Block.box(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_EAST = Block.box(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
+	protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(15.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(0.0D, 0.0D, 15.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 16.0D, 16.0D);
 
-	public WallPane_Stage4(AbstractBlock.Properties properties) {
+	public WallPane_Stage4(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 
 		if (itemstack.isEmpty()) {
-			
-			if (playerIn.isCrouching()) {
-				if (this == WallPanel_Blocks.WP_STONE_B || this == WallPanel_Blocks.WP_STONE_graB || this == WallPanel_Blocks.
-						WP_STONE_dioB|| this == WallPanel_Blocks.WP_STONE_andB) {
+			if (playerIn.isSneaking()) {
+
+				if (this == WallPane_Blocks.WP_STONE_B || this == WallPane_Blocks.WP_STONE_graB || this == WallPane_Blocks.
+						WP_STONE_dioB|| this == WallPane_Blocks.WP_STONE_andB) {
 					CMEvents.soundStonePlace(worldIn, pos); }
 	
 				else { CMEvents.soundWoodPlace(worldIn, pos); }
 	
-				worldIn.setBlock(pos, state.cycle(STAGE_1_4), 3);
+				worldIn.setBlockState(pos, state.cycle(STAGE_1_4));
 				return ActionResultType.SUCCESS; }
-		
-			if (!playerIn.isCrouching()) {
+			
+			if (!playerIn.isSneaking()) {
 				CMEvents.textNotSneak(worldIn, pos, playerIn);
 				return ActionResultType.SUCCESS; }
 		}
@@ -71,22 +70,22 @@ public class WallPane_Stage4 extends BaseStage4_FaceWater {
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction direction = state.getValue(H_FACING);
 
-		switch (direction) {
-		case NORTH:
-		default:
-			return AABB_NORTH;
+		Direction direction = state.get(H_FACING);
+		switch(direction) {
 		case SOUTH:
 			return AABB_SOUTH;
 		case WEST:
 			return AABB_WEST;
+		case NORTH:
+		default:
+			return AABB_NORTH;
 		case EAST:
 			return AABB_EAST;
 		}
 	}
 
-	/* Harvest by Pickaxe. */
+	/* 採取適正ツール */
 	@Nullable
 	@Override
 	public ToolType getHarvestTool(BlockState state) {
@@ -100,9 +99,9 @@ public class WallPane_Stage4 extends BaseStage4_FaceWater {
 
 	/* ToolTip */
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
-		tooltip.add((new TranslationTextComponent("tips.wp_stage4")).withStyle(TextFormatting.GRAY));
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
+		tooltip.add((new TranslationTextComponent("tips.wp_stage4")).applyTextStyle(TextFormatting.GRAY));
 	}
 
 }

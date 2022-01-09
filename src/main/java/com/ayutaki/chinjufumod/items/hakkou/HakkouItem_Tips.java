@@ -24,22 +24,22 @@ public class HakkouItem_Tips extends BlockNamedItem {
 		super(block, builder);
 	}
 
-	/* ToolTip ...Item.class 222(1.16.5) */
+	/* tips表示 GRAYが1.12.2でのデフォルト色。Item.class の334行目*/
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
-		super.appendHoverText(stack, worldIn, tooltip, tipFlag);
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag tipFlag) {
+		super.addInformation(stack, worldIn, tooltip, tipFlag);
 
 		if (this == Items_Teatime.SHOUYU_bot_1 || this == Items_Teatime.DASHI_bot_1) {
-			tooltip.add((new TranslationTextComponent("tips.block_bot")).withStyle(TextFormatting.GRAY)); }
+			tooltip.add((new TranslationTextComponent("tips.block_bot")).applyTextStyle(TextFormatting.GRAY)); }
 
 		if (this == Items_Teatime.SHOUYU_bot_2 || this == Items_Teatime.DASHI_bot_2) {
-			tooltip.add((new TranslationTextComponent("tips.block_bot_2")).withStyle(TextFormatting.GRAY)); }
+			tooltip.add((new TranslationTextComponent("tips.block_bot_2")).applyTextStyle(TextFormatting.GRAY)); }
 
 		if (this == Items_Teatime.SHOUYU_bot_3 || this == Items_Teatime.DASHI_bot_3 || this == Items_Teatime.KOMEZU_bot_1) {
-			tooltip.add((new TranslationTextComponent("tips.block_bot_3")).withStyle(TextFormatting.GRAY)); }
+			tooltip.add((new TranslationTextComponent("tips.block_bot_3")).applyTextStyle(TextFormatting.GRAY)); }
 
 		if (this == Items_Teatime.SHOUYU_bot_4 || this == Items_Teatime.DASHI_bot_4 || this == Items_Teatime.KOMEZU_bot_2) {
-			tooltip.add((new TranslationTextComponent("tips.block_bot_4")).withStyle(TextFormatting.GRAY)); }
+			tooltip.add((new TranslationTextComponent("tips.block_bot_4")).applyTextStyle(TextFormatting.GRAY)); }
 	}
 
 }

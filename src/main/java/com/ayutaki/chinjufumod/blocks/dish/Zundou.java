@@ -5,9 +5,9 @@ import com.ayutaki.chinjufumod.handler.CMEvents;
 import com.ayutaki.chinjufumod.registry.Dish_Blocks;
 import com.ayutaki.chinjufumod.registry.Items_Teatime;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,60 +24,76 @@ import net.minecraft.world.World;
 public class Zundou extends BaseStage2_FaceWater {
 
 	/* Collision */
-	protected static final VoxelShape AABB_BOX = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
+	protected static final VoxelShape AABB_BOX = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
 
 	/** 1=蓋閉め、2=蓋開き **/
-	public Zundou(AbstractBlock.Properties properties) {
+	public Zundou(Block.Properties properties) {
 		super(properties);
 	}
 
 	/* RightClick Action */
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit) {
 
-		ItemStack itemstack = playerIn.getItemInHand(hand);
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		Item item = itemstack.getItem();
 
 		if (item == Items.WATER_BUCKET) {
-			
+
 			CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand);
-			worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_MIZU.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_MIZU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1))); }
 
 		if ( item == Items_Teatime.MIZUOKE_full) {
-			
+
 			CMEvents.MIZUOKEfull_Empty(worldIn, pos, playerIn, hand);
-			worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_MIZU.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_MIZU.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1))); }
 
 
 		if (item == Items.MILK_BUCKET) {
-			
+
 			CMEvents.WaterBucket_Empty(worldIn, pos, playerIn, hand);
-			worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_MILK.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1)), 3); }
+			worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_MILK.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1))); }
 
-		if (item == Items_Teatime.MIZUOKE_Milk) {
-			
+		if ( item == Items_Teatime.MIZUOKE_Milk) {
+
 			CMEvents.MIZUOKEfull_Empty(worldIn, pos, playerIn, hand);
-			worldIn.setBlock(pos, Dish_Blocks.ZUNDOU_MILK.defaultBlockState()
-					.setValue(H_FACING, state.getValue(H_FACING))
-					.setValue(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1)), 3); }
-		
-		if (item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full && item != Items.MILK_BUCKET && item != Items_Teatime.MIZUOKE_Milk) {
-			CMEvents.textNotHave(worldIn, pos, playerIn); }
+			worldIn.setBlockState(pos, Dish_Blocks.ZUNDOU_MILK.getDefaultState().with(H_FACING, state.get(H_FACING))
+					.with(BaseZundou_2Stage.STAGE_1_2, Integer.valueOf(1))); }
 
+		if (item != Items.WATER_BUCKET && item != Items_Teatime.MIZUOKE_full && 
+				item != Items.MILK_BUCKET && item != Items_Teatime.MIZUOKE_Milk) {
+			CMEvents.textNotHave(worldIn, pos, playerIn); }
+		
 		/** SUCCESS to not put anything on top. **/
 		return ActionResultType.SUCCESS;
 	}
+
 
 	/* Collisions for each property. */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB_BOX;
+	}
+
+	/* 窒息 */
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* 立方体 */
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return false;
+	}
+
+	/* モブ湧き */
+	@Override
+	public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+		return false;
 	}
 
 }
